@@ -1,0 +1,30 @@
+<div class="py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-7 mr-auto">
+	      
+	        <h2><a href="<perch:blog id="postURL" />" rel="bookmark" class="entry-title"><perch:blog id="postTitle" /></a></h2>
+	        <p class="entry-published date"><perch:blog id="postDateTime" format="%d %B %Y" /></p>
+	        <perch:if exists="image"><img src="<perch:blog id="image" type="image" width="200" height="200" crop="true" />" alt="<perch:blog id="postTitle" />" class="img-fluid" style="margin-bottom:2rem;" /></perch:if>
+	        <perch:blog id="excerpt" type="textarea" textile="true" />
+	        <p><a href="<perch:blog id="postURL" />" class="btn btn-primary">Read Post</a></p>
+		        
+		<perch:after>
+		    <perch:if exists="paging">
+		        <div class="paging">
+		            Page <perch:blog id="current_page" /> of <perch:blog id="number_of_pages" />
+		            <perch:blog id="page_links" encode="false" />
+		            <perch:if exists="not_first_page">
+		                <a href="<perch:blog id="prev_url" encode="false" />">Previous</a>
+		            </perch:if>
+		            <perch:if exists="not_last_page">
+		                <a href="<perch:blog id="next_url" encode="false" />">Next</a>
+		            </perch:if>
+		        </div>
+		    </perch:if>
+		</perch:after>
+
+      </div>
+    </div>
+  </div>
+</div>

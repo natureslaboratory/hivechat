@@ -1,0 +1,16 @@
+<perch:form id="send_email" method="post" app="simple_calendar" type="default" action="">
+<div class="modal-body">
+<div class="form-group">
+  <label>Email Recipient</label>
+  <perch:input type="text" id="emailRecipient" class="form-control" />
+</div>
+<div class="form-group">
+  <label>Email Content</label>
+  <perch:input type="textarea" id="emailContent" class="form-control" />
+</div>
+</div>
+<div class="modal-footer">
+  <perch:input type="submit" value="Send Email" class="btn btn-primary" />
+  <perch:input type="hidden" id="bookingID" />
+</div>
+</perch:form>

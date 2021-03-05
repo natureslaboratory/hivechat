@@ -1,0 +1,37 @@
+<table class="table">
+  <tbody>
+    <tr>
+      <td width="50%"><strong>Name</strong></td>
+      <td><perch:sc id="guestName" /></td>
+    </tr>
+    <tr>
+      <td><strong>Phone</strong></td>
+      <td><perch:sc id="phone" /></td>
+    </tr>
+    <tr>
+      <td><strong>Email</strong></td>
+      <td><perch:sc id="email" /></td>
+    </tr>
+    <tr>
+      <td><strong>Address</strong></td>
+      <td><perch:sc id="address1" /><perch:if exists="address2"><br /><perch:sc id="address2" /></perch:if><perch:if exists="address3"><br /><perch:sc id="address3" /></perch:if><perch:if exists="address4"><br /><perch:sc id="address4" /></perch:if><perch:if exists="address5"><br /><perch:sc id="address5" /></perch:if></td>
+    </tr>
+  </tbody>
+</table>
+<h3 class="text-left p-b-20 fw-400">Accommodation Details</h3>
+<table class="table">
+  <tbody>
+    <tr>
+	    <td width="50%"><strong>Accommodation</strong></td>
+	    <td><perch:sc id="accommodation" /></td>
+    </tr>
+    <tr>
+      <td><strong>Arrival Date</strong></td>
+      <td><perch:sc id="startDate" format="d/m/Y" /></td>
+    </tr>
+    <tr>
+      <td><strong>Departure Date</strong></td>
+      <td><perch:sc id="endDate" format="d/m/Y" /></td>
+    </tr>
+  </tbody>
+</table>

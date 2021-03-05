@@ -1,0 +1,26 @@
+<perch:form id="create_addon" method="post" app="simple_calendar" type="default" action="#addons">
+<div class="modal-body">
+	<div class="form-group">
+		<label>Add-On Name (i.e. Extra Child, Firewood.)</label>
+		<perch:input type="text" id="addonName" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label>Max Quantity Per Booking (leave blank for unlimited)</label>
+		<perch:input type="number" id="maxQuantity" class="form-control" value="0" />
+	</div>
+	<div class="form-group">
+		<label>Charge Per&hellip;</label>
+		<perch:input type="select" id="charge" options="Night,Week,Stay" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label>Cost (like 9.50)</label>
+		<perch:input type="text" id="cost" class="form-control" placholder="0.00" />
+	</div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+        Close
+    </button>
+    <perch:input type="submit" class="btn btn-primary" value="Proceed" />
+</div>
+</perch:form>

@@ -1,0 +1,155 @@
+<perch:form id="update_product" method="post" app="simple_calendar" type="default" enctype="multipart/form-data">
+	<perch:success show-form="true">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="alert alert-success" role="alert">Your listing has been updated.</div>
+				</div>
+			</div>
+		</div>
+	</perch:success>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card m-b-30">
+			        <div class="card-header">
+			            <h5 class="card-title m-b-0">Name, Price and Category</h5>
+			        </div>
+			        <div class="card-body">
+						<div class="form-group">
+				            <label>Product Name</label>
+					        <perch:input type="text" id="name" class="form-control" required="true" placeholder="Whitby Tea Towel" />
+			            </div>
+			            <div class="form-group">
+				            <label>Price</label>
+					        <perch:input type="text" id="price" class="form-control" required="true" placeholder="0.00" />
+			            </div>
+			            <div class="form-group">
+					        <label>Shipping Price</label>
+					        <perch:input type="text" id="shipping" class="form-control" required="true" placeholder="0.00" />
+			            </div>
+			            <div class="form-group">
+					        <label>Category</label>
+					        <perch:input type="select" id="category" class="form-control" required="true" options="Art & Prints|art-prints" />
+			            </div>
+			            <div class="form-group">
+					        <label>Live?</label>
+					        <perch:input type="select" id="live" class="form-control" required="true" options="No|0,Yes|1" />
+			            </div>
+			        </div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card m-b-30">
+			        <div class="card-header">
+			            <h5 class="card-title m-b-0">Description - Tell Us Everything We Need To Know!</h5>
+			        </div>
+			        <div class="card-body">
+						<div class="form-group">
+					        <perch:input type="textarea" id="description" class="redactor form-control" />
+			            </div>
+			        </div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="card m-b-30">
+			        <div class="card-header">
+			            <h5 class="card-title m-b-0">Photo #1</h5>
+			        </div>
+			        <div class="card-body">
+						<div class="form-group">
+							<label>Please use a high resolution JPG image - a landscape image will work best.</label>
+					        <perch:input type="file" accept="image" name="image1" />
+					        <perch:input type="hidden" id="image1" />
+					        <perch:input type="hidden" id="thumb1" />
+			            </div>
+			            <div class="form-group">
+							<span id="image1"><p><em>No Image Uploaded</em></p></span>
+							<p class="image1_deleteimage" style="display:none;"><a class="btn btn-small btn-danger mt-3 text-white" href="javascript:deleteImage('image1','thumb1');">Delete</a></p>
+							<script>
+								var image1 = $('#form1_thumb1').val();
+								if(image1){
+									$('#image1').html("<img src='" + image1 + "' alt='' />");
+									$('.image1_deleteimage').show();
+								}	
+							</script>
+			            </div>
+			        </div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="card m-b-30">
+			        <div class="card-header">
+			            <h5 class="card-title m-b-0">Photo #2</h5>
+			        </div>
+			        <div class="card-body">
+						<div class="form-group">
+							<label>Please use a high resolution JPG image - a landscape image will work best.</label>
+					        <perch:input type="file" accept="image" name="image2" />
+					        <perch:input type="hidden" id="image2" />
+					        <perch:input type="hidden" id="thumb2" />
+			            </div>
+			            <div class="form-group">
+							<span id="image2"><p><em>No Image Uploaded</em></p></span>
+							<p class="image2_deleteimage" style="display:none;"><a class="btn btn-small btn-danger mt-3 text-white" href="javascript:deleteImage('image2','thumb2');">Delete</a></p>
+							<script>
+								var image2 = $('#form1_thumb2').val();
+								if(image2){
+									$('#image2').html("<img src='" + image2 + "' alt='' />");
+									$('.image2_deleteimage').show();
+								}	
+							</script>
+			            </div>
+			        </div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="card m-b-30">
+			        <div class="card-header">
+			            <h5 class="card-title m-b-0">Photo #3</h5>
+			        </div>
+			        <div class="card-body">
+						<div class="form-group">
+							<label>Please use a high resolution JPG image - a landscape image will work best.</label>
+					        <perch:input type="file" accept="image" name="image3" />
+					        <perch:input type="hidden" id="image3" />
+					        <perch:input type="hidden" id="thumb3" />
+			            </div>
+			            <div class="form-group">
+							<span id="image3"><p><em>No Image Uploaded</em></p></span>
+							<p class="image3_deleteimage" style="display:none;"><a class="btn btn-small btn-danger mt-3 text-white" href="javascript:deleteImage('image3','thumb3');">Delete</a></p>
+							<script>
+								var image3 = $('#form1_thumb3').val();
+								if(image3){
+									$('#image3').html("<img src='" + image3 + "' alt='' />");
+									$('.image3_deleteimage').show();
+								}	
+							</script>
+			            </div>
+			        </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 m-b-70">
+				<perch:input type="submit" value="Update Product" class="btn btn-primary" />
+			</div>
+		</div>
+	</div>
+	<perch:input type="hidden" id="productID" />
+</perch:form>
+
+<script>
+	function deleteImage(image,thumb){
+		$('#form1_'+image).val('');
+		$('#form1_'+thumb).val('');
+		$('#'+image).html('');
+		$('.'+image+'_deleteimage').hide();
+	}	
+</script>

@@ -1,0 +1,10 @@
+<perch:form id="cancel_booking" method="post" app="simple_calendar" type="default" action="/admin/"> 
+    <div class="modal-body">
+    	<h2>Are you sure?</h2>
+		<p>Only proceed if you are certain. Clicking 'Cancel Booking' below will permanently delete this booking and all associated booking information. This cannot be undone.</p>
+    </div>
+	<div class="modal-footer">
+		<perch:input type="submit" class="btn btn-danger" value="Cancel Booking" />
+	    <perch:input type="hidden" id="bookingID" />
+	</div>
+</perch:form>

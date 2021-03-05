@@ -1,0 +1,32 @@
+<perch:if exists="addonName">
+  <perch:before>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Cost</th>
+          <th>Qty.</th>
+          <th>Remove</th>
+        </tr>
+      </thead>
+      <tbody>
+  </perch:before>
+        <perch:form id="remove_addon" method="post" app="simple_calendar" type="default" action="/process">
+        <tr>
+          <td><perch:sc id="addonName" /></td>
+          <td>&pound;<perch:sc id="cost" />/<perch:sc id="charge" /></td>
+          <td>
+            <perch:sc id="quantity" />
+          </td>
+          <td>
+              <perch:input type="submit" value="Remove" class="btn btn-secondary btn-sm" />
+              <perch:input type="hidden" id="bookingAddonID" value="<perch:sc id="bookingAddonID" />" />
+              <perch:input type="hidden" id="r" value="<perch:sc id="r" />" />
+          </td>
+        </tr>
+        </perch:form>
+  <perch:after>
+      </tbody>
+    </table>
+  </perch:after>
+</perch:if>

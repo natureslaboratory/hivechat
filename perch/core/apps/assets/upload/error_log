@@ -1,0 +1,2 @@
+[27-Jan-2021 16:38:16 UTC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 24576 bytes) in /home/hivechat/public_html/perch/core/lib/PerchImage.class.php on line 644
+[27-Jan-2021 16:38:22 UTC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 24576 bytes) in /home/hivechat/public_html/perch/core/lib/PerchImage.class.php on line 644

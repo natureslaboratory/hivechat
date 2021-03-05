@@ -1,0 +1,35 @@
+<perch:form id="update_cell" method="post" app="hive_hivechat" type="default" action="">
+	<div class="card mb-3">
+        <div class="card-header">
+            <h5 class="card-title m-b-0">Update Cell</h5>
+        </div>
+        <div class="card-body">
+			<perch:success show-form="true">
+				<div class="alert alert-success" role="alert">Your Cell has been updated.</div>
+			</perch:success>
+			<div class="form-group">
+				<label>Title</label>
+				<perch:input type="text" class="form-control" id="cellTitle" required="true" placeholder="Hive Name" />
+            </div>
+            <div class="form-group">
+				<label>Date/Time (if applicable)</label>
+				<perch:input type="text" class="form-control" id="cellDateTime" placeholder="YYYY-MM-DD HH:MM:SS" />
+            </div>
+            <div class="form-group">
+				<label>Live</label>
+				<perch:input type="select" class="form-control" id="cellLive" options="No,Yes" />
+            </div>
+            <div class="form-group">
+	            <label>Introduction</label>
+				<perch:input type="textarea" class="form-control redactor" id="introduction" required="false" />
+            </div>
+            <div class="form-group">
+	            <label>Embedded Video</label>
+	            <p>Paste an 'embed code' in here to include a video on your Cell page</p>
+				<perch:input type="text" class="form-control" id="video" />
+            </div>
+			<perch:input type="submit" class="btn btn-secondary" value="Update">
+			<perch:input type="hidden" class="form-control" id="cellID" required="true" />
+        </div>
+	</div>
+</perch:form>

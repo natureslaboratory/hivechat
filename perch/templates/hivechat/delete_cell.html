@@ -1,0 +1,12 @@
+<perch:form id="delete_cell" method="post" app="hive_hivechat" type="default" action="/admin/your-hives/<perch:hc id="hiveID" />">
+	<div class="card mb-3">
+        <div class="card-header">
+            <h5 class="card-title m-b-0">Delete Cell</h5>
+        </div>
+        <div class="card-body">
+	        <p>Be careful. This will delete this entire Cell including all associated content and communication.</p>
+			<perch:input type="submit" class="btn btn-danger" value="Delete">
+			<perch:input type="hidden" class="form-control" id="cellID" required="true" />
+        </div>
+	</div>
+</perch:form>

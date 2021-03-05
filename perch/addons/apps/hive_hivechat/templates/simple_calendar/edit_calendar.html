@@ -1,0 +1,129 @@
+<perch:form id="edit_calendar" method="post" app="simple_calendar" type="default" action="#settings">
+	<perch:success show-form="true">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="alert alert-success" role="alert">Your calendar has been updated.</div>
+				</div>
+			</div>
+		</div>
+	</perch:success>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4">
+				<div class="card m-b-30">
+			        <div class="card-header">
+			            <h5 class="card-title m-b-0">Name and Type</h5>
+			        </div>
+			        <div class="card-body">
+						<div class="form-group">
+				            <label>Calendar Name</label>
+					        <perch:input type="text" id="name" class="form-control" required="true" placeholder="Calendar Name (i.e. Room 1, Abbey View, etc.)" />
+			            </div>
+			            <div class="form-group">
+					        <label>Units of This Type</label>
+					        <perch:input type="number" id="ofType" class="form-control" required="true" />
+			            </div>
+			        </div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="card m-b-30">
+			        <div class="card-header">
+			            <h5 class="card-title m-b-0">Capacity</h5>
+			        </div>
+			        <div class="card-body">
+						<div class="form-group">
+				            <label>Maximum Capacity</label>
+					        <perch:input type="number" id="maxCapacity" class="form-control" required="true" />
+			            </div>
+			            <div class="form-group">
+					        <label>Maximum Children</label>
+					        <perch:input type="number" id="maxChildren" class="form-control" required="true" />
+			            </div>
+			        </div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="card m-b-30">
+			        <div class="card-header">
+			            <h5 class="card-title m-b-0">Single Occupancy</h5>
+			        </div>
+			        <div class="card-body">
+						<div class="form-group">
+				            <label>Permit Single Occupancy</label>
+				            <perch:input type="select" id="permitSingleOccupancy" options="Yes,No" class="form-control" />
+			            </div>
+			            <div class="form-group">
+					        <label>Single Occupancy Reduction</label>
+					        <perch:input type="text" id="singleOccupancyReduction" class="form-control" />
+			            </div>
+			        </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4">
+				<div class="card m-b-30">
+			        <div class="card-header">
+			            <h5 class="card-title m-b-0">Savings</h5>
+			        </div>
+			        <div class="card-body">
+						<div class="form-group">
+				            <label>3 Night Saving</label>
+					        <perch:input type="number" id="threeNightSaving" class="form-control" />
+			            </div>
+			            <div class="form-group">
+					        <label>5 Night Saving</label>
+					        <perch:input type="number" id="fiveNightSaving" class="form-control" />
+			            </div>
+			        </div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="card m-b-30">
+			        <div class="card-header">
+			            <h5 class="card-title m-b-0">Minimum Stay</h5>
+			        </div>
+			        <div class="card-body">
+						<div class="form-group">
+				            <label>Minimum Stay (Sun - Thu)</label>
+					        <perch:input type="number" id="weekMin" class="form-control" />
+			            </div>
+			            <div class="form-group">
+					        <label>Minimum Stay (Fri - Sat)</label>
+					        <perch:input type="number" id="weekendMin" class="form-control" />
+			            </div>
+			        </div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="card m-b-30">
+			        <div class="card-header">
+			            <h5 class="card-title m-b-0">Booking Deposits</h5>
+			        </div>
+			        <div class="card-body">
+						<div class="form-group">
+				            <label>Deposit Type</label>
+				            <perch:input type="select" id="depositType" options="None,First Night,Full Price,Fixed Value" class="form-control" />
+			            </div>
+			            <div class="form-group">
+					        <label>Deposit Value</label>
+					        <perch:input type="text" id="depositValue" class="form-control" />
+			            </div>
+			        </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 m-b-70">
+				<perch:input type="submit" value="Update calendar" class="btn btn-primary" />
+			</div>
+		</div>
+	</div>
+	<perch:input type="hidden" id="calendarID" />
+</perch:form>

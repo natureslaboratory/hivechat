@@ -1,0 +1,29 @@
+<perch:before>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Request Date</th>
+      <th>Value</th>
+      <th>Request Sent</th>
+      <th>Delete?</th>
+    </tr>
+  </thead>
+  <tbody>
+</perch:before>
+
+    <tr>
+      <td><perch:sc id="paymentDate" format="d/m/Y" /></td>
+      <td><perch:if id="requestBalance" value="1" match="eq">Balance<perch:else/><perch:sc id="paymentValue" /></perch:if></td>
+      <td><perch:if id="requestSent" value="1" match="eq">Yes<perch:else/>No</perch:if></td>
+      <td>
+        <perch:form id="remove_paymentrequest" method="post" app="simple_calendar" type="default" action="/admin/booking/<perch:sc id="bookingID" />/#paymentrequests">
+          <perch:input type="submit" value="Delete" class="btn btn-secondary btn-sm" />
+          <perch:input type="hidden" id="paymentRequestID" value="<perch:sc id="paymentRequestID" />" />
+        </perch:form>
+      </td>
+    </tr>
+
+<perch:after>
+  </tbody>
+</table>
+</perch:after>

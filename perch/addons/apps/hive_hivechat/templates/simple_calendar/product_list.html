@@ -1,0 +1,10 @@
+<a href="/shop/<perch:sc id="category"/>/<perch:sc id="productID"/>">
+	<div class="card">
+        <div class="thumb">
+		  <img src="<perch:if exists="image1"><perch:sc id="thumb1" /><perch:else />/assets/img/noimage_small.jpg</perch:if>" alt="">
+		</div>
+		<div class="content">
+		  <p><perch:sc id="name" /> <span>&pound;<perch:sc id="price" /></span> </p>
+		</div>
+	</div>
+</a>

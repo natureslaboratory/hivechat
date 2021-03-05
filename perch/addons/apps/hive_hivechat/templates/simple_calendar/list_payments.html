@@ -1,0 +1,31 @@
+<perch:if exists="paymentType">
+  <perch:before>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Payment Type</th>
+          <th>Reference</th>
+          <th>Value</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+  </perch:before>
+
+        <tr>
+          <td><perch:sc id="paymentType" /></td>
+          <td><perch:sc id="paymentReference" /></td>
+          <td>&pound;<perch:sc id="paymentValue" /></td>
+          <td>
+            <perch:form id="remove_payment" method="post" app="simple_calendar" type="default" action="/admin/booking/<perch:sc id="bookingID" />/#payments">
+              <perch:input type="submit" value="Delete" class="btn btn-secondary btn-sm" />
+              <perch:input type="hidden" id="paymentID" value="<perch:sc id="paymentID" />" />
+            </perch:form>
+          </td>
+        </tr>
+
+  <perch:after>
+      </tbody>
+    </table>
+  </perch:after>
+</perch:if>

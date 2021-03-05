@@ -1,0 +1,55 @@
+<perch:if exists="emailID">
+  <perch:before>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Email Recipient</th>
+          <th>Email Date and Time</th>
+          <th>See Content</th>
+        </tr>
+      </thead>
+      <tbody>
+  </perch:before>
+        <tr>
+          <td><perch:sc id="emailRecipient" /></td>
+          <td>
+            <perch:sc id="emailDateTime" format="d/m/Y H:i:s" />
+          </td>
+          <td>
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#viewEmail_<perch:sc id="emailID" />">View email</button>     
+            
+            <!-- Modal -->
+			<div class="modal fade" id="viewEmail_<perch:sc id="emailID" />" tabindex="-1" role="dialog"
+			     aria-labelledby="newBookingLabel" aria-hidden="true">
+			    <div class="modal-dialog  modal-dialog-align-top-left" role="document">
+			        <div class="modal-content">
+			            <div class="modal-header">
+			                <h5 class="modal-title" id="exampleModalLabel">Email Content</h5>
+			                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			                    <span aria-hidden="true">&times;</span>
+			                </button>
+			            </div>
+				        <div class="modal-body">
+					        <p>
+							<strong>To:</strong> <perch:sc id="emailRecipient" />
+							</p>
+							<p>
+							<strong>Sent:</strong> <perch:sc id="emailDateTime" format="d/m/Y H:i:s" />
+							</p>
+							<p>
+							<strong>Message:</strong>
+							</p>
+							<p>
+							<perch:sc id="emailContent" html />
+							</p>
+				        </div>
+			        </div>
+			    </div>
+			</div>
+          </td>
+        </tr>
+  <perch:after>
+      </tbody>
+    </table>
+  </perch:after>
+</perch:if>

@@ -1,0 +1,52 @@
+	<div class="hero" style="background:url('<perch:if exists="image_large">https://whitby.imgix.net/<perch:sc id="image_large" />?auto=format,compress<perch:else />/assets/img/noimage.jpg</perch:if>');background-position:center center;background-size:cover;">
+		<img src="https://whitby.imgix.net/<perch:sc id="image_large" />?auto=format,compress" alt="<perch:sc id="listingTitle"/>" style="display:none;" />
+        <div>
+            <h1><perch:sc id="listingTitle"/></h1>
+        </div>
+    </div>
+    
+    <div class="wrap">
+        <div class="restrict narrow">
+            <h2><perch:sc id="listingTitle"/></h2>
+			<perch:sc id="description" html />
+			<h2>Contact Details</h2>
+			<ul>
+			<perch:if exists="telephone">
+				<li><perch:sc id="telephone" /></li>
+			</perch:if>
+			<perch:if exists="email">
+				<li><a href="mailto:<perch:sc id="email" />"><perch:sc id="email" /></a></li>
+			</perch:if>
+			<perch:if exists="website">
+				<li><a href="<perch:sc id="website" />" target="_blank" rel="noreferrer"><perch:sc id="website" /></a></li>
+			</perch:if>
+			</ul>
+			<h3>Social Media</h3>
+			<ul>
+			<perch:if exists="facebook">
+				<li><a href="<perch:sc id="facebook" />" target="_blank" rel="noreferrer"><perch:sc id="facebook" /></a></li>
+			</perch:if>
+			<perch:if exists="twitter">
+				<li><a href="<perch:sc id="twitter" />" target="_blank" rel="noreferrer"><perch:sc id="twitter" /></a></li>
+			</perch:if>
+			<perch:if exists="instagram">
+				<li><a href="<perch:sc id="instagram" />" target="_blank" rel="noreferrer"><perch:sc id="instagram" /></a></li>
+			</perch:if>
+			</ul>
+			<perch:if exists="address_1">
+			<h3>Address</h3>
+			<p>
+				<perch:if exists="address_1"><perch:sc id="address_1" /><br /></perch:if>
+				<perch:if exists="address_2"><perch:sc id="address_2" /><br /></perch:if>
+				<perch:if exists="address_3"><perch:sc id="address_3" /><br /></perch:if>
+				<perch:if exists="town"><perch:sc id="town" /><br /></perch:if>
+				<perch:if exists="county"><perch:sc id="county" /><br /></perch:if>
+				<perch:if exists="post_code"><perch:sc id="post_code" /><br /></perch:if>
+			</p>
+			</perch:if>
+			<perch:if exists="covidsecure">
+				<h3>Staying COVID Secure</h3>
+				<perch:sc id="covidsecure" html />
+			</perch:if>
+        </div>
+    </div>

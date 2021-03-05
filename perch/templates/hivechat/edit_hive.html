@@ -1,0 +1,30 @@
+<perch:form id="update_hive" method="post" app="hive_hivechat" type="default" action="">
+	<div class="card mb-3">
+        <div class="card-header">
+            <h5 class="card-title m-b-0">Update Hive</h5>
+        </div>
+        <div class="card-body">
+			<perch:success show-form="true">
+				<div class="alert alert-success" role="alert">Your Hive has been updated.</div>
+			</perch:success>
+			<div class="form-group">
+				<label>Title</label>
+				<perch:input type="text" class="form-control" id="hiveTitle" required="true" placeholder="Hive Name" />
+            </div>
+            <div class="form-group">
+				<label>Live</label>
+				<perch:input type="select" class="form-control" id="hiveLive" options="No,Yes" />
+            </div>
+            <div class="form-group">
+	            <label>Category</label>
+				<perch:input type="select" class="form-control" id="hiveCategory" required="true" options="Business,Environment,Health,How To" />
+            </div>
+            <div class="form-group">
+	            <label>Introduction</label>
+				<perch:input type="textarea" class="form-control" id="introduction" required="false" />
+            </div>
+			<perch:input type="submit" class="btn btn-secondary" value="Update">
+			<perch:input type="hidden" class="form-control" id="hiveID" required="true" />
+        </div>
+	</div>
+</perch:form>

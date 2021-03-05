@@ -1,0 +1,9 @@
+<span>Jack Barber</span>Test messgae <span>Jack Barber</span>hello world 
+<span>Jack Barber</span>hello 
+<span>Jack Barber</span>test chat message 
+<span>Jack Barber</span>test 
+<strong>Jack Barber</strong> Test 
+<strong>Jack Barber</strong> This is a much longer chat comment - will it flow nicely across multiple lines? Time will tell... 
+<strong>Jack Barber</strong> Hello worl 
+<strong>Jack Barber</strong> Hello Henry! 
+<strong>Jack Barber</strong> Put something in here 

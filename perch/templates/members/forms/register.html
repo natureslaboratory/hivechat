@@ -1,0 +1,45 @@
+<perch:form id="register" method="post" app="perch_members" type="default">
+
+	<div class="position-relative form-group">
+		<perch:label for="first_name">First name</perch:label>
+		<perch:input type="text" id="first_name" required="true" label="First name" class="form-control" />
+		<perch:error for="first_name" type="required"><div class="alert alert-danger fade show" role="alert">Please add your name</div></perch:error>
+	</div>
+
+	<div class="position-relative form-group">
+		<perch:label for="last_name">Last name</perch:label>
+		<perch:input type="text" id="last_name" required="true" label="Last name" class="form-control" />
+		<perch:error for="last_name" type="required"><div class="alert alert-danger fade show" role="alert">Please add your name</div></perch:error>
+	</div>
+	
+	<div class="position-relative form-group">
+		<perch:label for="last_name">Organisation</perch:label>
+		<perch:input type="text" id="organisation" required="true" label="Organisation" class="form-control" />
+		<perch:error for="organisation" type="required"><div class="alert alert-danger fade show" role="alert">Please add your organisation</div></perch:error>
+	</div>
+
+	<div class="position-relative form-group">
+		<perch:label for="email">Email</perch:label>
+		<perch:input type="email" id="email" required="true" placeholder="you@company.com" helper="PerchMembers_Members::check_email" class="form-control" />
+		<perch:error for="email" type="required"><div class="alert alert-danger fade show" role="alert">Please add your email address</div></perch:error>
+		<perch:error for="email" type="helper"><div class="alert alert-danger fade show" role="alert">That email address is already in use</div></perch:error>
+	</div>
+
+	<div class="position-relative form-group">
+		<perch:label for="password">Password</perch:label>
+		<perch:input type="password" id="password" required="true" match-with="password2" class="form-control" />
+		<perch:error for="password" type="required"><div class="alert alert-danger fade show" role="alert">Please add a password</div></perch:error>
+		<perch:error for="password" type="match"><div class="alert alert-danger fade show" role="alert">Passwords do not match</div></perch:error>
+	</div>
+
+	<div class="position-relative form-group">
+		<perch:label for="password2">Password again</perch:label>
+		<perch:input type="password" id="password2" required="true" class="form-control" />
+		<perch:error for="password2" type="required"><div class="alert alert-danger fade show" role="alert">Please repeat your password</div></perch:error>
+	</div>
+
+	<div class="position-relative form-group">
+		<perch:input type="submit" value="Register" class="mt-1 btn btn-primary" />
+	</div>
+
+</perch:form>

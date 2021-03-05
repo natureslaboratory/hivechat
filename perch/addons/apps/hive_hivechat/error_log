@@ -1,0 +1,109 @@
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(Simple_Calendar.class.php): failed to open stream: No such file or directory in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 15
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(): Failed opening 'Simple_Calendar.class.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 15
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(Simple_Calendars.class.php): failed to open stream: No such file or directory in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 16
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(): Failed opening 'Simple_Calendars.class.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 16
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(Simple_Calendar.blockdate.class.php): failed to open stream: No such file or directory in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 17
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(): Failed opening 'Simple_Calendar.blockdate.class.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 17
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(Simple_Calendar.blockdates.class.php): failed to open stream: No such file or directory in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 18
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(): Failed opening 'Simple_Calendar.blockdates.class.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 18
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(Simple_Calendar.booking.class.php): failed to open stream: No such file or directory in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 19
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(): Failed opening 'Simple_Calendar.booking.class.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 19
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(Simple_Calendar.bookings.class.php): failed to open stream: No such file or directory in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 20
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(): Failed opening 'Simple_Calendar.bookings.class.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 20
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(Simple_Calendar.addon.class.php): failed to open stream: No such file or directory in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 21
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(): Failed opening 'Simple_Calendar.addon.class.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 21
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(Simple_Calendar.addons.class.php): failed to open stream: No such file or directory in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 22
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(): Failed opening 'Simple_Calendar.addons.class.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 22
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(Simple_Calendar.setpricing.class.php): failed to open stream: No such file or directory in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 23
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(): Failed opening 'Simple_Calendar.setpricing.class.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 23
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(Simple_Calendar.setpricings.class.php): failed to open stream: No such file or directory in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 24
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(): Failed opening 'Simple_Calendar.setpricings.class.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 24
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(Simple_Calendar.payment.class.php): failed to open stream: No such file or directory in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 25
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(): Failed opening 'Simple_Calendar.payment.class.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 25
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(Simple_Calendar.payments.class.php): failed to open stream: No such file or directory in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 26
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(): Failed opening 'Simple_Calendar.payments.class.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 26
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(Simple_Calendar.directory.class.php): failed to open stream: No such file or directory in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 27
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(): Failed opening 'Simple_Calendar.directory.class.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 27
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(Simple_Calendar.directories.class.php): failed to open stream: No such file or directory in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 28
+[28-Jan-2021 09:14:07 UTC] PHP Warning:  include(): Failed opening 'Simple_Calendar.directories.class.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 28
+[28-Jan-2021 09:14:07 UTC] PHP Fatal error:  Uncaught Error: Class 'Simple_Calendars' not found in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.pre.php:3
+Stack trace:
+#0 /home/hivechat/public_html/perch/addons/apps/hivechat/index.php(42): include()
+#1 {main}
+  thrown in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.pre.php on line 3
+[28-Jan-2021 09:14:58 UTC] PHP Warning:  include(Hivechat.class.php): failed to open stream: No such file or directory in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 15
+[28-Jan-2021 09:14:58 UTC] PHP Warning:  include(): Failed opening 'Hivechat.class.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 15
+[28-Jan-2021 09:14:58 UTC] PHP Fatal error:  Uncaught Error: Class 'Simple_Calendar_Blockdates' not found in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.pre.php:4
+Stack trace:
+#0 /home/hivechat/public_html/perch/addons/apps/hivechat/index.php(32): include()
+#1 {main}
+  thrown in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.pre.php on line 4
+[28-Jan-2021 09:14:59 UTC] PHP Warning:  include(Hivechat.class.php): failed to open stream: No such file or directory in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 15
+[28-Jan-2021 09:14:59 UTC] PHP Warning:  include(): Failed opening 'Hivechat.class.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 15
+[28-Jan-2021 09:14:59 UTC] PHP Fatal error:  Uncaught Error: Class 'Simple_Calendar_Blockdates' not found in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.pre.php:4
+Stack trace:
+#0 /home/hivechat/public_html/perch/addons/apps/hivechat/index.php(32): include()
+#1 {main}
+  thrown in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.pre.php on line 4
+[28-Jan-2021 09:15:05 UTC] PHP Warning:  include(Hivechat.class.php): failed to open stream: No such file or directory in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 13
+[28-Jan-2021 09:15:05 UTC] PHP Warning:  include(): Failed opening 'Hivechat.class.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 13
+[28-Jan-2021 09:15:05 UTC] PHP Fatal error:  Uncaught Error: Class 'Simple_Calendar_Blockdates' not found in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.pre.php:4
+Stack trace:
+#0 /home/hivechat/public_html/perch/addons/apps/hivechat/index.php(30): include()
+#1 {main}
+  thrown in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.pre.php on line 4
+[28-Jan-2021 09:17:05 UTC] PHP Warning:  include(Hivechat.class.php): failed to open stream: No such file or directory in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 13
+[28-Jan-2021 09:17:05 UTC] PHP Warning:  include(): Failed opening 'Hivechat.class.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 13
+[28-Jan-2021 09:17:05 UTC] PHP Fatal error:  Uncaught Error: Class 'Hives' not found in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.pre.php:3
+Stack trace:
+#0 /home/hivechat/public_html/perch/addons/apps/hivechat/index.php(30): include()
+#1 {main}
+  thrown in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.pre.php on line 3
+[28-Jan-2021 09:18:23 UTC] PHP Warning:  include(Hivechat.class.php): failed to open stream: No such file or directory in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 13
+[28-Jan-2021 09:18:23 UTC] PHP Warning:  include(): Failed opening 'Hivechat.class.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 13
+[28-Jan-2021 09:18:23 UTC] PHP Fatal error:  Uncaught Error: Class 'Cells' not found in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.pre.php:4
+Stack trace:
+#0 /home/hivechat/public_html/perch/addons/apps/hivechat/index.php(30): include()
+#1 {main}
+  thrown in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.pre.php on line 4
+[28-Jan-2021 09:20:38 UTC] PHP Warning:  include(Hivechat.class.php): failed to open stream: No such file or directory in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 13
+[28-Jan-2021 09:20:38 UTC] PHP Warning:  include(): Failed opening 'Hivechat.class.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 13
+[28-Jan-2021 09:20:38 UTC] PHP Fatal error:  Uncaught Error: Class 'Cells' not found in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.pre.php:4
+Stack trace:
+#0 /home/hivechat/public_html/perch/addons/apps/hivechat/index.php(30): include()
+#1 {main}
+  thrown in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.pre.php on line 4
+[28-Jan-2021 09:20:39 UTC] PHP Warning:  include(Hivechat.class.php): failed to open stream: No such file or directory in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 13
+[28-Jan-2021 09:20:39 UTC] PHP Warning:  include(): Failed opening 'Hivechat.class.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 13
+[28-Jan-2021 09:20:39 UTC] PHP Fatal error:  Uncaught Error: Class 'Cells' not found in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.pre.php:4
+Stack trace:
+#0 /home/hivechat/public_html/perch/addons/apps/hivechat/index.php(30): include()
+#1 {main}
+  thrown in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.pre.php on line 4
+[28-Jan-2021 09:21:13 UTC] PHP Warning:  include(Hivechat.class.php): failed to open stream: No such file or directory in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 13
+[28-Jan-2021 09:21:13 UTC] PHP Warning:  include(): Failed opening 'Hivechat.class.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 13
+[28-Jan-2021 09:21:13 UTC] PHP Notice:  Undefined variable: Smartbar in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.post.php on line 18
+[28-Jan-2021 09:21:13 UTC] PHP Fatal error:  Uncaught Error: Call to a member function render() on null in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.post.php:18
+Stack trace:
+#0 /home/hivechat/public_html/perch/addons/apps/hivechat/index.php(40): include()
+#1 {main}
+  thrown in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.post.php on line 18
+[28-Jan-2021 09:21:27 UTC] PHP Warning:  include(Hivechat.class.php): failed to open stream: No such file or directory in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 13
+[28-Jan-2021 09:21:27 UTC] PHP Warning:  include(): Failed opening 'Hivechat.class.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/hivechat/public_html/perch/addons/apps/hivechat/index.php on line 13
+[28-Jan-2021 09:21:27 UTC] PHP Notice:  Undefined variable: Smartbar in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.post.php on line 18
+[28-Jan-2021 09:21:27 UTC] PHP Fatal error:  Uncaught Error: Call to a member function render() on null in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.post.php:18
+Stack trace:
+#0 /home/hivechat/public_html/perch/addons/apps/hivechat/index.php(40): include()
+#1 {main}
+  thrown in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.post.php on line 18
+[28-Jan-2021 09:21:40 UTC] PHP Notice:  Undefined variable: Smartbar in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.post.php on line 18
+[28-Jan-2021 09:21:40 UTC] PHP Fatal error:  Uncaught Error: Call to a member function render() on null in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.post.php:18
+Stack trace:
+#0 /home/hivechat/public_html/perch/addons/apps/hivechat/index.php(40): include()
+#1 {main}
+  thrown in /home/hivechat/public_html/perch/addons/apps/hivechat/modes/home.post.php on line 18
+[28-Jan-2021 10:39:26 UTC] PHP Fatal error:  Uncaught Error: Class 'Hives' not found in /home/hivechat/public_html/perch/addons/apps/hive_hivechat/modes/home.pre.php:3
+Stack trace:
+#0 /home/hivechat/public_html/perch/addons/apps/hive_hivechat/index.php(32): include()
+#1 {main}
+  thrown in /home/hivechat/public_html/perch/addons/apps/hive_hivechat/modes/home.pre.php on line 3

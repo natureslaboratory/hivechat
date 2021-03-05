@@ -1,0 +1,28 @@
+<perch:form id="block_dates" method="post" app="simple_calendar" type="default" action="">
+<div class="modal-body">
+	<div class="form-row">
+		<div class="form-group col-md-6">
+		  <label>Start Date</label>
+		  <perch:input type="text" id="startDate" class="js-datepicker startdate form-control" placeholder="Start Date" />
+		</div>
+		<div class="form-group col-md-6">
+		  <label>End Date</label>
+		  <perch:input type="text" id="endDate" class="js-datepicker enddate form-control" placeholder="End Date" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label>Apply to All Calendars or Just This One?</label>
+		<perch:input type="select" id="option_calendar" options="All Calendars,This Calendar Only" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label>Block Dates or Make Available?</label>
+		<perch:input type="select" id="option_block" options="Block,Make Available" class="form-control" />
+	</div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+        Close
+    </button>
+    <perch:input type="submit" class="btn btn-primary" value="Proceed" />
+</div>
+</perch:form>

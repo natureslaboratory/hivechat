@@ -1,0 +1,177 @@
+<perch:form id="update_listing" method="post" app="simple_calendar" type="default" enctype="multipart/form-data">
+	<perch:success show-form="true">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="alert alert-success" role="alert">Your listing has been updated.</div>
+				</div>
+			</div>
+		</div>
+	</perch:success>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="card m-b-30">
+			        <div class="card-header">
+			            <h5 class="card-title m-b-0">Name and Category</h5>
+			        </div>
+			        <div class="card-body">
+						<div class="form-group">
+				            <label>Listing Name</label>
+					        <perch:input type="text" id="listingTitle" class="form-control" required="true" placeholder="Calendar Name (i.e. Room 1, Abbey View, etc.)" />
+			            </div>
+			            <div class="form-group">
+				            <label>Short Description</label>
+					        <perch:input type="text" id="short" class="form-control" required="true" placeholder="We are a small, family run business who..." />
+			            </div>
+			            <div class="form-group">
+					        <label>Category</label>
+					        <perch:input type="select" id="businessCategory" class="form-control" required="true" options="Activities|activities,Local History|local-history,Museums|museums,Galleries & Artists|galleries,Shopping|shopping,Services|services,Restaurants|restaurants,Cafes & Tearooms|cafes-tearooms,Fish & Chips|fish-and-chips,Pubs\, Inns & Bars|pubs-inns-bars,Hotels|hotels,Bed & Breakfast|bed-and-breakfast,Cottages & Self-Catering|cottages-self-catering,Camping & Caravan Sites|camping-caravan-sites" />
+			            </div>
+			        </div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="card m-b-30">
+			        <div class="card-header">
+			            <h5 class="card-title m-b-0">Contact Details</h5>
+			        </div>
+			        <div class="card-body">
+						<div class="form-group">
+				            <label>Telephone</label>
+					        <perch:input type="text" id="telephone" class="form-control" />
+			            </div>
+			            <div class="form-group">
+					        <label>Email</label>
+					        <perch:input type="text" id="email" class="form-control" />
+			            </div>
+			            <div class="form-group">
+					        <label>Website</label>
+					        <perch:input type="text" id="website" class="form-control" />
+			            </div>
+			        </div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="card m-b-30">
+			        <div class="card-header">
+			            <h5 class="card-title m-b-0">Social Media</h5>
+			        </div>
+			        <div class="card-body">
+						<div class="form-group">
+				            <label>Facebook Page</label>
+					        <perch:input type="text" id="facebook" class="form-control" placeholder="https://facebook.com" />
+			            </div>
+			            <div class="form-group">
+				            <label>Twitter Account</label>
+					        <perch:input type="text" id="twitter" class="form-control" placeholder="https://twitter.com" />
+			            </div>
+			            <div class="form-group">
+					        <label>Instagram</label>
+					        <perch:input type="text" id="instagram" class="form-control" placeholder="https://instagram.com" />
+			            </div>
+			        </div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="card m-b-30">
+			        <div class="card-header">
+			            <h5 class="card-title m-b-0">Description - Tell Us Everything We Need To Know!</h5>
+			        </div>
+			        <div class="card-body">
+						<div class="form-group">
+					        <perch:input type="textarea" id="description" class="redactor form-control" />
+			            </div>
+			        </div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="card m-b-30">
+			        <div class="card-header">
+			            <h5 class="card-title m-b-0">Address</h5>
+			        </div>
+			        <div class="card-body">
+						<div class="form-group">
+				            <label>Address 1</label>
+					        <perch:input type="text" id="address_1" class="form-control" placeholder="" />
+			            </div>
+			            <div class="form-group">
+				            <label>Address 2</label>
+					        <perch:input type="text" id="address_2" class="form-control" placeholder="" />
+			            </div>
+			            <div class="form-group">
+				            <label>Address 3</label>
+					        <perch:input type="text" id="address_3" class="form-control" placeholder="" />
+			            </div>
+			            <div class="form-group">
+				            <label>Town</label>
+					        <perch:input type="text" id="town" class="form-control" placeholder="" />
+			            </div>
+			            <div class="form-group">
+				            <label>County</label>
+					        <perch:input type="text" id="county" class="form-control" placeholder="" />
+			            </div>
+			            <div class="form-group">
+				            <label>Post Code</label>
+					        <perch:input type="text" id="post_code" class="form-control" placeholder="" />
+			            </div>
+			        </div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="card m-b-30">
+			        <div class="card-header">
+			            <h5 class="card-title m-b-0">Photo</h5>
+			        </div>
+			        <div class="card-body">
+						<div class="form-group">
+							<label>Please use a high resolution JPG image - a landscape image will work best.</label>
+					        <perch:input type="file" accept="image" name="image" />
+					        <perch:input type="hidden" accept="image" id="image" />
+					        <perch:input type="hidden" accept="image" id="image_small" />
+					        <perch:input type="hidden" accept="image" id="image_large" />
+			            </div>
+			            <div class="form-group">
+							<p>Existing image</p>
+							<span id="image"><p><em>No Image Uploaded</em></p></span>
+							<script>
+								var image = $('#form1_image_small').val();
+								if(image){
+									$('#image').html("<img src='" + image + "' alt='' />");
+								}	
+							</script>
+			            </div>
+			        </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="card m-b-30">
+			        <div class="card-header">
+			            <h5 class="card-title m-b-0">COVID Secure? Tell Us What You're Doing To Keep People Safe</h5>
+			        </div>
+			        <div class="card-body">
+						<div class="form-group">
+					        <perch:input type="textarea" id="covidsecure" class="redactor form-control" />
+			            </div>
+			        </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 m-b-70">
+				<perch:input type="submit" value="Update Listing" class="btn btn-primary" />
+			</div>
+		</div>
+	</div>
+	<perch:input type="hidden" id="listingID" />
+</perch:form>

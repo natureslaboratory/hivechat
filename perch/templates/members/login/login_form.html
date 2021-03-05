@@ -1,0 +1,26 @@
+<perch:form id="login" method="post" app="perch_members">
+	
+	<perch:error for="all" type="login">
+		<div class="alert alert-danger fade show" role="alert">Those details do not match our records</div>
+	</perch:error>
+
+	<div class="position-relative form-group">
+		<perch:label for="email">Email</perch:label>
+		<perch:input type="email" id="email" required="true" label="Email" class="form-control" />
+		<perch:error for="email" type="required"><div class="alert alert-danger fade show" role="alert">Required</div></perch:error>
+		<perch:error for="email" type="format"><div class="alert alert-danger fade show" role="alert">Check format of address</div></perch:error>
+	</div>
+	<div class="position-relative form-group">
+		<perch:label for="password">Password</perch:label>
+		<perch:input type="password" id="password" required="true" label="Password" class="form-control" />
+		<perch:error for="password" type="required"><div class="alert alert-danger fade show" role="alert">Required</div></perch:error>
+	</div>
+	<div>
+		<perch:input type="submit" id="submit" value="Log in" class="mt-1 btn btn-primary" />
+		<perch:input type="hidden" id="r" />
+		<br />
+		<br />
+		<p>Forgotten your password? <a href="/admin/reset">Reset it now</a>.</p>
+	</div>
+
+</perch:form>

@@ -1,0 +1,16 @@
+<div class="wrap">
+    <div class="restrict narrow">
+        <h1><perch:sc id="name"/></h1>
+		<perch:sc id="description" html />
+		<h3>&pound;<perch:sc id="price" /> <small>&plus; &pound;<perch:sc id="shipping" /> p&amp;p</small></h3>
+		<form method="post" action="/basket">
+			<input type="hidden" name="productID" value="<perch:sc id="productID" />" />
+			<div class="single_input mb-3">
+				<input type="submit" value="Add to Basket" class="btn btn-success text-white" />
+			</div>
+		</form>
+		<perch:if exists="image1">
+			<img src="<perch:sc id="image1" />" alt="<perch:sc id="name"/>" />
+		</perch:if>
+    </div>
+</div>

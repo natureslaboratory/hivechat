@@ -1,0 +1,26 @@
+[24-Jan-2020 15:12:52 UTC] PHP Warning:  include(../../Simple_Calendars.directories.class.php): failed to open stream: No such file or directory in /home/whitby/public_html/perch/addons/apps/simple_calendar/directory/delete/index.php on line 16
+[24-Jan-2020 15:12:52 UTC] PHP Warning:  include(): Failed opening '../../Simple_Calendars.directories.class.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/whitby/public_html/perch/addons/apps/simple_calendar/directory/delete/index.php on line 16
+[24-Jan-2020 15:12:52 UTC] PHP Fatal error:  Uncaught Error: Cannot use object of type PerchAPI as array in /home/whitby/public_html/perch/core/lib/PerchBase.class.php:43
+Stack trace:
+#0 /home/whitby/public_html/perch/addons/apps/simple_calendar/modes/delete.directory.pre.php(13): PerchBase->__call('find', Array)
+#1 /home/whitby/public_html/perch/addons/apps/simple_calendar/directory/delete/index.php(30): include('/home/whitby/pu...')
+#2 {main}
+  thrown in /home/whitby/public_html/perch/core/lib/PerchBase.class.php on line 43
+[24-Jan-2020 15:14:06 UTC] PHP Fatal error:  Uncaught Error: Cannot use object of type PerchAPI as array in /home/whitby/public_html/perch/core/lib/PerchBase.class.php:43
+Stack trace:
+#0 /home/whitby/public_html/perch/addons/apps/simple_calendar/modes/delete.directory.pre.php(13): PerchBase->__call('find', Array)
+#1 /home/whitby/public_html/perch/addons/apps/simple_calendar/directory/delete/index.php(30): include('/home/whitby/pu...')
+#2 {main}
+  thrown in /home/whitby/public_html/perch/core/lib/PerchBase.class.php on line 43
+[24-Jan-2020 15:15:05 UTC] PHP Fatal error:  Uncaught Error: Cannot use object of type PerchAPI as array in /home/whitby/public_html/perch/core/lib/PerchBase.class.php:43
+Stack trace:
+#0 /home/whitby/public_html/perch/addons/apps/simple_calendar/modes/delete.directory.pre.php(13): PerchBase->__call('find', Array)
+#1 /home/whitby/public_html/perch/addons/apps/simple_calendar/directory/delete/index.php(30): include('/home/whitby/pu...')
+#2 {main}
+  thrown in /home/whitby/public_html/perch/core/lib/PerchBase.class.php on line 43
+[24-Jan-2020 15:16:37 UTC] PHP Fatal error:  Uncaught Error: Cannot use object of type PerchAPI as array in /home/whitby/public_html/perch/core/lib/PerchBase.class.php:43
+Stack trace:
+#0 /home/whitby/public_html/perch/addons/apps/simple_calendar/modes/delete.directory.pre.php(13): PerchBase->__call('find', Array)
+#1 /home/whitby/public_html/perch/addons/apps/simple_calendar/directory/delete/index.php(30): include('/home/whitby/pu...')
+#2 {main}
+  thrown in /home/whitby/public_html/perch/core/lib/PerchBase.class.php on line 43

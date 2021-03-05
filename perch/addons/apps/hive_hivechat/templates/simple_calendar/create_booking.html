@@ -1,0 +1,58 @@
+<perch:form id="booking" method="post" app="simple_calendar" type="default" action="">
+<div class="modal-body">
+	<div class="form-row">
+		<div class="form-group col-md-6">
+		  <label>Start Date</label>
+		  <perch:input type="text" id="startDate" class="js-datepicker startdate form-control" placeholder="Start Date" />
+		</div>
+		<div class="form-group col-md-6">
+		  <label>End Date</label>
+		  <perch:input type="text" id="endDate" class="js-datepicker enddate form-control" placeholder="End Date" />
+		</div>
+	</div>
+	<div class="form-group floating-label">
+	  <label>Guest Name</label>
+	  <perch:input type="text" id="guestName" class="form-control" placeholder="Guest Name" />
+	</div>
+	<div class="form-group floating-label">
+	  <label>Telephone/Mobile</label>
+	  <perch:input type="text" id="phone" class="form-control" placeholder="Telephone/Mobile" />
+	</div>
+	<div class="form-group floating-label">
+	  <label>Email Address</label>
+	  <perch:input type="text" id="email" class="form-control" placeholder="Email Address" />
+	</div>
+	<div class="form-row">
+		<div class="form-group floating-label col-md-6">
+		  <label>Address 1</label>
+		  <perch:input type="text" id="address1" class="form-control" placeholder="Address 1" />
+		</div>
+		<div class="form-group floating-label col-md-6">
+		  <label>Address 2</label>
+		  <perch:input type="text" id="address2" class="form-control" placeholder="Address 2" />
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="form-group floating-label col-md-6">
+		  <label>Address 3</label>
+		  <perch:input type="text" id="address3" class="form-control" placeholder="Address 3" />
+		</div>
+		<div class="form-group floating-label col-md-6">
+		  <label>Address 4</label>
+		  <perch:input type="text" id="address4" class="form-control" placeholder="Address 4" />
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="form-group floating-label col-md-6">
+		  <label>Address 5</label>
+		  <perch:input type="text" id="address5" class="form-control" placeholder="Address 5" />
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+        Close
+    </button>
+    <perch:input type="submit" class="btn btn-primary" value="Proceed" />
+</div>
+</perch:form>

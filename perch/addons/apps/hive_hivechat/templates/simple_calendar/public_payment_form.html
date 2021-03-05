@@ -1,0 +1,31 @@
+<table class="table">
+  <tbody>
+    <tr>
+      <td width="50%"><strong>Total Cost</strong></td>
+      <td>&pound;<perch:sc id="totalPrice" /></td>
+    </tr>
+    <tr>
+      <td><strong>Total Paid</strong></td>
+      <td>&pound;<perch:sc id="totalPaid" /></td>
+    </tr>
+    <tr>
+      <td><strong>Remaining</strong></td>
+      <td>&pound;<perch:sc id="balanceDue" /></td>
+    </tr>
+    <tr>
+      <td><strong>Due Now</strong></td>
+      <td>&pound;<perch:sc id="paymentDue" /></td>
+    </tr>
+    <tr>
+	    <td></td>
+	    <td>
+		    <form method="post" action="/session">
+		    	<input type="submit" value="Proceed to Payment" class="btn btn-primary" />
+		    	<input type="hidden" value="<perch:sc id="paymentDue" />" name="due" />
+		    	<input type="hidden" value="<perch:sc id="email" />" name="email" />
+		    	<input type="hidden" value="<perch:sc id="url_paymentslug">" name="id" />
+		    </form>
+	    </td>
+    </tr>
+  </tbody>
+</table>

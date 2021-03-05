@@ -1,0 +1,122 @@
+<perch:form id="set_pricing" method="post" app="simple_calendar" type="setpricing" action="">
+<div class="modal-body">
+	<div class="form-row">
+		<div class="form-group col-md-6">
+		  <label>Start Date</label>
+		  <perch:input type="text" id="startDate" class="js-datepicker startdate form-control" placeholder="Start Date" />
+		</div>
+		<div class="form-group col-md-6">
+		  <label>End Date</label>
+		  <perch:input type="text" id="endDate" class="js-datepicker enddate form-control" placeholder="End Date" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label>Apply to All Calendars or Just This One?</label>
+		<perch:input type="select" id="option_calendar" options="All Calendars,This Calendar Only" class="form-control" />
+	</div>
+	<div class="form-row">
+		<div class="form-group col-md-4">
+			<label>Monday Price</label>
+			<perch:input type="text" id="mon_price" placeholder="0.00" class="form-control form-control-sm" />  
+		</div>
+		<div class="form-group col-md-4">
+			<label>Monday Arrival</label>
+			<perch:input type="select" id="mon_arrival" options="Yes,No" class="form-control form-control-sm" />  
+		</div>
+		<div class="form-group col-md-4">
+			<label>Monday Min Stay</label>
+			<perch:input type="select" id="mon_stay" options="1,2,3,4,5,6,7" class="form-control form-control-sm" />  
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="form-group col-md-4">
+			<label>Tuesday Price</label>
+			<perch:input type="text" id="tue_price" placeholder="0.00" class="form-control form-control-sm" />  
+		</div>
+		<div class="form-group col-md-4">
+			<label>Tuesday Arrival</label>
+			<perch:input type="select" id="tue_arrival" options="Yes,No" class="form-control form-control-sm" />  
+		</div>
+		<div class="form-group col-md-4">
+			<label>Tuesday Min Stay</label>
+			<perch:input type="select" id="tue_stay" options="1,2,3,4,5,6,7" class="form-control form-control-sm" />  
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="form-group col-md-4">
+			<label>Wednesday Price</label>
+			<perch:input type="text" id="wed_price" placeholder="0.00" class="form-control form-control-sm" />  
+		</div>
+		<div class="form-group col-md-4">
+			<label>Wednesday Arrival</label>
+			<perch:input type="select" id="wed_arrival" options="Yes,No" class="form-control form-control-sm" />  
+		</div>
+		<div class="form-group col-md-4">
+			<label>Wednesday Min Stay</label>
+			<perch:input type="select" id="wed_stay" options="1,2,3,4,5,6,7" class="form-control form-control-sm" />  
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="form-group col-md-4">
+			<label>Thursday Price</label>
+			<perch:input type="text" id="thu_price" placeholder="0.00" class="form-control form-control-sm" />  
+		</div>
+		<div class="form-group col-md-4">
+			<label>Thursday Arrival</label>
+			<perch:input type="select" id="thu_arrival" options="Yes,No" class="form-control form-control-sm" />  
+		</div>
+		<div class="form-group col-md-4">
+			<label>Thursday Min Stay</label>
+			<perch:input type="select" id="thu_stay" options="1,2,3,4,5,6,7" class="form-control form-control-sm" />  
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="form-group col-md-4">
+			<label>Friday Price</label>
+			<perch:input type="text" id="fri_price" placeholder="0.00" class="form-control form-control-sm" />  
+		</div>
+		<div class="form-group col-md-4">
+			<label>Friday Arrival</label>
+			<perch:input type="select" id="fri_arrival" options="Yes,No" class="form-control form-control-sm" />  
+		</div>
+		<div class="form-group col-md-4">
+			<label>Friday Min Stay</label>
+			<perch:input type="select" id="fri_stay" options="1,2,3,4,5,6,7" class="form-control form-control-sm" />  
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="form-group col-md-4">
+			<label>Saturday Price</label>
+			<perch:input type="text" id="sat_price" placeholder="0.00" class="form-control form-control-sm" />  
+		</div>
+		<div class="form-group col-md-4">
+			<label>Saturday Arrival</label>
+			<perch:input type="select" id="sat_arrival" options="Yes,No" class="form-control form-control-sm" />  
+		</div>
+		<div class="form-group col-md-4">
+			<label>Saturday Min Stay</label>
+			<perch:input type="select" id="sat_stay" options="1,2,3,4,5,6,7" class="form-control form-control-sm" />  
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="form-group col-md-4">
+			<label>Sunday Price</label>
+			<perch:input type="text" id="sun_price" placeholder="0.00" class="form-control form-control-sm" />  
+		</div>
+		<div class="form-group col-md-4">
+			<label>Sunday Arrival</label>
+			<perch:input type="select" id="sun_arrival" options="Yes,No" class="form-control form-control-sm" />  
+		</div>
+		<div class="form-group col-md-4">
+			<label>Sunday Min Stay</label>
+			<perch:input type="select" id="sun_stay" options="1,2,3,4,5,6,7" class="form-control form-control-sm" />  
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+        Close
+    </button>
+    <perch:input type="submit" class="btn btn-primary" value="Proceed" />
+</div>
+</perch:form>
