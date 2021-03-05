@@ -56,7 +56,7 @@
           <div class="col-md-8">
             <p>
 	            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                Copyright &copy;2021 All rights reserved | Brereton Lodge Moors Centre Ltd <span style="display:none;"> | This template is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a></span>
+                Copyright &copy;2021 All rights reserved | Brereton Lodge Moors Centre Ltd <span style="display:none;"> | Built by <a href="https://jackbarber.co.uk">Jack</a></span>
                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
           </div>
         </div>
