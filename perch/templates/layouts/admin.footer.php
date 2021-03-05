@@ -25,8 +25,8 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="https://jackbarber.co.uk" target="_blank" class="nav-link">
-                                            Built by Jack
+                                        <a href="https://natureslaboratory.co.uk" target="_blank" class="nav-link">
+                                            Built by Nature&rdquo;s Laboratory
                                         </a>
                                     </li>
                                 </ul>
