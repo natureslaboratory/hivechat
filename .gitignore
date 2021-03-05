@@ -1,4 +1,4 @@
 /perch/config/config.php
-/perch/config/production.php
-/perch/config/local.php
+/perch/config/config.production.php
+/perch/config/config.local.php
 /pech/config/config.hivechat-co-uk.php
