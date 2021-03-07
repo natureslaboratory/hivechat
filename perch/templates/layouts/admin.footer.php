@@ -26,7 +26,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a href="https://natureslaboratory.co.uk" target="_blank" class="nav-link">
-                                            Built by Nature&rdquo;s Laboratory
+                                            Built by Nature&rsquo;s Laboratory
                                         </a>
                                     </li>
                                 </ul>

@@ -56,7 +56,7 @@
           <div class="col-md-8">
             <p>
 	            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                Copyright &copy;2021 All rights reserved | Brereton Lodge Moors Centre Ltd | Built by <a href="https://natureslaboratory.co.uk">Nature's Laboratory</a></p>
+                Copyright &copy;2021 All rights reserved | Brereton Lodge Moors Centre Ltd<br />Built by <a href="https://natureslaboratory.co.uk">Nature&rsquo;s Laboratory</a></p>
           </div>
         </div>
       </div>
