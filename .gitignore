@@ -1,3 +1,4 @@
+.DS_Store
 /perch/config/config.php
 /perch/config/config.production.php
 /perch/config/config.local.php
