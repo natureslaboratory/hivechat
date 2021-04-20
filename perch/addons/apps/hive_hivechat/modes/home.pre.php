@@ -1,7 +1,7 @@
 <?php   
     
     $Hives = new Hivechat_Hives($API);
-    $Cells = new Hivehcat_Cells($API);
+    $Cells = new Hivechat_Cells($API);
 
     $HTML     = $API->get('HTML');
     $Form     = $API->get('Form');

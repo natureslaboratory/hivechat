@@ -475,5 +475,15 @@
     "Calendars": "Calendars",
     "Directory": "Directory",
     "Products": "Products",
-    "Hives": "Hives"
+    "Hives": "Hives",
+    "Reset your password": "Reset your password",
+    "If you have forgotten your password, enter your email address and you will be sent a recovery link.": "If you have forgotten your password, enter your email address and you will be sent a recovery link.",
+    "Thank you. Now check your email for the link.": "Thank you. Now check your email for the link.",
+    "If you do not receive an email, look in your spam folder and also check that the email address you have used is the one we have for you.": "If you do not receive an email, look in your spam folder and also check that the email address you have used is the one we have for you.",
+    "%sLog in%s %sTry again%s": "%sLog in%s %sTry again%s",
+    "Admin": "Admin",
+    "Password recovery instructions have been sent by email.": "Password recovery instructions have been sent by email.",
+    "Editing Shared Regions": "Editing Shared Regions",
+    "Your resources folder is not writable. Make this folder (": "Your resources folder is not writable. Make this folder (",
+    ") writable if you want to upload files and images.": ") writable if you want to upload files and images."
 }
