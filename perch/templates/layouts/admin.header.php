@@ -178,6 +178,7 @@
 	                            <?php
 		                            if(perch_member_logged_in()){
 			                            echo '<li class="app-sidebar__heading">Menu</li>';
+                                        echo '<li><a href="/admin">Home</a></li>';
 				                        perch_pages_navigation(array(
 									        'from-path' => '/admin',
 									        'template' => 'admin_item.html'

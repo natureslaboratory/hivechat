@@ -1,0 +1,12 @@
+<perch:form id="delete_organisation" method="post" app="hive_hivechat" type="default" action="/admin/organisations">
+	<div class="card mb-3">
+        <div class="card-header">
+            <h5 class="card-title m-b-0">Delete <perch:hc id="organisationName"></h5>
+        </div>
+        <div class="card-body">
+	        <p>Be careful. This will delete <perch:hc id="organisationName">.</p>
+			<perch:input type="submit" class="btn btn-danger" value="Delete">
+			<perch:input type="hidden" class="form-control" id="organisationID" required="true" />
+        </div>
+	</div>
+</perch:form>

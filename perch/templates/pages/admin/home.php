@@ -1,5 +1,10 @@
 <?php perch_layout('admin.header'); ?>   
 <?php
+if (true) {
+    // PerchSystem::redirect("/admin");
+}
+?>
+<?php
 if(!perch_member_logged_in()){
 ?>
 <div class="app-main__outer">

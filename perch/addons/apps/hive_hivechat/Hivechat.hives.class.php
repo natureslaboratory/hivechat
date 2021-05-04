@@ -16,7 +16,8 @@ class Hivechat_Hives extends PerchAPI_Factory
 	
 	public function create_hive($data){
 		$title = addslashes($data['hiveTitle']);
-		$sql = "INSERT INTO perch3_hives (memberID, hiveTitle, hiveCategory, hiveDynamicFields) VALUES ('$data[memberID]', '$title', '$data[hiveCategory]', '$data[hiveDynamicFields]')";
+		$orgID = $data['organisationID'] ? $data['organisationID'] : "-1";
+		$sql = "INSERT INTO perch3_hives (memberID, hiveTitle, hiveCategory, hiveDynamicFields, organisationID) VALUES ('$data[memberID]', '$title', '$data[hiveCategory]', '$data[hiveDynamicFields]', '$orgID')";
 		$result = $this->db->execute($sql);
 	}
 	
@@ -39,7 +40,7 @@ class Hivechat_Hives extends PerchAPI_Factory
 	}
 	
 	public function hives_byMember($memberID){
-		$sql = "SELECT * FROM perch3_hives WHERE memberID='$memberID' ORDER BY hiveID DESC";
+		$sql = "SELECT * FROM perch3_hives WHERE memberID='$memberID' AND organisationID='-1' ORDER BY hiveID DESC";
 		$result = $this->db->get_rows($sql);
 		return $result;
 	}

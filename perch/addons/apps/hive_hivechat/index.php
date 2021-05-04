@@ -16,6 +16,8 @@
     include('Hivechat.hives.class.php');
     include('Hivechat.cell.class.php');
     include('Hivechat.cells.class.php');
+    include('Hivechat.organisation.class.php');
+    include('Hivechat.organisations.class.php');
 
     # Grab an instance of the Lang class for translations
     $Lang = $API->get('Lang');

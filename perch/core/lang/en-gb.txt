@@ -485,5 +485,11 @@
     "Password recovery instructions have been sent by email.": "Password recovery instructions have been sent by email.",
     "Editing Shared Regions": "Editing Shared Regions",
     "Your resources folder is not writable. Make this folder (": "Your resources folder is not writable. Make this folder (",
-    ") writable if you want to upload files and images.": ") writable if you want to upload files and images."
+    ") writable if you want to upload files and images.": ") writable if you want to upload files and images.",
+    "Republish Pages": "Republish Pages",
+    "Republishing pages": "Republishing pages",
+    "Are you sure you wish to republish all pages?": "Are you sure you wish to republish all pages?",
+    "Republishing is under way.": "Republishing is under way.",
+    "Republishing: %s on page %s": "Republishing: %s on page %s",
+    "Republishing completed successfully": "Republishing completed successfully"
 }
