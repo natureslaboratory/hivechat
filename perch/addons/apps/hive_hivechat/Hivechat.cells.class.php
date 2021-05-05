@@ -15,7 +15,8 @@ class Hivechat_Cells extends PerchAPI_Factory
 	public $static_fields   = array('cellID', 'hiveID', 'memberID', 'cellTitle', 'cellDateTime', 'cellDynamicFields');
 	
 	public function create_cell($data){
-		$sql = "INSERT INTO perch3_cells (hiveID, memberID, cellTitle, cellDateTime, cellDynamicFields) VALUES ('$data[hiveID]', '$data[memberID]', '$data[cellTitle]', '$data[cellDateTime]', '$data[cellDynamicFields]')";
+		$sql = "INSERT INTO perch3_cells (hiveID, memberID, cellTitle, cellDateTime, cellLive, cellDynamicFields) VALUES ('$data[hiveID]', '$data[memberID]', '$data[cellTitle]', '$data[cellDateTime]', 'No', '$data[cellDynamicFields]')";
+		echo $sql . "<br>";
 		$result = $this->db->execute($sql);
 	}
 	

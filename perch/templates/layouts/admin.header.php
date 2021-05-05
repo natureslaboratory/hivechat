@@ -52,6 +52,8 @@
 		});
 	</script>
 	<link href="/src/main.css?v=<?php echo rand(); ?>" rel="stylesheet"></head>
+	<link href="/src/custom.css?v=<?php echo rand(); ?>" rel="stylesheet"></head>
+
 <body onload="setInterval('chat.update()', 1000)">
     <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
         <div class="app-header header-shadow">

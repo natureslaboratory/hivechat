@@ -55,7 +55,7 @@ function hive_hivechat_form_handler($SubmittedForm)
         $data['memberID'] = perch_member_get('id');
         $data['hiveID'] = $SubmittedForm->data['hiveID'];
         $data['cellTitle'] = $SubmittedForm->data['cellTitle'];
-        $data['cellDateTime'] = $SubmittedForm->data['cellDateTime'];
+        $data['cellDateTime'] = $SubmittedForm->data['cellDate'] . " " . $SubmittedForm->data['cellTime'];
         $data = $cells->create_cell($data);
         break;
 
@@ -460,4 +460,12 @@ function get_organisation_hives($organisationID)
   $html = $Template->render_group($list, true);
 
   echo $html;
+}
+
+function get_organisation_by_slug($organisationSlug)
+{
+    $API  = new PerchAPI(1.0, 'hivechat');
+    $organisations = new Hivechat_Organisations($API);
+
+    return $organisations->get_organisation_by_slug($organisationSlug);
 }

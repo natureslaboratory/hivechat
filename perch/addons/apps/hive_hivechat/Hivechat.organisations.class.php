@@ -80,6 +80,12 @@ class Hivechat_Organisations extends PerchAPI_Factory
 		return $this->db->get_row($sql);
 	}
 
+	public function get_organisation_by_slug($organisationSlug)
+	{
+		$sql = "SELECT * FROM perch3_organisations WHERE organisationSlug='$organisationSlug'";
+		return $this->db->get_row($sql);
+	}
+
 	public function get_organisation_members($organisationID)
 	{
 		$sql = "SELECT memberID FROM perch3_memberorg WHERE organisationID='$organisationID'";

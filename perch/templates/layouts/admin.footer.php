@@ -39,6 +39,7 @@
     </div>
 <script type="text/javascript" src="/src/assets/scripts/main.js"></script>
 <script src="/src/assets/scripts/fitvids.js"></script>
+<script src="/js/index.js"></script>
 <script>
   $(document).ready(function(){
     // Target your .container, .wrapper, .post, etc.

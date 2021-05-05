@@ -1,0 +1,17 @@
+.form-group-columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
+    column-gap: 1rem;
+}
+
+[id*="organisationName"] + p {
+    margin-top: 0.3rem;
+}
+
+[id*="organisationName"].available + p {
+    color: green;
+}
+
+[id*="organisationName"].unavailable + p {
+    color: red;
+}

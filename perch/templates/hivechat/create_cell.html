@@ -11,10 +11,16 @@
 				<label>Title</label>
 				<perch:input type="text" class="form-control" id="cellTitle" required="true" placeholder="Cell Name" />
             </div>
-            <div class="form-group">
-				<label>Date/Time (if applicable)</label>
-				<perch:input type="text" class="form-control" id="cellDateTime" placeholder="YYYY-MM-DD HH:MM:SS" />
-            </div>
+			<div class="form-group-columns">
+				<div class="form-group">
+					<label>Date (if applicable)</label>
+					<perch:input type="date" class="form-control" id="cellDate" placeholder="YYYY-MM-DD" />
+				</div>
+				<div class="form-group">
+					<label>Time (if applicable)</label>
+					<perch:input type="time" class="form-control" id="cellTime" placeholder="HH:MM:SS" />
+				</div>
+			</div>
 			<perch:input type="submit" class="btn btn-secondary" value="Create">
 			<perch:input type="hidden" class="form-control" id="hiveID" />
         </div>
