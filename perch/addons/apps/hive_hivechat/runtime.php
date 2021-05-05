@@ -403,7 +403,7 @@ function get_organisation($organisationID)
   $organisations = new Hivechat_Organisations($API);
 
   $Template = $API->get('Template');
-  $Template->set('hivechat/organisation.html', 'hc');
+  $Template->set('hivechat/update_organisation.html', 'hc');
 
   $data = $organisations->get_organisation($organisationID);
 
@@ -447,25 +447,60 @@ function delete_organisation($organisationID)
   echo $html;
 }
 
-function get_organisation_hives($organisationID)
+function get_organisation_hives($organisationID, $opts = [])
 {
   $API  = new PerchAPI(1.0, 'hivechat');
-  $organisations = new Hivechat_Organisations($API);
+  $hives = new Hivechat_Hives($API);
 
   $Template = $API->get('Template');
   $Template->set('hivechat/list_hives.html', 'hc');
+  $list = null;
 
-  $list = $organisations->get_organisation_hives($organisationID);
+  if ($opts["scope"] == "Public") {
+    $list = $hives->hives_byOrganisationLive($organisationID);
+  } else {
+    $list = $hives->hives_byOrganisation($organisationID);
+  }
 
   $html = $Template->render_group($list, true);
 
   echo $html;
 }
 
-function get_organisation_by_slug($organisationSlug)
+function get_organisation_by_slug($organisationSlug, array $opts = [], $return = false)
+{
+    $API  = new PerchAPI(1.0, 'hivechat');
+    $organisations = new Hivechat_Organisations($API);
+    $data = $organisations->get_organisation_by_slug($organisationSlug);
+
+    if ($opts["skip-template"]) {
+      return $data;
+    }
+
+    $Template = $API->get('Template');
+    $Template->set('hivechat/organisation.html', 'hc');
+    
+    $html = $Template->render($data);
+    if ($return) {
+      return $html;
+    }
+
+    echo $html;
+}
+
+function get_public_organisations()
 {
     $API  = new PerchAPI(1.0, 'hivechat');
     $organisations = new Hivechat_Organisations($API);
 
-    return $organisations->get_organisation_by_slug($organisationSlug);
+    
+
+    $list = $organisations->get_public_organisations();
+
+    $Template = $API->get('Template');
+    $Template->set('hivechat/public_org_list.html', 'hc');
+
+    $html = $Template->render_group($list, true);
+
+    echo $html;
 }

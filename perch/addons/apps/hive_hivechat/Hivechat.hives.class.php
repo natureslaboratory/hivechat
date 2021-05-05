@@ -64,5 +64,17 @@ class Hivechat_Hives extends PerchAPI_Factory
 		$result = $this->db->execute($sql);
 		return $result;
 	}
+
+	public function hives_byOrganisation($orgID)
+	{
+		$sql = "SELECT * FROM perch3_hives WHERE organisationID=$orgID";
+		return $this->db->get_rows($sql);
+	}
+
+	public function hives_byOrganisationLive($orgID)
+	{
+		$sql = "SELECT * FROM perch3_hives WHERE organisationID=$orgID AND hiveLive='Yes'";
+		return $this->db->get_rows($sql);
+	}
   
 }

@@ -92,6 +92,6 @@ organisationForms.forEach(form => {
     try {
         new Organisation(form);
     } catch (error) {
-        console.log("Error")
+        console.error(error)
     }
 })

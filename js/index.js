@@ -53,9 +53,6 @@ var Organisation = /** @class */ (function () {
         if (!this.orgName) {
             throw new Error("No Valid orgName");
         }
-        if (this.orgName.value) {
-            this.currentName = this.orgName.value.trim();
-        }
         this.orgNameInfo = this.node.getElementsByClassName("org-name-info")[0];
         if (!this.orgNameInfo) {
             throw new Error("No Valid orgNameInfo");
@@ -65,12 +62,14 @@ var Organisation = /** @class */ (function () {
             throw new Error("No Valid orgSlug");
         }
         this.orgSlugDisplay = this.node.getElementsByClassName("slug-container")[0];
-        if (!this.orgSlugDisplay) {
-            throw new Error("No Valid orgSlugDisplay");
-        }
+        this.orgSlugDisplayLink = this.node.getElementsByClassName("slug-link")[0];
         this.submitButton = this.node.getElementsByClassName("organisationSubmit")[0];
         if (!this.submitButton) {
             throw new Error("No Valid submitButton");
+        }
+        if (this.orgName.value) {
+            this.currentName = this.orgName.value.trim();
+            this.updateValues();
         }
         this.addEventListeners();
     }
@@ -157,8 +156,24 @@ var Organisation = /** @class */ (function () {
     };
     Organisation.prototype.updateValues = function () {
         var slug = this.slugify(this.orgName.value);
-        this.orgSlugDisplay.innerHTML = slug;
+        if (this.orgSlugDisplay) {
+            this.orgSlugDisplay.innerHTML = slug;
+        }
         this.orgSlug.value = slug;
+        if (this.orgSlugDisplayLink && !this.orgSlugDisplayLink.href) {
+            var protocols = ["http://", "https://"];
+            var protocol_1;
+            var url_1 = window.location.href;
+            protocols.forEach(function (p) {
+                if (url_1.includes(p)) {
+                    protocol_1 = p;
+                }
+            });
+            var splitUrl = url_1.split(protocol_1);
+            var urlWithoutProtocol = splitUrl[splitUrl.length - 1];
+            var domain = urlWithoutProtocol.split("/")[0];
+            this.orgSlugDisplayLink.href = "" + protocol_1 + domain + "/organisation/" + slug;
+        }
         this.checkName(slug);
     };
     Organisation.prototype.addEventListeners = function () {
@@ -298,7 +313,7 @@ organisationForms.forEach(function (form) {
         new Organisation_1.default(form);
     }
     catch (error) {
-        console.log("Error");
+        console.error(error);
     }
 });
 

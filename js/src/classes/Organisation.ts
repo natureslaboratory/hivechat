@@ -5,6 +5,7 @@ export default class Organisation
     orgNameInfo : HTMLElement;
     orgSlug : HTMLInputElement;
     orgSlugDisplay : HTMLElement;
+    orgSlugDisplayLink : HTMLAnchorElement;
     submitButton : HTMLInputElement;
     currentName : string;
     timeout;
@@ -17,28 +18,31 @@ export default class Organisation
             throw new Error("No Valid orgName");
         }
 
-        if (this.orgName.value) {
-            this.currentName = this.orgName.value.trim();
-        }
-
+        
         this.orgNameInfo = this.node.getElementsByClassName("org-name-info")[0] as HTMLElement;
         if (!this.orgNameInfo) {
             throw new Error("No Valid orgNameInfo");
         }
-
+        
         this.orgSlug = this.getPerchElement("organisationSlug", "form-control") as HTMLInputElement;
         if (!this.orgSlug) {
             throw new Error("No Valid orgSlug");
         }
-
+        
+        
         this.orgSlugDisplay = this.node.getElementsByClassName("slug-container")[0] as HTMLElement;
-        if (!this.orgSlugDisplay) {
-            throw new Error("No Valid orgSlugDisplay");
-        }
 
+        this.orgSlugDisplayLink = this.node.getElementsByClassName("slug-link")[0] as HTMLAnchorElement;
+        
+        
         this.submitButton = this.node.getElementsByClassName("organisationSubmit")[0] as HTMLInputElement;
         if (!this.submitButton) {
             throw new Error("No Valid submitButton");
+        }
+
+        if (this.orgName.value) {
+            this.currentName = this.orgName.value.trim();
+            this.updateValues();
         }
 
         this.addEventListeners();
@@ -131,8 +135,25 @@ export default class Organisation
     private updateValues()
     {
         let slug = this.slugify(this.orgName.value);
-        this.orgSlugDisplay.innerHTML = slug;
+        if (this.orgSlugDisplay) {
+            this.orgSlugDisplay.innerHTML = slug;
+        }
         this.orgSlug.value = slug;
+        if (this.orgSlugDisplayLink && !this.orgSlugDisplayLink.href) {
+            let protocols = ["http://", "https://"];
+            let protocol;
+            let url = window.location.href;
+            protocols.forEach(p => {
+                if (url.includes(p)) {
+                    protocol = p;
+                }
+            });
+            let splitUrl = url.split(protocol);
+            let urlWithoutProtocol = splitUrl[splitUrl.length-1];
+            let domain = urlWithoutProtocol.split("/")[0];
+
+            this.orgSlugDisplayLink.href = `${protocol}${domain}/organisation/${slug}`;
+        }
         this.checkName(slug)
     }
 

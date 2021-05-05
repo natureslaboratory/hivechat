@@ -15,3 +15,15 @@
 [id*="organisationName"].unavailable + p {
     color: red;
 }
+
+.hidden {
+    position: absolute;
+    opacity: 0;
+    max-height: 1px;
+}
+
+.page-title-logo {
+    margin-right: 30px;
+    max-height: 100px;
+    max-width: 250px;
+}

@@ -135,4 +135,10 @@ class Hivechat_Organisations extends PerchAPI_Factory
 			if ($statement != '') $this->db->execute($statement);
 		}
 	}
+
+	public function get_public_organisations()
+	{
+		$sql = "SELECT * FROM perch3_organisations WHERE organisationScope='Public'";
+		return $this->db->get_rows($sql);
+	}
 }

@@ -1,32 +1,44 @@
-<perch:form id="update_organisation" method="post" app="hive_hivechat" type="default" class="org-form" action="/admin/organisations?orgID=<perch:hc id="organisationID">">
-	<div class="card mb-3">
-        <div class="card-header">
-            <h5 class="card-title m-b-0">Update <perch:hc id="organisationName"></h5>
-        </div>
-        <div class="card-body">
-			<perch:success show-form>
-				<div class="alert alert-success" role="alert"><perch:hc id="organisationName"> has been updated.</div>
-			</perch:success>
-			<div class="form-group">
-				<label>Name</label>
-				<perch:input type="text" class="form-control" id="organisationName" required="true" placeholder="Organisation Name" />
-				<p class="org-name-info"> </p>
-			</div>
-            <div class="form-group">
-	            <label>Slug</label>
-				<perch:input readonly hidden type="text" class="form-control" id="organisationSlug" required="true" placeholder="Organisation Slug" />
-				<p><span class="slug-container" id="slug-container"></span></p>
-			</div>
-            <div class="form-group">
-	            <label>Description</label>
-				<perch:input type="textarea" class="form-control" id="organisationDesc" required="true" placeholder="Organisation Description" />
+<div class="app-page-title">
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+            <perch:if exists="organisationLogo">
+                <img class="page-title-logo" src="<perch:hc id="organisationLogo">" alt="<perch:hc id="organisationName">">
+            <perch:else>
+                <div class="page-title-icon">
+                    <i class="pe-7s-user icon-gradient bg-mean-fruit"></i>
+                </div>
+            </perch:if>
+            <div>
+                <perch:hc id="organisationName">
             </div>
-            <div class="form-group">
-	            <label>Logo URL</label>
-				<perch:input type="text" class="form-control" id="organisationLogo" required="true" placeholder="Organisation Logo Url" />
-            </div>
-            <perch:input type="text" id="organisationID" hidden>
-			<perch:input type="submit" class="btn btn-secondary organisationSubmit" value="Update">
         </div>
-	</div>
-</perch:form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="mb-3 card">
+            <div class="card-header-tab card-header">
+                <div class="card-header-title">
+                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    About <perch:hc id="organisationName">
+                </div>
+            </div>
+            <div class="card-body">
+                <perch:hc id="organisationDesc">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="mb-3 card">
+            <div class="card-header-tab card-header">
+                <div class="card-header-title">
+                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    About <perch:hc id="organisationName">
+                </div>
+            </div>
+            <div class="card-body">
+                <perch:hc id="organisationDesc">
+            </div>
+        </div>
+    </div>
+</div>
