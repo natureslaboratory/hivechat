@@ -172,7 +172,7 @@ var Organisation = /** @class */ (function () {
             var splitUrl = url_1.split(protocol_1);
             var urlWithoutProtocol = splitUrl[splitUrl.length - 1];
             var domain = urlWithoutProtocol.split("/")[0];
-            this.orgSlugDisplayLink.href = "" + protocol_1 + domain + "/organisation/" + slug;
+            this.orgSlugDisplayLink.href = "" + protocol_1 + domain + "/explore/organisations/" + slug;
         }
         this.checkName(slug);
     };

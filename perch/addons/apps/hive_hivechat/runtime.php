@@ -55,7 +55,13 @@ function hive_hivechat_form_handler($SubmittedForm)
         $data['memberID'] = perch_member_get('id');
         $data['hiveID'] = $SubmittedForm->data['hiveID'];
         $data['cellTitle'] = $SubmittedForm->data['cellTitle'];
-        $data['cellDateTime'] = $SubmittedForm->data['cellDate'] . " " . $SubmittedForm->data['cellTime'];
+        if ($SubmittedForm->data['cellDate'] && $SubmittedForm->data['cellTime']) {
+          $data['cellDateTime'] = $SubmittedForm->data['cellDate'] . " " . $SubmittedForm->data['cellTime'];
+        } else if ($SubmittedForm->data['cellDate']) {
+          $data['cellDateTime'] = $SubmittedForm->data['cellDate'] . " 00:00:00";
+        } else {
+          $data['cellDateTime'] = "2000:01:01 00:00:00";
+        }
         $data = $cells->create_cell($data);
         break;
 
@@ -98,19 +104,45 @@ function hive_hivechat_form_handler($SubmittedForm)
   }
 }
 
-function browse_hives()
+function printArray($item, $depth = 0)
 {
+  foreach ($item as $key => $value) {
+      $depthString = str_repeat("--", $depth);
+      if (gettype($value) !== "array") {
+          echo "$depthString $key: $value <br>";
+      } else {
+          echo "$depthString $key: <br>";
+          printArray($value, $depth + 1);
+      }
+  }
+}
+
+function browse_hives($opts = [])
+{
+
+
+
   $API  = new PerchAPI(1.0, 'hivechat');
   $hives = new Hivechat_Hives($API);
+  $organisations = new Hivechat_Organisations($API);
 
   $Template = $API->get('Template');
   $Template->set('hivechat/browse_hives.html', 'hc');
-
-  $list = $hives->hives_byLive();
+  $list = null;
+  
+  if ($opts["organisationID"]) {
+    $list = $hives->hives_byOrganisationLive($opts["organisationID"]);
+  } else {
+    $list = $hives->hives_byLive();
+  }
 
   $i = 0;
   $rowEnd = false;
   foreach ($list as $data) {
+    $orgInfo = [];
+    if ($data["organisationID"]) {
+      $orgInfo = $organisations->get_organisation($data["organisationID"]);
+    }
     if ($i == 0) {
       echo '<div class="row">';
     }
@@ -119,7 +151,7 @@ function browse_hives()
       $desc = array('introduction' => $json['introduction']['processed']);
       $data = array_merge($data, $json, $desc);
     }
-    $html = $Template->render($data, true);
+    $html = $Template->render(array_merge($data, $orgInfo), true);
     echo $html;
     if ($i == 2) {
       echo '</div> <!--end row-->';
@@ -216,6 +248,22 @@ function hive_cells_nav($hiveID, $cellID)
   $Template = $API->get('Template');
   $Template->set('hivechat/list_cells_nav.html', 'hc');
 
+  // Allows the button links to reference a relative path;
+  // one for general hives and one for organisation hives.
+  $uri = $_SERVER["REQUEST_URI"];
+  $explodedUri = explode("/", $uri);
+  $explodedLength = count($explodedUri);
+  $relativeUri = "";
+  if ($cellID && $hiveID) {
+    for ($i=0; $i < $explodedLength-2; $i++) { 
+      $relativeUri .= $explodedUri[$i] . "/";
+    }
+  } else {
+    for ($i=0; $i < $explodedLength-1; $i++) { 
+      $relativeUri .= $explodedUri[$i] . "/";
+    }
+  }
+
   $list = $hives->cells_byHive($hiveID);
   $count = count($list);
   $i = 0;
@@ -223,6 +271,7 @@ function hive_cells_nav($hiveID, $cellID)
     if ($cellID == $list[$i]['cellID'] or ($cellID == '' and $i == 0)) {
       $list[$i]['active'] = 'yes';
     }
+    $list[$i]["relativePath"] = $relativeUri;
     $i++;
   }
   $html = $Template->render_group($list, true);
@@ -451,6 +500,8 @@ function get_organisation_hives($organisationID, $opts = [])
 {
   $API  = new PerchAPI(1.0, 'hivechat');
   $hives = new Hivechat_Hives($API);
+  $organisations = new Hivechat_Organisations($API);
+  $organisation = $organisations->get_organisation($organisationID);
 
   $Template = $API->get('Template');
   $Template->set('hivechat/list_hives.html', 'hc');
@@ -462,7 +513,12 @@ function get_organisation_hives($organisationID, $opts = [])
     $list = $hives->hives_byOrganisation($organisationID);
   }
 
-  $html = $Template->render_group($list, true);
+  $newList = [];
+  foreach ($list as $hive) {
+    $newList[] = array_merge($hive, $organisation);
+  }
+
+  $html = $Template->render_group($newList, true);
 
   echo $html;
 }
@@ -474,7 +530,12 @@ function get_organisation_by_slug($organisationSlug, array $opts = [], $return =
     $data = $organisations->get_organisation_by_slug($organisationSlug);
 
     if ($opts["skip-template"]) {
-      return $data;
+      if ($return) {
+        return $data;
+      } else {
+        echo $data;
+        return;
+      }
     }
 
     $Template = $API->get('Template');
@@ -500,6 +561,40 @@ function get_public_organisations()
     $Template = $API->get('Template');
     $Template->set('hivechat/public_org_list.html', 'hc');
 
+    $html = $Template->render_group($list, true);
+
+    echo $html;
+}
+
+function organisation_members($organisationID)
+{
+    $API  = new PerchAPI(1.0, 'hivechat');
+    $organisations = new Hivechat_Organisations($API);
+
+    $list = $organisations->get_members($organisationID);
+    $newList = [];
+
+    foreach ($list as $member) {
+      $newMember = [];
+      foreach ($member as $memberProperty => $memberValue) {
+        if ($memberProperty == "memberProperties") {
+          $props = json_decode($member["memberProperties"], true);
+          foreach ($props as $key => $value) {
+            $newMember[$key] = $value;
+          }
+        } else {
+          $newMember[$memberProperty] = $memberValue;
+        }
+      }
+      $newList[] = $newMember;
+    }
+
+    $list = $newList;
+
+    $Template = $API->get('Template');
+    $Template->set('hivechat/member_list.html', 'hc');
+
+    // printArray($list);
     $html = $Template->render_group($list, true);
 
     echo $html;

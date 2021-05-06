@@ -141,4 +141,22 @@ class Hivechat_Organisations extends PerchAPI_Factory
 		$sql = "SELECT * FROM perch3_organisations WHERE organisationScope='Public'";
 		return $this->db->get_rows($sql);
 	}
+
+	public function get_members($organisationID)
+	{
+		$sql = "SELECT * FROM perch3_members WHERE memberID IN (SELECT memberID FROM perch3_memberorg WHERE organisationID='$organisationID')";
+		return $this->db->get_rows($sql);
+	}
+
+	public function add_member($organisationID, $memberID)
+	{
+		$sql = "INSERT INTO perch3_memberorg (organisationID, memberID) VALUES ('$organisationID', '$memberID')";
+		return $this->db->execute($sql);
+	}
+
+	public function delete_member($organisationID, $memberID)
+	{
+		$sql = "DELETE FROM perch3_memberorg WHERE organisationID='$organisationID' AND memberID='$memberID'";
+		return $this->db->execute($sql);
+	}
 }

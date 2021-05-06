@@ -152,7 +152,7 @@ export default class Organisation
             let urlWithoutProtocol = splitUrl[splitUrl.length-1];
             let domain = urlWithoutProtocol.split("/")[0];
 
-            this.orgSlugDisplayLink.href = `${protocol}${domain}/organisation/${slug}`;
+            this.orgSlugDisplayLink.href = `${protocol}${domain}/explore/organisations/${slug}`;
         }
         this.checkName(slug)
     }
