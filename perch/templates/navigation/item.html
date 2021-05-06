@@ -1,7 +1,7 @@
 <perch:before>
     <ul class="js-clone-nav d-none d-lg-inline-block text-left site-menu">
 </perch:before>
-		<li class="<perch:if exists="current_page">active</perch:if> <perch:if exists="subitems">has-children</perch:if>">
+		<li class="<perch:if exists="current_page">mm-active</perch:if> <perch:if exists="subitems">has-children</perch:if>">
             
             <a href="<perch:pages id="pagePath" />"><perch:pages id="pageNavText" /></a>   
             <perch:pages id="subitems" encode="false" />

@@ -1,4 +1,6 @@
 import Organisation from "./classes/Organisation";
+import OrganisationMember from "./classes/OrganisationMember";
+import Utils from "./classes/Utils";
 
 // const getElementById = (id : string, className : string) => {
 //     let array = document.getElementsByClassName(className) as HTMLCollectionOf<HTMLElement>;
@@ -95,3 +97,8 @@ organisationForms.forEach(form => {
         console.error(error)
     }
 })
+
+let addOrgMemberForm = Utils.getPerchElement(document.body, "add_organisation_member", "form");
+if (addOrgMemberForm) {
+    new OrganisationMember(addOrgMemberForm);
+}

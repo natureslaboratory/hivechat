@@ -100,6 +100,12 @@ function hive_hivechat_form_handler($SubmittedForm)
         $data = $SubmittedForm->data;
         $orgs->delete_organisation($data["organisationID"]);
         break;
+      
+      case 'add_organisation_member':
+        $orgs = new Hivechat_Organisations($API);
+        $data = $SubmittedForm->data;
+        $orgs->add_member($data);
+        break;
     }
   }
 }
@@ -464,12 +470,12 @@ function get_organisation($organisationID)
   echo $html;
 }
 
-function is_organisation_member($memberID, $organisationID)
+function is_organisation_member($memberID, $organisationID, $opts = [])
 {
   $API  = new PerchAPI(1.0, 'hivechat');
   $organisations = new Hivechat_Organisations($API);
 
-  return $organisations->is_organisation_member($memberID, $organisationID);
+  return $organisations->is_organisation_member($memberID, $organisationID, $opts);
 }
 
 function update_organisation($data)
@@ -573,7 +579,7 @@ function organisation_members($organisationID)
 
     $list = $organisations->get_members($organisationID);
     $newList = [];
-
+    
     foreach ($list as $member) {
       $newMember = [];
       foreach ($member as $memberProperty => $memberValue) {
@@ -586,8 +592,31 @@ function organisation_members($organisationID)
           $newMember[$memberProperty] = $memberValue;
         }
       }
+      $memberorg = $organisations->get_memberorg($organisationID, $newMember["memberID"]);
+      switch ($memberorg["memberRole"]) {
+        case 1:
+          $newMember["memberRole"] = "Member";
+          break;
+        case 0:
+          $newMember["memberRole"] = "Admin";
+          break;
+        default:
+          break;
+      }
       $newList[] = $newMember;
     }
+
+    function memberSort($a, $b) {
+      if ($a["memberRole"] == "Admin" && $b["memberRole"] == "Member") {
+        return -1;
+      } else if ($a["memberRole"] == "Member" && $b["memberRole"] == "Admin") {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+
+    usort($newList, "memberSort");
 
     $list = $newList;
 
@@ -598,4 +627,29 @@ function organisation_members($organisationID)
     $html = $Template->render_group($list, true);
 
     echo $html;
+}
+
+function add_organisation_member($organisationID)
+{
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $organisations = new Hivechat_Organisations($API);
+
+  $data = $organisations->get_organisation($organisationID);
+  
+  $Template = $API->get('Template');
+  $Template->set('hivechat/add_organisation_member.html', 'hc');
+
+
+  $html = $Template->render($data);
+  $html = $Template->apply_runtime_post_processing($html);
+
+  echo $html;
+}
+
+function is_member($memberEmail)
+{
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $organisations = new Hivechat_Organisations($API);
+
+  return $organisations->is_member($memberEmail);
 }

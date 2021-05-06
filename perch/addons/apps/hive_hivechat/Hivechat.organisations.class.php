@@ -49,7 +49,7 @@ class Hivechat_Organisations extends PerchAPI_Factory
 		$sql = "INSERT INTO perch3_organisations (organisationName, organisationSlug, createdBy) VALUES ('$title', '$data[organisationSlug]', '$data[memberID]')";
 		$orgID = $this->db->execute($sql);
 
-		$sql = "INSERT INTO perch3_memberorg (memberID, organisationID) VALUES ('$data[memberID]', $orgID)";
+		$sql = "INSERT INTO perch3_memberorg (memberID, organisationID, memberRole) VALUES ('$data[memberID]', $orgID, 0)";
 		$this->db->execute($sql);
 	}
 
@@ -106,10 +106,13 @@ class Hivechat_Organisations extends PerchAPI_Factory
 		return $result;
 	}
 
-	public function is_organisation_member($memberID, $organisationID)
+	public function is_organisation_member($memberID, $organisationID, $opts = [])
 	{
-		$sql = "SELECT memberID FROM perch3_memberorg WHERE memberID='$memberID' AND organisationID='$organisationID'";
+		$sql = "SELECT * FROM perch3_memberorg WHERE memberID='$memberID' AND organisationID='$organisationID' LIMIT 1";
 		$result = $this->db->get_row($sql);
+		if ($opts["returnMember"]) {
+			return $result;
+		}
 		if ($result) {
 			return true;
 		}
@@ -148,15 +151,27 @@ class Hivechat_Organisations extends PerchAPI_Factory
 		return $this->db->get_rows($sql);
 	}
 
-	public function add_member($organisationID, $memberID)
+	public function add_member($data)
 	{
-		$sql = "INSERT INTO perch3_memberorg (organisationID, memberID) VALUES ('$organisationID', '$memberID')";
+		$sql = "INSERT INTO perch3_memberorg (organisationID, memberID, memberRole) VALUES ('$data[organisationID]', '$data[memberID]', 1)";
 		return $this->db->execute($sql);
+	}
+
+	public function is_member($memberEmail)
+	{
+		$sql = "SELECT * FROM perch3_members WHERE memberEmail='$memberEmail' LIMIT 1";
+		return $this->db->get_row($sql);
 	}
 
 	public function delete_member($organisationID, $memberID)
 	{
 		$sql = "DELETE FROM perch3_memberorg WHERE organisationID='$organisationID' AND memberID='$memberID'";
 		return $this->db->execute($sql);
+	}
+
+	public function get_memberorg($organisationID, $memberID)
+	{
+		$sql = "SELECT * FROM perch3_memberorg WHERE organisationID='$organisationID' AND memberID='$memberID' LIMIT 1";
+		return $this->db->get_row($sql);
 	}
 }

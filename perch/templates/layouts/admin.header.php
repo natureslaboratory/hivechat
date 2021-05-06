@@ -183,7 +183,8 @@
                                         echo '<li><a href="/admin">Home</a></li>';
 				                        perch_pages_navigation(array(
 									        'from-path' => '/admin',
-									        'template' => 'admin_item.html'
+									        'template' => 'admin_item.html',
+                                            'levels' => 1
 									    ));  
 								    }
 								    echo '<li class="app-sidebar__heading">Explore</li>';

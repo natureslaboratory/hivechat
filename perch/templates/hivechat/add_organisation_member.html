@@ -1,0 +1,21 @@
+<perch:form id="add_organisation_member" method="post" app="hive_hivechat" type="default" action="/admin/organisations/<perch:hc id="organisationSlug" />/members" class="form">
+	<div class="card mb-3">
+        <div class="card-header">
+            <h5 class="card-title m-b-0">Add a member</h5>
+        </div>
+        <div class="card-body">
+			<perch:success show-form>
+				<div class="alert alert-success" role="alert">Your member has been added.</div>
+			</perch:success>
+			<div class="form-group">
+				<label>Email</label>
+				<perch:input type="email" class="form-control" id="memberEmail" required="true" />
+				<p class="message"> </p>
+
+				<perch:input type="text" class="form-control" id="memberID" required="true" hidden />
+				<perch:input type="text" class="form-control" id="organisationID" required="true" value="<perch:hc id="organisationID">" hidden />
+            </div>
+			<perch:input id="submit-button" type="submit" class="btn btn-secondary organisationSubmit" value="Add">
+        </div>
+	</div>
+</perch:form>
