@@ -24,7 +24,16 @@ perch_layout("admin.title", ["title" => "Manage your organisation members"]);
     <?php break;
 
     case "manage":
-        echo "Manage member";
+        perch_layout("admin.back", [
+            "href" => "/admin/organisations/$organisationSlug/members",
+            "label" => "Back to members"
+        ]); ?>
+        <div class="row">
+            <div class="col-md-6">
+                <?php manage_organisation_member($organisation["organisationID"], perch_layout_var("actionID", true)) ?>
+            </div>
+        </div>
+        <?php
         break;
     default: 
         perch_layout("admin.back", [

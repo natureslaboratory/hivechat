@@ -174,4 +174,48 @@ class Hivechat_Organisations extends PerchAPI_Factory
 		$sql = "SELECT * FROM perch3_memberorg WHERE organisationID='$organisationID' AND memberID='$memberID' LIMIT 1";
 		return $this->db->get_row($sql);
 	}
+
+	function printArray($item, $depth = 0)
+	{
+		foreach ($item as $key => $value) {
+			$depthString = str_repeat("--", $depth);
+			if (gettype($value) !== "array") {
+				echo "$depthString $key: $value <br>";
+			} else {
+				echo "$depthString $key: <br>";
+				printArray($value, $depth + 1);
+			}
+		}
+	}
+
+	public function update_member($data)
+	{
+		$role = $data["memberRole"];
+		switch ($role) {
+			case "Admin":
+				$data["memberRole"] = 0;
+				break;
+			case "Member":
+				$data["memberRole"] = 1;
+				break;
+			default:
+				break;
+		}
+
+		$sql = "UPDATE perch3_memberorg SET ";
+		$i = 0;
+		foreach ($data as $key => $value) {
+			if ($i == 0) {
+				$sql .= " $key='$value'";
+			} else {
+				$sql .= ", $key='$value'";
+			}
+			$i++;
+		}
+
+
+		$sql .= " WHERE organisationID=$data[organisationID] AND memberID=$data[memberID]";
+		echo $sql;
+		$this->db->execute($sql);
+	}
 }

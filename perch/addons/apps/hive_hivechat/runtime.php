@@ -106,6 +106,13 @@ function hive_hivechat_form_handler($SubmittedForm)
         $data = $SubmittedForm->data;
         $orgs->add_member($data);
         break;
+      
+      case 'manage_organisation_member':
+        $orgs = new Hivechat_Organisations($API);
+        $data = $SubmittedForm->data;
+        $orgs->update_member($data);
+        // printArray($data);
+        break;
     }
   }
 }
@@ -578,6 +585,7 @@ function organisation_members($organisationID)
     $organisations = new Hivechat_Organisations($API);
 
     $list = $organisations->get_members($organisationID);
+    $organisation = $organisations->get_organisation($organisationID);
     $newList = [];
     
     foreach ($list as $member) {
@@ -603,6 +611,11 @@ function organisation_members($organisationID)
         default:
           break;
       }
+
+      foreach ($organisation as $key => $value) {
+        $newMember[$key] = $value;
+      }
+
       $newList[] = $newMember;
     }
 
@@ -652,4 +665,33 @@ function is_member($memberEmail)
   $organisations = new Hivechat_Organisations($API);
 
   return $organisations->is_member($memberEmail);
+}
+
+function manage_organisation_member($organisationID, $memberID)
+{
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $orgs = new Hivechat_Organisations($API);
+  $memberorg = $orgs->get_memberorg($organisationID, $memberID);
+  $org = $orgs->get_organisation($organisationID);
+
+  switch ($memberorg["memberRole"]) {
+    case 1:
+      $memberorg["memberRole"] = "Member";
+      break;
+    case 0:
+      $memberorg["memberRole"] = "Admin";
+      break;
+    default:
+      break;
+  }
+
+  $memberorg = array_merge($memberorg, $org);
+
+  $Template = $API->get('Template');
+  $Template->set('hivechat/manage_organisation_member.html', 'hc');
+
+  $html = $Template->render($memberorg);
+  $html = $Template->apply_runtime_post_processing($html, $memberorg);
+
+  echo $html;
 }
