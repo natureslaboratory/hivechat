@@ -4,6 +4,25 @@ if (perch_layout_has("organisationSlug")) {
     $organisation = get_organisation_by_slug(perch_layout_var("organisationSlug", true), ["skip-template" => true], true);
 }
 
+$isAdmin = is_admin($organisation["organisationID"], perch_member_get("id"));
+$isMember = is_organisation_member(perch_member_get("id"), $organisation["organisationID"]);
+
+if (perch_layout_var("manage", true) && $isAdmin) {
+    perch_layout("explore_organisation/explore.organisation.manage", perch_layout_var("parameters", true));
+} else if (perch_layout_var("manage", true)) {
+    ?>
+        <script>
+            let urlSplit = window.location.href.split("/");
+            for (let i = urlSplit.length-1; i >= 0; i--) {
+                const element = urlSplit[i];
+                if (element == "organisations") {
+                    window.location.href = urlSplit.slice(0, i+2).join("/");
+                }
+            }
+        </script>
+    <?php
+} else {
+
 ?>
 
 <div class="app-page-title">
@@ -22,9 +41,17 @@ if (perch_layout_has("organisationSlug")) {
         </div>
     </div>
 </div>
-<a href="/explore/organisations/">
-    <button class="btn btn-outline-primary mb-4">Back to Organisations</button>
-</a>
+<div style="display: flex; justify-content: space-between">
+    <a href="/explore/organisations/">
+        <button class="btn btn-outline-primary mb-4">Back to Organisations</button>
+    </a>
+    <?php if ($isAdmin) { ?>
+    <a href="/explore/organisations/<?= $organisation["organisationSlug"] ?>/manage">
+        <button class="btn btn-primary mb-4">Manage Organisation</button>
+    </a>
+    <?php } ?>
+
+</div>
 <div class="row">
     <div class="col-md-6">
         <div class="mb-3 card">
@@ -39,4 +66,15 @@ if (perch_layout_has("organisationSlug")) {
         </div>
     </div>
 </div>
-<?php browse_hives(["organisationID" => $organisation["organisationID"]]) ?>
+<div class="row">
+    <div class="col-md-6">
+        <div id='hives'></div>
+    </div>
+</div>
+<?php   
+}
+
+?>
+
+<script>
+</script>

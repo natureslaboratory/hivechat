@@ -157,6 +157,12 @@ class Hivechat_Organisations extends PerchAPI_Factory
 		return $this->db->execute($sql);
 	}
 
+	public function get_member($memberID)
+	{
+		$sql = "SELECT * FROM perch3_members WHERE memberID='$memberID' LIMIT 1";
+		return $this->db->get_row($sql);
+	}
+
 	public function is_member($memberEmail)
 	{
 		$sql = "SELECT * FROM perch3_members WHERE memberEmail='$memberEmail' LIMIT 1";
@@ -217,5 +223,12 @@ class Hivechat_Organisations extends PerchAPI_Factory
 		$sql .= " WHERE organisationID=$data[organisationID] AND memberID=$data[memberID]";
 		echo $sql;
 		$this->db->execute($sql);
+	}
+
+	public function is_admin($organisationID, $memberID)
+	{
+		$sql = "SELECT * FROM perch3_memberorg WHERE organisationID='$organisationID' AND memberID='$memberID' AND memberRole=0 LIMIT 1";
+		$result = $this->db->get_row($sql);
+		return $result;
 	}
 }

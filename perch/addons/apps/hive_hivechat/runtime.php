@@ -113,6 +113,12 @@ function hive_hivechat_form_handler($SubmittedForm)
         $orgs->update_member($data);
         // printArray($data);
         break;
+      case 'remove_organisation_member':
+        $orgs = new Hivechat_Organisations($API);
+        $data = $SubmittedForm->data;
+        $orgs->delete_member($data["organisationID"], $data["memberID"]);
+        // printArray($data);
+        break;
     }
   }
 }
@@ -142,6 +148,10 @@ function browse_hives($opts = [])
   $Template = $API->get('Template');
   $Template->set('hivechat/browse_hives.html', 'hc');
   $list = null;
+
+  if ($opts["memberID"]) {
+    $isMember = $organisations->is_organisation_member($opts["memberID"], $opts["organisationID"]);
+  }
   
   if ($opts["organisationID"]) {
     $list = $hives->hives_byOrganisationLive($opts["organisationID"]);
@@ -339,6 +349,68 @@ function edit_hive($hiveID)
   $html = $Template->apply_runtime_post_processing($html, $data);
 
   echo $html;
+}
+
+function get_organisation_public_hives($organisationID)
+{
+  
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $hives = new Hivechat_Hives($API);
+  $orgs = new Hivechat_Organisations($API);
+
+  $organisation = $orgs->get_organisation($organisationID);
+
+  $data = $hives->hives_byOrganisationLive($organisationID);
+  $newData = [];
+  foreach ($data as $hive) {
+    $newHive = [];
+    $props = [];
+    foreach ($hive as $key => $value) {
+      if ($key == "hiveDynamicFields") {
+        $props = json_decode($value, true);
+        $intro = $props["introduction"]["raw"];
+        $newHive["hiveIntro"] = $intro;
+      } else {
+        $newHive[$key] = $value;
+      }
+    }
+    $newData[] = array_merge($newHive, $organisation);
+    
+  }
+
+  return $newData;
+}
+
+function get_organisation_private_hives($organisationID, $memberID)
+{
+  
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $hives = new Hivechat_Hives($API);
+  $orgs = new Hivechat_Organisations($API);
+  
+  if ($orgs->is_organisation_member($memberID, $organisationID)) {
+    $data = $hives->hives_byOrganisationPrivate($organisationID);
+    $newData = [];
+    foreach ($data as $hive) {
+      $newHive = [];
+      $props = [];
+      foreach ($hive as $key => $value) {
+        if ($key == "hiveDynamicFields") {
+          $props = json_decode($value, true);
+          $intro = $props["introduction"]["raw"];
+          $newHive["hiveIntro"] = $intro;
+        } else {
+          $newHive[$key] = $value;
+        }
+      }
+      $newData[] = $newHive;
+    }
+    return $newData;
+  }
+
+
+  return;
+
 }
 
 function get_cell($cellID)
@@ -659,6 +731,38 @@ function add_organisation_member($organisationID)
   echo $html;
 }
 
+function remove_organisation_member($organisationID, $memberID)
+{
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $orgs = new Hivechat_Organisations($API);
+
+  $member = $orgs->get_member($memberID);
+
+  $data = [
+    "organisationID" => $organisationID
+  ];
+
+  foreach ($member as $key => $value) {
+    if ($key == "memberProperties") {
+      $props = json_decode($value);
+      foreach ($props as $propKey => $propValue) {
+        $data[$propKey] = $propValue;
+      }
+    } else {
+      $data[$key] = $value;
+    }
+  }
+  
+  $Template = $API->get('Template');
+  $Template->set('hivechat/remove_organisation_member.html', 'hc');
+
+
+  $html = $Template->render($data);
+  $html = $Template->apply_runtime_post_processing($html);
+
+  echo $html;
+}
+
 function is_member($memberEmail)
 {
   $API  = new PerchAPI(1.0, 'hivechat');
@@ -694,4 +798,11 @@ function manage_organisation_member($organisationID, $memberID)
   $html = $Template->apply_runtime_post_processing($html, $memberorg);
 
   echo $html;
+}
+
+function is_admin($organisationID, $memberID)
+{
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $orgs = new Hivechat_Organisations($API);
+  return $orgs->is_admin($organisationID, $memberID);
 }

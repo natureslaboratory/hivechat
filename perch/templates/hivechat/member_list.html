@@ -2,7 +2,7 @@
     <div class="card mb-3">
         <div style="justify-content: space-between;" class="card-header">
             <h5 class="card-title m-b-0">Members</h5>
-            <a href="/admin/organisations/<perch:hc id="organisationSlug" />/members/add"><button class="btn btn-alternate">+ Add Member</button></a>
+            <a href="/explore/organisations/<perch:hc id="organisationSlug" />/manage/members/add"><button class="btn btn-alternate">+ Add Member</button></a>
         </div>
         <div class="table-responsive">
             <table class="align-middle mb-0 table table-borderless table-striped table-hover">
@@ -21,7 +21,7 @@
                             <div class="widget-content p-0">
                                 <div class="widget-content-wrapper">
                                     <div class="widget-content-left flex2">
-                                        <div class="widget-heading"><perch:hc id="first_name"></div>
+                                        <div class="widget-heading"><perch:hc id="first_name"> <perch:hc id="last_name"></div>
                                     </div>
                                 </div>
                             </div>
@@ -45,7 +45,7 @@
                             </div>
                         </td>
                         <td>
-                            <a href="/admin/organisations/<perch:hc id="organisationSlug">/members/manage/<perch:hc id="memberID" />"><button class="btn btn-primary">Manage</button></a>
+                            <a href="/explore/organisations/<perch:hc id="organisationSlug">/manage/members/update/<perch:hc id="memberID" />"><button class="btn btn-primary">Manage</button></a>
                         </td>
                     </tr>
 <perch:after>

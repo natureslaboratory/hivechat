@@ -27,3 +27,7 @@
     max-height: 100px;
     max-width: 250px;
 }
+
+.hide {
+    display: none;
+}
