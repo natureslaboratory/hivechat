@@ -16,7 +16,6 @@ class Hivechat_Cells extends PerchAPI_Factory
 	
 	public function create_cell($data){
 		$sql = "INSERT INTO perch3_cells (hiveID, memberID, cellTitle, cellDateTime, cellLive, cellDynamicFields) VALUES ('$data[hiveID]', '$data[memberID]', '$data[cellTitle]', '$data[cellDateTime]', 'No', '$data[cellDynamicFields]')";
-		echo $sql . "<br>";
 		$result = $this->db->execute($sql);
 	}
 	
@@ -52,7 +51,6 @@ class Hivechat_Cells extends PerchAPI_Factory
 	
 	public function delete_cell($cellID){
 		$sql = "DELETE FROM perch3_cells WHERE cellID='$cellID'";
-		echo $sql;
 		$result = $this->db->execute($sql);
 		return $result;
 	}

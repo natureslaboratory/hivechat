@@ -221,7 +221,6 @@ class Hivechat_Organisations extends PerchAPI_Factory
 
 
 		$sql .= " WHERE organisationID=$data[organisationID] AND memberID=$data[memberID]";
-		echo $sql;
 		$this->db->execute($sql);
 	}
 

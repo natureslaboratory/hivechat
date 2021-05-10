@@ -2,12 +2,21 @@
 
 if (perch_layout_has("organisationSlug")) {
     $organisation = get_organisation_by_slug(perch_layout_var("organisationSlug", true), ["skip-template" => true], true);
+
+    if (!$organisation) {
+        ?>
+            <script>
+                window.location.href = "/explore/organisations";
+            </script>
+
+        <?php
+    }
 }
 
 $isAdmin = is_admin($organisation["organisationID"], perch_member_get("id"));
 $isMember = is_organisation_member(perch_member_get("id"), $organisation["organisationID"]);
 
-if (perch_layout_var("manage", true) && $isAdmin) {
+if (perch_layout_var("manage", true) == "manage" && $isAdmin) {
     perch_layout("explore_organisation/explore.organisation.manage", perch_layout_var("parameters", true));
 } else if (perch_layout_var("manage", true)) {
     ?>
