@@ -11,6 +11,14 @@
         $cellJson = json_decode($cell['cellDynamicFields'],true);
     }
     $organisation = get_organisation_by_slug(perch_layout_var("organisationSlug", true), ["skip-template" => true], true);
+
+	if (!is_organisation_hive(perch_layout_var("hiveID", true), $organisation["organisationID"])) {
+		?>
+			<script>
+				window.location.href = "/explore/organisations/<?= $organisation["organisationSlug"] ?>/"
+			</script>
+		<?php
+	}
 ?>
 
         <div class="app-page-title">

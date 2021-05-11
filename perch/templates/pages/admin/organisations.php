@@ -1,6 +1,9 @@
 <?php perch_layout('admin.header'); ?>
 <div class="app-main__outer">
     <div class="app-main__inner">
+        <?php 
+        
+        ?>
         <?php if (perch_get("hiveID") || (perch_get("manage") && perch_get("manage") !== "manage")) { 
             perch_layout("explore.hive", [
                 "hiveID" => perch_get("hiveID") ? perch_get("hiveID") : perch_get("manage"),

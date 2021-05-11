@@ -1,4 +1,15 @@
-<perch:form id="create_hive" method="post" app="hive_hivechat" type="default" action="<perch:if exists="organisationSlug"><perch:hc id="organisationSlug"></perch:if>" class="">
+<perch:form 
+	id="create_hive" 
+	method="post" 
+	app="hive_hivechat" 
+	type="default" 
+	<perch:if exists="organisationSlug">
+		action="/explore/organisations/<perch:hc id="organisationSlug">/manage/hives"
+	<perch:else>
+		action="" 
+	</perch:if>
+	class=""
+	>
 	<div class="card mb-3">
         <div class="card-header">
 			<perch:if exists="organisationID">
@@ -10,13 +21,6 @@
         <div class="card-body">
 			<perch:success>
 				<div class="alert alert-success" role="alert">Your Hive has been created.</div>
-				<perch:if exists="organisationSlug">
-					<a href="/admin/organisations/<perch:hc id="organisationSlug">">
-						<button class="btn btn-primary">
-							Create Another
-						</button>
-					</a>
-				</perch:if>
 			</perch:success>
 			<div class="form-group">
 				<label>Title</label>

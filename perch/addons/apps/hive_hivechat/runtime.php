@@ -242,7 +242,7 @@ function list_hives($memberID)
   echo $html;
 }
 
-function hive_cells($hiveID)
+function hive_cells($hiveID, $opts = [], $return = false)
 {
 
   $API  = new PerchAPI(1.0, 'hivechat');
@@ -253,9 +253,14 @@ function hive_cells($hiveID)
 
   $list = $hives->cells_byHive($hiveID);
 
+  if ($return) {
+    return $Template->render_group($list, true);
+  }
+
   if (count($list) == 0) {
 
-    echo "<p><strong>You're yet to create a cell</strong></p>";
+    echo "You're yet to create a cell.";
+    
   } else {
 
     $html = $Template->render_group($list, true);
@@ -324,7 +329,7 @@ function delete_hive($hiveID)
 
   $data = $hives->get_hive($hiveID);
 
-  $html = $Template->render(false);
+  $html = $Template->render($data);
   $html = $Template->apply_runtime_post_processing($html, $data);
 
   echo $html;
@@ -449,7 +454,7 @@ function delete_cell($cellID, $hiveID)
 
   $data = $cells->get_cell($cellID);
 
-  $html = $Template->render(false);
+  $html = $Template->render($data);
   $html = $Template->apply_runtime_post_processing($html, $data);
 
   echo $html;
@@ -809,4 +814,15 @@ function is_admin($organisationID, $memberID)
   $API  = new PerchAPI(1.0, 'hivechat');
   $orgs = new Hivechat_Organisations($API);
   return $orgs->is_admin($organisationID, $memberID);
+}
+
+function is_organisation_hive($hiveID, $organisationID)
+{
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $hives = new Hivechat_Hives($API);
+  $hive = $hives->get_hive($hiveID);
+  if ($hive["organisationID"] == $organisationID) {
+    return true;
+  }
+  return false;
 }

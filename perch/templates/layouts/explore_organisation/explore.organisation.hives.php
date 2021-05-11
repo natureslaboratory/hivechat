@@ -25,6 +25,9 @@ switch (perch_layout_var("action", true)) {
                 <div class="col-md-6">
                     <?php edit_cell(perch_layout_var("actionSubID", true)); ?> 
                 </div>
+                <div class="col-md-6">
+                    <?php delete_cell(perch_layout_var("actionSubID", true), perch_layout_var("actionID", true)); ?> 
+                </div>
             </div>
         <?php
         } else if (perch_layout_has("actionID")) {
@@ -36,10 +39,21 @@ switch (perch_layout_var("action", true)) {
             <div class="row">
                 <div class="col-md-6">
                     <?php edit_hive(perch_layout_var("actionID", true), ["organisationSlug" => $organisationSlug]); ?> 
+                    <?php delete_hive(perch_layout_var("actionID", true)) ?>
                 </div>
                 <div class="col-md-6">
                     <?php // create_cell(perch_layout_var("actionID", true), ["organisationSlug" => $organisationSlug]); 
-                        hive_cells(perch_layout_var("actionID", true), ["organisationSlug" => $organisationSlug]);
+                        $cells = hive_cells(perch_layout_var("actionID", true), ["organisationSlug" => $organisationSlug], true);
+                        ?> 
+                        <div style="display: flex; justify-content: flex-end; margin-bottom: 1rem;">
+                            <a href="/explore/organisations/<?= $organisationSlug ?>/manage/hives/create/<?= perch_layout_var("actionID", true) ?>/">
+                                <button class="btn btn-alternate">+ New Cell</button>
+                            </a>
+                        </div>
+                        <?php
+                        if ($cells) {
+                            echo $cells;
+                        }
                     ?> 
                 </div>
             </div>
@@ -73,6 +87,18 @@ switch (perch_layout_var("action", true)) {
             </div>
 
             <?php
+        } else {
+            perch_layout("admin.back", [
+                "href" => "/explore/organisations/$organisationSlug/manage/hives/",
+                "label" => "Back to Hives"
+            ]);
+            ?>
+            <div class="row">
+                <div class="col-md-6">
+                    <?php create_hive(["organisationID" => $organisation["organisationID"]]); ?>
+                </div>
+            </div>
+            <?php
         }
         break;
     default:
@@ -81,12 +107,17 @@ switch (perch_layout_var("action", true)) {
             "label" => "Back to $organisation[organisationName]"
         ]);
         ?>
-            <div class="row">
-                <div class="col-md-6">
+            <div style="display: flex; justify-content: flex-end; margin-bottom: 1rem;">
+                <a href="/explore/organisations/<?= $organisationSlug ?>/manage/hives/create">
+                    <button class="btn btn-alternate">+ New Hive</button>
+                </a>
+            </div>
+            <div class="row c-hives">
+                <div class="col-md-12 c-hives__collection">
                     <?php get_organisation_hives($organisation["organisationID"], ["type" => "organisation"]) ?>
                 </div>
                 <div class="col-md-6">
-                    <?php create_hive(["organisationID" => $organisation["organisationID"]]); ?>
+                    <?php //create_hive(["organisationID" => $organisation["organisationID"]]); ?>
                 </div>
             </div>
         <?php
