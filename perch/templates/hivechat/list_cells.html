@@ -20,7 +20,7 @@
     </div>
     <div class="card-body">
     <perch:if exists="url_organisationSlug">
-      <a href="/admin/organisations/<perch:hc id="url_organisationSlug" >/<perch:hc id="hiveID" />/<perch:hc id="cellID" />" type="submit" class="btn btn-secondary">Manage</a>
+      <a href="/explore/organisations/<perch:hc id="url_organisationSlug" >/manage/hives/edit/<perch:hc id="hiveID" />/<perch:hc id="cellID" />" type="submit" class="btn btn-secondary">Manage</a>
     <perch:else>
       <a href="/admin/your-hives/<perch:hc id="hiveID" />/<perch:hc id="cellID" />" type="submit" class="btn btn-secondary">Manage</a>
     </perch:if>

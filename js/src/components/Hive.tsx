@@ -18,12 +18,14 @@ function Hive(props : HiveProps) {
     }
 
     return (
-        <div className="card mb-3">
+        <div className="card">
             <div className="card-header">
                 <div className="card-header-title">{props.hiveTitle}</div>
             </div>
             <div className="card-body">
-                <p>{props.hiveIntro}</p>
+                <p dangerouslySetInnerHTML={{
+                    __html: props.hiveIntro
+                }}></p>
                 {link}
             </div>
         </div>

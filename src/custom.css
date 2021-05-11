@@ -31,3 +31,46 @@
 .hide {
     display: none;
 }
+
+.c-hives-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.c-hives {
+
+}
+
+.c-hives__title {
+    margin-bottom: 1.5rem;
+}
+
+.c-hives__collection {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: 2rem;
+}
+
+.c-hives__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.c-pagination {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.c-hives__controls {
+    display: flex;
+    gap: 1rem;
+}
+
+.c-hives__controls [type="search"] {
+    border: 1px solid rgb(189, 189, 189);
+    padding: 5px;
+}

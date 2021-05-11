@@ -16,7 +16,18 @@ $organisation = get_organisation_by_slug($organisationSlug, ["skip-template" => 
 
 switch (perch_layout_var("action", true)) {
     case "edit":
-        if (perch_layout_has("actionID")) {
+        if (perch_layout_has("actionID") && perch_layout_has("actionSubID")) {
+            perch_layout("admin.back", [
+                "href" => "/explore/organisations/$organisationSlug/manage/hives/edit/" . perch_layout_var("actionID", true),
+                "label" => "Back to Hive"
+            ]); ?>
+            <div class="row">
+                <div class="col-md-6">
+                    <?php edit_cell(perch_layout_var("actionSubID", true)); ?> 
+                </div>
+            </div>
+        <?php
+        } else if (perch_layout_has("actionID")) {
             perch_layout("admin.back", [
                 "href" => "/explore/organisations/$organisationSlug/manage/hives",
                 "label" => "Back to Hives"

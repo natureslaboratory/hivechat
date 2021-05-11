@@ -468,10 +468,10 @@ function edit_cell($cellID)
 
   if ($data['cellDynamicFields'] <> '') {
     $json = json_decode($data['cellDynamicFields'], true);
-    $desc = array('introduction' => $json['introduction']['processed']);
+    $desc = array('cellIntroduction' => $json['introduction']['processed']);
     $data = array_merge($data, $json, $desc);
   }
-  $html = $Template->render(false);
+  $html = $Template->render($data);
   $html = $Template->apply_runtime_post_processing($html, $data);
 
   echo $html;

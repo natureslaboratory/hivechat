@@ -1,5 +1,6 @@
 import React = require('react');
 import Hive, {HiveProps} from './Hive';
+import HivesContainer from "./HivesContainer";
 
 type State = {
     publicHives: Array<HiveProps>,
@@ -62,24 +63,11 @@ export default class Hives extends React.Component<Props, State>
 
 
     render() {
-        let publicHives = this.state.publicHives.map(hive => {
-                return (
-                    <Hive {...hive} key={hive.hiveID} />
-                )
-            })
-        let privateHives = this.state.privateHives.map(hive => {
-                return (
-                    <Hive {...hive} key={hive.hiveID} />
-                )
-            })
-
         return (
-            <React.Fragment>
-                <h2>Public Hives</h2>
-                {publicHives}
-                {privateHives.length > 0 ? <h2>Private Hives</h2> : null}
-                {privateHives}
-            </React.Fragment>
+            <div className="c-hives-container">
+                <HivesContainer hives={this.state.publicHives} title="Public Hives" />
+                <HivesContainer hives={this.state.privateHives} title="Private Hives" />
+            </div>
         )
     }
 }

@@ -76,7 +76,7 @@ if (perch_layout_var("manage", true) == "manage" && $isAdmin) {
     </div>
 </div>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <div id='hives'></div>
     </div>
 </div>

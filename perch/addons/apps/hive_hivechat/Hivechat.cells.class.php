@@ -21,7 +21,7 @@ class Hivechat_Cells extends PerchAPI_Factory
 	
 	public function update_cell($data){
 		
-		$introduction = $data['introduction'];
+		$introduction = $data['cellIntroduction'];
 		$intro = array(
 		  'introduction' => array(
 		    '_flang' => "html",
@@ -34,6 +34,7 @@ class Hivechat_Cells extends PerchAPI_Factory
 		$json = addslashes(json_encode($jsonData));
 		
 		$sql = "UPDATE perch3_cells SET cellTitle='$data[cellTitle]', cellDateTime='$data[cellDateTime]', cellLive='$data[cellLive]', cellDynamicFields='$json' WHERE cellID='$data[cellID]'";
+		// echo $sql;
 		$result = $this->db->execute($sql);
 	}
 	
