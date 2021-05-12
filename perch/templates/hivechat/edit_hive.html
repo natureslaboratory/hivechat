@@ -3,7 +3,7 @@
 	method="post" 
 	app="hive_hivechat" 
 	type="default" 
-	<perch:if exists="organisationSlug">action="/explore/organisations/<perch:hc id="organisationSlug" />/manage/hives"<perch:else>action=""</perch:if>
+	<perch:if exists="url_organisationSlug">action="/explore/organisations/<perch:hc id="url_organisationSlug" />/manage/hives"<perch:else>action=""</perch:if>
 	>
 	<div class="card mb-3">
         <div class="card-header">
@@ -18,9 +18,10 @@
 				<perch:input type="text" class="form-control" id="hiveTitle" required="true" placeholder="Hive Name" />
             </div>
             <div class="form-group">
-				<label>Live</label>
-				<perch:input type="select" class="form-control" id="hiveLive" options="No,Yes" />
+				<label>Privacy</label>
+				<perch:input type="select" class="form-control" id="hivePrivacy" options="Draft, Private, Public" />
             </div>
+			<perch:input type="hidden" class="form-control" id="hiveLive" options="No,Yes" suppress />
             <div class="form-group">
 	            <label>Category</label>
 				<perch:input type="select" class="form-control" id="hiveCategory" required="true" options="Business,Environment,Health,How To" />

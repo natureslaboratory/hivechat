@@ -35,7 +35,7 @@ class Hivechat_Hives extends PerchAPI_Factory
 		$jsonData = $intro;
 		$json = addslashes(json_encode($jsonData));
 		
-		$sql = "UPDATE perch3_hives SET hiveTitle='$title', hiveLive='$data[hiveLive]', hiveCategory='$data[hiveCategory]', hiveDynamicFields='$json' WHERE hiveID='$data[hiveID]'";
+		$sql = "UPDATE perch3_hives SET hiveTitle='$title', hiveLive='$data[hiveLive]', hiveCategory='$data[hiveCategory]', hivePrivacy='$data[hivePrivacy]', hiveDynamicFields='$json' WHERE hiveID='$data[hiveID]'";
 		$result = $this->db->execute($sql);
 	}
 	
@@ -71,17 +71,38 @@ class Hivechat_Hives extends PerchAPI_Factory
 		return $this->db->get_rows($sql);
 	}
 
+	// Deprecated
 	public function hives_byOrganisationPrivate($orgID)
 	{
 		$sql = "SELECT * FROM perch3_hives WHERE organisationID=$orgID AND (hiveLive IS NULL OR hiveLive!='Yes')";
 		return $this->db->get_rows($sql);
 	}
 
+	// Deprecated
 	public function hives_byOrganisationLive($orgID)
 	{
 
 		$sql = "SELECT * FROM perch3_hives WHERE organisationID=$orgID AND hiveLive='Yes'";
 		return $this->db->get_rows($sql);
 	}
+
+	public function get_draft_org_hives($orgID)
+	{
+		$sql = "SELECT * FROM perch3_hives WHERE organisationID=$orgID AND (hivePrivacy='Draft')";
+		return $this->db->get_rows($sql);
+	}
+
+	public function get_private_org_hives($orgID)
+	{
+		$sql = "SELECT * FROM perch3_hives WHERE organisationID=$orgID AND (hivePrivacy='Private')";
+		return $this->db->get_rows($sql);
+	}
+
+	public function get_public_org_hives($orgID)
+	{
+		$sql = "SELECT * FROM perch3_hives WHERE organisationID=$orgID AND (hivePrivacy='Public')";
+		return $this->db->get_rows($sql);
+	}
+
   
 }

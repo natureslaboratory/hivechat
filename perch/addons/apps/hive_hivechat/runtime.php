@@ -15,6 +15,7 @@ include('Hivechat.cell.class.php');
 include('Hivechat.cells.class.php');
 include('Hivechat.organisation.class.php');
 include('Hivechat.organisations.class.php');
+include('HiveApi.php');
 
 # Create the function(s) users will call from their pages
 
@@ -352,7 +353,7 @@ function edit_hive($hiveID, $opts = [])
     $desc = array('introduction' => $json['introduction']['processed']);
     $data = array_merge($data, $json, $desc);
   }
-  $html = $Template->render(false);
+  $html = $Template->render($data);
   $html = $Template->apply_runtime_post_processing($html, $data);
 
   echo $html;
@@ -670,17 +671,8 @@ function organisation_members($organisationID)
     $newList = [];
     
     foreach ($list as $member) {
-      $newMember = [];
-      foreach ($member as $memberProperty => $memberValue) {
-        if ($memberProperty == "memberProperties") {
-          $props = json_decode($member["memberProperties"], true);
-          foreach ($props as $key => $value) {
-            $newMember[$key] = $value;
-          }
-        } else {
-          $newMember[$memberProperty] = $memberValue;
-        }
-      }
+      $newMember = HiveApi::flatten($member);
+
       $memberorg = $organisations->get_memberorg($organisationID, $newMember["memberID"]);
       switch ($memberorg["memberRole"]) {
         case 1:
