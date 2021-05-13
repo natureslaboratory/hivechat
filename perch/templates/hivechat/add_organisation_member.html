@@ -11,9 +11,10 @@
 				<label>Email</label>
 				<perch:input type="email" class="form-control" id="memberEmail" required="true" />
 				<p class="message"> </p>
-
-				<perch:input type="text" class="form-control" id="memberID" required="true" hidden />
-				<perch:input type="text" class="form-control" id="organisationID" required="true" value="<perch:hc id="organisationID">" hidden />
+				<perch:showall>
+				<perch:input type="text" class="form-control" id="submittedMemberID" hidden value="<perch:hc id="memberID" />" />
+				<perch:input type="text" class="form-control" id="organisationID" value="<perch:hc id="organisationID">" hidden />
+				<perch:hc id="memberID">
             </div>
 			<perch:input id="submit-button" type="submit" class="btn btn-secondary organisationSubmit" value="Add">
         </div>

@@ -18,7 +18,7 @@ perch_layout("admin.title", ["title" => "Manage your organisation members"]);
         ]); ?>
         <div class="row">
             <div class="col-md-6">
-                <?php add_organisation_member($organisation["organisationID"]) ?>
+                <?php add_organisation_member($organisation["organisationID"], perch_member_get("id")) ?>
             </div>
         </div>
     <?php break;

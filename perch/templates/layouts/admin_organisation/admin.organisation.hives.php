@@ -17,7 +17,13 @@ perch_layout("admin.back", [
 
 <div class="row">
     <div class="col-md-6">
-        <?php get_organisation_hives($organisation["organisationID"]) ?>
+        <?php 
+            $opts = [
+                "type" => "All",
+                "memberID" => perch_member_get("id")
+            ];
+            get_organisation_hives($organisation["organisationID"], $opts) 
+        ?>
     </div>
     <div class="col-md-6">
         <?php create_hive(["organisationID" => $organisation["organisationID"]]); ?>

@@ -113,8 +113,14 @@ switch (perch_layout_var("action", true)) {
                 </a>
             </div>
             <div class="row c-hives">
-                <div class="col-md-12 c-hives__collection">
-                    <?php get_organisation_hives($organisation["organisationID"], ["type" => "organisation"]) ?>
+                <div class="col-md-12">
+                    <?php 
+                        // $opts = [
+                            // "type" => "All",
+                            // "memberID" => perch_member_get("id")
+                        // ];
+                        // get_organisation_hives($organisation["organisationID"], $opts) ?>
+                    <div id="admin-hives"></div>
                 </div>
                 <div class="col-md-6">
                     <?php //create_hive(["organisationID" => $organisation["organisationID"]]); ?>

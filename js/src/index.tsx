@@ -2,9 +2,8 @@ import DeleteForm from "./classes/DeleteForm";
 import Organisation from "./classes/Organisation";
 import OrganisationMember from "./classes/OrganisationMember";
 import Utils from "./classes/Utils";
-import React = require('react');
-import ReactDOM = require('react-dom');
-import Hives from './components/Hives';
+import "./pages/explore.organisations";
+import "./pages/explore.organisations.manage.hives";
 
 
 
@@ -29,18 +28,6 @@ deleteForms.forEach(form => {
     new DeleteForm(form);
 })
 
-class App extends React.Component {
-    render() {
-        return (
-            <Hives />
-        )
-    }
-}
-
-const hives = document.getElementById("hives");
-if (hives) {
-    ReactDOM.render(<Hives />, hives);
-}
 
 
 

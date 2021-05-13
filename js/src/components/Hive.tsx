@@ -7,15 +7,32 @@ export interface HiveProps {
     hiveLive : string
     hiveTitle : string,
     organisationSlug : string,
-    [propName: string]: any
+    [propName: string]: any,
+    adminPage : boolean
 }
 
 
 function Hive(props : HiveProps) {
-    let link = <a href={`/hive/${props.hiveID}`} className="btn btn-secondary">View</a>;
-    if (props.organisationSlug) {
-        link = <a href={`/explore/organisations/${props.organisationSlug}/${props.hiveID}`} className="btn btn-secondary">View</a>
+    let linkURL = "";
+    let linkText = "View";
+    let intro = (
+        <p dangerouslySetInnerHTML={{
+            __html: props.hiveIntro
+        }}></p>
+    )
+
+    if (window.location.href.includes("manage/hives") && props.organisationSlug) {
+        linkURL = `/explore/organisations/${props.organisationSlug}/manage/hives/edit/${props.hiveID}`
+        linkText = "Edit";
+        intro = null;
+    } else if (props.organisationSlug) {
+        linkURL = `/explore/organisations/${props.organisationSlug}/${props.hiveID}`;
+    } else {
+        linkURL = `/hive/${props.hiveID}`
     }
+
+    let link = <a href={linkURL} className="btn btn-secondary">{linkText}</a>;
+    
 
     return (
         <div className="card">
@@ -23,9 +40,7 @@ function Hive(props : HiveProps) {
                 <div className="card-header-title">{props.hiveTitle}</div>
             </div>
             <div className="card-body">
-                <p dangerouslySetInnerHTML={{
-                    __html: props.hiveIntro
-                }}></p>
+                {intro}
                 {link}
             </div>
         </div>

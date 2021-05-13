@@ -31356,7 +31356,7 @@ var OrganisationMember = /** @class */ (function () {
     function OrganisationMember(node) {
         this.node = node;
         this.email = Utils_1.default.getPerchElement(this.node, "memberEmail", "form-control");
-        this.memberID = Utils_1.default.getPerchElement(this.node, "memberID", "form-control");
+        this.memberID = Utils_1.default.getPerchElement(this.node, "submittedMemberID", "form-control");
         this.orgID = Utils_1.default.getPerchElement(this.node, "organisationID", "form-control");
         this.button = Utils_1.default.getPerchElement(this.node, "submit-button", "btn");
         this.messageElement = this.node.getElementsByClassName("message")[0];
@@ -31391,12 +31391,11 @@ var OrganisationMember = /** @class */ (function () {
             fetch("/page-api/ismember?email=" + _this.email.value.trim())
                 .then(function (res) { return res.json(); })
                 .then(function (data) { return __awaiter(_this, void 0, void 0, function () {
-                var isOrgMember;
+                var isOrgMember, message;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
                             if (!data) return [3 /*break*/, 2];
-                            this.memberID.value = data.memberID;
                             return [4 /*yield*/, this.checkUserNotInOrg()];
                         case 1:
                             isOrgMember = _a.sent();
@@ -31406,12 +31405,13 @@ var OrganisationMember = /** @class */ (function () {
                             }
                             else {
                                 this.setMessage("User already in organisation.");
-                                this.disableButton();
+                                // this.disableButton();
                             }
                             return [3 /*break*/, 3];
                         case 2:
-                            this.setMessage("User not registered.");
-                            this.disableButton();
+                            message = "User not registered. They will receive\n                                        an email inviting them to register.";
+                            this.setMessage(message);
+                            this.enableButton();
                             _a.label = 3;
                         case 3: return [2 /*return*/];
                     }
@@ -31505,14 +31505,25 @@ var __assign = (this && this.__assign) || function () {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function Hive(props) {
-    var link = jsx_runtime_1.jsx("a", __assign({ href: "/hive/" + props.hiveID, className: "btn btn-secondary" }, { children: "View" }), void 0);
-    if (props.organisationSlug) {
-        link = jsx_runtime_1.jsx("a", __assign({ href: "/explore/organisations/" + props.organisationSlug + "/" + props.hiveID, className: "btn btn-secondary" }, { children: "View" }), void 0);
+    var linkURL = "";
+    var linkText = "View";
+    var intro = (jsx_runtime_1.jsx("p", { dangerouslySetInnerHTML: {
+            __html: props.hiveIntro
+        } }, void 0));
+    if (window.location.href.includes("manage/hives") && props.organisationSlug) {
+        linkURL = "/explore/organisations/" + props.organisationSlug + "/manage/hives/edit/" + props.hiveID;
+        linkText = "Edit";
+        intro = null;
     }
+    else if (props.organisationSlug) {
+        linkURL = "/explore/organisations/" + props.organisationSlug + "/" + props.hiveID;
+    }
+    else {
+        linkURL = "/hive/" + props.hiveID;
+    }
+    var link = jsx_runtime_1.jsx("a", __assign({ href: linkURL, className: "btn btn-secondary" }, { children: linkText }), void 0);
     return (jsx_runtime_1.jsxs("div", __assign({ className: "card" }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "card-header" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "card-header-title" }, { children: props.hiveTitle }), void 0) }), void 0),
-            jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [jsx_runtime_1.jsx("p", { dangerouslySetInnerHTML: {
-                            __html: props.hiveIntro
-                        } }, void 0), link] }), void 0)] }), void 0));
+            jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [intro, link] }), void 0)] }), void 0));
 }
 exports.default = Hive;
 
@@ -31523,100 +31534,6 @@ exports.default = Hive;
 /*!*************************************!*\
   !*** ./js/src/components/Hives.tsx ***!
   \*************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var HivesContainer_1 = __importDefault(__webpack_require__(/*! ./HivesContainer */ "./js/src/components/HivesContainer.tsx"));
-var Hives = /** @class */ (function (_super) {
-    __extends(Hives, _super);
-    function Hives(props) {
-        var _this = _super.call(this, props) || this;
-        _this.state = {
-            publicHives: [],
-            privateHives: [],
-            slug: ""
-        };
-        _this.getSlug = _this.getSlug.bind(_this);
-        return _this;
-    }
-    Hives.prototype.componentDidMount = function () {
-        this.getSlug();
-    };
-    Hives.prototype.componentDidUpdate = function (prevProps, prevState) {
-        var _this = this;
-        if (prevState.slug !== this.state.slug) {
-            fetch("/page-api/organisationpublichives?orgSlug=" + this.state.slug)
-                .then(function (res) { return res.json(); })
-                .then(function (data) {
-                if (data) {
-                    _this.setState({ publicHives: data });
-                }
-            });
-            fetch("/page-api/organisationprivatehives?orgSlug=" + this.state.slug)
-                .then(function (res) { return res.json(); })
-                .then(function (data) {
-                if (data) {
-                    _this.setState({ privateHives: data });
-                }
-            });
-        }
-    };
-    Hives.prototype.getSlug = function () {
-        var urlSplit = window.location.href.split("/");
-        for (var i = 0; i < urlSplit.length; i++) {
-            var element = urlSplit[i];
-            if (element == "organisations") {
-                this.setState({ slug: urlSplit[i + 1] });
-            }
-        }
-    };
-    Hives.prototype.render = function () {
-        return (jsx_runtime_1.jsxs("div", __assign({ className: "c-hives-container" }, { children: [jsx_runtime_1.jsx(HivesContainer_1.default, { hives: this.state.publicHives, title: "Public Hives" }, void 0),
-                jsx_runtime_1.jsx(HivesContainer_1.default, { hives: this.state.privateHives, title: "Private Hives" }, void 0)] }), void 0));
-    };
-    return Hives;
-}(React.Component));
-exports.default = Hives;
-
-
-/***/ }),
-
-/***/ "./js/src/components/HivesContainer.tsx":
-/*!**********************************************!*\
-  !*** ./js/src/components/HivesContainer.tsx ***!
-  \**********************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -31637,23 +31554,43 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-// import React = require("react");
 var react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var Hive_1 = __importDefault(__webpack_require__(/*! ./Hive */ "./js/src/components/Hive.tsx"));
-var HivesContainer = function (props) {
+var Hives = function (props) {
     var _a = react_2.useState(1), page = _a[0], setPage = _a[1];
     var _b = react_2.useState(6), hivesPerPage = _b[0], setHivesPerPage = _b[1];
-    var _c = react_2.useState([]), filteredHives = _c[0], setFilteredHives = _c[1];
-    var _d = react_2.useState([]), slicedHives = _d[0], setSlicedHives = _d[1];
-    var _e = react_2.useState(""), searchTerm = _e[0], setSearchTerm = _e[1];
+    var _c = react_2.useState([]), hives = _c[0], setHives = _c[1];
+    var _d = react_2.useState([]), filteredHives = _d[0], setFilteredHives = _d[1];
+    var _e = react_2.useState([]), slicedHives = _e[0], setSlicedHives = _e[1];
+    var _f = react_2.useState(""), searchTerm = _f[0], setSearchTerm = _f[1];
+    var urlSlug = "";
+    var urlSplit = window.location.href.split("/");
+    for (var i = 0; i < urlSplit.length; i++) {
+        var element = urlSplit[i];
+        if (element == "organisations") {
+            urlSlug = urlSplit[i + 1];
+        }
+    }
+    react_2.useEffect(function () {
+        getHives();
+    }, [hives]);
     react_2.useEffect(function () {
         filterHives();
-    }, [searchTerm, props.hives]);
+    }, [searchTerm, hives]);
     react_2.useEffect(function () {
         sliceHives();
     }, [page, filteredHives]);
+    function getHives() {
+        fetch("/page-api/organisation-hives?orgSlug=" + urlSlug + "&type=" + props.type)
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
+            if (data) {
+                setHives(data);
+            }
+        });
+    }
     function isNextPage() {
-        var totalHives = props.hives.length;
+        var totalHives = hives.length;
         var currentLastHiveOnPage = page * hivesPerPage;
         if (currentLastHiveOnPage + 1 > totalHives) {
             return false;
@@ -31665,7 +31602,7 @@ var HivesContainer = function (props) {
         setSlicedHives(filteredHives.slice(firstHive, firstHive + hivesPerPage));
     }
     function filterHives() {
-        setFilteredHives(props.hives.filter(function (hive) { return filterBySearchTerm(hive); }));
+        setFilteredHives(hives.filter(function (hive) { return filterBySearchTerm(hive); }));
     }
     function filterBySearchTerm(hive) {
         if (hive.hiveTitle && hive.hiveTitle.toLowerCase().includes(searchTerm)) {
@@ -31676,7 +31613,7 @@ var HivesContainer = function (props) {
         }
         return false;
     }
-    var hives = slicedHives.map(function (hive) { return react_1.createElement(Hive_1.default, __assign({}, hive, { key: hive.hiveID })); });
+    var hivesRendered = slicedHives.map(function (hive) { return react_1.createElement(Hive_1.default, __assign({}, hive, { key: hive.hiveID })); });
     var pagination = null;
     if (filteredHives.length > hivesPerPage) {
         pagination = (jsx_runtime_1.jsxs("div", __assign({ className: "c-pagination" }, { children: [jsx_runtime_1.jsx("button", __assign({ className: "btn btn-outline-alternate", onClick: function () {
@@ -31694,16 +31631,16 @@ var HivesContainer = function (props) {
                         }
                     } }, { children: ">" }), void 0)] }), void 0));
     }
-    if (props.hives.length > 0) {
-        return (jsx_runtime_1.jsxs("div", __assign({ className: "c-hives" }, { children: [jsx_runtime_1.jsxs("div", __assign({ className: "c-hives__header" }, { children: [jsx_runtime_1.jsx("h2", __assign({ className: "c-hives__title" }, { children: props.title }), void 0),
+    if (hives.length > 0) {
+        return (jsx_runtime_1.jsxs("div", __assign({ className: "c-hives" }, { children: [jsx_runtime_1.jsxs("div", __assign({ className: "c-hives__header" }, { children: [jsx_runtime_1.jsxs("h2", __assign({ className: "c-hives__title" }, { children: [props.type, " Hives"] }), void 0),
                         jsx_runtime_1.jsxs("div", __assign({ className: "c-hives__controls" }, { children: [jsx_runtime_1.jsx("input", { type: "search", value: searchTerm, onChange: function (e) { return setSearchTerm(e.target.value); }, placeholder: "Search" }, void 0), pagination] }), void 0)] }), void 0),
-                jsx_runtime_1.jsx("div", __assign({ className: "c-hives__collection" }, { children: hives }), void 0)] }), void 0));
+                jsx_runtime_1.jsx("div", __assign({ className: "c-hives__collection" }, { children: hivesRendered }), void 0)] }), void 0));
     }
     else {
         return null;
     }
 };
-exports.default = HivesContainer;
+exports.default = Hives;
 
 
 /***/ }),
@@ -31715,33 +31652,16 @@ exports.default = HivesContainer;
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var DeleteForm_1 = __importDefault(__webpack_require__(/*! ./classes/DeleteForm */ "./js/src/classes/DeleteForm.ts"));
 var Organisation_1 = __importDefault(__webpack_require__(/*! ./classes/Organisation */ "./js/src/classes/Organisation.ts"));
 var OrganisationMember_1 = __importDefault(__webpack_require__(/*! ./classes/OrganisationMember */ "./js/src/classes/OrganisationMember.ts"));
 var Utils_1 = __importDefault(__webpack_require__(/*! ./classes/Utils */ "./js/src/classes/Utils.ts"));
-var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-var Hives_1 = __importDefault(__webpack_require__(/*! ./components/Hives */ "./js/src/components/Hives.tsx"));
+__webpack_require__(/*! ./pages/explore.organisations */ "./js/src/pages/explore.organisations.tsx");
+__webpack_require__(/*! ./pages/explore.organisations.manage.hives */ "./js/src/pages/explore.organisations.manage.hives.tsx");
 var organisationForms = Array.from(document.getElementsByClassName("org-form"));
 organisationForms.forEach(function (form) {
     try {
@@ -31759,19 +31679,80 @@ var deleteForms = Array.from(document.getElementsByClassName("delete-form"));
 deleteForms.forEach(function (form) {
     new DeleteForm_1.default(form);
 });
-var App = /** @class */ (function (_super) {
-    __extends(App, _super);
-    function App() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    App.prototype.render = function () {
-        return (jsx_runtime_1.jsx(Hives_1.default, {}, void 0));
+
+
+/***/ }),
+
+/***/ "./js/src/pages/explore.organisations.manage.hives.tsx":
+/*!*************************************************************!*\
+  !*** ./js/src/pages/explore.organisations.manage.hives.tsx ***!
+  \*************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
     };
-    return App;
-}(React.Component));
+    return __assign.apply(this, arguments);
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+var Hives_1 = __importDefault(__webpack_require__(/*! ../components/Hives */ "./js/src/components/Hives.tsx"));
+function OrgHives() {
+    return (jsx_runtime_1.jsxs("div", __assign({ className: "c-hives-container" }, { children: [jsx_runtime_1.jsx(Hives_1.default, { type: "Public", adminPage: true }, void 0),
+            jsx_runtime_1.jsx(Hives_1.default, { type: "Private", adminPage: true }, void 0),
+            jsx_runtime_1.jsx(Hives_1.default, { type: "Draft", adminPage: true }, void 0)] }), void 0));
+}
+var hives = document.getElementById("admin-hives");
+if (hives) {
+    ReactDOM.render(jsx_runtime_1.jsx(OrgHives, {}, void 0), hives);
+}
+
+
+/***/ }),
+
+/***/ "./js/src/pages/explore.organisations.tsx":
+/*!************************************************!*\
+  !*** ./js/src/pages/explore.organisations.tsx ***!
+  \************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+var Hives_1 = __importDefault(__webpack_require__(/*! ../components/Hives */ "./js/src/components/Hives.tsx"));
+function OrgHives() {
+    return (jsx_runtime_1.jsxs("div", __assign({ className: "c-hives-container" }, { children: [jsx_runtime_1.jsx(Hives_1.default, { type: "Public", adminPage: false }, void 0),
+            jsx_runtime_1.jsx(Hives_1.default, { type: "Private", adminPage: false }, void 0)] }), void 0));
+}
 var hives = document.getElementById("hives");
 if (hives) {
-    ReactDOM.render(jsx_runtime_1.jsx(Hives_1.default, {}, void 0), hives);
+    ReactDOM.render(jsx_runtime_1.jsx(OrgHives, {}, void 0), hives);
 }
 
 

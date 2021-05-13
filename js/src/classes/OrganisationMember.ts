@@ -14,7 +14,7 @@ export default class OrganisationMember
         this.node = node;
 
         this.email = Utils.getPerchElement(this.node, "memberEmail", "form-control") as HTMLInputElement;
-        this.memberID = Utils.getPerchElement(this.node, "memberID", "form-control") as HTMLInputElement;
+        this.memberID = Utils.getPerchElement(this.node, "submittedMemberID", "form-control") as HTMLInputElement;
         this.orgID = Utils.getPerchElement(this.node, "organisationID", "form-control") as HTMLInputElement;
         this.button = Utils.getPerchElement(this.node, "submit-button", "btn") as HTMLInputElement;
         this.messageElement = this.node.getElementsByClassName("message")[0] as HTMLElement;
@@ -50,18 +50,19 @@ export default class OrganisationMember
                 .then(res => res.json())
                 .then(async (data) => {
                     if (data) {
-                        this.memberID.value = data.memberID;
                         let isOrgMember = await this.checkUserNotInOrg();
                         if (!isOrgMember) {
                             this.enableButton();
                             this.clearMessage();
                         } else {
                             this.setMessage("User already in organisation.")
-                            this.disableButton();
+                            // this.disableButton();
                         }
                     } else {
-                        this.setMessage("User not registered.")
-                        this.disableButton();
+                        let message = `User not registered. They will receive
+                                        an email inviting them to register.`
+                        this.setMessage(message);
+                        this.enableButton();
                     }
                 })
         }, 300)
