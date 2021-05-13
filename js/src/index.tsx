@@ -4,6 +4,7 @@ import OrganisationMember from "./classes/OrganisationMember";
 import Utils from "./classes/Utils";
 import "./pages/explore.organisations";
 import "./pages/explore.organisations.manage.hives";
+import "./pages/admin.notifications";
 
 
 

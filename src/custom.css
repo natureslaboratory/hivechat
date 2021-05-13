@@ -74,3 +74,27 @@
     border: 1px solid rgb(189, 189, 189);
     padding: 5px;
 }
+
+.dropdown-menu a:hover {
+    text-decoration: none;
+}
+
+.c-notification {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    align-items: center;
+}
+
+.c-notification p {
+    margin: 0;
+}
+
+.c-notification a {
+    font-weight: bold;
+}
+
+.c-notification.c-notification--read a {
+    font-weight: normal;
+}

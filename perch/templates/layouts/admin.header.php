@@ -121,9 +121,11 @@
                                             <i class="fa fa-angle-down ml-2 opacity-8"></i>
                                         </a>
                                         <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
-                                            <a href="/admin/account" class="btn">Account Settings</a>
+                                            <a href="/admin/account"><button class="dropdown-item">Account Settings</button></a>
+                                            <a href="/admin/notifications"><button class="dropdown-item">Notifications</button></a>
+                                            <a href="/admin/invites"><button class="dropdown-item">Invites</button></a>
                                             <div tabindex="-1" class="dropdown-divider"></div>
-                                            <a href="/admin/logout" class="btn">Logout</a>
+                                            <a href="/admin/logout"><button class="dropdown-item">Logout</button></a>
                                         </div>
                                     </div>
                                 </div>

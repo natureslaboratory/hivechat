@@ -34,9 +34,25 @@ class Hivechat_Hives extends PerchAPI_Factory
 		); 
 		$jsonData = $intro;
 		$json = addslashes(json_encode($jsonData));
+		$sql = "SELECT * FROM perch3_hives WHERE hiveID=$data[hiveID] LIMIT 1";
+		$currentHive = $this->db->get_row($sql);
+		
 		
 		$sql = "UPDATE perch3_hives SET hiveTitle='$title', hiveLive='$data[hiveLive]', hiveCategory='$data[hiveCategory]', hivePrivacy='$data[hivePrivacy]', hiveDynamicFields='$json' WHERE hiveID='$data[hiveID]'";
 		$result = $this->db->execute($sql);
+
+		if ($currentHive["hivePrivacy"] == "Draft" && $data["hivePrivacy"] !== "Draft") {
+			return [
+				"notificationType" => "Published"
+			];
+		} else if ($data["hivePrivacy"] == "Draft") {
+			return [
+				"notificationType" => ""
+			];
+		}
+		return [
+			"notificationType" => "Updated"
+		];
 	}
 	
 	public function hives_byMember($memberID){

@@ -15,6 +15,10 @@ include('Hivechat.cell.class.php');
 include('Hivechat.cells.class.php');
 include('Hivechat.organisation.class.php');
 include('Hivechat.organisations.class.php');
+include('Hivechat.notification.class.php');
+include('Hivechat.notifications.class.php');
+include('Hivechat.invite.class.php');
+include('Hivechat.invites.class.php');
 include('HiveApi.php');
 
 # Create the function(s) users will call from their pages
@@ -48,7 +52,12 @@ function hive_hivechat_form_handler($SubmittedForm)
         $hives = new Hivechat_Hives($API);
         $data = $SubmittedForm->data;
         $files = $SubmittedForm->files;
-        $hives->update_hive($data, $files);
+        $result = $hives->update_hive($data, $files);
+
+        if ($data["organisationID"]) {
+          create_hive_notifications($data["organisationID"], array_merge($data, $result));
+        }
+
         break;
 
       case 'create_cell':
@@ -102,10 +111,32 @@ function hive_hivechat_form_handler($SubmittedForm)
         $orgs->delete_organisation($data["organisationID"]);
         break;
       
-      case 'add_organisation_member':
+      case 'accept_organisation_invite':
         $orgs = new Hivechat_Organisations($API);
+        $invites = new Hivechat_Invites($API);
         $data = $SubmittedForm->data;
-        $orgs->add_member($data);
+        $invite = $invites->get_invite($data["inviteID"]);
+
+        $member = $orgs->get_member_by_email($invite["memberEmail"]);
+
+        $addMemberData = [
+          "memberID" => $member["memberID"],
+          "organisationID" => $invite["organisationID"],
+          "memberEmail" => $member["memberEmail"]
+        ];
+
+        $result = $orgs->add_member($addMemberData);
+
+        if ($result) {
+          $invites->delete_invite($data["inviteID"]);
+        }
+
+        break;
+      
+      case "create_organisation_invite":
+        $invites = new Hivechat_Invites($API);
+        $data = $SubmittedForm->data;
+        $invites->create_invite($data["memberEmail"], $data["senderID"], $data["organisationID"]);
         break;
       
       case 'manage_organisation_member':
@@ -859,4 +890,117 @@ function sendEmail($opts = [])
   $Email->recipientEmail($opts["recipientEmail"]);
   $Email->send();
 
+}
+
+function mark_notifications_as_read($memberID) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $Notifications = new Hivechat_Notifications($API);
+  return $Notifications->read_all_notifications($memberID);
+}
+
+function create_notification($memberID, $creatorID, $notificationMessage, $notificationLink) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $Notifications = new Hivechat_Notifications($API);
+  return $Notifications->create_notification($memberID, $creatorID, $notificationMessage, $notificationLink);
+}
+
+function get_notifications($memberID, $opts = []) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $Notifications = new Hivechat_Notifications($API);
+
+  $list = $Notifications->get_member_notifications($memberID);
+
+  if ($opts["skip-template"]) {
+    return $list;
+  }
+
+  $Template = $API->get('Template');
+  $Template->set('hivechat/notifications.html', 'hc');
+  
+  $html = $Template->render_group($list, true);
+  echo $html;
+}
+
+function create_hive_notifications($organisationID, $data) {
+  if (!$data["notificationType"]) {
+    return;
+  }
+
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $Organisations = new Hivechat_Organisations($API);
+  $Hives = new Hivechat_Hives($API);
+
+  $hive = $Hives->get_hive($data["hiveID"]);
+  $members = $Organisations->get_organisation_members($organisationID);
+  $organisation = $Organisations->get_organisation($organisationID);
+  $creator = HiveApi::flatten($Organisations->get_member($data["memberID"]), [
+    "mappings" => [
+      "first_name" => "first_name",
+      "last_name" => "last_name"
+    ]
+  ]);
+
+  switch ($data["notificationType"]) {
+    case "Published":
+      $message = "$hive[hiveTitle] has been published by $creator[first_name] $creator[last_name] in $organisation[organisationName].";
+      $link = "/explore/organisations/$organisation[organisationSlug]/$data[hiveID]";
+      break;
+    case "Updated":
+      $message = "$hive[hiveTitle] has been updated by $creator[first_name] $creator[last_name] in $organisation[organisationName].";
+      $link = "/explore/organisations/$organisation[organisationSlug]/$data[hiveID]";
+      break;
+    default:
+      break;
+  }
+
+  foreach ($members as $member) {
+    create_notification($member["memberID"], $data["memberID"], $message, $link);
+  }
+}
+
+function delete_notification($notificationID, $memberID) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $Notifications = new Hivechat_Notifications($API);
+  $details = [
+    "notificationID" => $notificationID,
+    "memberID" => $memberID,
+    "memberHasNotification" => $Notifications->member_has_notification($notificationID, $memberID)
+  ];
+  if ($Notifications->member_has_notification($notificationID, $memberID)) {
+    $Notifications->delete_notification($notificationID);
+    $details["deleted"] = true;
+  } else {
+    $details["deleted"] = false;
+  }
+  echo json_encode($details);
+}
+
+function get_invites($memberEmail) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $Invites = new Hivechat_Invites($API);
+  $Organisations = new Hivechat_Organisations($API);
+  
+  $memberInvites = $Invites->get_member_invites($memberEmail);
+
+  $list = [];
+
+  foreach ($memberInvites as $memberInvite) {
+    $org = $Organisations->get_organisation($memberInvite["organisationID"], ["skip-template" => true]);
+    $sender = HiveApi::flatten($Organisations->get_member($memberInvite["senderID"]), [
+      "mappings" => [
+        "first_name" => "first_name",
+        "last_name" => "last_name"
+      ]
+    ]);
+    $list[] = array_merge($memberInvite, $org, $sender);
+  }
+
+  
+  $Template = $API->get('Template');
+  $Template->set('hivechat/invites.html', 'hc');
+  
+  $html = $Template->render_group($list, true);
+  $html = $Template->apply_runtime_post_processing($html, $list);
+  // $html = $Template->render_forms($html, $list);
+  echo $html;
 }

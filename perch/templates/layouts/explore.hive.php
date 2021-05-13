@@ -3,8 +3,9 @@
     $hiveJson = json_decode($hive['hiveDynamicFields'],true);
     $cell = null;
     $cellJson = null;
-    if (perch_layout_has("cellID")) {
-        $cell = get_cell(perch_layout_var("cellID", true));
+	echo perch_layout_var("cellID", true);
+    if (perch_layout_has("cellID") || perch_layout_var("slugType")) {
+        $cell = get_cell(perch_layout_has("cellID") ? perch_layout_var("cellID", true) : perch_layout_var("slugType", true));
         $cellJson = json_decode($cell['cellDynamicFields'],true);
     }else{
         $cell = get_first_cell(perch_layout_var("hiveID", true));

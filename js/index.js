@@ -31356,7 +31356,7 @@ var OrganisationMember = /** @class */ (function () {
     function OrganisationMember(node) {
         this.node = node;
         this.email = Utils_1.default.getPerchElement(this.node, "memberEmail", "form-control");
-        this.memberID = Utils_1.default.getPerchElement(this.node, "submittedMemberID", "form-control");
+        this.memberID = Utils_1.default.getPerchElement(this.node, "senderID", "form-control");
         this.orgID = Utils_1.default.getPerchElement(this.node, "organisationID", "form-control");
         this.button = Utils_1.default.getPerchElement(this.node, "submit-button", "btn");
         this.messageElement = this.node.getElementsByClassName("message")[0];
@@ -31645,6 +31645,167 @@ exports.default = Hives;
 
 /***/ }),
 
+/***/ "./js/src/components/Notification.tsx":
+/*!********************************************!*\
+  !*** ./js/src/components/Notification.tsx ***!
+  \********************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var Notification = function (props) {
+    return (jsx_runtime_1.jsx("tr", { children: jsx_runtime_1.jsx("td", { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-heading" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "c-notification " + (props.notificationRead > 0 ? "c-notification--read" : "") }, { children: [jsx_runtime_1.jsx("p", { children: jsx_runtime_1.jsx("a", __assign({ href: props.notificationLink }, { children: props.notificationMessage }), void 0) }, void 0),
+                        jsx_runtime_1.jsx("button", __assign({ className: "btn btn-outline-primary", onClick: function (e) {
+                                e.preventDefault();
+                                props.deleteNotification(props.notificationID);
+                            } }, { children: "Dismiss" }), void 0)] }), void 0) }), void 0) }, void 0) }, void 0));
+};
+exports.default = Notification;
+
+
+/***/ }),
+
+/***/ "./js/src/components/Notifications.tsx":
+/*!*********************************************!*\
+  !*** ./js/src/components/Notifications.tsx ***!
+  \*********************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var Notification_1 = __importDefault(__webpack_require__(/*! ./Notification */ "./js/src/components/Notification.tsx"));
+var Notifications = function (props) {
+    var _a = react_2.useState([]), notifications = _a[0], setNotifications = _a[1];
+    var _b = react_2.useState(null), updateInterval = _b[0], setUpdateInterval = _b[1];
+    react_2.useEffect(function () {
+        getNotifications();
+        var interval = setInterval(function () { return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, markAsRead()];
+                    case 1:
+                        _a.sent();
+                        getNotifications();
+                        return [2 /*return*/];
+                }
+            });
+        }); }, 5000);
+        setUpdateInterval(interval);
+        return function () {
+            clearInterval(updateInterval);
+        };
+    }, []);
+    function getNotifications() {
+        fetch("/page-api/get-notifications")
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
+            if (data) {
+                setNotifications(data);
+            }
+        });
+    }
+    function markAsRead() {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, fetch("/page-api/notifications-read")
+                        .then(function (res) { return res.json(); })
+                        .then(function (data) {
+                        console.log(data);
+                    })];
+            });
+        });
+    }
+    function deleteNotification(notificationID) {
+        fetch("/page-api/delete-notification?notificationID=" + notificationID)
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
+            if (data) {
+                console.log(data);
+                if (data.deleted) {
+                    console.log("deleted");
+                }
+                else {
+                    console.log("not deleted");
+                }
+            }
+            getNotifications();
+        });
+    }
+    var renderedNotifications = notifications.map(function (n) { return react_1.createElement(Notification_1.default, __assign({ deleteNotification: deleteNotification }, n, { key: n.notificationID })); });
+    var placeholder = jsx_runtime_1.jsx("tr", { children: jsx_runtime_1.jsx("td", { children: "You have no notifications" }, void 0) }, void 0);
+    return (jsx_runtime_1.jsxs("div", __assign({ className: "card mb-3" }, { children: [jsx_runtime_1.jsx("div", __assign({ style: { justifyContent: "space-between" }, className: "card-header" }, { children: jsx_runtime_1.jsx("h5", __assign({ className: "card-title m-b-0" }, { children: "Notifications" }), void 0) }), void 0),
+            jsx_runtime_1.jsx("div", __assign({ className: "table-responsive" }, { children: jsx_runtime_1.jsx("table", __assign({ className: "align-middle mb-0 table table-borderless table-striped table-hover" }, { children: jsx_runtime_1.jsx("tbody", { children: renderedNotifications.length > 0 ? renderedNotifications : placeholder }, void 0) }), void 0) }), void 0)] }), void 0));
+};
+exports.default = Notifications;
+
+
+/***/ }),
+
 /***/ "./js/src/index.tsx":
 /*!**************************!*\
   !*** ./js/src/index.tsx ***!
@@ -31662,6 +31823,7 @@ var OrganisationMember_1 = __importDefault(__webpack_require__(/*! ./classes/Org
 var Utils_1 = __importDefault(__webpack_require__(/*! ./classes/Utils */ "./js/src/classes/Utils.ts"));
 __webpack_require__(/*! ./pages/explore.organisations */ "./js/src/pages/explore.organisations.tsx");
 __webpack_require__(/*! ./pages/explore.organisations.manage.hives */ "./js/src/pages/explore.organisations.manage.hives.tsx");
+__webpack_require__(/*! ./pages/admin.notifications */ "./js/src/pages/admin.notifications.tsx");
 var organisationForms = Array.from(document.getElementsByClassName("org-form"));
 organisationForms.forEach(function (form) {
     try {
@@ -31679,6 +31841,28 @@ var deleteForms = Array.from(document.getElementsByClassName("delete-form"));
 deleteForms.forEach(function (form) {
     new DeleteForm_1.default(form);
 });
+
+
+/***/ }),
+
+/***/ "./js/src/pages/admin.notifications.tsx":
+/*!**********************************************!*\
+  !*** ./js/src/pages/admin.notifications.tsx ***!
+  \**********************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+var Notifications_1 = __importDefault(__webpack_require__(/*! ../components/Notifications */ "./js/src/components/Notifications.tsx"));
+var notificationDiv = document.getElementById("notifications");
+if (notificationDiv) {
+    ReactDOM.render(jsx_runtime_1.jsx(Notifications_1.default, {}, void 0), notificationDiv);
+}
 
 
 /***/ }),

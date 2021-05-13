@@ -164,13 +164,11 @@ class Hivechat_Organisations extends PerchAPI_Factory
 		// if false, 
 		$tempMember = $this->is_temp_member($data["memberEmail"], $data["organisationID"]);
 		if ($tempMember) {
-			// return;
+			return;
 		}
 
 		$member = $this->get_member_by_email($data["memberEmail"]);
-		if (/*!$*/ true) {
-			// Create entry in memberorgtemp
-			// Send email prompting signup 
+		if (!$member) {
 			$sql = "INSERT INTO perch3_memberorgtemp (memberEmail, organisationID) VALUES ('$data[memberEmail]', '$data[organisationID]')";
 			$result = $this->db->execute($sql);
 

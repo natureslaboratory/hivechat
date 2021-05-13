@@ -32,6 +32,10 @@
             </div>
 			<perch:input type="submit" class="btn btn-secondary" value="Update">
 			<perch:input type="hidden" class="form-control" id="hiveID" required="true" />
+			<perch:input type="hidden" id="memberID" />
+			<perch:if exists="organisationID">
+				<perch:input type="hidden" class="form-control" id="organisationID" />
+			</perch:if>
         </div>
 	</div>
 </perch:form>
