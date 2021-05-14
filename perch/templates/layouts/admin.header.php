@@ -130,16 +130,21 @@
                                     </div>
                                 </div>
                                 <div class="widget-content-left  ml-3 header-user-info">
-                                    <div class="widget-heading">
-                                        <?php echo perch_member_get('first_name'); ?> <?php echo perch_member_get('last_name'); ?>
-                                    </div>
-                                    <div class="widget-subheading">
-                                        <?php echo perch_member_get('organisation'); ?>
-                                    </div>
+                                        <div class="widget-heading">
+                                            <?php echo perch_member_get('first_name'); ?> <?php echo perch_member_get('last_name'); ?>
+                                        </div>
+                                        <div class="widget-subheading">
+                                            <?php echo perch_member_get('organisation'); ?>
+                                        </div>
                                 </div>
                             </div>
                         </div>
                     </div>        
+                </div>
+                <?php } else { ?>
+                <div class="app-header-right" style="gap: 0.8rem">
+                    <a href="/admin/login">Login</a>
+                    <a href="/admin/register">Register</a>
                 </div>
                 <?php } ?>
             </div>
