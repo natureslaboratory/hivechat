@@ -3,16 +3,13 @@
 	method="post" 
 	app="hive_hivechat" 
 	type="default" 
-	action="/explore/organisations/<perch:hc id="organisationSlug" />/manage/members" 
+	action="/explore/organisations/<perch:hc id="organisationSlug" />/manage/members/add" 
 	class="form">
     <div class="card mb-3">
         <div class="card-header">
             <h5 class="card-title m-b-0">Invite a member</h5>
         </div>
         <div class="card-body">
-			<perch:success show-form>
-				<div class="alert alert-success" role="alert">Your member has been invited.</div>
-			</perch:success>
 			<div class="form-group">
 				<label>Email</label>
 				<perch:input type="email" class="form-control" id="memberEmail" required="true" />

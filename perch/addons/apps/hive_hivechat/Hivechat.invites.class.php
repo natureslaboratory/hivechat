@@ -39,7 +39,7 @@ class Hivechat_Invites extends PerchAPI_Factory
 	}
 
     function create_invite($memberEmail, $senderID, $organisationID) {
-        if ($this->has_invite($memberEmail, $organisationID)) {
+        if ($this->has_organisation_invite($memberEmail, $organisationID)) {
             return;
         }
 
@@ -52,6 +52,14 @@ class Hivechat_Invites extends PerchAPI_Factory
 
     function has_invite($memberEmail, $inviteID) {
         $sql = "SELECT * FROM perch3_invites WHERE memberEmail='$memberEmail' AND inviteID='$inviteID' LIMIT 1";
+        if ($this->db->get_row($sql)) {
+            return true;
+        }
+        return false;
+    }
+
+    function has_organisation_invite($memberEmail, $organisationID) {
+        $sql = "SELECT * FROM perch3_invites WHERE memberEmail='$memberEmail' AND organisationID='$organisationID' LIMIT 1";
         if ($this->db->get_row($sql)) {
             return true;
         }

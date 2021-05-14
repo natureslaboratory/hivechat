@@ -114,7 +114,9 @@ function hive_hivechat_form_handler($SubmittedForm)
       case 'accept_organisation_invite':
         $orgs = new Hivechat_Organisations($API);
         $invites = new Hivechat_Invites($API);
+        $notifications = new Hivechat_Notifications($API);
         $data = $SubmittedForm->data;
+
         $invite = $invites->get_invite($data["inviteID"]);
 
         if (!$invites->has_invite(perch_member_get("email"), $data["inviteID"])) {
@@ -134,6 +136,16 @@ function hive_hivechat_form_handler($SubmittedForm)
 
         if ($result) {
           $invites->delete_invite($data["inviteID"]);
+          $memberFlat = HiveApi::flatten($member, [
+            "mappings" => [
+              "first_name" => "first_name",
+              "last_name" => "last_name"
+            ]
+          ]);
+          $organisation = $orgs->get_organisation($invite["organisationID"]);
+          $message = "$memberFlat[first_name] $memberFlat[last_name] has accepted your invitation to join $organisation[organisationName].";
+          $link = "/explore/organisations/$organisation[organisationSlug]/manage/members";
+          $notifications->create_notification($invite["senderID"], $member["memberID"], $message, $link);
         }
 
         break;
@@ -141,6 +153,7 @@ function hive_hivechat_form_handler($SubmittedForm)
       case "create_organisation_invite":
         $orgs = new Hivechat_Organisations($API);
         $invites = new Hivechat_Invites($API);
+        $email = new PerchEmail("hivechat/signup.html");
 
         $data = $SubmittedForm->data;
 
@@ -150,19 +163,62 @@ function hive_hivechat_form_handler($SubmittedForm)
         }
         
         $invites->create_invite($data["memberEmail"], $data["senderID"], $data["organisationID"]);
+        $sender = HiveApi::flatten($orgs->get_member($data["senderID"]), ["mappings" => ["first_name" => "first_name", "last_name" => "last_name"]]);
+        $organisation = $orgs->get_organisation($data["organisationID"]);
+        $message = "$sender[first_name] $sender[last_name] has invited you to join $organisation[organisationName]";
+        $link = "/admin";
+
         if ($member) {
-          $sender = HiveApi::flatten($orgs->get_member($data["senderID"]), ["mappings" => ["first_name" => "first_name", "last_name" => "last_name"]]);
-          $organisation = $orgs->get_organisation($data["organisationID"]);
-          $message = "$sender[first_name] $sender[last_name] has invited you to join $organisation[organisationName]";
           $link = "/admin/invites";
           create_notification($member["memberID"], $data["senderID"], $message, $link);
         }
+
+        $email->set_bulk([
+          "email_message" => $message,
+          "email_subject" => $message,
+          "isMember" => $member ? true : false,
+          "protocol" => $_SERVER["HTTPS"] ? "https://" : "http://",
+          "email_link" => $link
+        ]);
+
+        $email->senderName("Hivechat");
+        $email->senderEmail("caleb@natureslaboratory.co.uk");
+        $email->recipientEmail($data["memberEmail"]);
+        $email->send();
+
         break;
       
       case "decline_organisation_invite":
+        $orgs = new Hivechat_Organisations($API);
         $invites = new Hivechat_Invites($API);
+        $notifications = new Hivechat_Notifications($API);
+
         $data = $SubmittedForm->data;
         if ($invites->has_invite(perch_member_get("email"), $data["inviteID"])) {
+          $invite = $invites->get_invite($data["inviteID"]);
+          $invites->delete_invite($data["inviteID"]); 
+
+          $member = $orgs->get_member_by_email($invite["memberEmail"]);
+          $memberFlat = HiveApi::flatten($member, [
+            "mappings" => [
+              "first_name" => "first_name",
+              "last_name" => "last_name"
+            ]
+          ]);
+
+          $organisation = $orgs->get_organisation($invite["organisationID"]);
+          $message = "$memberFlat[first_name] $memberFlat[last_name] has declined your invitation to join $organisation[organisationName].";
+          $link = "/explore/organisations/$organisation[organisationSlug]/manage/members";
+          $notifications->create_notification($invite["senderID"], $member["memberID"], $message, $link);
+        }
+        break;
+      
+      case "delete_organisation_invite":
+        $invites = new Hivechat_Invites($API);
+        $orgs = new Hivechat_Organisations($API);
+        $data = $SubmittedForm->data;
+
+        if ($orgs->is_admin($data["organisationID"], perch_member_get("id"))) {
           $invites->delete_invite($data["inviteID"]); 
         }
         break;
@@ -1031,4 +1087,52 @@ function get_invites($memberEmail) {
   $html = $Template->apply_runtime_post_processing($html, $list);
   // $html = $Template->render_forms($html, $list);
   echo $html;
+}
+
+function get_organisation_invites($organisationID, $opts = []) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $Invites = new Hivechat_Invites($API);
+  $Organisations = new Hivechat_Organisations($API);
+  $organisationInvites = $Invites->get_organisation_invites($organisationID);
+
+  $list = [];
+  foreach ($organisationInvites as $invite) {
+    $sender = HiveApi::flatten($Organisations->get_member($invite["senderID"]), [
+      "mappings" => [
+        "first_name" => "first_name",
+        "last_name" => "last_name"
+      ]
+    ]);
+    $newInvite = $invite;
+    $invite["sender_first_name"] = $sender["first_name"];
+    $invite["sender_last_name"] = $sender["last_name"];
+    $list[] = $invite;
+  }
+
+  if ($opts["skip-template"]) {
+    return $list;
+  }
+
+  
+  $Template = $API->get('Template');
+  $Template->set('hivechat/organisation_invites.html', 'hc');
+  
+  $html = $Template->render_group($list, true);
+  $html = $Template->apply_runtime_post_processing($html, $list);
+
+  echo $html;
+
+}
+
+function delete_organisation_invite($inviteID) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $Invites = new Hivechat_Invites($API);
+  $Organisations = new Hivechat_Organisations($API);
+
+  $invite = $Invites->get_invite($inviteID);
+
+  if ($Organisations->is_admin($invite["organisationID"], perch_member_get("id"))) {
+    return $Invites->delete_invite($inviteID);
+  }
+  return null;
 }

@@ -31645,6 +31645,120 @@ exports.default = Hives;
 
 /***/ }),
 
+/***/ "./js/src/components/Invite.tsx":
+/*!**************************************!*\
+  !*** ./js/src/components/Invite.tsx ***!
+  \**************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var Invite = function (props) {
+    console.log(props);
+    return (jsx_runtime_1.jsxs("tr", { children: [jsx_runtime_1.jsx("td", { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content p-0" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content-wrapper" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content-left flex2" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-heading" }, { children: props.memberEmail }), void 0) }), void 0) }), void 0) }), void 0) }, void 0),
+            jsx_runtime_1.jsx("td", { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content p-0" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content-wrapper" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content-left flex2" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-heading" }, { children: props.sender_first_name + " " + props.sender_last_name }), void 0) }), void 0) }), void 0) }), void 0) }, void 0),
+            jsx_runtime_1.jsx("td", { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content p-0" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content-wrapper" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content-left flex2" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-heading" }, { children: props.dateCreated }), void 0) }), void 0) }), void 0) }), void 0) }, void 0),
+            jsx_runtime_1.jsx("td", { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-heading" }, { children: jsx_runtime_1.jsx("button", __assign({ className: "btn btn-danger", onClick: function (e) {
+                            e.preventDefault();
+                            props.deleteInvite(props.inviteID);
+                        } }, { children: "Delete" }), void 0) }), void 0) }, void 0)] }, void 0));
+};
+exports.default = Invite;
+
+
+/***/ }),
+
+/***/ "./js/src/components/Invites.tsx":
+/*!***************************************!*\
+  !*** ./js/src/components/Invites.tsx ***!
+  \***************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var Invite_1 = __importDefault(__webpack_require__(/*! ./Invite */ "./js/src/components/Invite.tsx"));
+var Invites = function (props) {
+    var _a = react_2.useState([]), invites = _a[0], setInvites = _a[1];
+    react_2.useEffect(function () {
+        getInvites();
+    }, []);
+    var urlSlug = "";
+    var urlSplit = window.location.href.split("/");
+    for (var i = 0; i < urlSplit.length; i++) {
+        var element = urlSplit[i];
+        if (element == "organisations") {
+            urlSlug = urlSplit[i + 1];
+        }
+    }
+    function getInvites() {
+        fetch("/page-api/get-organisation-invites?urlSlug=" + urlSlug)
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
+            console.log(data, urlSlug);
+            if (data) {
+                setInvites(data);
+            }
+        });
+    }
+    function deleteInvite(inviteID) {
+        fetch("/page-api/delete-organisation-invite?inviteID=" + inviteID)
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
+            if (data) {
+                console.log(data);
+                if (data.deleted) {
+                    console.log("deleted");
+                }
+                else {
+                    console.log("not deleted");
+                }
+            }
+            getInvites();
+        });
+    }
+    var renderedInvites = invites.map(function (n) { return react_1.createElement(Invite_1.default, __assign({ deleteInvite: deleteInvite }, n, { key: n.inviteID })); });
+    var placeholder = jsx_runtime_1.jsx("tr", { children: jsx_runtime_1.jsx("td", __assign({ colSpan: 4 }, { children: "You have no pending invites" }), void 0) }, void 0);
+    return (jsx_runtime_1.jsxs("div", __assign({ className: "card mb-3" }, { children: [jsx_runtime_1.jsx("div", __assign({ style: { justifyContent: "space-between" }, className: "card-header" }, { children: jsx_runtime_1.jsx("h5", __assign({ className: "card-title m-b-0" }, { children: "Pending Invites" }), void 0) }), void 0),
+            jsx_runtime_1.jsx("div", __assign({ className: "table-responsive" }, { children: jsx_runtime_1.jsxs("table", __assign({ className: "align-middle mb-0 table table-borderless table-striped table-hover" }, { children: [jsx_runtime_1.jsx("thead", { children: jsx_runtime_1.jsxs("tr", { children: [jsx_runtime_1.jsx("th", { children: "Email" }, void 0),
+                                    jsx_runtime_1.jsx("th", { children: "Invited By" }, void 0),
+                                    jsx_runtime_1.jsx("th", { children: "Date" }, void 0),
+                                    jsx_runtime_1.jsx("th", { children: "Actions" }, void 0)] }, void 0) }, void 0),
+                        jsx_runtime_1.jsx("tbody", { children: renderedInvites.length > 0 ? renderedInvites : placeholder }, void 0)] }), void 0) }), void 0)] }), void 0));
+};
+exports.default = Invites;
+
+
+/***/ }),
+
 /***/ "./js/src/components/Notification.tsx":
 /*!********************************************!*\
   !*** ./js/src/components/Notification.tsx ***!
@@ -31824,6 +31938,7 @@ var Utils_1 = __importDefault(__webpack_require__(/*! ./classes/Utils */ "./js/s
 __webpack_require__(/*! ./pages/explore.organisations */ "./js/src/pages/explore.organisations.tsx");
 __webpack_require__(/*! ./pages/explore.organisations.manage.hives */ "./js/src/pages/explore.organisations.manage.hives.tsx");
 __webpack_require__(/*! ./pages/admin.notifications */ "./js/src/pages/admin.notifications.tsx");
+__webpack_require__(/*! ./pages/explore.organsations.manage.members.add */ "./js/src/pages/explore.organsations.manage.members.add.tsx");
 var organisationForms = Array.from(document.getElementsByClassName("org-form"));
 organisationForms.forEach(function (form) {
     try {
@@ -31937,6 +32052,28 @@ function OrgHives() {
 var hives = document.getElementById("hives");
 if (hives) {
     ReactDOM.render(jsx_runtime_1.jsx(OrgHives, {}, void 0), hives);
+}
+
+
+/***/ }),
+
+/***/ "./js/src/pages/explore.organsations.manage.members.add.tsx":
+/*!******************************************************************!*\
+  !*** ./js/src/pages/explore.organsations.manage.members.add.tsx ***!
+  \******************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+var Invites_1 = __importDefault(__webpack_require__(/*! ../components/Invites */ "./js/src/components/Invites.tsx"));
+var invites = document.getElementById("invites");
+if (invites) {
+    ReactDOM.render(jsx_runtime_1.jsx(Invites_1.default, {}, void 0), invites);
 }
 
 
