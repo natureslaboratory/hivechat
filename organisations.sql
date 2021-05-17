@@ -1,6 +1,4 @@
-CREATE TABLE perch3_memberorg (
-    memberOrgID INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    memberID int(11) NOT NULL,
-    organisationID int(11) NOT NULL,
-    dateCreated datetime default NOW()
-);
+-- Added nullable orgID, and un-nullable hivePrivacy to perch3_hives
+
+ALTER TABLE perch3_hives ADD hivePrivacy VARCHAR(255) NOT NULL DEFAULT 'Draft' AFTER hiveLive,
+                         ADD organisationID INT(11) NOT NULL DEFAULT '-1' AFTER hiveDynamicFields;

@@ -22,6 +22,7 @@ class Hivechat_Organisations extends PerchAPI_Factory
 			organisationName VARCHAR(255) NOT NULL,
 			organisationSlug VARCHAR(255) NOT NULL,
 			organisationLogo VARCHAR(255),
+			organisationScope varchar(255),
 			createdBy INT(11) NOT NULL,
 			organisationDesc text,
 			dateCreated datetime default NOW(),
@@ -30,13 +31,9 @@ class Hivechat_Organisations extends PerchAPI_Factory
 			memberOrgID INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 			memberID INT(11) NOT NULL,
 			organisationID INT(11) NOT NULL,
+			memberRole INT(11) NOT NULL,
 			dateCreated datetime DEFAULT NOW()
-		); CREATE TABLE IF NOT EXISTS perch3_memberorgtemp (
-			memberOrgTempID INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-			memberEmail VARCHAR(255) NOT NULL,
-			organisationID INT(11) NOT NULL,
-			dateCreated datetime DEFAULT NOW()
-		)";
+		);";
 
 		$statements = explode(';', $sql);
 		foreach ($statements as $statement) {
@@ -158,51 +155,9 @@ class Hivechat_Organisations extends PerchAPI_Factory
 
 	public function add_member($data)
 	{
-		// Receive from form - email address, organisationID, memberID (form submitter)
-		// Check if is a member (by email) by trying to grab their data
-		// if true, insert into perch3_memberorg
-		// if false, 
-		$tempMember = $this->is_temp_member($data["memberEmail"], $data["organisationID"]);
-		if ($tempMember) {
-			return;
-		}
-
 		$member = $this->get_member_by_email($data["memberEmail"]);
-		if (!$member) {
-			$sql = "INSERT INTO perch3_memberorgtemp (memberEmail, organisationID) VALUES ('$data[memberEmail]', '$data[organisationID]')";
-			$result = $this->db->execute($sql);
-
-			if ($result) {
-				$organisation = $this->get_organisation($data["organisationID"]);
-				$memberUnflattened = $this->get_member($data["submittedMemberID"]);
-				$member = HiveApi::flatten($memberUnflattened, [
-					"mappings" => [
-						"first_name" => "first_name",
-						"last_name" => "last_name"
-					]
-				]);
-
-				$message = "$member[first_name] $member[last_name] has invited you to join $organisation[organisationName].";
-				
-				$sendInfo = $member;
-				$sendInfo["organisationSlug"] = $organisation["organisationSlug"];
-				$sendInfo["email_subject"] = $message;
-				$sendInfo["email_message"] = $message;
-
-
-					
-				$email = new PerchEmail("hivechat/signup.html");
-				$email->set_bulk($sendInfo);
-				$email->senderName("HiveChat");
-				$email->senderEmail("caleb@natureslaboratory.co.uk");
-				$email->recipientEmail($data["memberEmail"]);
-				$email->send();
-				return;
-			} else {
-				return;
-			}
-		}
-
+		
+		// Checks it already an org member
 		$memberOrg = $this->get_memberorg($data["organisationID"], $member["memberID"]);
 		if ($memberOrg) {
 			return;
@@ -212,13 +167,6 @@ class Hivechat_Organisations extends PerchAPI_Factory
 			$sql = "INSERT INTO perch3_memberorg (organisationID, memberID, memberRole) VALUES ('$data[organisationID]', '$data[memberID]', 1)";
 			return $this->db->execute($sql);
 		}
-
-
-	}
-
-	public function is_temp_member($memberEmail, $organisationID) {
-		$sql = "SELECT * FROM perch3_memberorgtemp WHERE memberEmail='$memberEmail' AND organisationID='$organisationID' LIMIT 1";
-		return $this->db->get_row($sql);
 	}
 
 	public function get_member($memberID)

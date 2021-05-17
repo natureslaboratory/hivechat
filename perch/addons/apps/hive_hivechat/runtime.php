@@ -120,7 +120,6 @@ function hive_hivechat_form_handler($SubmittedForm)
         $invite = $invites->get_invite($data["inviteID"]);
 
         if (!$invites->has_invite(perch_member_get("email"), $data["inviteID"])) {
-          // Check the member
           break;
         }
 
