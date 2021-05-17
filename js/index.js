@@ -31219,7 +31219,7 @@ var Organisation = /** @class */ (function () {
                 var _this = this;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4 /*yield*/, fetch("/page-api/isorganisation?s=" + slug)
+                        case 0: return [4 /*yield*/, fetch("/page-api/is-organisation?s=" + slug)
                                 .then(function (response) { return response.json(); })
                                 .then(function (data) {
                                 if (data) {
@@ -31388,7 +31388,7 @@ var OrganisationMember = /** @class */ (function () {
         var _this = this;
         clearTimeout(this.timeout);
         this.timeout = setTimeout(function () {
-            fetch("/page-api/ismember?email=" + _this.email.value.trim())
+            fetch("/page-api/is-member?email=" + _this.email.value.trim())
                 .then(function (res) { return res.json(); })
                 .then(function (data) { return __awaiter(_this, void 0, void 0, function () {
                 var isOrgMember, message;
@@ -31426,7 +31426,7 @@ var OrganisationMember = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         isOrgMember = false;
-                        return [4 /*yield*/, fetch("/page-api/isorganisationmember?orgID=" + this.orgID.value.trim() + "&memberID=" + this.memberID.value.trim())
+                        return [4 /*yield*/, fetch("/page-api/is-organisation-member?orgID=" + this.orgID.value.trim() + "&memberID=" + this.memberID.value.trim())
                                 .then(function (res) { return res.json(); })
                                 .then(function (data) {
                                 if (data) {

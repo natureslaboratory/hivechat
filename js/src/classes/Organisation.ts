@@ -81,7 +81,7 @@ export default class Organisation
             this.orgNameInfo.innerHTML = null;
         } else {
             this.timeout = setTimeout(async () => {
-                await fetch(`/page-api/isorganisation?s=${slug}`)
+                await fetch(`/page-api/is-organisation?s=${slug}`)
                     .then(response => response.json())
                     .then(data => {
                         if (data) {

@@ -46,7 +46,7 @@ export default class OrganisationMember
         clearTimeout(this.timeout);
 
         this.timeout = setTimeout(() => {
-            fetch(`/page-api/ismember?email=${this.email.value.trim()}`)
+            fetch(`/page-api/is-member?email=${this.email.value.trim()}`)
                 .then(res => res.json())
                 .then(async (data) => {
                     if (data) {
@@ -71,7 +71,7 @@ export default class OrganisationMember
     private async checkUserNotInOrg()
     {
         let isOrgMember = false;
-        await fetch(`/page-api/isorganisationmember?orgID=${this.orgID.value.trim()}&memberID=${this.memberID.value.trim()}`)
+        await fetch(`/page-api/is-organisation-member?orgID=${this.orgID.value.trim()}&memberID=${this.memberID.value.trim()}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data) {
