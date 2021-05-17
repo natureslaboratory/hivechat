@@ -1,4 +1,14 @@
-<perch:form id="update_cell" method="post" app="hive_hivechat" type="default" action="">
+<perch:form 
+	id="update_cell" 
+	method="post" 
+	app="hive_hivechat" 
+	type="default"
+	<perch:if exists="url_organisationSlug">
+		action="/explore/organisations/<perch:hc id="url_organisationSlug">/manage/hives/edit/<perch:hc id="url_actionID">"
+	<perch:else>
+		action=""
+	</perch:if> 
+>
 	<div class="card mb-3">
         <div class="card-header">
             <h5 class="card-title m-b-0">Update Cell</h5>
@@ -21,7 +31,7 @@
             </div>
             <div class="form-group">
 	            <label>Introduction</label>
-				<perch:input type="textarea" class="form-control redactor" id="introduction" required="false" />
+				<perch:input type="textarea" class="form-control redactor" id="cellIntroduction" required="false" />
             </div>
             <div class="form-group">
 	            <label>Embedded Video</label>

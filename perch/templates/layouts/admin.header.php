@@ -52,6 +52,8 @@
 		});
 	</script>
 	<link href="/src/main.css?v=<?php echo rand(); ?>" rel="stylesheet"></head>
+	<link href="/src/custom.css?v=<?php echo rand(); ?>" rel="stylesheet"></head>
+
 <body onload="setInterval('chat.update()', 1000)">
     <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
         <div class="app-header header-shadow">
@@ -119,23 +121,30 @@
                                             <i class="fa fa-angle-down ml-2 opacity-8"></i>
                                         </a>
                                         <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
-                                            <a href="/admin/account" class="btn">Account Settings</a>
+                                            <a href="/admin/account"><button class="dropdown-item">Account Settings</button></a>
+                                            <a href="/admin/notifications"><button class="dropdown-item">Notifications</button></a>
+                                            <a href="/admin/invites"><button class="dropdown-item">Invites</button></a>
                                             <div tabindex="-1" class="dropdown-divider"></div>
-                                            <a href="/admin/logout" class="btn">Logout</a>
+                                            <a href="/admin/logout"><button class="dropdown-item">Logout</button></a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="widget-content-left  ml-3 header-user-info">
-                                    <div class="widget-heading">
-                                        <?php echo perch_member_get('first_name'); ?> <?php echo perch_member_get('last_name'); ?>
-                                    </div>
-                                    <div class="widget-subheading">
-                                        <?php echo perch_member_get('organisation'); ?>
-                                    </div>
+                                        <div class="widget-heading">
+                                            <?php echo perch_member_get('first_name'); ?> <?php echo perch_member_get('last_name'); ?>
+                                        </div>
+                                        <div class="widget-subheading">
+                                            <?php echo perch_member_get('organisation'); ?>
+                                        </div>
                                 </div>
                             </div>
                         </div>
                     </div>        
+                </div>
+                <?php } else { ?>
+                <div class="app-header-right" style="gap: 0.8rem">
+                    <a href="/admin/login">Login</a>
+                    <a href="/admin/register">Register</a>
                 </div>
                 <?php } ?>
             </div>
@@ -178,9 +187,11 @@
 	                            <?php
 		                            if(perch_member_logged_in()){
 			                            echo '<li class="app-sidebar__heading">Menu</li>';
+                                        echo '<li><a href="/admin">Home</a></li>';
 				                        perch_pages_navigation(array(
 									        'from-path' => '/admin',
-									        'template' => 'admin_item.html'
+									        'template' => 'admin_item.html',
+                                            'levels' => 1
 									    ));  
 								    }
 								    echo '<li class="app-sidebar__heading">Explore</li>';

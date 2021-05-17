@@ -1,9 +1,19 @@
 
 <div class="card mb-3">
     <div class="card-header">
-        <h5 class="card-title m-b-0"><perch:hc id="cellTitle" /><perch:if id="cellDateTime" value="0000-00-00 00:00:00" match="not"> &bull; <perch:hc id="cellDateTime" /></h5>
+        <h5 class="card-title m-b-0"><perch:hc id="cellTitle" />
+          <perch:if id="cellDateTime" value="2000-01-01 00:00:00" match="not">
+            <perch:if id="cellDateTime" value="0000-00-00 00:00:00" match="not">
+              &bull; <perch:hc id="cellDateTime" />
+            </perch:if>
+          </perch:if>
+        </h5>
     </div>
     <div class="card-body">
-		<a href="/admin/your-hives/<perch:hc id="hiveID" />/<perch:hc id="cellID" />" type="submit" class="btn btn-secondary">Manage</a>
+    <perch:if exists="url_organisationSlug">
+      <a href="/explore/organisations/<perch:hc id="url_organisationSlug" >/manage/hives/edit/<perch:hc id="hiveID" />/<perch:hc id="cellID" />" type="submit" class="btn btn-secondary">Manage</a>
+    <perch:else>
+      <a href="/admin/your-hives/<perch:hc id="hiveID" />/<perch:hc id="cellID" />" type="submit" class="btn btn-secondary">Manage</a>
+    </perch:if>
     </div>
 </div>

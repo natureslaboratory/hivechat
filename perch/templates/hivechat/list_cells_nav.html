@@ -2,11 +2,11 @@
     <p class="list-group-item-text"></p>
     <perch:if exists="perch_item_first">
     	<perch:if id="active" value="yes" match="neq">
-			<a href="/hive/<perch:hc id="hiveID" />" class="btn btn-small btn-primary">View</a>
+			<a href="<perch:hc id="relativePath"><perch:hc id="hiveID" />" class="btn btn-small btn-primary">View</a>
 		</perch:if>
     <perch:else/>
 	    <perch:if id="active" value="yes" match="neq">
-			<a href="/hive/<perch:hc id="hiveID" />/<perch:hc id="cellID" />" class="btn btn-small btn-primary">View</a>
+			<a href="<perch:hc id="relativePath"><perch:hc id="hiveID" />/<perch:hc id="cellID" />" class="btn btn-small btn-primary">View</a>
 		</perch:if>
     </perch:if>
 </li>
