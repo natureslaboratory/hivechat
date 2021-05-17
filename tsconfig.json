@@ -4,6 +4,11 @@
         "sourceMap": true,
         "jsx": "react-jsx",
         "moduleResolution": "node",
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "lib": [
+            "DOM",
+            "DOM.Iterable",
+        ],
+        "downlevelIteration": true
     }
 }
