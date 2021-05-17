@@ -1,0 +1,19 @@
+<perch:form id="manage_organisation_member" method="post" app="hive_hivechat" type="default" action="/admin/organisations/<perch:hc id="organisationSlug" />/members" class="form">
+    <div class="card mb-3">
+        <div class="card-header">
+            <h5 class="card-title m-b-0">Manage Member</h5>
+        </div>
+        <div class="card-body">
+			<perch:success show-form>
+				<div class="alert alert-success" role="alert">Your member has been updated.</div>
+			</perch:success>
+			<div class="form-group">
+				<label>Role</label>
+				<perch:input type="select" class="form-control" id="memberRole" required="true" options="Admin, Member" />
+                <perch:input type="text" id="memberID" hidden>
+                <perch:input type="text" id="organisationID" hidden>
+            </div>
+			<perch:input type="submit" class="btn btn-secondary organisationSubmit" value="Update">
+        </div>
+	</div>
+</perch:form>

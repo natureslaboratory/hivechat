@@ -1,0 +1,100 @@
+.form-group-columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
+    column-gap: 1rem;
+}
+
+[id*="organisationName"] + p {
+    margin-top: 0.3rem;
+}
+
+[id*="organisationName"].available + p {
+    color: green;
+}
+
+[id*="organisationName"].unavailable + p {
+    color: red;
+}
+
+.hidden {
+    position: absolute;
+    opacity: 0;
+    max-height: 1px;
+}
+
+.page-title-logo {
+    margin-right: 30px;
+    max-height: 100px;
+    max-width: 250px;
+}
+
+.hide {
+    display: none;
+}
+
+.c-hives-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.c-hives {
+
+}
+
+.c-hives__title {
+    margin-bottom: 1.5rem;
+}
+
+.c-hives__collection {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: 2rem;
+}
+
+.c-hives__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.c-pagination {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.c-hives__controls {
+    display: flex;
+    gap: 1rem;
+}
+
+.c-hives__controls [type="search"] {
+    border: 1px solid rgb(189, 189, 189);
+    padding: 5px;
+}
+
+.dropdown-menu a:hover {
+    text-decoration: none;
+}
+
+.c-notification {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    align-items: center;
+}
+
+.c-notification p {
+    margin: 0;
+}
+
+.c-notification a {
+    font-weight: bold;
+}
+
+.c-notification.c-notification--read a {
+    font-weight: normal;
+}

@@ -15,13 +15,13 @@ class Hivechat_Cells extends PerchAPI_Factory
 	public $static_fields   = array('cellID', 'hiveID', 'memberID', 'cellTitle', 'cellDateTime', 'cellDynamicFields');
 	
 	public function create_cell($data){
-		$sql = "INSERT INTO perch3_cells (hiveID, memberID, cellTitle, cellDateTime, cellDynamicFields) VALUES ('$data[hiveID]', '$data[memberID]', '$data[cellTitle]', '$data[cellDateTime]', '$data[cellDynamicFields]')";
+		$sql = "INSERT INTO perch3_cells (hiveID, memberID, cellTitle, cellDateTime, cellLive, cellDynamicFields) VALUES ('$data[hiveID]', '$data[memberID]', '$data[cellTitle]', '$data[cellDateTime]', 'No', '$data[cellDynamicFields]')";
 		$result = $this->db->execute($sql);
 	}
 	
 	public function update_cell($data){
 		
-		$introduction = $data['introduction'];
+		$introduction = $data['cellIntroduction'];
 		$intro = array(
 		  'introduction' => array(
 		    '_flang' => "html",
@@ -34,6 +34,7 @@ class Hivechat_Cells extends PerchAPI_Factory
 		$json = addslashes(json_encode($jsonData));
 		
 		$sql = "UPDATE perch3_cells SET cellTitle='$data[cellTitle]', cellDateTime='$data[cellDateTime]', cellLive='$data[cellLive]', cellDynamicFields='$json' WHERE cellID='$data[cellID]'";
+		// echo $sql;
 		$result = $this->db->execute($sql);
 	}
 	
@@ -51,7 +52,6 @@ class Hivechat_Cells extends PerchAPI_Factory
 	
 	public function delete_cell($cellID){
 		$sql = "DELETE FROM perch3_cells WHERE cellID='$cellID'";
-		echo $sql;
 		$result = $this->db->execute($sql);
 		return $result;
 	}

@@ -1,0 +1,44 @@
+<div class="app-page-title">
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+            <perch:if exists="organisationLogo">
+                <img class="page-title-logo" src="<perch:hc id="organisationLogo">" alt="<perch:hc id="organisationName">">
+            <perch:else>
+                <div class="page-title-icon">
+                    <i class="pe-7s-user icon-gradient bg-mean-fruit"></i>
+                </div>
+            </perch:if>
+            <div>
+                <perch:hc id="organisationName">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="mb-3 card">
+            <div class="card-header-tab card-header">
+                <div class="card-header-title">
+                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    About <perch:hc id="organisationName">
+                </div>
+            </div>
+            <div class="card-body">
+                <perch:hc id="organisationDesc">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="mb-3 card">
+            <div class="card-header-tab card-header">
+                <div class="card-header-title">
+                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    About <perch:hc id="organisationName">
+                </div>
+            </div>
+            <div class="card-body">
+                <perch:hc id="organisationDesc">
+            </div>
+        </div>
+    </div>
+</div>

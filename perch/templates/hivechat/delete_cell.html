@@ -1,4 +1,14 @@
-<perch:form id="delete_cell" method="post" app="hive_hivechat" type="default" action="/admin/your-hives/<perch:hc id="hiveID" />">
+<perch:form 
+    id="delete_cell" 
+    method="post" 
+    app="hive_hivechat" 
+    type="default" 
+    <perch:if exists="url_organisationSlug">
+        action="/explore/organisations/<perch:hc id="url_organisationSlug">/manage/hives/edit/<perch:hc id="hiveID"> "
+    <perch:else>
+        action="/admin/your-hives/<perch:hc id="hiveID" />"
+    </perch:if>
+>
 	<div class="card mb-3">
         <div class="card-header">
             <h5 class="card-title m-b-0">Delete Cell</h5>

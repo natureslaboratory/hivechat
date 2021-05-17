@@ -1,7 +1,22 @@
-<perch:form id="create_hive" method="post" app="hive_hivechat" type="default" action="" class="col-lg-12">
+<perch:form 
+	id="create_hive" 
+	method="post" 
+	app="hive_hivechat" 
+	type="default" 
+	<perch:if exists="organisationSlug">
+		action="/explore/organisations/<perch:hc id="organisationSlug">/manage/hives"
+	<perch:else>
+		action="" 
+	</perch:if>
+	class=""
+	>
 	<div class="card mb-3">
         <div class="card-header">
-            <h5 class="card-title m-b-0">Create a Hive</h5>
+			<perch:if exists="organisationID">
+				<h5 class="card-title m-b-0">Create an Organisation Hive</h5>
+			<perch:else>
+				<h5 class="card-title m-b-0">Create a Hive</h5>
+			</perch:if>
         </div>
         <div class="card-body">
 			<perch:success>
@@ -16,6 +31,9 @@
 				<perch:input type="select" class="form-control" id="hiveCategory" required="true" options="Business,Environment,Health,How To" />
             </div>
 			<perch:input type="submit" class="btn btn-secondary" value="Create">
+			<perch:if exists="organisationID">
+				<perch:input hidden type="text" id="organisationID">
+			</perch:if>
         </div>
 	</div>
 </perch:form>

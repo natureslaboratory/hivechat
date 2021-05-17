@@ -1,0 +1,57 @@
+<perch:before>
+    <div class="card mb-3">
+        <div style="justify-content: space-between;" class="card-header">
+            <h5 class="card-title m-b-0">Members</h5>
+            <a href="/explore/organisations/<perch:hc id="organisationSlug" />/manage/members/add"><button class="btn btn-alternate">+ Add Member</button></a>
+        </div>
+        <div class="table-responsive">
+            <table class="align-middle mb-0 table table-borderless table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+</perch:before>
+                    <tr>
+                        <td>
+                            <div class="widget-content p-0">
+                                <div class="widget-content-wrapper">
+                                    <div class="widget-content-left flex2">
+                                        <div class="widget-heading"><perch:hc id="memberProperties_first_name"> <perch:hc id="memberProperties_last_name"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="widget-content p-0">
+                                <div class="widget-content-wrapper">
+                                    <div class="widget-content-left flex2">
+                                        <div class="widget-heading"><perch:hc id="memberEmail"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="widget-content p-0">
+                                <div class="widget-content-wrapper">
+                                    <div class="widget-content-left flex2">
+                                        <div class="widget-heading"><perch:hc id="memberRole"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="/explore/organisations/<perch:hc id="organisationSlug">/manage/members/update/<perch:hc id="memberID" />"><button class="btn btn-primary">Manage</button></a>
+                        </td>
+                    </tr>
+<perch:after>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</perch:after>

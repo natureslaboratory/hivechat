@@ -1,0 +1,17 @@
+<html>
+<head>
+    <title><perch:email id="email_subject"></title>
+</head>
+<body>
+    <p>
+        <perch:email id="email_message" encode="false">
+    </p>
+    <a href="<perch:email id="protocol"><perch:email id="http_host"><perch:email id="email_link">" style="text-decoration: none; padding: 0.5rem; border: none; background-color: #1264FA; color: white; cursor: pointer;">
+        <perch:if id="isMember" value={true}>
+            View Invites
+        <perch:else>
+            Sign Up
+        </perch:if>
+    </a>
+</body>
+</html>

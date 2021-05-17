@@ -1,6 +1,6 @@
 <?php
 
-class Hivechat_Hive extends PerchAPI_Base
+class Hivechat_Organisation extends PerchAPI_Base
 {
     protected $table     = 'hives';
 	protected $pk        = 'hiveID';

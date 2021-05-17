@@ -1,0 +1,23 @@
+<html>
+<head>
+    <title><perch:email id="email_subject"></title>
+</head>
+<body>
+  <h1>A message from your website</h1>
+  <p><perch:email id="email_message" encode="false"></p>
+  <table>
+    <tr>
+      <th>Name</th>
+      <td><perch:email id="name"></td>
+    </tr>
+    <tr>
+      <th>Email</th>
+      <td><perch:email id="email"></td>
+    </tr>
+    <tr>
+      <th>Message</th>
+      <td><perch:email id="message" encode="false"></td>
+    </tr>
+  </table>
+</body>
+</html>
