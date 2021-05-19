@@ -19,6 +19,8 @@ include('Hivechat.notification.class.php');
 include('Hivechat.notifications.class.php');
 include('Hivechat.invite.class.php');
 include('Hivechat.invites.class.php');
+include('Hivechat.orgsocial.class.php');
+include('Hivechat.orgsocials.class.php');
 include('HiveApi.php');
 
 # Create the function(s) users will call from their pages
@@ -234,6 +236,12 @@ function hive_hivechat_form_handler($SubmittedForm)
         $orgs->delete_member($data["organisationID"], $data["memberID"]);
         // printArray($data);
         break;
+      case 'add_org_social':
+        $orgsocials = new Hivechat_OrgSocials($API);
+        $data = $SubmittedForm->data;
+        $orgsocials->add_org_social($data);
+        break;
+
     }
   }
 }
@@ -1134,4 +1142,26 @@ function delete_organisation_invite($inviteID) {
     return $Invites->delete_invite($inviteID);
   }
   return null;
+}
+
+function get_org_socials($organisationID) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $orgsocials = new Hivechat_OrgSocials($API);
+  return $orgsocials->get_org_socials($organisationID);
+}
+
+function add_organisation_socials($organisationID) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+
+  $Template = $API->get('Template');
+  $Template->set('hivechat/add_organisation_social.html', 'hc');
+  $data = [
+    "organisationID" => $organisationID
+  ];
+
+  $html = $Template->render($data);
+  $html = $Template->apply_runtime_post_processing($html, $data);
+
+  echo $html;
+
 }

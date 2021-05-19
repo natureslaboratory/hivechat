@@ -17,6 +17,7 @@ perch_layout("admin.back", [
 <div class="row">
     <div class="col-md-6">
         <?php get_organisation($organisation["organisationID"]) ?>
+        <?php add_organisation_socials($organisation["organisationID"]) ?>
     </div>
     <div class="col-md-6">
         <?php delete_organisation($organisation["organisationID"]); ?>
