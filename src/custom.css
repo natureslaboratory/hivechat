@@ -98,3 +98,17 @@
 .c-notification.c-notification--read a {
     font-weight: normal;
 }
+
+.c-logos {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.c-logo {
+    height: 23px;
+    width: auto;
+}
+
+.c-logo__main {
+    fill: rgb(102, 102, 102);
+}

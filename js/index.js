@@ -33527,6 +33527,112 @@ exports.default = AddMembersWrapper;
 
 /***/ }),
 
+/***/ "./js/src/components/EditSocial.tsx":
+/*!******************************************!*\
+  !*** ./js/src/components/EditSocial.tsx ***!
+  \******************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var EditSocial = function (props) {
+    var _a = __read(react_1.useState(false), 2), showDelete = _a[0], setShowDelete = _a[1];
+    var buttonsNormal = (jsx_runtime_1.jsxs(react_1.default.Fragment, { children: [jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", onClick: function (e) {
+                    e.preventDefault();
+                    props.saveSocial(props.editSocial);
+                    props.backToSocials();
+                } }, { children: "Save" }), void 0),
+            jsx_runtime_1.jsx("button", __assign({ className: "btn btn-secondary", onClick: function (e) {
+                    e.preventDefault();
+                    props.backToSocials();
+                } }, { children: "Cancel" }), void 0),
+            jsx_runtime_1.jsx("button", __assign({ className: "btn btn-danger", onClick: function (e) {
+                    e.preventDefault();
+                    setShowDelete(true);
+                } }, { children: "Delete" }), void 0)] }, void 0));
+    var buttonsDelete = (jsx_runtime_1.jsxs(react_1.default.Fragment, { children: [jsx_runtime_1.jsx("button", __assign({ className: "btn btn-danger", onClick: function (e) {
+                    e.preventDefault();
+                    props.deleteSocial(props.editSocial);
+                    props.backToSocials();
+                } }, { children: "Delete" }), void 0),
+            jsx_runtime_1.jsx("button", __assign({ className: "btn btn-secondary", onClick: function (e) {
+                    e.preventDefault();
+                    setShowDelete(false);
+                } }, { children: "Cancel" }), void 0)] }, void 0));
+    var formBody = (jsx_runtime_1.jsxs(react_1.default.Fragment, { children: [jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Type" }, void 0),
+                    jsx_runtime_1.jsxs("select", __assign({ id: "socialType", className: "form-control", value: props.editSocial.socialType, onChange: function (e) {
+                            props.setEditSocial(__assign(__assign({}, props.editSocial), { socialType: e.target.value }));
+                        } }, { children: [jsx_runtime_1.jsx("option", __assign({ value: "Facebook" }, { children: "Facebook" }), void 0),
+                            jsx_runtime_1.jsx("option", __assign({ value: "Twitter" }, { children: "Twitter" }), void 0),
+                            jsx_runtime_1.jsx("option", __assign({ value: "LinkedIn" }, { children: "LinkedIn" }), void 0)] }), void 0)] }), void 0),
+            jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Link" }, void 0),
+                    jsx_runtime_1.jsx("input", { type: "text", className: "form-control", value: props.editSocial.socialLink, onChange: function (e) {
+                            props.setEditSocial(__assign(__assign({}, props.editSocial), { socialLink: e.target.value }));
+                        } }, void 0)] }), void 0)] }, void 0));
+    var deleteBody = jsx_runtime_1.jsx("p", { children: "Are you sure?" }, void 0);
+    return (jsx_runtime_1.jsxs("div", __assign({ className: "card mb-3" }, { children: [jsx_runtime_1.jsxs("div", __assign({ className: "card-header", style: { display: "flex", justifyContent: "space-between" } }, { children: [jsx_runtime_1.jsx("h5", __assign({ className: "card-title m-b-0" }, { children: "Edit Social" }), void 0),
+                    jsx_runtime_1.jsx("button", __assign({ className: "btn btn-outline-primary", onClick: props.backToSocials }, { children: "Back To Socials" }), void 0)] }), void 0),
+            jsx_runtime_1.jsx("div", __assign({ className: "card-body" }, { children: jsx_runtime_1.jsxs("form", __assign({ className: "form" }, { children: [showDelete ? deleteBody : formBody, jsx_runtime_1.jsx("div", __assign({ className: "btn-container", style: {
+                                display: "flex",
+                                gap: "0.5rem",
+                                justifyContent: "flex-end",
+                                marginTop: showDelete ? "" : "1.5rem"
+                            } }, { children: showDelete ? buttonsDelete : buttonsNormal }), void 0)] }), void 0) }), void 0)] }), void 0));
+};
+exports.default = EditSocial;
+
+
+/***/ }),
+
 /***/ "./js/src/components/Hive.tsx":
 /*!************************************!*\
   !*** ./js/src/components/Hive.tsx ***!
@@ -34049,6 +34155,163 @@ exports.default = Notifications;
 
 /***/ }),
 
+/***/ "./js/src/components/Social.tsx":
+/*!**************************************!*\
+  !*** ./js/src/components/Social.tsx ***!
+  \**************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var Social = function (props) {
+    return (jsx_runtime_1.jsxs("tr", { children: [jsx_runtime_1.jsx("td", { children: props.socialType }, void 0),
+            jsx_runtime_1.jsx("td", { children: props.socialLink }, void 0),
+            jsx_runtime_1.jsx("td", { children: jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", onClick: function () { return props.editLink(props.socialID); } }, { children: "Edit" }), void 0) }, void 0)] }, void 0));
+};
+exports.default = Social;
+
+
+/***/ }),
+
+/***/ "./js/src/components/Socials.tsx":
+/*!***************************************!*\
+  !*** ./js/src/components/Socials.tsx ***!
+  \***************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
+var Social_1 = __importDefault(__webpack_require__(/*! ./Social */ "./js/src/components/Social.tsx"));
+var EditSocial_1 = __importDefault(__webpack_require__(/*! ./EditSocial */ "./js/src/components/EditSocial.tsx"));
+var Socials = function () {
+    var _a = __read(react_2.useState([]), 2), socialList = _a[0], setSocialList = _a[1];
+    var _b = __read(react_2.useState(null), 2), editSocial = _b[0], setEditSocial = _b[1];
+    var urlSlug = "";
+    var urlSplit = window.location.href.split("/");
+    for (var i = 0; i < urlSplit.length; i++) {
+        var element = urlSplit[i];
+        if (element == "organisations") {
+            urlSlug = urlSplit[i + 1];
+        }
+    }
+    function editLink(socialId) {
+        setEditSocial(socialList.find(function (e) { return e.socialID == socialId; }));
+    }
+    function backToSocials() {
+        setEditSocial(null);
+    }
+    function getSocials() {
+        axios_1.default.get("/page-api/get-organisation-socials?orgSlug=" + urlSlug)
+            .then(function (res) {
+            if (res.data) {
+                setSocialList(res.data);
+            }
+        });
+    }
+    function saveSocial(social) {
+        var data = new FormData();
+        for (var key in social) {
+            if (Object.prototype.hasOwnProperty.call(social, key)) {
+                var element = social[key];
+                data.append(key, element);
+            }
+        }
+        data.append("organisationSlug", urlSlug);
+        axios_1.default.post("/page-api/save-organisation-social", data).then(function (res) {
+            if (res.data.success) {
+                console.log("Saved", res.data);
+                getSocials();
+            }
+            else {
+                console.error("Error: " + res.data.error, res.data);
+            }
+        });
+    }
+    function deleteSocial(social) {
+        var data = new FormData();
+        data.append("socialID", social.socialID.toString());
+        axios_1.default.post("/page-api/delete-organisation-social", data).then(function (res) {
+            if (res.data.success) {
+                console.log("Deleted");
+                getSocials();
+            }
+            else {
+                console.error("Error", res.data);
+            }
+        });
+    }
+    react_2.useEffect(function () {
+        getSocials();
+    }, []);
+    react_2.useEffect(function () {
+        console.log(socialList);
+    }, [socialList]);
+    react_2.useEffect(function () {
+        console.log(editSocial);
+    }, [editSocial]);
+    var listRendered = socialList.map(function (s, i) { return react_1.createElement(Social_1.default, __assign({ editLink: editLink }, s, { key: i })); });
+    if (editSocial) {
+        return (jsx_runtime_1.jsx(EditSocial_1.default, { editSocial: editSocial, backToSocials: backToSocials, setEditSocial: setEditSocial, saveSocial: saveSocial, deleteSocial: deleteSocial }, void 0));
+    }
+    return (jsx_runtime_1.jsxs("div", __assign({ className: "card mb-3" }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "card-header" }, { children: jsx_runtime_1.jsx("h5", __assign({ className: "card-title m-b-0" }, { children: "Manage Socials" }), void 0) }), void 0),
+            jsx_runtime_1.jsx("div", __assign({ className: "table-responsive" }, { children: jsx_runtime_1.jsxs("table", __assign({ className: "align-middle mb-0 table table-borderless table-striped table-hover" }, { children: [jsx_runtime_1.jsx("thead", { children: jsx_runtime_1.jsxs("tr", { children: [jsx_runtime_1.jsx("th", { children: "Type" }, void 0),
+                                    jsx_runtime_1.jsx("th", { children: "Link" }, void 0),
+                                    jsx_runtime_1.jsx("th", { children: "Actions" }, void 0)] }, void 0) }, void 0),
+                        jsx_runtime_1.jsx("tbody", { children: listRendered }, void 0)] }), void 0) }), void 0)] }), void 0));
+};
+exports.default = Socials;
+
+
+/***/ }),
+
 /***/ "./js/src/index.tsx":
 /*!**************************!*\
   !*** ./js/src/index.tsx ***!
@@ -34069,6 +34332,7 @@ __webpack_require__(/*! ./pages/explore.organisations */ "./js/src/pages/explore
 __webpack_require__(/*! ./pages/explore.organisations.manage.hives */ "./js/src/pages/explore.organisations.manage.hives.tsx");
 __webpack_require__(/*! ./pages/admin.notifications */ "./js/src/pages/admin.notifications.tsx");
 __webpack_require__(/*! ./pages/explore.organsations.manage.members.add */ "./js/src/pages/explore.organsations.manage.members.add.tsx");
+__webpack_require__(/*! ./pages/explore.organisations.manage.details */ "./js/src/pages/explore.organisations.manage.details.tsx");
 var organisationForms = Array.from(document.getElementsByClassName("org-form"));
 organisationForms.forEach(function (form) {
     try {
@@ -34108,6 +34372,29 @@ var Notifications_1 = __importDefault(__webpack_require__(/*! ../components/Noti
 var notificationDiv = document.getElementById("notifications");
 if (notificationDiv) {
     ReactDOM.render(jsx_runtime_1.jsx(Notifications_1.default, {}, void 0), notificationDiv);
+}
+
+
+/***/ }),
+
+/***/ "./js/src/pages/explore.organisations.manage.details.tsx":
+/*!***************************************************************!*\
+  !*** ./js/src/pages/explore.organisations.manage.details.tsx ***!
+  \***************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+var Socials_1 = __importDefault(__webpack_require__(/*! ../components/Socials */ "./js/src/components/Socials.tsx"));
+var socialList = document.getElementById("social-list");
+if (socialList) {
+    ReactDOM.render(jsx_runtime_1.jsx(Socials_1.default, {}, void 0), socialList);
 }
 
 

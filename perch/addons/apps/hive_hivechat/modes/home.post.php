@@ -19,6 +19,8 @@
     echo $HTML->main_panel_start();
    
     include('_subnav.php');
-
+    ?>
+    <p>Hello</p>
+    <?php
     
     echo $HTML->main_panel_end();

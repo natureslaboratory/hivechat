@@ -13,13 +13,13 @@ $opts = [
 ];
 switch (perch_layout_var("type", true)) {
     case "hives":
-        perch_layout("explore_organisation/explore.organisation.hives", $opts);
+        perch_layout("explore_organisation/explore.organisation.manage.hives", $opts);
         break;
     case "members":
-        perch_layout("explore_organisation/explore.organisation.members", $opts);
+        perch_layout("explore_organisation/explore.organisation.manage.members", $opts);
         break;
     case "details":
-        perch_layout("explore_organisation/explore.organisation.details", $opts);
+        perch_layout("explore_organisation/explore.organisation.manage.details", $opts);
         break;
     default: 
         if (perch_layout_var("type", true)) { ?>

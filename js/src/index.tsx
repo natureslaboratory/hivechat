@@ -6,6 +6,7 @@ import "./pages/explore.organisations";
 import "./pages/explore.organisations.manage.hives";
 import "./pages/admin.notifications";
 import "./pages/explore.organsations.manage.members.add";
+import "./pages/explore.organisations.manage.details";
 
 
 

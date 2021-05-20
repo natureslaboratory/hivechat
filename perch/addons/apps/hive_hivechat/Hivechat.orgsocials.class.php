@@ -50,11 +50,16 @@ class Hivechat_OrgSocials extends PerchAPI_Factory
 
     function update_org_social($data) {
         if (!($data["socialID"] && $data["socialType"] && $data["socialLink"])) {
-            return;
+            return false;
         }
 
-        $sql = "UPDATE perch3_orgsocial SET socialType='$data[socialType]', socialLink='$data[socialLink]' WHERE socialID='$data[socialID]';";
-        return $this->db->execute($sql);
+        $sql = "UPDATE perch3_orgsocials SET socialType='$data[socialType]', socialLink='$data[socialLink]' WHERE socialID='$data[socialID]';";
+        $backupSql = $sql;
+        if ($this->db->execute($sql)) {
+            return $backupSql;
+        } else {
+            return $backupSql;
+        }
     }
 
     function get_org_socials($organisationID) {
@@ -69,7 +74,7 @@ class Hivechat_OrgSocials extends PerchAPI_Factory
 
     function delete_social($socialID) {
         $sql = "DELETE FROM perch3_orgsocials WHERE socialID='$socialID';";
-        return $this->dv->execute($sql);
+        return $this->db->execute($sql);
     }
 
 }

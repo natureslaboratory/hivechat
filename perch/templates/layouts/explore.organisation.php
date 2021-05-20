@@ -46,6 +46,8 @@ if (perch_layout_var("manage", true) == "manage" && $isAdmin) {
             <?php } ?>
             <div>
                 <?= $organisation["organisationName"] ?>
+                <br>
+                <?php perch_layout("explore_organisation/explore.organisation.socials", ["organisationSlug" => $organisation["organisationSlug"]]); ?>
             </div>
         </div>
     </div>
