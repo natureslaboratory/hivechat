@@ -18,16 +18,19 @@ perch_layout("admin.back", [
     <div class="col-md-6">
         <?php get_organisation($organisation["organisationID"]) ?>
     </div>
-    <div class="col-md-6">
-        <?php delete_organisation($organisation["organisationID"]); ?>
-    </div>
 </div>
+<div class="line-break"></div>
 <div class="row">
-    
     <div class="col-md-6">
         <?php add_organisation_socials($organisation["organisationID"]) ?>
     </div>
     <div class="col-md-6">
         <div id="social-list"></div>
+    </div>
+</div>
+<div class="line-break"></div>
+<div class="row">
+    <div class="col-md-6">
+        <?php delete_organisation($organisation["organisationID"]); ?>
     </div>
 </div>

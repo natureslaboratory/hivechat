@@ -2,19 +2,13 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import Social, { SocialProps } from './Social';
 import EditSocial from './EditSocial';
+import AddSocial, { NewSocialProps } from './AddSocial';
 
 const Socials : React.FunctionComponent = () => {
     const [socialList, setSocialList] = useState<Array<SocialProps>>([]);
     const [editSocial, setEditSocial] = useState<SocialProps>(null)
-
-    let urlSlug = "";
-    let urlSplit = window.location.href.split("/");
-    for (let i = 0; i < urlSplit.length; i++) {
-        const element = urlSplit[i];
-        if (element == "organisations") {
-            urlSlug = urlSplit[i+1];
-        }
-    }
+    const [showAddSocial, setShowAddSocial] = useState(false);
+    const [urlSlug, setUrlSlug] = useState("");
 
     function editLink(socialId : number) {
         setEditSocial(socialList.find(e => e.socialID == socialId))
@@ -22,6 +16,7 @@ const Socials : React.FunctionComponent = () => {
 
     function backToSocials() {
         setEditSocial(null);
+        setShowAddSocial(false);
     }
 
     function getSocials() {
@@ -67,9 +62,37 @@ const Socials : React.FunctionComponent = () => {
         })
     }
 
+    function addSocial(social : NewSocialProps) {
+        let data = new FormData();
+        console.log(urlSlug)
+        data.append("organisationSlug", urlSlug);
+        data.append("socialType", social.socialType);
+        data.append("socialLink", social.socialLink);
+
+        axios.post("/page-api/add-organisation-social", data).then(res => {
+            if (res.data.success) {
+                console.log("Created");
+                getSocials();
+            } else {
+                console.error("Error: " + res.data.error, res.data)
+            }
+        })
+
+    }
+
+    useEffect(() => {
+        let urlSplit = window.location.href.split("/");
+        for (let i = 0; i < urlSplit.length; i++) {
+            const element = urlSplit[i];
+            if (element == "organisations") {
+                setUrlSlug(urlSplit[i+1]);
+            }
+        }
+    }, [])
+
     useEffect(() => {
         getSocials()
-    }, [])
+    }, [urlSlug])
 
     useEffect(() => {
         console.log(socialList)
@@ -92,10 +115,20 @@ const Socials : React.FunctionComponent = () => {
             />
         )
     }
+
+    if (showAddSocial) {
+        return (
+            <AddSocial 
+                backToSocials={backToSocials}
+                addSocial={addSocial}
+            />
+        )
+    }
     return (
         <div className="card mb-3">
-            <div className="card-header">
+            <div className="card-header" style={{display: "flex", justifyContent: "space-between"}}>
                 <h5 className="card-title m-b-0">Manage Socials</h5>
+                <button className="btn btn-alternate" onClick={() => setShowAddSocial(true)}>+ New</button>
             </div>
             <div className="table-responsive">
                 <table className="align-middle mb-0 table table-borderless table-striped table-hover">

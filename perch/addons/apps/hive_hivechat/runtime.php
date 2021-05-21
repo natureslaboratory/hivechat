@@ -1238,5 +1238,22 @@ function delete_social($socialID)
   } else {
     return ["success" => false, "error" => "Database Error"];
   }
-  
+}
+
+function add_social($data)
+{
+  if (!($data["socialLink"] &&
+    $data["socialType"] &&
+    $data["organisationID"])) {
+    return ["success" => false, "error" => "Invalid Post", "data" => $data];
+  }
+
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $orgsocials = new Hivechat_OrgSocials($API);
+  $result = $orgsocials->add_org_social($data);
+  if ($result) {
+    return ["success" => true];
+  } else {
+    return ["success" => false, "error" => "Database Error", "data" => $data];
+  }
 }
