@@ -33919,11 +33919,6 @@ var __read = (this && this.__read) || function (o, n) {
     }
     return ar;
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from) {
-    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-        to[j] = from[i];
-    return to;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -33936,7 +33931,7 @@ var HiveNav_1 = __importDefault(__webpack_require__(/*! ./HiveNav */ "./js/src/c
 var Hive = function () {
     var _a = __read(react_1.useState(), 2), hiveData = _a[0], setHiveData = _a[1];
     var _b = __read(react_1.useState(), 2), currentCell = _b[0], setCurrentCell = _b[1];
-    var _c = __read(react_1.useState([]), 2), cellCache = _c[0], setCellCache = _c[1];
+    var _c = __read(react_1.useState([]), 2), cells = _c[0], setCells = _c[1];
     var _d = __read(react_1.useState(""), 2), orgSlug = _d[0], setOrgSlug = _d[1];
     function getHiveData(orgSlug) {
         if (orgSlug === void 0) { orgSlug = ""; }
@@ -33947,10 +33942,11 @@ var Hive = function () {
                 hiveID = urlSplit[urlSplit.length - 1];
                 axios_1.default.get("/page-api/get-hive?hiveID=" + hiveID)
                     .then(function (res) {
-                    console.log(res.status);
+                    console.log(res.data);
                     if (res.status == 200 && res.data) {
-                        setHiveData(res.data);
-                        getCell(res.data.cells[0]);
+                        setHiveData(res.data.hive);
+                        setCells(res.data.cells);
+                        setCurrentCell(res.data.cells[0]);
                     }
                     else if (res.status == 401) {
                         window.location.href = "/explore/organisations/" + orgSlug;
@@ -33959,7 +33955,7 @@ var Hive = function () {
                         console.error(res);
                     }
                 }).catch(function (err) {
-                    console.log(err.response.status);
+                    console.log(err);
                     if (err.response && err.response.status == 401) {
                         window.location.href = "/explore/organisations/" + orgSlug;
                     }
@@ -33968,23 +33964,9 @@ var Hive = function () {
             });
         });
     }
-    function getCell(cellID) {
-        if (!cellID) {
-            return;
-        }
-        var cell = cellCache.find(function (c) { return c.cellID == cellID; });
-        if (cell) {
-            setCurrentCell(cell);
-        }
-        else {
-            axios_1.default.get("/page-api/get-cell?cellID=" + cellID)
-                .then(function (res) {
-                if (res.status == 200 && res.data) {
-                    setCurrentCell(res.data);
-                    setCellCache(__spreadArray(__spreadArray([], __read(cellCache)), [res.data]));
-                }
-            });
-        }
+    function selectCell(cellID) {
+        var cell = cells.find(function (c) { return c.cellID == cellID; });
+        setCurrentCell(cell);
     }
     react_1.useEffect(function () {
         var urlSplit = window.location.href.split("/");
@@ -33998,19 +33980,14 @@ var Hive = function () {
         }
         getHiveData(urlSlug);
     }, []);
-    react_1.useEffect(function () {
-        if (hiveData && hiveData.cells.length > 0) {
-            getCell(hiveData.cells[0].cellID);
-        }
-    }, [hiveData]);
     var title = jsx_runtime_1.jsx("div", {}, void 0);
     if (currentCell) {
         title = (jsx_runtime_1.jsx("div", __assign({ className: "col-md-8 mb-4" }, { children: jsx_runtime_1.jsx("h1", { children: currentCell.cellTitle }, void 0) }), void 0));
     }
     var hiveContent = jsx_runtime_1.jsx("p", { children: "This hive has no cells" }, void 0);
-    if (hiveData && hiveData.cells.length > 0) {
+    if (cells && cells.length > 0) {
         hiveContent = (jsx_runtime_1.jsxs("div", __assign({ className: "row" }, { children: [title, jsx_runtime_1.jsx("div", __assign({ className: "col-md-8 mb-4" }, { children: jsx_runtime_1.jsx(Cell_1.default, __assign({}, currentCell), void 0) }), void 0),
-                jsx_runtime_1.jsx("div", __assign({ className: "col-md-4" }, { children: jsx_runtime_1.jsx(HiveNav_1.default, { selectCell: getCell, cells: hiveData.cells, currentCellID: currentCell ? currentCell.cellID : -1 }, void 0) }), void 0)] }), void 0));
+                jsx_runtime_1.jsx("div", __assign({ className: "col-md-4" }, { children: jsx_runtime_1.jsx(HiveNav_1.default, { selectCell: selectCell, cells: cells, currentCellID: currentCell ? currentCell.cellID : -1 }, void 0) }), void 0)] }), void 0));
     }
     if (hiveData) {
         return (jsx_runtime_1.jsxs(react_1.default.Fragment, { children: [jsx_runtime_1.jsx("div", __assign({ className: "app-page-title" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "page-title-wrapper" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "page-title-heading" }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "page-title-icon" }, { children: jsx_runtime_1.jsx("i", { className: "pe-7s-users icon-gradient bg-mean-fruit" }, void 0) }), void 0),
@@ -34090,16 +34067,71 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var HiveNavItem_1 = __importDefault(__webpack_require__(/*! ./HiveNavItem */ "./js/src/components/HiveNavItem.tsx"));
 var HiveNav = function (props) {
-    return (jsx_runtime_1.jsx("div", __assign({ className: "main-card mb-3 card" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "card-title" }, { children: "Cells" }), void 0),
-                jsx_runtime_1.jsx("ul", __assign({ className: "list-group" }, { children: props.cells.map(function (c) { return react_1.createElement(HiveNavItem_1.default, __assign({ selectCell: props.selectCell, active: c.cellID == props.currentCellID }, c, { key: c.cellID })); }) }), void 0)] }), void 0) }), void 0));
+    var _a = __read(react_2.useState(0), 2), page = _a[0], setPage = _a[1];
+    var _b = __read(react_2.useState([]), 2), slicedCells = _b[0], setSlicedCells = _b[1];
+    var _c = __read(react_2.useState(""), 2), search = _c[0], setSearch = _c[1];
+    var cellsPerPage = 10;
+    function filterCells(cells) {
+        return props.cells.filter(function (c) {
+            var match = false;
+            for (var key in c) {
+                if (Object.prototype.hasOwnProperty.call(c, key)) {
+                    var element = c[key];
+                    if (typeof (element) == "string" && element.toLowerCase().includes(search.toLowerCase())) {
+                        match = true;
+                    }
+                }
+            }
+            return match;
+        });
+    }
+    function sliceCells(cells) {
+        var firstIndex = cellsPerPage * page;
+        var lastIndex = firstIndex + cellsPerPage;
+        return cells.slice(firstIndex, lastIndex);
+    }
+    react_2.useEffect(function () {
+        var filteredCells = filterCells(props.cells);
+        var cutCells = sliceCells(filteredCells);
+        setSlicedCells(cutCells);
+    }, [page, search]);
+    var pagination = (jsx_runtime_1.jsxs("div", __assign({ style: { display: "flex", gap: "0.6rem", alignItems: "center" } }, { children: [jsx_runtime_1.jsx("button", __assign({ onClick: function () {
+                    if (page > 0) {
+                        setPage(page - 1);
+                    }
+                }, className: "btn btn-outline-primary" }, { children: "<" }), void 0), page + 1, jsx_runtime_1.jsx("button", __assign({ onClick: function () {
+                    var nextPageExists = props.cells.length - (cellsPerPage * (page + 1));
+                    if (nextPageExists) {
+                        setPage(page + 1);
+                    }
+                }, className: "btn btn-outline-primary" }, { children: ">" }), void 0)] }), void 0));
+    return (jsx_runtime_1.jsx("div", __assign({ className: "main-card mb-3 card" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [jsx_runtime_1.jsxs("div", __assign({ className: "card-title", style: { display: "flex" } }, { children: [props.cells.length > cellsPerPage ? pagination : null, jsx_runtime_1.jsx("input", { style: { marginLeft: "auto" }, placeholder: "Search", type: "text", value: search, onChange: function (e) { return setSearch(e.target.value); } }, void 0)] }), void 0),
+                jsx_runtime_1.jsx("ul", __assign({ className: "list-group" }, { children: slicedCells.map(function (c) { return react_1.createElement(HiveNavItem_1.default, __assign({ selectCell: props.selectCell, active: c.cellID == props.currentCellID }, c, { key: c.cellID })); }) }), void 0)] }), void 0) }), void 0));
 };
 exports.default = HiveNav;
 
@@ -34128,12 +34160,18 @@ var __assign = (this && this.__assign) || function () {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var HiveNavItem = function (props) {
+    console.log(props);
     var button = jsx_runtime_1.jsx("button", __assign({ onClick: function (e) {
             e.preventDefault();
             props.selectCell(props.cellID);
         }, className: "btn btn-small btn-primary" }, { children: "View" }), void 0);
-    return (jsx_runtime_1.jsxs("li", __assign({ className: "list-group-item " + (props.active ? "active" : "") }, { children: [jsx_runtime_1.jsx("h5", __assign({ className: "list-group-item-heading" }, { children: props.cellTitle }), void 0),
-            jsx_runtime_1.jsx("p", { className: "list-group-item-text" }, void 0), props.active ? null : button] }), void 0));
+    var subtitle = null;
+    if (props.cellSubTitle) {
+        subtitle = jsx_runtime_1.jsx("p", __assign({ style: { marginBottom: 0 }, className: "list-group-item-text" }, { children: props.cellSubTitle }), void 0);
+    }
+    return (jsx_runtime_1.jsxs("li", __assign({ style: { cursor: "pointer" }, onClick: function () {
+            props.selectCell(props.cellID);
+        }, className: "list-group-item " + (props.active ? "active" : "") }, { children: [jsx_runtime_1.jsx("h5", __assign({ className: "list-group-item-heading" }, { children: props.cellTitle }), void 0), subtitle] }), void 0));
 };
 exports.default = HiveNavItem;
 

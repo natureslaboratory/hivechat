@@ -17,7 +17,7 @@ interface HiveData {
 const Hive : React.FunctionComponent = () => {
     const [hiveData, setHiveData] = useState<HiveData>();
     const [currentCell, setCurrentCell] = useState<CellData>();
-    const [cellCache, setCellCache] = useState<CellData[]>([]);
+    const [cells, setCells] = useState<CellData[]>([]);
     const [orgSlug, setOrgSlug] = useState("");
 
     async function getHiveData(orgSlug = "") {
@@ -25,39 +25,27 @@ const Hive : React.FunctionComponent = () => {
         let hiveID = urlSplit[urlSplit.length - 1];
         axios.get(`/page-api/get-hive?hiveID=${hiveID}`)
             .then(res => {
-                console.log(res.status);
+                console.log(res.data);
                 if (res.status == 200 && res.data) {
-                    setHiveData(res.data as HiveData);
-                    getCell(res.data.cells[0]);
+                    setHiveData(res.data.hive as HiveData);
+                    setCells(res.data.cells as CellData[]);
+                    setCurrentCell(res.data.cells[0] as CellData);
                 } else if (res.status == 401) {
                     window.location.href = "/explore/organisations/" + orgSlug;
                 } else {
                     console.error(res);
                 }
             }).catch(err => {
-                console.log(err.response.status)
+                console.log(err)
                 if (err.response && err.response.status == 401) {
                     window.location.href = "/explore/organisations/" + orgSlug;
                 }
             })
     }
 
-    function getCell(cellID : number) {
-        if (!cellID) {
-            return;
-        }
-        let cell = cellCache.find(c => c.cellID == cellID);
-        if (cell) {
-            setCurrentCell(cell);
-        } else {
-            axios.get(`/page-api/get-cell?cellID=${cellID}`)
-                .then(res => {
-                    if (res.status == 200 && res.data) {
-                        setCurrentCell(res.data as CellData)
-                        setCellCache([...cellCache, res.data as CellData]);
-                    }
-                })
-        }
+    function selectCell(cellID : number) {
+        let cell = cells.find(c => c.cellID == cellID);
+        setCurrentCell(cell);
     }
 
     useEffect(() => {
@@ -73,12 +61,6 @@ const Hive : React.FunctionComponent = () => {
         getHiveData(urlSlug)
     }, [])
 
-    useEffect(() => {
-        if (hiveData && hiveData.cells.length > 0) {
-            getCell(hiveData.cells[0].cellID);
-        }
-    }, [hiveData])
-
     let title = <div></div>;
     if (currentCell) {
         title = (
@@ -89,7 +71,7 @@ const Hive : React.FunctionComponent = () => {
     }
 
     let hiveContent = <p>This hive has no cells</p>
-    if (hiveData && hiveData.cells.length > 0) {
+    if (cells && cells.length > 0) {
         hiveContent = (
             <div className="row">
                 {title}
@@ -97,7 +79,7 @@ const Hive : React.FunctionComponent = () => {
                     <Cell {...currentCell} />
                 </div>
                 <div className="col-md-4">
-                    <HiveNav selectCell={getCell} cells={hiveData.cells} currentCellID={currentCell ? currentCell.cellID : -1} />
+                    <HiveNav selectCell={selectCell} cells={cells} currentCellID={currentCell ? currentCell.cellID : -1} />
                 </div>
             </div>
         )

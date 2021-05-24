@@ -5,6 +5,7 @@ export interface CellData {
     hiveID: number,
     memberID: number,
     cellTitle: string,
+    cellSubTitle? : string,
     cellDateTime: string,
     cellLive: string,
     introduction?: string

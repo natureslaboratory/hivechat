@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 export interface CellSmall {
     cellID : number,
-    cellTitle: string
+    cellTitle: string,
+    cellSubTitle? : string
 }
 
 interface HiveNavItemProps {
@@ -11,16 +12,23 @@ interface HiveNavItemProps {
 }
 
 const HiveNavItem : React.FunctionComponent<CellSmall & HiveNavItemProps> = (props) => {
+    console.log(props)
     let button = <button onClick={(e) => {
         e.preventDefault();
         props.selectCell(props.cellID);
     }} className="btn btn-small btn-primary">View</button>;
-    
+
+    let subtitle = null;
+    if (props.cellSubTitle) {
+        subtitle = <p style={{marginBottom: 0}} className="list-group-item-text">{props.cellSubTitle}</p>
+    }
+
     return (
-        <li className={`list-group-item ${props.active ? "active" : ""}`}>
+        <li style={{cursor: "pointer"}} onClick={() => {
+            props.selectCell(props.cellID);
+        }} className={`list-group-item ${props.active ? "active" : ""}`}>
             <h5 className="list-group-item-heading">{props.cellTitle}</h5>
-            <p className="list-group-item-text"></p>
-            {props.active ? null : button}
+            {subtitle}
         </li>
     )
 }

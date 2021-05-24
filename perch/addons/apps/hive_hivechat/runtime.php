@@ -439,7 +439,7 @@ function get_hive($hiveID)
   return $data;
 }
 
-function get_hive_with_cell_list($hiveID) 
+function get_hive_with_cells($hiveID) 
 {
   
   $API  = new PerchAPI(1.0, 'hivechat');
@@ -455,15 +455,20 @@ function get_hive_with_cell_list($hiveID)
   
   $cellIDList = [];
   foreach ($hiveCells as $cell) {
-    $cellData = [];
-    $cellData["cellID"] = $cell["cellID"];
-    $cellData["cellTitle"] = $cell["cellTitle"];
+    $cellData = HiveApi::flatten($cell, [
+      "mappings" => [
+      "processed" => "introduction",
+      "video" => "video"
+  ]]);
     $cellIDList[] = $cellData;
   }
 
-  $hive["cells"] = $cellIDList;
+  $data = [];
 
-  return $hive;
+  $data["hive"] = $hive;
+  $data["cells"] = $cellIDList;
+
+  return $data;
 }
 
 function delete_hive($hiveID)
