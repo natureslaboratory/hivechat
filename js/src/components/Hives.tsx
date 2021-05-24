@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Hive, { HiveProps } from './Hive';
+import HiveCard, { HiveCardProps } from './HiveCard';
 
 interface HivesProps {
     type : "Public" | "Private" | "Draft" | "All",
@@ -40,7 +40,7 @@ const Hives : React.FunctionComponent<HivesProps> = (props) => {
             .then(res => res.json())
             .then(data => {
                 if (data) {
-                    setHives(data as Array<HiveProps>)
+                    setHives(data as Array<HiveCardProps>)
                 }
         })
     }
@@ -67,7 +67,7 @@ const Hives : React.FunctionComponent<HivesProps> = (props) => {
         )
     }
 
-    function filterBySearchTerm(hive : HiveProps) {
+    function filterBySearchTerm(hive : HiveCardProps) {
         if (hive.hiveTitle && hive.hiveTitle.toLowerCase().includes(searchTerm)) {
             return true;
         } else if (hive.hiveIntro && hive.hiveIntro.toLowerCase().includes(searchTerm)) {
@@ -77,7 +77,7 @@ const Hives : React.FunctionComponent<HivesProps> = (props) => {
     }
     
 
-    const hivesRendered = slicedHives.map(hive => <Hive {...hive} key={hive.hiveID} /> )
+    const hivesRendered = slicedHives.map(hive => <HiveCard {...hive} key={hive.hiveID} /> )
 
     let pagination = null;
     if (filteredHives.length > hivesPerPage) {

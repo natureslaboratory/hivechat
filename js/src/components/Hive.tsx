@@ -1,50 +1,131 @@
-import React = require("react");
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import Cell, { CellData } from './Cell';
+import HiveNav from './HiveNav';
+import { CellSmall } from './HiveNavItem';
 
-export interface HiveProps {
-    hiveCategory: string,
-    hiveIntro : string,
+interface HiveData {
     hiveID : number,
-    hiveLive : string
+    memberID : number,
     hiveTitle : string,
-    organisationSlug : string,
-    [propName: string]: any,
-    adminPage : boolean
+    hiveCategory : string,
+    hivePrivacy : "Public" | "Private" | "Draft",
+    introduction : string,
+    cells : CellSmall[]
 }
 
+const Hive : React.FunctionComponent = () => {
+    const [hiveData, setHiveData] = useState<HiveData>();
+    const [currentCell, setCurrentCell] = useState<CellData>();
+    const [cellCache, setCellCache] = useState<CellData[]>([]);
+    const [orgSlug, setOrgSlug] = useState("");
 
-function Hive(props : HiveProps) {
-    let linkURL = "";
-    let linkText = "View";
-    let intro = (
-        <p dangerouslySetInnerHTML={{
-            __html: props.hiveIntro
-        }}></p>
-    )
-
-    if (window.location.href.includes("manage/hives") && props.organisationSlug) {
-        linkURL = `/explore/organisations/${props.organisationSlug}/manage/hives/edit/${props.hiveID}`
-        linkText = "Edit";
-        intro = null;
-    } else if (props.organisationSlug) {
-        linkURL = `/explore/organisations/${props.organisationSlug}/${props.hiveID}`;
-    } else {
-        linkURL = `/hive/${props.hiveID}`
+    async function getHiveData(orgSlug = "") {
+        let urlSplit = window.location.href.split("/");
+        let hiveID = urlSplit[urlSplit.length - 1];
+        axios.get(`/page-api/get-hive?hiveID=${hiveID}`)
+            .then(res => {
+                console.log(res.status);
+                if (res.status == 200 && res.data) {
+                    setHiveData(res.data as HiveData);
+                    getCell(res.data.cells[0]);
+                } else if (res.status == 401) {
+                    window.location.href = "/explore/organisations/" + orgSlug;
+                } else {
+                    console.error(res);
+                }
+            }).catch(err => {
+                console.log(err.response.status)
+                if (err.response && err.response.status == 401) {
+                    window.location.href = "/explore/organisations/" + orgSlug;
+                }
+            })
     }
 
-    let link = <a href={linkURL} className="btn btn-secondary">{linkText}</a>;
-    
+    function getCell(cellID : number) {
+        if (!cellID) {
+            return;
+        }
+        let cell = cellCache.find(c => c.cellID == cellID);
+        if (cell) {
+            setCurrentCell(cell);
+        } else {
+            axios.get(`/page-api/get-cell?cellID=${cellID}`)
+                .then(res => {
+                    if (res.status == 200 && res.data) {
+                        setCurrentCell(res.data as CellData)
+                        setCellCache([...cellCache, res.data as CellData]);
+                    }
+                })
+        }
+    }
 
-    return (
-        <div className="card">
-            <div className="card-header">
-                <div className="card-header-title">{props.hiveTitle}</div>
+    useEffect(() => {
+        let urlSplit = window.location.href.split("/");
+        let urlSlug = "";
+        for (let i = 0; i < urlSplit.length; i++) {
+            const element = urlSplit[i];
+            if (element == "organisations") {
+                urlSlug = urlSplit[i+1];
+                setOrgSlug(urlSlug);
+            }
+        }
+        getHiveData(urlSlug)
+    }, [])
+
+    useEffect(() => {
+        if (hiveData && hiveData.cells.length > 0) {
+            getCell(hiveData.cells[0].cellID);
+        }
+    }, [hiveData])
+
+    let title = <div></div>;
+    if (currentCell) {
+        title = (
+            <div className="col-md-8 mb-4">
+                <h1>{currentCell.cellTitle}</h1>
             </div>
-            <div className="card-body">
-                {intro}
-                {link}
+        )
+    }
+
+    let hiveContent = <p>This hive has no cells</p>
+    if (hiveData && hiveData.cells.length > 0) {
+        hiveContent = (
+            <div className="row">
+                {title}
+                <div className="col-md-8 mb-4">
+                    <Cell {...currentCell} />
+                </div>
+                <div className="col-md-4">
+                    <HiveNav selectCell={getCell} cells={hiveData.cells} currentCellID={currentCell ? currentCell.cellID : -1} />
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
+
+    if (hiveData) {
+        return (
+            <React.Fragment>
+                <div className="app-page-title">
+                    <div className="page-title-wrapper">
+                        <div className="page-title-heading">
+                            <div className="page-title-icon">
+                                <i className="pe-7s-users icon-gradient bg-mean-fruit"></i>
+                            </div>
+                            <div> {hiveData.hiveTitle}
+                                <div className="page-title-subheading" dangerouslySetInnerHTML={{__html: hiveData.introduction}}></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href={`/explore/organisations/${orgSlug}`}>
+                    <button className="btn btn-outline-primary mb-4">Back</button>
+                </a>
+                {hiveContent}
+            </React.Fragment>
+        )
+    }
+    return <div></div>
 }
 
 export default Hive;

@@ -5,11 +5,7 @@
         
         ?>
         <?php if (perch_get("hiveID") || (perch_get("manage") && perch_get("manage") !== "manage")) { 
-            perch_layout("explore.hive", [
-                "hiveID" => perch_get("hiveID") ? perch_get("hiveID") : perch_get("manage"),
-                "cellID" => perch_get("cellID"),
-                "organisationSlug" => perch_get("organisationSlug")
-                ]);
+            echo "<div id='hive'></div>";
         } else if (perch_get("organisationSlug")) { 
             $opts = [
                 "organisationSlug" => perch_get("organisationSlug"),

@@ -21,62 +21,95 @@ switch (perch_layout_var("type", true)) {
     case "details":
         perch_layout("explore_organisation/explore.organisation.manage.details", $opts);
         break;
-    default: 
+    default:
         if (perch_layout_var("type", true)) { ?>
             <script>
                 let urlSplit = window.location.href.split("/");
                 let newUrl = "";
-                for (let i = urlSplit.length-1; i >= 0; i--) {
+                for (let i = urlSplit.length - 1; i >= 0; i--) {
                     const element = urlSplit[i];
                     if (element) {
                         let urlSlice = urlSplit.slice(0, i);
                         newUrl = urlSlice.join("/");
                         break;
-                    }        
+                    }
                 }
 
                 window.location.href = newUrl;
             </script>
-        <?php }
-        else { ?>
+        <?php } else { ?>
 
-<div class="app-page-title">
-    <div class="page-title-wrapper">
-        <div class="page-title-heading">
-            <div class="page-title-icon">
-                <i class="pe-7s-user icon-gradient bg-mean-fruit"></i>
+            <div class="app-page-title">
+                <div class="page-title-wrapper">
+                    <div class="page-title-heading">
+                        <div class="page-title-icon">
+                            <i class="pe-7s-user icon-gradient bg-mean-fruit"></i>
+                        </div>
+                        <div>Manage Your Organisation
+                            <div class="page-title-subheading">Use the options below to manage your <strong>organisation</strong></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div>Manage Your Organisation
-                <div class="page-title-subheading">Use the options below to manage your <strong>organisation</strong></div>
+
+            <a href="/explore/organisations/<?= $organisationSlug ?>">
+                <button class="btn btn-outline-primary mb-4">Back to <?= $organisation["organisationName"] ?></button>
+            </a>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            Hives
+                        </div>
+                        <div class="card-body">
+                            <p>
+                                Keep track of all your organisations hives.
+                            </p>
+                            <a href="/explore/organisations/<?= $organisationSlug ?>/manage/hives">
+                                <button class="btn btn-primary">
+                                    Manage
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            Members
+                        </div>
+                        <div class="card-body">
+                            <p>
+                                View and manage all members.
+                            </p>
+                            <a href="/explore/organisations/<?= $organisationSlug ?>/manage/members">
+                                <button class="btn btn-primary">
+                                    Manage
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            Details
+                        </div>
+                        <div class="card-body">
+                            <p>
+                                Edit your organisation name, description, logo, social media, and more.
+                            </p>
+                            <a href="/explore/organisations/<?= $organisationSlug ?>/manage/details">
+                                <button class="btn btn-primary">
+                                    Manage
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
 
-<a href="/explore/organisations/<?= $organisationSlug ?>">
-    <button class="btn btn-outline-primary mb-4">Back to <?= $organisation["organisationName"] ?></button>
-</a>
-<div class="row">
-    <div class="col-md-6">
-        <a href="/explore/organisations/<?= $organisationSlug ?>/manage/hives">
-            <button class="btn btn-primary">
-                Hives
-            </button>
-        </a>
-        <a href="/explore/organisations/<?= $organisationSlug ?>/manage/members">
-            <button class="btn btn-primary">
-                Members
-            </button>
-        </a>
-        <a href="/explore/organisations/<?= $organisationSlug ?>/manage/details">
-            <button class="btn btn-primary">
-                Details
-            </button>
-        </a>
-    </div>
-</div>
-
-<?php } 
+<?php }
 }
 
 ?>

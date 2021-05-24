@@ -37,7 +37,7 @@ if (perch_layout_var("manage", true) == "manage" && $isAdmin) {
 <div class="app-page-title">
     <div class="page-title-wrapper">
         <div class="page-title-heading">
-            <?php if ($organisation["organisationLogo"]) { ?>
+            <?php if (false) { ?>
                 <img class="page-title-logo" src="<?= $organisation["organisationLogo"] ?>" alt="<?= $organisation["organisationName"] ?>">
             <?php } else { ?>
                 <div class="page-title-icon">

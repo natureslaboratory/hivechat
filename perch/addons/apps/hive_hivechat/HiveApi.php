@@ -46,7 +46,13 @@ class HiveApi {
                     $array[$prefix] = $value;
                 }
             }
+            $json = null;
         }
         return $array;
     }
+
+    public static function returnData($data) {
+        echo json_encode(["success" => true, "data" => $data]);
+    }
+    
 }

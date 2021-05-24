@@ -58,7 +58,16 @@
     <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
         <div class="app-header header-shadow">
             <div class="app-header__logo">
-                <div class="logo-src"><h5></h5></div>
+                <?php 
+                    $logo = "/design/images/hivechat_2.svg"; 
+                    if (perch_get("organisationSlug")) {
+                        $organisation = get_organisation_by_slug(perch_get("organisationSlug"), ["skip-template" => true], true);
+                        if ($organisation["organisationLogo"]) {
+                            $logo = $organisation["organisationLogo"];
+                        }
+                    } 
+                ?>
+                <div class="logo-src" style="background-image: none"><img style="width: 100%; height: 100%; object-fit: contain" src="<?= $logo ?>" /></div>
                 <div class="header__pane ml-auto">
                     <div>
                         <button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">

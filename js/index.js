@@ -33589,26 +33589,87 @@ var AddSocial = function (props) {
         socialLink: "",
         socialType: ""
     }), 2), newSocial = _a[0], setNewSocial = _a[1];
+    var _b = __read(react_1.useState(false), 2), save = _b[0], setSave = _b[1];
+    var _c = __read(react_1.useState({
+        socialLinkError: "",
+        socialTypeError: ""
+    }), 2), error = _c[0], setError = _c[1];
+    function handleKeyDown(e) {
+        if (e.key == "Enter") {
+            setSave(true);
+        }
+    }
+    react_1.useEffect(function () {
+        window.addEventListener("keydown", handleKeyDown);
+        return function () {
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, []);
+    react_1.useEffect(function () {
+        if (save) {
+            if (isValidForm()) {
+                props.addSocial(newSocial);
+                props.backToSocials();
+            }
+            else {
+                setSave(false);
+            }
+        }
+    }, [save]);
+    function isValidForm() {
+        var isError = false;
+        var newError = {
+            socialTypeError: "",
+            socialLinkError: ""
+        };
+        if (!newSocial.socialType) {
+            isError = true;
+            newError = __assign(__assign({}, newError), { socialTypeError: "Please choose a type" });
+        }
+        if (!validURL(newSocial.socialLink)) {
+            isError = true;
+            newError = __assign(__assign({}, newError), { socialLinkError: "Please enter a valid URL" });
+        }
+        if (isError) {
+            setError(newError);
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    function validURL(str) {
+        var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+            '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+        return !!pattern.test(str);
+    }
     var buttonsNormal = (jsx_runtime_1.jsxs(react_1.default.Fragment, { children: [jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", onClick: function (e) {
                     e.preventDefault();
-                    props.addSocial(newSocial);
-                    props.backToSocials();
+                    setSave(true);
                 } }, { children: "Add" }), void 0),
             jsx_runtime_1.jsx("button", __assign({ className: "btn btn-secondary", onClick: function (e) {
                     e.preventDefault();
                     props.backToSocials();
                 } }, { children: "Cancel" }), void 0)] }, void 0));
     var formBody = (jsx_runtime_1.jsxs(react_1.default.Fragment, { children: [jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Type" }, void 0),
-                    jsx_runtime_1.jsxs("select", __assign({ id: "socialType", className: "form-control", value: newSocial.socialType, onChange: function (e) {
+                    jsx_runtime_1.jsxs("select", __assign({ required: true, id: "socialType", className: "form-control", value: newSocial.socialType, onChange: function (e) {
+                            setError(__assign(__assign({}, error), { socialTypeError: "" }));
                             setNewSocial(__assign(__assign({}, newSocial), { socialType: e.target.value }));
                         } }, { children: [jsx_runtime_1.jsx("option", { value: "" }, void 0),
                             jsx_runtime_1.jsx("option", __assign({ value: "Facebook" }, { children: "Facebook" }), void 0),
                             jsx_runtime_1.jsx("option", __assign({ value: "Twitter" }, { children: "Twitter" }), void 0),
-                            jsx_runtime_1.jsx("option", __assign({ value: "LinkedIn" }, { children: "LinkedIn" }), void 0)] }), void 0)] }), void 0),
+                            jsx_runtime_1.jsx("option", __assign({ value: "LinkedIn" }, { children: "LinkedIn" }), void 0)] }), void 0),
+                    jsx_runtime_1.jsx("p", { children: error.socialTypeError }, void 0)] }), void 0),
             jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Link" }, void 0),
-                    jsx_runtime_1.jsx("input", { type: "text", className: "form-control", value: newSocial.socialLink, onChange: function (e) {
+                    jsx_runtime_1.jsx("input", { required: true, type: "text", className: "form-control", value: newSocial.socialLink, onChange: function (e) {
+                            setError(__assign(__assign({}, error), { socialLinkError: "" }));
                             setNewSocial(__assign(__assign({}, newSocial), { socialLink: e.target.value }));
-                        } }, void 0)] }), void 0)] }, void 0));
+                        } }, void 0),
+                    jsx_runtime_1.jsx("p", { children: error.socialLinkError }, void 0)] }), void 0)] }, void 0));
     return (jsx_runtime_1.jsxs("div", __assign({ className: "card mb-3" }, { children: [jsx_runtime_1.jsxs("div", __assign({ className: "card-header", style: { display: "flex", justifyContent: "space-between" } }, { children: [jsx_runtime_1.jsx("h5", __assign({ className: "card-title m-b-0" }, { children: "Add Social" }), void 0),
                     jsx_runtime_1.jsx("button", __assign({ className: "btn btn-outline-primary", onClick: props.backToSocials }, { children: "Back To Socials" }), void 0)] }), void 0),
             jsx_runtime_1.jsx("div", __assign({ className: "card-body" }, { children: jsx_runtime_1.jsxs("form", __assign({ className: "form" }, { children: [formBody, jsx_runtime_1.jsx("div", __assign({ className: "btn-container", style: {
@@ -33619,6 +33680,45 @@ var AddSocial = function (props) {
                             } }, { children: buttonsNormal }), void 0)] }), void 0) }), void 0)] }), void 0));
 };
 exports.default = AddSocial;
+
+
+/***/ }),
+
+/***/ "./js/src/components/Cell.tsx":
+/*!************************************!*\
+  !*** ./js/src/components/Cell.tsx ***!
+  \************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var Cell = function (props) {
+    var video = null;
+    if (props.video) {
+        video = (jsx_runtime_1.jsx("div", __assign({ className: "main-card mb-3 card" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [jsx_runtime_1.jsx("h5", __assign({ className: "card-title" }, { children: "Video - via YouTube" }), void 0),
+                    jsx_runtime_1.jsx("div", { className: "fluid-width-video-wrapper", style: { paddingTop: "56.25%" }, dangerouslySetInnerHTML: { __html: props.video } }, void 0)] }), void 0) }), void 0));
+    }
+    return (jsx_runtime_1.jsxs(react_1.default.Fragment, { children: [video ? video : null, jsx_runtime_1.jsx("div", __assign({ className: "main-card mb-3 card" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [jsx_runtime_1.jsx("h5", __assign({ className: "card-title" }, { children: "Introduction" }), void 0),
+                        jsx_runtime_1.jsx("div", { dangerouslySetInnerHTML: { __html: props.introduction } }, void 0)] }), void 0) }), void 0)] }, void 0));
+};
+exports.default = Cell;
 
 
 /***/ }),
@@ -33748,9 +33848,204 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-function Hive(props) {
+var axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var Cell_1 = __importDefault(__webpack_require__(/*! ./Cell */ "./js/src/components/Cell.tsx"));
+var HiveNav_1 = __importDefault(__webpack_require__(/*! ./HiveNav */ "./js/src/components/HiveNav.tsx"));
+var Hive = function () {
+    var _a = __read(react_1.useState(), 2), hiveData = _a[0], setHiveData = _a[1];
+    var _b = __read(react_1.useState(), 2), currentCell = _b[0], setCurrentCell = _b[1];
+    var _c = __read(react_1.useState([]), 2), cellCache = _c[0], setCellCache = _c[1];
+    var _d = __read(react_1.useState(""), 2), orgSlug = _d[0], setOrgSlug = _d[1];
+    function getHiveData(orgSlug) {
+        if (orgSlug === void 0) { orgSlug = ""; }
+        return __awaiter(this, void 0, void 0, function () {
+            var urlSplit, hiveID;
+            return __generator(this, function (_a) {
+                urlSplit = window.location.href.split("/");
+                hiveID = urlSplit[urlSplit.length - 1];
+                axios_1.default.get("/page-api/get-hive?hiveID=" + hiveID)
+                    .then(function (res) {
+                    console.log(res.status);
+                    if (res.status == 200 && res.data) {
+                        setHiveData(res.data);
+                        getCell(res.data.cells[0]);
+                    }
+                    else if (res.status == 401) {
+                        window.location.href = "/explore/organisations/" + orgSlug;
+                    }
+                    else {
+                        console.error(res);
+                    }
+                }).catch(function (err) {
+                    console.log(err.response.status);
+                    if (err.response && err.response.status == 401) {
+                        window.location.href = "/explore/organisations/" + orgSlug;
+                    }
+                });
+                return [2 /*return*/];
+            });
+        });
+    }
+    function getCell(cellID) {
+        if (!cellID) {
+            return;
+        }
+        var cell = cellCache.find(function (c) { return c.cellID == cellID; });
+        if (cell) {
+            setCurrentCell(cell);
+        }
+        else {
+            axios_1.default.get("/page-api/get-cell?cellID=" + cellID)
+                .then(function (res) {
+                if (res.status == 200 && res.data) {
+                    setCurrentCell(res.data);
+                    setCellCache(__spreadArray(__spreadArray([], __read(cellCache)), [res.data]));
+                }
+            });
+        }
+    }
+    react_1.useEffect(function () {
+        var urlSplit = window.location.href.split("/");
+        var urlSlug = "";
+        for (var i = 0; i < urlSplit.length; i++) {
+            var element = urlSplit[i];
+            if (element == "organisations") {
+                urlSlug = urlSplit[i + 1];
+                setOrgSlug(urlSlug);
+            }
+        }
+        getHiveData(urlSlug);
+    }, []);
+    react_1.useEffect(function () {
+        if (hiveData && hiveData.cells.length > 0) {
+            getCell(hiveData.cells[0].cellID);
+        }
+    }, [hiveData]);
+    var title = jsx_runtime_1.jsx("div", {}, void 0);
+    if (currentCell) {
+        title = (jsx_runtime_1.jsx("div", __assign({ className: "col-md-8 mb-4" }, { children: jsx_runtime_1.jsx("h1", { children: currentCell.cellTitle }, void 0) }), void 0));
+    }
+    var hiveContent = jsx_runtime_1.jsx("p", { children: "This hive has no cells" }, void 0);
+    if (hiveData && hiveData.cells.length > 0) {
+        hiveContent = (jsx_runtime_1.jsxs("div", __assign({ className: "row" }, { children: [title, jsx_runtime_1.jsx("div", __assign({ className: "col-md-8 mb-4" }, { children: jsx_runtime_1.jsx(Cell_1.default, __assign({}, currentCell), void 0) }), void 0),
+                jsx_runtime_1.jsx("div", __assign({ className: "col-md-4" }, { children: jsx_runtime_1.jsx(HiveNav_1.default, { selectCell: getCell, cells: hiveData.cells, currentCellID: currentCell ? currentCell.cellID : -1 }, void 0) }), void 0)] }), void 0));
+    }
+    if (hiveData) {
+        return (jsx_runtime_1.jsxs(react_1.default.Fragment, { children: [jsx_runtime_1.jsx("div", __assign({ className: "app-page-title" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "page-title-wrapper" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "page-title-heading" }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "page-title-icon" }, { children: jsx_runtime_1.jsx("i", { className: "pe-7s-users icon-gradient bg-mean-fruit" }, void 0) }), void 0),
+                                jsx_runtime_1.jsxs("div", { children: [" ", hiveData.hiveTitle, jsx_runtime_1.jsx("div", { className: "page-title-subheading", dangerouslySetInnerHTML: { __html: hiveData.introduction } }, void 0)] }, void 0)] }), void 0) }), void 0) }), void 0),
+                jsx_runtime_1.jsx("a", __assign({ href: "/explore/organisations/" + orgSlug }, { children: jsx_runtime_1.jsx("button", __assign({ className: "btn btn-outline-primary mb-4" }, { children: "Back" }), void 0) }), void 0), hiveContent] }, void 0));
+    }
+    return jsx_runtime_1.jsx("div", {}, void 0);
+};
+exports.default = Hive;
+
+
+/***/ }),
+
+/***/ "./js/src/components/HiveCard.tsx":
+/*!****************************************!*\
+  !*** ./js/src/components/HiveCard.tsx ***!
+  \****************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function HiveCard(props) {
     var linkURL = "";
     var linkText = "View";
     var intro = (jsx_runtime_1.jsx("p", { dangerouslySetInnerHTML: {
@@ -33771,7 +34066,76 @@ function Hive(props) {
     return (jsx_runtime_1.jsxs("div", __assign({ className: "card" }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "card-header" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "card-header-title" }, { children: props.hiveTitle }), void 0) }), void 0),
             jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [intro, link] }), void 0)] }), void 0));
 }
-exports.default = Hive;
+exports.default = HiveCard;
+
+
+/***/ }),
+
+/***/ "./js/src/components/HiveNav.tsx":
+/*!***************************************!*\
+  !*** ./js/src/components/HiveNav.tsx ***!
+  \***************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var HiveNavItem_1 = __importDefault(__webpack_require__(/*! ./HiveNavItem */ "./js/src/components/HiveNavItem.tsx"));
+var HiveNav = function (props) {
+    return (jsx_runtime_1.jsx("div", __assign({ className: "main-card mb-3 card" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "card-title" }, { children: "Cells" }), void 0),
+                jsx_runtime_1.jsx("ul", __assign({ className: "list-group" }, { children: props.cells.map(function (c) { return react_1.createElement(HiveNavItem_1.default, __assign({ selectCell: props.selectCell, active: c.cellID == props.currentCellID }, c, { key: c.cellID })); }) }), void 0)] }), void 0) }), void 0));
+};
+exports.default = HiveNav;
+
+
+/***/ }),
+
+/***/ "./js/src/components/HiveNavItem.tsx":
+/*!*******************************************!*\
+  !*** ./js/src/components/HiveNavItem.tsx ***!
+  \*******************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var HiveNavItem = function (props) {
+    var button = jsx_runtime_1.jsx("button", __assign({ onClick: function (e) {
+            e.preventDefault();
+            props.selectCell(props.cellID);
+        }, className: "btn btn-small btn-primary" }, { children: "View" }), void 0);
+    return (jsx_runtime_1.jsxs("li", __assign({ className: "list-group-item " + (props.active ? "active" : "") }, { children: [jsx_runtime_1.jsx("h5", __assign({ className: "list-group-item-heading" }, { children: props.cellTitle }), void 0),
+            jsx_runtime_1.jsx("p", { className: "list-group-item-text" }, void 0), props.active ? null : button] }), void 0));
+};
+exports.default = HiveNavItem;
 
 
 /***/ }),
@@ -33818,7 +34182,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var Hive_1 = __importDefault(__webpack_require__(/*! ./Hive */ "./js/src/components/Hive.tsx"));
+var HiveCard_1 = __importDefault(__webpack_require__(/*! ./HiveCard */ "./js/src/components/HiveCard.tsx"));
 var Hives = function (props) {
     var _a = __read(react_2.useState(1), 2), page = _a[0], setPage = _a[1];
     var _b = __read(react_2.useState(6), 2), hivesPerPage = _b[0], setHivesPerPage = _b[1];
@@ -33876,7 +34240,7 @@ var Hives = function (props) {
         }
         return false;
     }
-    var hivesRendered = slicedHives.map(function (hive) { return react_1.createElement(Hive_1.default, __assign({}, hive, { key: hive.hiveID })); });
+    var hivesRendered = slicedHives.map(function (hive) { return react_1.createElement(HiveCard_1.default, __assign({}, hive, { key: hive.hiveID })); });
     var pagination = null;
     if (filteredHives.length > hivesPerPage) {
         pagination = (jsx_runtime_1.jsxs("div", __assign({ className: "c-pagination" }, { children: [jsx_runtime_1.jsx("button", __assign({ className: "btn btn-outline-alternate", onClick: function () {
@@ -34341,12 +34705,20 @@ var Socials = function () {
         setShowAddSocial(false);
     }
     function getSocials() {
-        axios_1.default.get("/page-api/get-organisation-socials?orgSlug=" + urlSlug)
-            .then(function (res) {
-            if (res.data) {
-                setSocialList(res.data);
+        var attempts = 0;
+        var interval = setInterval(function () {
+            if (attempts >= 5) {
+                clearInterval(interval);
             }
-        });
+            axios_1.default.get("/page-api/get-organisation-socials?orgSlug=" + urlSlug)
+                .then(function (res) {
+                if (res.data) {
+                    setSocialList(res.data);
+                    clearInterval(interval);
+                }
+            });
+            attempts++;
+        }, 200);
     }
     function saveSocial(social) {
         var data = new FormData();
@@ -34359,11 +34731,7 @@ var Socials = function () {
         data.append("organisationSlug", urlSlug);
         axios_1.default.post("/page-api/save-organisation-social", data).then(function (res) {
             if (res.data.success) {
-                console.log("Saved", res.data);
                 getSocials();
-            }
-            else {
-                console.error("Error: " + res.data.error, res.data);
             }
         });
     }
@@ -34372,27 +34740,18 @@ var Socials = function () {
         data.append("socialID", social.socialID.toString());
         axios_1.default.post("/page-api/delete-organisation-social", data).then(function (res) {
             if (res.data.success) {
-                console.log("Deleted");
                 getSocials();
-            }
-            else {
-                console.error("Error", res.data);
             }
         });
     }
     function addSocial(social) {
         var data = new FormData();
-        console.log(urlSlug);
         data.append("organisationSlug", urlSlug);
         data.append("socialType", social.socialType);
         data.append("socialLink", social.socialLink);
         axios_1.default.post("/page-api/add-organisation-social", data).then(function (res) {
             if (res.data.success) {
-                console.log("Created");
                 getSocials();
-            }
-            else {
-                console.error("Error: " + res.data.error, res.data);
             }
         });
     }
@@ -34408,13 +34767,8 @@ var Socials = function () {
     react_2.useEffect(function () {
         getSocials();
     }, [urlSlug]);
-    react_2.useEffect(function () {
-        console.log(socialList);
-    }, [socialList]);
-    react_2.useEffect(function () {
-        console.log(editSocial);
-    }, [editSocial]);
     var listRendered = socialList.map(function (s, i) { return react_1.createElement(Social_1.default, __assign({ editLink: editLink }, s, { key: i })); });
+    var placeholder = jsx_runtime_1.jsx("tr", { children: jsx_runtime_1.jsx("td", __assign({ colSpan: 3 }, { children: "You have no socials" }), void 0) }, void 0);
     if (editSocial) {
         return (jsx_runtime_1.jsx(EditSocial_1.default, { editSocial: editSocial, backToSocials: backToSocials, setEditSocial: setEditSocial, saveSocial: saveSocial, deleteSocial: deleteSocial }, void 0));
     }
@@ -34426,7 +34780,7 @@ var Socials = function () {
             jsx_runtime_1.jsx("div", __assign({ className: "table-responsive" }, { children: jsx_runtime_1.jsxs("table", __assign({ className: "align-middle mb-0 table table-borderless table-striped table-hover" }, { children: [jsx_runtime_1.jsx("thead", { children: jsx_runtime_1.jsxs("tr", { children: [jsx_runtime_1.jsx("th", { children: "Type" }, void 0),
                                     jsx_runtime_1.jsx("th", { children: "Link" }, void 0),
                                     jsx_runtime_1.jsx("th", { children: "Actions" }, void 0)] }, void 0) }, void 0),
-                        jsx_runtime_1.jsx("tbody", { children: listRendered }, void 0)] }), void 0) }), void 0)] }), void 0));
+                        jsx_runtime_1.jsx("tbody", { children: listRendered.length > 0 ? listRendered : placeholder }, void 0)] }), void 0) }), void 0)] }), void 0));
 };
 exports.default = Socials;
 
@@ -34454,6 +34808,7 @@ __webpack_require__(/*! ./pages/explore.organisations.manage.hives */ "./js/src/
 __webpack_require__(/*! ./pages/admin.notifications */ "./js/src/pages/admin.notifications.tsx");
 __webpack_require__(/*! ./pages/explore.organsations.manage.members.add */ "./js/src/pages/explore.organsations.manage.members.add.tsx");
 __webpack_require__(/*! ./pages/explore.organisations.manage.details */ "./js/src/pages/explore.organisations.manage.details.tsx");
+__webpack_require__(/*! ./pages/viewHive */ "./js/src/pages/viewHive.tsx");
 var organisationForms = Array.from(document.getElementsByClassName("org-form"));
 organisationForms.forEach(function (form) {
     try {
@@ -34622,6 +34977,30 @@ var addFile = document.getElementById("file-upload");
 if (addFile) {
     console.log("add file rendering");
     ReactDOM.render(jsx_runtime_1.jsx(AddMembersWrapper_1.default, {}, void 0), addFile);
+}
+
+
+/***/ }),
+
+/***/ "./js/src/pages/viewHive.tsx":
+/*!***********************************!*\
+  !*** ./js/src/pages/viewHive.tsx ***!
+  \***********************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+var Hive_1 = __importDefault(__webpack_require__(/*! ../components/Hive */ "./js/src/components/Hive.tsx"));
+var hive = document.getElementById("hive");
+if (hive) {
+    console.log(hive);
+    ReactDOM.render(jsx_runtime_1.jsx(Hive_1.default, {}, void 0), hive);
 }
 
 

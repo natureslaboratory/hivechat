@@ -439,6 +439,33 @@ function get_hive($hiveID)
   return $data;
 }
 
+function get_hive_with_cell_list($hiveID) 
+{
+  
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $hives = new Hivechat_Hives($API);
+  $cells = new Hivechat_Cells($API);
+  $hive = $hives->get_hive($hiveID);
+  $hive = HiveApi::flatten($hive, [
+    "mappings" => [
+      "raw" => "introduction"
+    ]
+  ]);
+  $hiveCells = $cells->cells_byHive($hiveID);
+  
+  $cellIDList = [];
+  foreach ($hiveCells as $cell) {
+    $cellData = [];
+    $cellData["cellID"] = $cell["cellID"];
+    $cellData["cellTitle"] = $cell["cellTitle"];
+    $cellIDList[] = $cellData;
+  }
+
+  $hive["cells"] = $cellIDList;
+
+  return $hive;
+}
+
 function delete_hive($hiveID)
 {
 
@@ -1256,4 +1283,15 @@ function add_social($data)
   } else {
     return ["success" => false, "error" => "Database Error", "data" => $data];
   }
+}
+
+function is_hive_owner($memberID, $hiveID) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $hives = new Hivechat_hives($API);
+
+  $hive = $hives->get_hive($hiveID);
+  if ($hive["memberID"] == $memberID) {
+    return true;
+  }
+  return false;
 }

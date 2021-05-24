@@ -1,37 +1,45 @@
-<?php perch_layout('admin.header'); ?>   
-<?php
-$hiveData = get_hive(perch_get('hiveID'));
-$json = json_decode($hiveData['hiveDynamicFields'],true);
-if(perch_get('cellID')){
-	$cellData = get_cell(perch_get('cellID'));
-	$cellJson = json_decode($cellData['cellDynamicFields'],true);
-}else{
-	$cellData = get_first_cell(perch_get('hiveID'));
-	$cellJson = json_decode($cellData['cellDynamicFields'],true);
-}
+<?php 
+    $hive = get_hive(perch_layout_var("hiveID", true));
+    $hiveJson = json_decode($hive['hiveDynamicFields'],true);
+    $cell = null;
+    $cellJson = null;
+	echo perch_layout_var("cellID", true);
+    if (perch_layout_has("cellID") || perch_layout_var("slugType")) {
+        $cell = get_cell(perch_layout_has("cellID") ? perch_layout_var("cellID", true) : perch_layout_var("slugType", true));
+        $cellJson = json_decode($cell['cellDynamicFields'],true);
+    }else{
+        $cell = get_first_cell(perch_layout_var("hiveID", true));
+        $cellJson = json_decode($cell['cellDynamicFields'],true);
+    }
+    $organisation = get_organisation_by_slug(perch_layout_var("organisationSlug", true), ["skip-template" => true], true);
 
-/*
-print_r($cellData);
-print_r($cellJson);
-*/
+	if (!is_organisation_hive(perch_layout_var("hiveID", true), $organisation["organisationID"])) {
+		?>
+			<script>
+				window.location.href = "/explore/organisations/<?= $organisation["organisationSlug"] ?>/"
+			</script>
+		<?php
+	}
 ?>
-<div class="app-main__outer">
-    <div class="app-main__inner">
+
         <div class="app-page-title">
             <div class="page-title-wrapper">
                 <div class="page-title-heading">
                     <div class="page-title-icon">
                         <i class="pe-7s-users icon-gradient bg-mean-fruit"></i>
                     </div>
-                    <div><?php echo $hiveData['hiveTitle']; ?>
+                    <div><?php echo $hive['hiveTitle']; ?>
                         <div class="page-title-subheading"><?php echo $json['introduction']['processed']; ?></div>
                     </div>
                 </div>
             </div>
         </div>
+        <a href="/explore/organisations/<?= $organisation["organisationSlug"] ?>">
+            <button class="btn btn-outline-primary mb-4">Back to <?= $organisation["organisationName"] ?></button>
+        </a>
 		<div class="row">
 			<div class="col-md-8 mb-4">
-			<?php echo "<h1>".$cellData['cellTitle']."</h1>"; ?>
+			<?php echo "<h1>".$cell['cellTitle']."</h1>"; ?>
 			</div>
             <div class="col-md-8">
 	            <?php 
@@ -128,7 +136,7 @@ print_r($cellJson);
                     <div class="card-body">
 	                    <h5 class="card-title">Cells</h5>
 	                    <ul class="list-group">
-		                    <?php hive_cells_nav(perch_get('hiveID'),perch_get('cellID')); ?>
+		                    <?php hive_cells_nav(perch_layout_var('hiveID', true),perch_layout_var('cellID', true)); ?>
                         </ul>
                     </div>
                 </div>
@@ -157,11 +165,6 @@ print_r($cellJson);
                 <?php
 	            }
 	            ?>
-            </div>
-		</div>
+            </div> 
+        </div>
 		<div id="hive"></div>
-    </div>           
-<?php    
-
-?>
-<?php perch_layout('admin.footer'); ?>

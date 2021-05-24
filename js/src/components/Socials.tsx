@@ -20,12 +20,20 @@ const Socials : React.FunctionComponent = () => {
     }
 
     function getSocials() {
-        axios.get(`/page-api/get-organisation-socials?orgSlug=${urlSlug}`)
-            .then(res => {
-                if (res.data) {
-                    setSocialList(res.data as Array<SocialProps>)
-                }
-            })
+        let attempts = 0;
+        let interval = setInterval(() => {
+            if (attempts >= 5) {
+                clearInterval(interval);
+            }
+            axios.get(`/page-api/get-organisation-socials?orgSlug=${urlSlug}`)
+                .then(res => {
+                    if (res.data) {
+                        setSocialList(res.data as Array<SocialProps>)
+                        clearInterval(interval)
+                    }
+                })
+            attempts++
+        }, 200);
     }
 
     function saveSocial(social : SocialProps) {
@@ -40,10 +48,7 @@ const Socials : React.FunctionComponent = () => {
 
         axios.post("/page-api/save-organisation-social", data).then(res => {
             if (res.data.success) {
-                console.log("Saved", res.data);
                 getSocials();
-            } else {
-                console.error(`Error: ${res.data.error}`, res.data);
             }
         })
     }
@@ -54,27 +59,20 @@ const Socials : React.FunctionComponent = () => {
 
         axios.post("/page-api/delete-organisation-social", data).then(res => {
             if (res.data.success) {
-                console.log("Deleted");
                 getSocials();
-            } else {
-                console.error("Error", res.data);
             }
         })
     }
 
     function addSocial(social : NewSocialProps) {
         let data = new FormData();
-        console.log(urlSlug)
         data.append("organisationSlug", urlSlug);
         data.append("socialType", social.socialType);
         data.append("socialLink", social.socialLink);
 
         axios.post("/page-api/add-organisation-social", data).then(res => {
             if (res.data.success) {
-                console.log("Created");
                 getSocials();
-            } else {
-                console.error("Error: " + res.data.error, res.data)
             }
         })
 
@@ -94,15 +92,9 @@ const Socials : React.FunctionComponent = () => {
         getSocials()
     }, [urlSlug])
 
-    useEffect(() => {
-        console.log(socialList)
-    }, [socialList])
-
-    useEffect(() => {
-        console.log(editSocial);
-    }, [editSocial])
-
     let listRendered = socialList.map((s, i) => <Social editLink={editLink} {...s} key={i} />)
+
+    let placeholder = <tr><td colSpan={3}>You have no socials</td></tr>
 
     if (editSocial) {
         return (
@@ -140,7 +132,7 @@ const Socials : React.FunctionComponent = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {listRendered}
+                        {listRendered.length > 0 ? listRendered : placeholder}
                     </tbody>
                 </table>
             </div>
