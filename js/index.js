@@ -33684,6 +33684,40 @@ exports.default = AddSocial;
 
 /***/ }),
 
+/***/ "./js/src/components/Back.tsx":
+/*!************************************!*\
+  !*** ./js/src/components/Back.tsx ***!
+  \************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var Back = function (props) {
+    if (props.link) {
+        return (jsx_runtime_1.jsx("a", __assign({ href: props.link }, { children: jsx_runtime_1.jsx("button", __assign({ className: "btn btn-outline-primary mb-4" }, { children: props.label }), void 0) }), void 0));
+    }
+    else {
+        jsx_runtime_1.jsx("button", __assign({ className: "btn btn-outline-primary mb-4", onClick: props.goBack }, { children: props.label }), void 0);
+    }
+};
+exports.default = Back;
+
+
+/***/ }),
+
 /***/ "./js/src/components/Cell.tsx":
 /*!************************************!*\
   !*** ./js/src/components/Cell.tsx ***!
@@ -33710,6 +33744,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.formatDate = void 0;
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var Video_1 = __importDefault(__webpack_require__(/*! ./Video */ "./js/src/components/Video.tsx"));
 function getDayOfMonth(date) {
     var day = date.getDate().toString();
     var suffix = "th";
@@ -33769,11 +33804,6 @@ function formatDate(date) {
 }
 exports.formatDate = formatDate;
 var Cell = function (props) {
-    var video = null;
-    if (props.video) {
-        video = (jsx_runtime_1.jsx("div", __assign({ className: "main-card mb-3 card" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [jsx_runtime_1.jsx("h5", __assign({ className: "card-title" }, { children: "Video - via YouTube" }), void 0),
-                    jsx_runtime_1.jsx("div", { className: "fluid-width-video-wrapper", style: { paddingTop: "56.25%" }, dangerouslySetInnerHTML: { __html: props.video } }, void 0)] }), void 0) }), void 0));
-    }
     var dateStr = "";
     if (props.cellDateTime !== "2000-01-01 00:00:00") {
         var date = new Date(props.cellDateTime);
@@ -33781,7 +33811,9 @@ var Cell = function (props) {
     }
     return (jsx_runtime_1.jsxs(react_1.default.Fragment, { children: [jsx_runtime_1.jsx("h1", __assign({ style: { marginBottom: props.cellSubTitle ? "0.3rem" : "1.3rem" } }, { children: props.cellTitle }), void 0),
             jsx_runtime_1.jsxs("div", __assign({ style: { marginBottom: "1.3rem", opacity: 0.85 } }, { children: [props.cellSubTitle ? jsx_runtime_1.jsx("h4", { children: props.cellSubTitle }, void 0) : null,
-                    dateStr ? jsx_runtime_1.jsx("h6", { children: dateStr }, void 0) : null] }), void 0), video ? video : null, jsx_runtime_1.jsx("div", __assign({ className: "main-card mb-3 card" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [jsx_runtime_1.jsx("h5", __assign({ className: "card-title" }, { children: "Introduction" }), void 0),
+                    dateStr ? jsx_runtime_1.jsx("h6", { children: dateStr }, void 0) : null] }), void 0),
+            props.video ? jsx_runtime_1.jsx(Video_1.default, { videoURL: props.video }, void 0) : null,
+            jsx_runtime_1.jsx("div", __assign({ className: "main-card mb-3 card" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [jsx_runtime_1.jsx("h5", __assign({ className: "card-title" }, { children: "Introduction" }), void 0),
                         jsx_runtime_1.jsx("div", { dangerouslySetInnerHTML: { __html: props.introduction } }, void 0)] }), void 0) }), void 0)] }, void 0));
 };
 exports.default = Cell;
@@ -34513,6 +34545,73 @@ exports.default = Invites;
 
 /***/ }),
 
+/***/ "./js/src/components/ManageHive/ManageHive.tsx":
+/*!*****************************************************!*\
+  !*** ./js/src/components/ManageHive/ManageHive.tsx ***!
+  \*****************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var Back_1 = __importDefault(__webpack_require__(/*! ../Back */ "./js/src/components/Back.tsx"));
+var Title_1 = __importDefault(__webpack_require__(/*! ../Title */ "./js/src/components/Title.tsx"));
+var ManageHive = function () {
+    var _a = __read(react_1.useState({
+        organisationID: "",
+        organisationName: "",
+        organisationSlug: ""
+    }), 2), organisation = _a[0], setOrganisation = _a[1];
+    function goBack(e) {
+    }
+    return (jsx_runtime_1.jsxs(react_1.default.Fragment, { children: [jsx_runtime_1.jsx(Title_1.default, { title: "Manage your organisation hives" }, void 0),
+            jsx_runtime_1.jsx(Back_1.default, { goBack: goBack, label: "Back", link: "/explore/organisations/" + organisation.organisationSlug + "/manage" }, void 0)] }, void 0));
+};
+exports.default = ManageHive;
+
+
+/***/ }),
+
 /***/ "./js/src/components/Member.tsx":
 /*!**************************************!*\
   !*** ./js/src/components/Member.tsx ***!
@@ -34896,6 +34995,155 @@ exports.default = Socials;
 
 /***/ }),
 
+/***/ "./js/src/components/Title.tsx":
+/*!*************************************!*\
+  !*** ./js/src/components/Title.tsx ***!
+  \*************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var Title = function (props) {
+    return (jsx_runtime_1.jsx("div", __assign({ className: "app-page-title" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "page-title-wrapper" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "page-title-heading" }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "page-title-icon" }, { children: jsx_runtime_1.jsx("i", { className: "pe-7s-users icon-gradient bg-mean-fruit" }, void 0) }), void 0),
+                    jsx_runtime_1.jsxs("div", { children: [" ", props.title, jsx_runtime_1.jsx("div", { className: "page-title-subheading", dangerouslySetInnerHTML: { __html: props.subTitle } }, void 0)] }, void 0)] }), void 0) }), void 0) }), void 0));
+};
+exports.default = Title;
+
+
+/***/ }),
+
+/***/ "./js/src/components/Video.tsx":
+/*!*************************************!*\
+  !*** ./js/src/components/Video.tsx ***!
+  \*************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var domains = [
+    "youtube.com",
+    "vimeo.com"
+];
+var Video = function (props) {
+    var _a = __read(react_1.useState(null), 2), domain = _a[0], setDomain = _a[1];
+    var videoStyle = {
+        width: "100%",
+        aspectRatio: "16 / 9"
+    };
+    function getVideoDomain() {
+        var videoDomain = domains.find(function (d) { return props.videoURL.includes(d); });
+        setDomain(videoDomain);
+    }
+    function getVideoIFrame() {
+        var url = formatVideoURL();
+        switch (domain) {
+            case "youtube.com":
+                return (jsx_runtime_1.jsx("iframe", { style: videoStyle, src: url, title: "YouTube video player", frameBorder: "0", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture", allowFullScreen: true }, void 0));
+            case "vimeo.com":
+                return (jsx_runtime_1.jsx("iframe", { style: videoStyle, src: url, frameBorder: "0", allow: "autoplay; fullscreen; picture-in-picture", allowFullScreen: true }, void 0));
+            default:
+                console.error("Unknown video type");
+                console.log(domain);
+        }
+    }
+    function formatVideoURL() {
+        switch (domain) {
+            case "youtube.com":
+                var youtubeSplit = props.videoURL.split("?v=");
+                var youtubeVideoID = youtubeSplit[youtubeSplit.length - 1];
+                return "https://youtube.com/embed/" + youtubeVideoID;
+            case "vimeo.com":
+                var urlSplit = props.videoURL.split("/");
+                var videoID = "";
+                for (var i = urlSplit.length - 1; i >= 0; i--) {
+                    var element = urlSplit[i];
+                    if (element) {
+                        videoID = element;
+                        break;
+                    }
+                }
+                return "https://player.vimeo.com/video/" + videoID;
+            default:
+                throw new Error("What");
+        }
+    }
+    react_1.useEffect(function () {
+        getVideoDomain();
+    }, []);
+    react_1.useEffect(function () {
+        if (domain) {
+            getVideoIFrame();
+        }
+    }, [domain]);
+    var credit = "";
+    if (domain) {
+        switch (domain) {
+            case "vimeo.com":
+                credit = "Video - via Vimeo";
+                break;
+            case "youtube.com":
+                credit = "Video - via Youtube";
+                break;
+            default:
+                credit = "";
+        }
+    }
+    var iframe = null;
+    if (!props.videoURL) {
+        return null;
+    }
+    var isIframe = props.videoURL.includes("iframe");
+    return (jsx_runtime_1.jsx("div", __assign({ className: "main-card mb-3 card" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [credit ? jsx_runtime_1.jsx("h5", __assign({ className: "card-title" }, { children: credit }), void 0) : null,
+                jsx_runtime_1.jsx("div", __assign({ dangerouslySetInnerHTML: isIframe ? { __html: props.videoURL } : null }, { children: domain && !isIframe ? getVideoIFrame() : null }), void 0)] }), void 0) }), void 0));
+};
+exports.default = Video;
+
+
+/***/ }),
+
 /***/ "./js/src/index.tsx":
 /*!**************************!*\
   !*** ./js/src/index.tsx ***!
@@ -34918,6 +35166,7 @@ __webpack_require__(/*! ./pages/admin.notifications */ "./js/src/pages/admin.not
 __webpack_require__(/*! ./pages/explore.organsations.manage.members.add */ "./js/src/pages/explore.organsations.manage.members.add.tsx");
 __webpack_require__(/*! ./pages/explore.organisations.manage.details */ "./js/src/pages/explore.organisations.manage.details.tsx");
 __webpack_require__(/*! ./pages/viewHive */ "./js/src/pages/viewHive.tsx");
+__webpack_require__(/*! ./pages/manageHive */ "./js/src/pages/manageHive.tsx");
 var organisationForms = Array.from(document.getElementsByClassName("org-form"));
 organisationForms.forEach(function (form) {
     try {
@@ -35086,6 +35335,30 @@ var addFile = document.getElementById("file-upload");
 if (addFile) {
     console.log("add file rendering");
     ReactDOM.render(jsx_runtime_1.jsx(AddMembersWrapper_1.default, {}, void 0), addFile);
+}
+
+
+/***/ }),
+
+/***/ "./js/src/pages/manageHive.tsx":
+/*!*************************************!*\
+  !*** ./js/src/pages/manageHive.tsx ***!
+  \*************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+var ManageHive_1 = __importDefault(__webpack_require__(/*! ../components/ManageHive/ManageHive */ "./js/src/components/ManageHive/ManageHive.tsx"));
+var manageHive = document.getElementById("manage-hive");
+if (manageHive) {
+    console.log(manageHive);
+    ReactDOM.render(jsx_runtime_1.jsx(ManageHive_1.default, {}, void 0), manageHive);
 }
 
 

@@ -35,7 +35,9 @@ switch (perch_layout_var("action", true)) {
                 "href" => "/explore/organisations/$organisationSlug/manage/hives",
                 "label" => "Back to Hives"
             ]);
-            ?> 
+            ?>
+            
+            <div id="manage-hive" data-actionID="<?= perch_layout_var("actionID", true) ?>" data-organisationSlug="<?= $organisationSlug ?>"></div>
             <div class="row">
                 <div class="col-md-6">
                     <?php edit_hive(perch_layout_var("actionID", true), ["organisationSlug" => $organisationSlug]); ?> 

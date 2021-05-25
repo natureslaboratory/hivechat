@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Video from './Video';
 
 export interface CellData {
     cellID: number,
@@ -72,26 +73,11 @@ function addZeroes(time : number) {
 }
 
 export function formatDate(date) {
-    
-
-    
     return `${addZeroes(date.getHours())}:${addZeroes(date.getMinutes())}, ${getMonth(date)} ${getDayOfMonth(date)} ${date.getFullYear()}`;
 }
 
 const Cell: React.FunctionComponent<CellData> = (props) => {
-    let video = null;
-    if (props.video) {
-        video = (
-            <div className="main-card mb-3 card">
-                <div className="card-body">
-                    <h5 className="card-title">Video - via YouTube</h5>
-                    <div className="fluid-width-video-wrapper" style={{ paddingTop: "56.25%" }} dangerouslySetInnerHTML={{__html: props.video}}>
-                        
-                    </div>                    
-                </div>
-            </div>
-        )
-    }
+    
 
     let dateStr = "";
     if (props.cellDateTime !== "2000-01-01 00:00:00") {
@@ -106,7 +92,7 @@ const Cell: React.FunctionComponent<CellData> = (props) => {
                 {props.cellSubTitle ? <h4>{props.cellSubTitle}</h4> : null}
                 {dateStr ? <h6>{dateStr}</h6> : null}
             </div>
-            {video ? video : null}
+            {props.video ? <Video videoURL={props.video} /> : null}
             <div className="main-card mb-3 card">
                 <div className="card-body">
                     <h5 className="card-title">Introduction</h5>
