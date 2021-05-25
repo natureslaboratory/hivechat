@@ -33982,7 +33982,7 @@ var Hive = function () {
     }, []);
     var title = jsx_runtime_1.jsx("div", {}, void 0);
     if (currentCell) {
-        title = (jsx_runtime_1.jsx("h1", { children: currentCell.cellTitle }, void 0));
+        title = (jsx_runtime_1.jsx("h1", __assign({ style: { marginBottom: "1.3rem" } }, { children: currentCell.cellTitle }), void 0));
     }
     var hiveContent = jsx_runtime_1.jsx("p", { children: "This hive has no cells" }, void 0);
     if (cells && cells.length > 0) {

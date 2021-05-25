@@ -64,7 +64,7 @@ const Hive : React.FunctionComponent = () => {
     let title = <div></div>;
     if (currentCell) {
         title = (
-            <h1>{currentCell.cellTitle}</h1>
+            <h1 style={{marginBottom: "1.3rem"}}>{currentCell.cellTitle}</h1>
         )
     }
 
