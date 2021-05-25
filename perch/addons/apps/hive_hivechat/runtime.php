@@ -149,6 +149,12 @@ function hive_hivechat_form_handler($SubmittedForm)
           $notifications->create_notification($invite["senderID"], $member["memberID"], $message, $link);
         }
 
+        ?>
+          <script>
+              window.location.href="/explore/organisations/<?= $organisation["organisationSlug"] ?>"
+          </script>
+        <?php
+
         break;
 
       case "create_organisation_invite":
@@ -1299,4 +1305,55 @@ function is_hive_owner($memberID, $hiveID) {
     return true;
   }
   return false;
+}
+
+function create_invites_bulk($emails, $senderID, $organisationID) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $invites = new Hivechat_Invites($API);
+  $organisations = new Hivechat_Organisations($API);
+
+  if ($organisations->is_admin($organisationID, $senderID)) {
+    http_response_code(403);
+    return;
+  }
+  
+  $filteredEmails = [];
+  $debug = [];
+  foreach ($emails as $email) {
+    $member = $organisations->get_member_by_email($email);
+    if ($member) {
+      $memberOrg = $organisations->is_organisation_member($member["memberID"], $organisationID);
+      if ($memberOrg) {
+        $debug[$email] = "Already Member";
+        continue;
+      } 
+    }
+
+    $invite = $invites->has_organisation_invite($email, $organisationID);
+    if ($invite) {
+      $debug[$email] = "Has Invite";
+      continue;
+    } else {
+      $debug[$email] = "No Invite";
+    }
+
+    $exists = false;
+    foreach ($filteredEmails as $filteredEmail) {
+      if ($email == $filteredEmail) {
+        $debug[$email] = "Already in filteredEmails";
+        $exists = true;
+      } else {
+        $debug[$email] = "Not in filteredEmails";
+      }
+    }
+    if (!$exists) {
+      $debug[$email] = "Adding to filteredEmails";
+      $filteredEmails[] = $email;
+    } else {
+      $debug[$email] = "Not adding to filteredEmails";
+    }
+    
+  }
+
+  return $invites->create_invites_bulk($filteredEmails, $senderID, $organisationID);
 }

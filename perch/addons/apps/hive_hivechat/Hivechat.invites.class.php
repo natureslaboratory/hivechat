@@ -50,6 +50,63 @@ class Hivechat_Invites extends PerchAPI_Factory
         return $this->db->execute($sql);
     }
 
+    function create_invites_bulk($emails, $senderID, $organisationID) {
+        $sql = "INSERT INTO perch3_invites
+                (memberEmail, senderID, organisationID) 
+                VALUES ";
+        for ($i=0; $i < count($emails); $i++) { 
+            $email = $emails[$i];
+            if ($this->has_organisation_invite($email, $organisationID)) {
+                continue;
+            }
+            $sql .= "('$email', '$senderID', '$organisationID')";
+
+            if ($i < count($emails)-1) {
+                $sql .= ", ";
+            } else {
+                $sql .= ";";
+            }
+        }
+        $result = $this->db->execute($sql);
+
+        if (!$result) {
+            return false;
+        }
+
+        $orgs = new Hivechat_Organisations($this->API);
+        $notifications = new Hivechat_Notifications($this->API);
+        $sender = HiveApi::flatten($orgs->get_member($senderID), ["mappings" => ["first_name" => "first_name", "last_name" => "last_name"]]);
+        $organisation = $orgs->get_organisation($organisationID);
+
+        foreach ($emails as $memberEmail) {
+            $member = $orgs->get_member_by_email($memberEmail);
+            $email = new PerchEmail("hivechat/signup.html");
+
+            $message = "$sender[first_name] $sender[last_name] has invited you to join $organisation[organisationName]";
+            $link = "/admin/register";
+    
+            if ($member) {
+              $link = "/admin/invites";
+              $notifications->create_notification($member["memberID"], $senderID, $message, $link);
+            }
+    
+            $email->set_bulk([
+              "email_message" => $message,
+              "email_subject" => $message,
+              "isMember" => $member ? true : false,
+              "protocol" => $_SERVER["HTTPS"] ? "https://" : "http://",
+              "email_link" => $link
+            ]);
+    
+            $email->senderName("Hivechat");
+            $email->senderEmail("caleb@natureslaboratory.co.uk");
+            $email->recipientEmail($memberEmail);
+            $email->send();
+        }
+
+        return true;
+    }
+
     function has_invite($memberEmail, $inviteID) {
         $sql = "SELECT * FROM perch3_invites WHERE memberEmail='$memberEmail' AND inviteID='$inviteID' LIMIT 1";
         if ($this->db->get_row($sql)) {

@@ -33370,19 +33370,10 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var Member_1 = __importDefault(__webpack_require__(/*! ./Member */ "./js/src/components/Member.tsx"));
-var axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
 var Members = function (props) {
     var _a = __read(react_1.useState(0), 2), page = _a[0], setPage = _a[1];
     var _b = __read(react_1.useState([]), 2), emailsSliced = _b[0], setEmailsSliced = _b[1];
     var limit = 5;
-    function addMembers(e) {
-        e.preventDefault();
-        if (!props.emails) {
-            return;
-        }
-        axios_1.default.post("/page-api/add-members-bulk", props.emails)
-            .then(function (res) { return console.log(res.data); });
-    }
     react_1.useEffect(function () {
         sliceEmails();
     }, [page, props.emails]);
@@ -33393,8 +33384,19 @@ var Members = function (props) {
         setEmailsSliced(newEmails);
     }
     var emailsRendered = emailsSliced.map(function (d, i) { return jsx_runtime_1.jsx(Member_1.default, { email: d, index: i, removeEmail: props.removeEmail }, i); });
-    var pagination = (jsx_runtime_1.jsxs("div", __assign({ style: { display: "flex", gap: "0.5rem", alignItems: "center" } }, { children: [jsx_runtime_1.jsx("button", { children: "Prev" }, void 0), page + 1, jsx_runtime_1.jsx("button", { children: "Next" }, void 0)] }), void 0));
-    return (jsx_runtime_1.jsxs("form", { children: [jsx_runtime_1.jsxs("div", __assign({ className: "form-group", style: { display: "flex", justifyContent: "space-between" } }, { children: [jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", type: "submit", onClick: function (e) { return addMembers(e); } }, { children: "Add Members" }), void 0), props.emails.length > limit ? pagination : null] }), void 0),
+    var pagination = (jsx_runtime_1.jsxs("div", __assign({ style: { display: "flex", gap: "0.5rem", alignItems: "center" } }, { children: [jsx_runtime_1.jsx("button", __assign({ onClick: function (e) {
+                    e.preventDefault();
+                    if (page > 0) {
+                        setPage(page - 1);
+                    }
+                } }, { children: "Prev" }), void 0), page + 1, jsx_runtime_1.jsx("button", __assign({ onClick: function (e) {
+                    e.preventDefault();
+                    var isNextPage = props.emails.length - (limit * (page + 1)) > 0;
+                    if (isNextPage) {
+                        setPage(page + 1);
+                    }
+                } }, { children: "Next" }), void 0)] }), void 0));
+    return (jsx_runtime_1.jsxs("form", { children: [jsx_runtime_1.jsxs("div", __assign({ className: "form-group", style: { display: "flex", justifyContent: "space-between" } }, { children: [jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", type: "submit", onClick: props.addMembers }, { children: "Add Members" }), void 0), props.emails.length > limit ? pagination : null] }), void 0),
             jsx_runtime_1.jsx("div", { children: jsx_runtime_1.jsx("div", __assign({ style: { display: "flex", flexDirection: "column", gap: "0.5rem" } }, { children: emailsRendered }), void 0) }, void 0)] }, void 0));
 };
 exports.default = Members;
@@ -33496,6 +33498,27 @@ var AddMembersWrapper = function (props) {
         var emailsEnd = emailAddresses.slice(index + 1, emailAddresses.length);
         setEmailAddresses(__spreadArray(__spreadArray([], __read(emailsStart)), __read(emailsEnd)));
     }
+    function addMembers(e) {
+        e.preventDefault();
+        var data = new FormData();
+        data.append("emails", JSON.stringify(emailAddresses));
+        var urlSplit = window.location.href.split("/");
+        var urlSlug = "";
+        for (var i = 0; i < urlSplit.length; i++) {
+            var element = urlSplit[i];
+            if (element == "organisations") {
+                urlSlug = urlSplit[i + 1];
+            }
+        }
+        data.append("organisationSlug", urlSlug);
+        if (!emailAddresses) {
+            return;
+        }
+        axios_1.default.post("/page-api/add-members-bulk", data)
+            .then(function (res) {
+            location.reload();
+        });
+    }
     var fileText = jsx_runtime_1.jsx("div", {}, void 0);
     if (file) {
         fileText = jsx_runtime_1.jsx("p", __assign({ style: { margin: 0 } }, { children: file.name }), void 0);
@@ -33511,7 +33534,7 @@ var AddMembersWrapper = function (props) {
             jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", __assign({ htmlFor: "file-upload", className: "hidden" }, { children: "Select CSV" }), void 0),
                     jsx_runtime_1.jsx("input", { className: "hidden", type: "file", id: "file-upload", ref: function (el) { return (setUpload(el)); }, onChange: handleFileUpload }, void 0),
                     jsx_runtime_1.jsxs("div", __assign({ style: { display: "flex", gap: "1rem", alignItems: "center" } }, { children: [file ? fileText : null, file ? clearCSV : selectCSV] }), void 0)] }), void 0), file ? uploadDiv : null] }, void 0));
-    var addMembersForm = jsx_runtime_1.jsx(AddMembers_1.default, { emails: emailAddresses, removeEmail: removeEmail }, void 0);
+    var addMembersForm = jsx_runtime_1.jsx(AddMembers_1.default, { emails: emailAddresses, addMembers: addMembers, removeEmail: removeEmail }, void 0);
     return (jsx_runtime_1.jsxs("div", __assign({ className: "card mb-3" }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "card-header" }, { children: jsx_runtime_1.jsx("h5", __assign({ className: "card-title m-b-0" }, { children: "Invite Members By CSV" }), void 0) }), void 0),
             jsx_runtime_1.jsx("div", __assign({ className: "card-body" }, { children: emailAddresses.length > 0 ? addMembersForm : processForm }), void 0)] }), void 0));
 };

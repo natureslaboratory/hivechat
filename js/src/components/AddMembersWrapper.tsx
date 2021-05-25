@@ -65,6 +65,31 @@ const AddMembersWrapper : React.FunctionComponent<AddMembersWrapperProps> = (pro
         setEmailAddresses([...emailsStart, ...emailsEnd]);
     }
 
+    function addMembers(e) {
+        e.preventDefault();
+
+        let data = new FormData();
+        data.append("emails", JSON.stringify(emailAddresses));
+        let urlSplit = window.location.href.split("/");
+        let urlSlug = "";
+        for (let i = 0; i < urlSplit.length; i++) {
+            const element = urlSplit[i];
+            if (element == "organisations") {
+                urlSlug = urlSplit[i+1];
+            }
+        }
+        data.append("organisationSlug", urlSlug);
+
+        if (!emailAddresses) {
+            return;
+        }
+
+        axios.post("/page-api/add-members-bulk", data)
+            .then(res => {
+                location.reload();
+            });
+    }
+
 
     let fileText = <div />;
     if (file) {
@@ -98,7 +123,7 @@ const AddMembersWrapper : React.FunctionComponent<AddMembersWrapperProps> = (pro
                         </form>
     )
 
-    let addMembersForm = <AddMembers emails={emailAddresses} removeEmail={removeEmail} />
+    let addMembersForm = <AddMembers emails={emailAddresses} addMembers={addMembers} removeEmail={removeEmail} />
 
     return (
         
