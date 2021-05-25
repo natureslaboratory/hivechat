@@ -34228,7 +34228,10 @@ var HiveNav = function (props) {
                         setPage(page + 1);
                     }
                 }, className: "btn btn-alternate" }, { children: jsx_runtime_1.jsx("i", { className: "fas fa-chevron-right" }, void 0) }), void 0)] }), void 0));
-    return (jsx_runtime_1.jsx("div", __assign({ className: "main-card mb-3 card", style: cardStyle }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [jsx_runtime_1.jsxs("div", __assign({ className: "card-title", style: { display: "flex", flexWrap: "wrap", gap: "0.5rem", justifyContent: "space-between", alignItems: "stretch" } }, { children: [props.cells.length > cellsPerPage ? pagination : null, jsx_runtime_1.jsx("input", { style: { padding: "0.2rem 0.4rem" }, placeholder: "Search", type: "text", value: search, onChange: function (e) { return setSearch(e.target.value); } }, void 0)] }), void 0),
+    return (jsx_runtime_1.jsx("div", __assign({ className: "main-card mb-3 card", style: cardStyle }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [jsx_runtime_1.jsxs("div", __assign({ className: "card-title", style: { display: "flex", flexWrap: "wrap", gap: "0.5rem", justifyContent: "space-between", alignItems: "stretch" } }, { children: [props.cells.length > cellsPerPage ? pagination : null, jsx_runtime_1.jsx("input", { style: { padding: "0.2rem 0.4rem" }, placeholder: "Search", type: "text", value: search, onChange: function (e) {
+                                setPage(0);
+                                setSearch(e.target.value);
+                            } }, void 0)] }), void 0),
                 jsx_runtime_1.jsx("ul", __assign({ className: "list-group" }, { children: slicedCells.map(function (c) { return react_1.createElement(HiveNavItem_1.default, __assign({ selectCell: props.selectCell, active: c.cellID == props.currentCellID }, c, { key: c.cellID })); }) }), void 0)] }), void 0) }), void 0));
 };
 exports.default = HiveNav;

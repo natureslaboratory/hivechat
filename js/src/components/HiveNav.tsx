@@ -72,7 +72,10 @@ const HiveNav : React.FunctionComponent<HiveNavProps & HiveNavFuncs> = (props) =
             <div className="card-body">
                 <div className="card-title" style={{display: "flex", flexWrap: "wrap", gap: "0.5rem", justifyContent: "space-between", alignItems: "stretch"}}>
                     {props.cells.length > cellsPerPage ? pagination : null}
-                    <input style={{padding: "0.2rem 0.4rem"}} placeholder="Search" type="text" value={search} onChange={(e) => setSearch(e.target.value)}></input>
+                    <input style={{padding: "0.2rem 0.4rem"}} placeholder="Search" type="text" value={search} onChange={(e) => {
+                        setPage(0);
+                        setSearch(e.target.value)
+                        }}></input>
                 </div>
                 <ul className="list-group">
                     {slicedCells.map(c => <HiveNavItem selectCell={props.selectCell} active={c.cellID == props.currentCellID} {...c} key={c.cellID} />)}
