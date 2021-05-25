@@ -34161,7 +34161,7 @@ var HiveNav = function (props) {
     var _a = __read(react_2.useState(0), 2), page = _a[0], setPage = _a[1];
     var _b = __read(react_2.useState([]), 2), slicedCells = _b[0], setSlicedCells = _b[1];
     var _c = __read(react_2.useState(""), 2), search = _c[0], setSearch = _c[1];
-    var cellsPerPage = 2;
+    var cellsPerPage = 10;
     function filterCells(cells) {
         return props.cells.filter(function (c) {
             var match = false;

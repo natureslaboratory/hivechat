@@ -20,7 +20,7 @@ const HiveNav : React.FunctionComponent<HiveNavProps & HiveNavFuncs> = (props) =
     const [page, setPage] = useState(0);
     const [slicedCells, setSlicedCells] = useState<CellData[]>([]);
     const [search, setSearch] = useState("");
-    const cellsPerPage = 2;
+    const cellsPerPage = 10;
 
     function filterCells(cells : CellData[]) {
         return props.cells.filter(c => {
