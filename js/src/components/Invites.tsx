@@ -27,7 +27,6 @@ const Invites: React.FunctionComponent<InvitesProps> = (props) => {
         fetch(`/page-api/get-organisation-invites?urlSlug=${urlSlug}`)
             .then(res => res.json())
             .then(data => {
-                console.log(data, urlSlug)
                 if (data) {
                     setInvites(data as Array<InviteProps>)
                 }
@@ -38,14 +37,6 @@ const Invites: React.FunctionComponent<InvitesProps> = (props) => {
         fetch(`/page-api/delete-organisation-invite?inviteID=${inviteID}`)
             .then(res => res.json())
             .then(data => {
-                if (data) {
-                    console.log(data);
-                    if (data.deleted) {
-                        console.log("deleted")
-                    } else {
-                        console.log("not deleted")
-                    }
-                }
                 getInvites();
             })
     }

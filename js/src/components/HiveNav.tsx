@@ -65,7 +65,6 @@ const HiveNav : React.FunctionComponent<HiveNavProps & HiveNavFuncs> = (props) =
             {page+1}
             <button onClick={() => {
                 let nextPageExists = filteredCells.length - (cellsPerPage * (page+1)) > 0;
-                console.log(slicedCells.length, nextPageExists)
                 if (nextPageExists) {
                     setPage(page+1);
                 }

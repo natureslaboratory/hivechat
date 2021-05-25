@@ -50,7 +50,6 @@ const Video : React.FunctionComponent<VideoProps> = (props) => {
                 )
             default:
                 console.error("Unknown video type");
-                console.log(domain)
         }
     }
 

@@ -26,14 +26,11 @@ export default class DeleteForm
         this.submitButton = Utils.getPerchElement(this.node, "submit-button", "btn") as HTMLInputElement;
 
         this.addEventListeners();
-
-        // console.log(this.node, this.removeFirst, this.removeSecond, this.removeButtonFirst, this.removeButtonSecond, this.declineButton, this.submitButton)
     }
 
     addEventListeners() {
         this.removeButtonFirst.addEventListener("click", (e) => {
             e.preventDefault();
-            console.log("hello")
             this.hide(this.removeFirst);
             this.show(this.removeSecond);
         })

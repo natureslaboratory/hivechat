@@ -5,6 +5,5 @@ import Hive from '../components/Hive';
 
 const hive = document.getElementById("hive");
 if (hive) {
-    console.log(hive)
     ReactDOM.render(<Hive />, hive);
 }

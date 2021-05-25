@@ -32,7 +32,6 @@ const AddMembersWrapper : React.FunctionComponent<AddMembersWrapperProps> = (pro
 
         axios.post("/page-api/process-email-csv", form)
             .then(res => {
-                console.log(res);
                 setEmailAddresses(res.data)
             });
     }
@@ -47,7 +46,6 @@ const AddMembersWrapper : React.FunctionComponent<AddMembersWrapperProps> = (pro
     }
 
     function checkMimeType(file : File) {
-        console.log(file)
         if (file.type !== "application/vnd.ms-excel") {
             return false;
         }
@@ -67,9 +65,6 @@ const AddMembersWrapper : React.FunctionComponent<AddMembersWrapperProps> = (pro
         setEmailAddresses([...emailsStart, ...emailsEnd]);
     }
 
-    useEffect(() => {
-        console.log(emailColName)
-    }, [emailColName])
 
     let fileText = <div />;
     if (file) {

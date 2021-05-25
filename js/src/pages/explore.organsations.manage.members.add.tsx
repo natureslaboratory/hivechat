@@ -11,6 +11,5 @@ if (invites) {
 
 const addFile = document.getElementById("file-upload");
 if (addFile) {
-    console.log("add file rendering")
     ReactDOM.render(<AddMembersWrapper />, addFile);
 }

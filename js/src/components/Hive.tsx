@@ -25,7 +25,6 @@ const Hive : React.FunctionComponent = () => {
         let hiveID = urlSplit[urlSplit.length - 1];
         axios.get(`/page-api/get-hive?hiveID=${hiveID}`)
             .then(res => {
-                console.log(res.data);
                 if (res.status == 200 && res.data) {
                     setHiveData(res.data.hive as HiveData);
                     setCells(res.data.cells as CellData[]);
@@ -36,7 +35,6 @@ const Hive : React.FunctionComponent = () => {
                     console.error(res);
                 }
             }).catch(err => {
-                console.log(err)
                 if (err.response && err.response.status == 401) {
                     window.location.href = "/explore/organisations/" + orgSlug;
                 }

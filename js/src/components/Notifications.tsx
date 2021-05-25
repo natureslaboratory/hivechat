@@ -39,7 +39,6 @@ const Notifications: React.FunctionComponent<NotificationsProps> = (props) => {
         return fetch("/page-api/notifications-read")
             .then(res => res.json())
             .then(data => {
-                console.log(data);
             })
     }
 
@@ -47,14 +46,6 @@ const Notifications: React.FunctionComponent<NotificationsProps> = (props) => {
         fetch(`/page-api/delete-notification?notificationID=${notificationID}`)
             .then(res => res.json())
             .then(data => {
-                if (data) {
-                    console.log(data);
-                    if (data.deleted) {
-                        console.log("deleted")
-                    } else {
-                        console.log("not deleted")
-                    }
-                }
                 getNotifications();
             })
     }

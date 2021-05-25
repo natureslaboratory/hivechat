@@ -13,7 +13,6 @@ export interface InviteProps {
 
 
 const Invite : React.FunctionComponent<InviteProps> = (props) => {
-    console.log(props);
     return (
         <tr>
             <td>

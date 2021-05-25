@@ -32924,13 +32924,11 @@ var DeleteForm = /** @class */ (function () {
         this.declineButton = document.getElementById("no-delete");
         this.submitButton = Utils_1.default.getPerchElement(this.node, "submit-button", "btn");
         this.addEventListeners();
-        // console.log(this.node, this.removeFirst, this.removeSecond, this.removeButtonFirst, this.removeButtonSecond, this.declineButton, this.submitButton)
     }
     DeleteForm.prototype.addEventListeners = function () {
         var _this = this;
         this.removeButtonFirst.addEventListener("click", function (e) {
             e.preventDefault();
-            console.log("hello");
             _this.hide(_this.removeFirst);
             _this.show(_this.removeSecond);
         });
@@ -33470,7 +33468,6 @@ var AddMembersWrapper = function (props) {
         form.append("colname", emailColName);
         axios_1.default.post("/page-api/process-email-csv", form)
             .then(function (res) {
-            console.log(res);
             setEmailAddresses(res.data);
         });
     }
@@ -33483,7 +33480,6 @@ var AddMembersWrapper = function (props) {
         }
     }
     function checkMimeType(file) {
-        console.log(file);
         if (file.type !== "application/vnd.ms-excel") {
             return false;
         }
@@ -33500,9 +33496,6 @@ var AddMembersWrapper = function (props) {
         var emailsEnd = emailAddresses.slice(index + 1, emailAddresses.length);
         setEmailAddresses(__spreadArray(__spreadArray([], __read(emailsStart)), __read(emailsEnd)));
     }
-    react_1.useEffect(function () {
-        console.log(emailColName);
-    }, [emailColName]);
     var fileText = jsx_runtime_1.jsx("div", {}, void 0);
     if (file) {
         fileText = jsx_runtime_1.jsx("p", __assign({ style: { margin: 0 } }, { children: file.name }), void 0);
@@ -34040,7 +34033,6 @@ var Hive = function () {
                 hiveID = urlSplit[urlSplit.length - 1];
                 axios_1.default.get("/page-api/get-hive?hiveID=" + hiveID)
                     .then(function (res) {
-                    console.log(res.data);
                     if (res.status == 200 && res.data) {
                         setHiveData(res.data.hive);
                         setCells(res.data.cells);
@@ -34053,7 +34045,6 @@ var Hive = function () {
                         console.error(res);
                     }
                 }).catch(function (err) {
-                    console.log(err);
                     if (err.response && err.response.status == 401) {
                         window.location.href = "/explore/organisations/" + orgSlug;
                     }
@@ -34226,7 +34217,6 @@ var HiveNav = function (props) {
                     }
                 }, className: "btn btn-alternate" }, { children: jsx_runtime_1.jsx("i", { className: "fas fa-chevron-left" }, void 0) }), void 0), page + 1, jsx_runtime_1.jsx("button", __assign({ onClick: function () {
                     var nextPageExists = filteredCells.length - (cellsPerPage * (page + 1)) > 0;
-                    console.log(slicedCells.length, nextPageExists);
                     if (nextPageExists) {
                         setPage(page + 1);
                     }
@@ -34441,7 +34431,6 @@ var __assign = (this && this.__assign) || function () {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var Invite = function (props) {
-    console.log(props);
     return (jsx_runtime_1.jsxs("tr", { children: [jsx_runtime_1.jsx("td", { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content p-0" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content-wrapper" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content-left flex2" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-heading" }, { children: props.memberEmail }), void 0) }), void 0) }), void 0) }), void 0) }, void 0),
             jsx_runtime_1.jsx("td", { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content p-0" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content-wrapper" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content-left flex2" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-heading" }, { children: props.sender_first_name + " " + props.sender_last_name }), void 0) }), void 0) }), void 0) }), void 0) }, void 0),
             jsx_runtime_1.jsx("td", { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content p-0" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content-wrapper" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content-left flex2" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-heading" }, { children: props.dateCreated }), void 0) }), void 0) }), void 0) }), void 0) }, void 0),
@@ -34515,7 +34504,6 @@ var Invites = function (props) {
         fetch("/page-api/get-organisation-invites?urlSlug=" + urlSlug)
             .then(function (res) { return res.json(); })
             .then(function (data) {
-            console.log(data, urlSlug);
             if (data) {
                 setInvites(data);
             }
@@ -34525,15 +34513,6 @@ var Invites = function (props) {
         fetch("/page-api/delete-organisation-invite?inviteID=" + inviteID)
             .then(function (res) { return res.json(); })
             .then(function (data) {
-            if (data) {
-                console.log(data);
-                if (data.deleted) {
-                    console.log("deleted");
-                }
-                else {
-                    console.log("not deleted");
-                }
-            }
             getInvites();
         });
     }
@@ -34798,7 +34777,6 @@ var Notifications = function (props) {
                 return [2 /*return*/, fetch("/page-api/notifications-read")
                         .then(function (res) { return res.json(); })
                         .then(function (data) {
-                        console.log(data);
                     })];
             });
         });
@@ -34807,15 +34785,6 @@ var Notifications = function (props) {
         fetch("/page-api/delete-notification?notificationID=" + notificationID)
             .then(function (res) { return res.json(); })
             .then(function (data) {
-            if (data) {
-                console.log(data);
-                if (data.deleted) {
-                    console.log("deleted");
-                }
-                else {
-                    console.log("not deleted");
-                }
-            }
             getNotifications();
         });
     }
@@ -35092,7 +35061,6 @@ var Video = function (props) {
                 return (jsx_runtime_1.jsx("iframe", { style: videoStyle, src: url, frameBorder: "0", allow: "autoplay; fullscreen; picture-in-picture", allowFullScreen: true }, void 0));
             default:
                 console.error("Unknown video type");
-                console.log(domain);
         }
     }
     function formatVideoURL() {
@@ -35339,7 +35307,6 @@ if (invites) {
 }
 var addFile = document.getElementById("file-upload");
 if (addFile) {
-    console.log("add file rendering");
     ReactDOM.render(jsx_runtime_1.jsx(AddMembersWrapper_1.default, {}, void 0), addFile);
 }
 
@@ -35363,7 +35330,6 @@ var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/in
 var ManageHive_1 = __importDefault(__webpack_require__(/*! ../components/ManageHive/ManageHive */ "./js/src/components/ManageHive/ManageHive.tsx"));
 var manageHive = document.getElementById("manage-hive");
 if (manageHive) {
-    console.log(manageHive);
     ReactDOM.render(jsx_runtime_1.jsx(ManageHive_1.default, {}, void 0), manageHive);
 }
 
@@ -35387,7 +35353,6 @@ var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/in
 var Hive_1 = __importDefault(__webpack_require__(/*! ../components/Hive */ "./js/src/components/Hive.tsx"));
 var hive = document.getElementById("hive");
 if (hive) {
-    console.log(hive);
     ReactDOM.render(jsx_runtime_1.jsx(Hive_1.default, {}, void 0), hive);
 }
 
