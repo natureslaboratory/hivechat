@@ -37,7 +37,7 @@ switch (perch_layout_var("action", true)) {
             ]);
             ?>
             
-            <div id="manage-hive" data-actionID="<?= perch_layout_var("actionID", true) ?>" data-organisationSlug="<?= $organisationSlug ?>"></div>
+            <!-- <div id="manage-hive" data-actionID="<?php //perch_layout_var("actionID", true) ?>" data-organisationSlug="<?php //$organisationSlug ?>"></div> -->
             <div class="row">
                 <div class="col-md-6">
                     <?php edit_hive(perch_layout_var("actionID", true), ["organisationSlug" => $organisationSlug]); ?> 
