@@ -43,11 +43,13 @@ const HiveNav : React.FunctionComponent<HiveNavProps & HiveNavFuncs> = (props) =
         return cells.slice(firstIndex, lastIndex);
     }
 
+
+
     useEffect(() => {
         let filteredCells = filterCells(props.cells);
         let cutCells = sliceCells(filteredCells);
         setSlicedCells(cutCells);
-    }, [page, search])
+    }, [page, search, props.cells])
     
 
     let pagination = (

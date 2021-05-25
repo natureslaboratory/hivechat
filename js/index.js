@@ -34217,7 +34217,7 @@ var HiveNav = function (props) {
         var filteredCells = filterCells(props.cells);
         var cutCells = sliceCells(filteredCells);
         setSlicedCells(cutCells);
-    }, [page, search]);
+    }, [page, search, props.cells]);
     var pagination = (jsx_runtime_1.jsxs("div", __assign({ style: { display: "flex", gap: "0.8rem", alignItems: "center" } }, { children: [jsx_runtime_1.jsx("button", __assign({ onClick: function () {
                     if (page > 0) {
                         setPage(page - 1);
