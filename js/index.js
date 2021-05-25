@@ -34192,7 +34192,8 @@ var cardStyle = {
 var HiveNav = function (props) {
     var _a = __read(react_2.useState(0), 2), page = _a[0], setPage = _a[1];
     var _b = __read(react_2.useState([]), 2), slicedCells = _b[0], setSlicedCells = _b[1];
-    var _c = __read(react_2.useState(""), 2), search = _c[0], setSearch = _c[1];
+    var _c = __read(react_2.useState([]), 2), filteredCells = _c[0], setFilteredCells = _c[1];
+    var _d = __read(react_2.useState(""), 2), search = _d[0], setSearch = _d[1];
     var cellsPerPage = 10;
     function filterCells(cells) {
         return props.cells.filter(function (c) {
@@ -34214,16 +34215,18 @@ var HiveNav = function (props) {
         return cells.slice(firstIndex, lastIndex);
     }
     react_2.useEffect(function () {
-        var filteredCells = filterCells(props.cells);
-        var cutCells = sliceCells(filteredCells);
-        setSlicedCells(cutCells);
-    }, [page, search, props.cells]);
+        setFilteredCells(filterCells(props.cells));
+    }, [search, props.cells]);
+    react_2.useEffect(function () {
+        setSlicedCells(sliceCells(filteredCells));
+    }, [filteredCells, page]);
     var pagination = (jsx_runtime_1.jsxs("div", __assign({ style: { display: "flex", gap: "0.8rem", alignItems: "center" } }, { children: [jsx_runtime_1.jsx("button", __assign({ onClick: function () {
                     if (page > 0) {
                         setPage(page - 1);
                     }
                 }, className: "btn btn-alternate" }, { children: jsx_runtime_1.jsx("i", { className: "fas fa-chevron-left" }, void 0) }), void 0), page + 1, jsx_runtime_1.jsx("button", __assign({ onClick: function () {
-                    var nextPageExists = slicedCells.length - (cellsPerPage * (page + 1));
+                    var nextPageExists = filteredCells.length - (cellsPerPage * (page + 1)) > 0;
+                    console.log(slicedCells.length, nextPageExists);
                     if (nextPageExists) {
                         setPage(page + 1);
                     }

@@ -19,6 +19,7 @@ const cardStyle : CSSProperties = {
 const HiveNav : React.FunctionComponent<HiveNavProps & HiveNavFuncs> = (props) => {
     const [page, setPage] = useState(0);
     const [slicedCells, setSlicedCells] = useState<CellData[]>([]);
+    const [filteredCells, setFilteredCells] = useState<CellData[]>([]);
     const [search, setSearch] = useState("");
     const cellsPerPage = 10;
 
@@ -46,10 +47,12 @@ const HiveNav : React.FunctionComponent<HiveNavProps & HiveNavFuncs> = (props) =
 
 
     useEffect(() => {
-        let filteredCells = filterCells(props.cells);
-        let cutCells = sliceCells(filteredCells);
-        setSlicedCells(cutCells);
-    }, [page, search, props.cells])
+        setFilteredCells(filterCells(props.cells));
+    }, [search, props.cells])
+
+    useEffect(() => {
+        setSlicedCells(sliceCells(filteredCells));
+    }, [filteredCells, page])
     
 
     let pagination = (
@@ -61,7 +64,8 @@ const HiveNav : React.FunctionComponent<HiveNavProps & HiveNavFuncs> = (props) =
             }} className="btn btn-alternate"><i className="fas fa-chevron-left"></i></button>
             {page+1}
             <button onClick={() => {
-                let nextPageExists = slicedCells.length - (cellsPerPage * (page+1));
+                let nextPageExists = filteredCells.length - (cellsPerPage * (page+1)) > 0;
+                console.log(slicedCells.length, nextPageExists)
                 if (nextPageExists) {
                     setPage(page+1);
                 }
