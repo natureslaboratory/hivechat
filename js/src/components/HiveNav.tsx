@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, CSSProperties } from 'react';
 import HiveNavItem, { CellSmall } from './HiveNavItem';
 import { CellData } from './Cell';
 
@@ -9,6 +9,11 @@ export interface HiveNavProps {
 
 interface HiveNavFuncs {
     selectCell(cellID : number) : void
+}
+
+const cardStyle : CSSProperties = {
+    backgroundColor: "transparent",
+    boxShadow: "none"
 }
 
 const HiveNav : React.FunctionComponent<HiveNavProps & HiveNavFuncs> = (props) => {
@@ -63,7 +68,7 @@ const HiveNav : React.FunctionComponent<HiveNavProps & HiveNavFuncs> = (props) =
     )
 
     return (
-        <div className="main-card mb-3 card">
+        <div className="main-card mb-3 card" style={cardStyle}>
             <div className="card-body">
                 <div className="card-title" style={{display: "flex"}}>
                     {props.cells.length > cellsPerPage ? pagination : null}

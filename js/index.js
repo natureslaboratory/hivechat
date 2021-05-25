@@ -33982,11 +33982,11 @@ var Hive = function () {
     }, []);
     var title = jsx_runtime_1.jsx("div", {}, void 0);
     if (currentCell) {
-        title = (jsx_runtime_1.jsx("div", __assign({ className: "col-md-8 mb-4" }, { children: jsx_runtime_1.jsx("h1", { children: currentCell.cellTitle }, void 0) }), void 0));
+        title = (jsx_runtime_1.jsx("h1", { children: currentCell.cellTitle }, void 0));
     }
     var hiveContent = jsx_runtime_1.jsx("p", { children: "This hive has no cells" }, void 0);
     if (cells && cells.length > 0) {
-        hiveContent = (jsx_runtime_1.jsxs("div", __assign({ className: "row" }, { children: [title, jsx_runtime_1.jsx("div", __assign({ className: "col-md-8 mb-4" }, { children: jsx_runtime_1.jsx(Cell_1.default, __assign({}, currentCell), void 0) }), void 0),
+        hiveContent = (jsx_runtime_1.jsxs("div", __assign({ className: "row" }, { children: [jsx_runtime_1.jsxs("div", __assign({ className: "col-md-8 mb-4" }, { children: [title, jsx_runtime_1.jsx(Cell_1.default, __assign({}, currentCell), void 0)] }), void 0),
                 jsx_runtime_1.jsx("div", __assign({ className: "col-md-4" }, { children: jsx_runtime_1.jsx(HiveNav_1.default, { selectCell: selectCell, cells: cells, currentCellID: currentCell ? currentCell.cellID : -1 }, void 0) }), void 0)] }), void 0));
     }
     if (hiveData) {
@@ -34091,6 +34091,10 @@ var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var HiveNavItem_1 = __importDefault(__webpack_require__(/*! ./HiveNavItem */ "./js/src/components/HiveNavItem.tsx"));
+var cardStyle = {
+    backgroundColor: "transparent",
+    boxShadow: "none"
+};
 var HiveNav = function (props) {
     var _a = __read(react_2.useState(0), 2), page = _a[0], setPage = _a[1];
     var _b = __read(react_2.useState([]), 2), slicedCells = _b[0], setSlicedCells = _b[1];
@@ -34130,7 +34134,7 @@ var HiveNav = function (props) {
                         setPage(page + 1);
                     }
                 }, className: "btn btn-outline-primary" }, { children: ">" }), void 0)] }), void 0));
-    return (jsx_runtime_1.jsx("div", __assign({ className: "main-card mb-3 card" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [jsx_runtime_1.jsxs("div", __assign({ className: "card-title", style: { display: "flex" } }, { children: [props.cells.length > cellsPerPage ? pagination : null, jsx_runtime_1.jsx("input", { style: { marginLeft: "auto" }, placeholder: "Search", type: "text", value: search, onChange: function (e) { return setSearch(e.target.value); } }, void 0)] }), void 0),
+    return (jsx_runtime_1.jsx("div", __assign({ className: "main-card mb-3 card", style: cardStyle }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [jsx_runtime_1.jsxs("div", __assign({ className: "card-title", style: { display: "flex" } }, { children: [props.cells.length > cellsPerPage ? pagination : null, jsx_runtime_1.jsx("input", { style: { marginLeft: "auto" }, placeholder: "Search", type: "text", value: search, onChange: function (e) { return setSearch(e.target.value); } }, void 0)] }), void 0),
                 jsx_runtime_1.jsx("ul", __assign({ className: "list-group" }, { children: slicedCells.map(function (c) { return react_1.createElement(HiveNavItem_1.default, __assign({ selectCell: props.selectCell, active: c.cellID == props.currentCellID }, c, { key: c.cellID })); }) }), void 0)] }), void 0) }), void 0));
 };
 exports.default = HiveNav;
@@ -34160,18 +34164,17 @@ var __assign = (this && this.__assign) || function () {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var HiveNavItem = function (props) {
-    console.log(props);
     var button = jsx_runtime_1.jsx("button", __assign({ onClick: function (e) {
             e.preventDefault();
             props.selectCell(props.cellID);
         }, className: "btn btn-small btn-primary" }, { children: "View" }), void 0);
     var subtitle = null;
     if (props.cellSubTitle) {
-        subtitle = jsx_runtime_1.jsx("p", __assign({ style: { marginBottom: 0 }, className: "list-group-item-text" }, { children: props.cellSubTitle }), void 0);
+        subtitle = jsx_runtime_1.jsx("p", __assign({ style: { marginBottom: 0, opacity: 0.85 }, className: "list-group-item-text" }, { children: props.cellSubTitle }), void 0);
     }
     return (jsx_runtime_1.jsxs("li", __assign({ style: { cursor: "pointer" }, onClick: function () {
             props.selectCell(props.cellID);
-        }, className: "list-group-item " + (props.active ? "active" : "") }, { children: [jsx_runtime_1.jsx("h5", __assign({ className: "list-group-item-heading" }, { children: props.cellTitle }), void 0), subtitle] }), void 0));
+        }, className: "list-group-item " + (props.active ? "active" : "") }, { children: [jsx_runtime_1.jsx("h5", __assign({ style: { fontSize: "1.15rem", marginBottom: "0.3rem" }, className: "list-group-item-heading" }, { children: props.cellTitle }), void 0), subtitle] }), void 0));
 };
 exports.default = HiveNavItem;
 

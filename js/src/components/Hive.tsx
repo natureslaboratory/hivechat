@@ -64,9 +64,7 @@ const Hive : React.FunctionComponent = () => {
     let title = <div></div>;
     if (currentCell) {
         title = (
-            <div className="col-md-8 mb-4">
-                <h1>{currentCell.cellTitle}</h1>
-            </div>
+            <h1>{currentCell.cellTitle}</h1>
         )
     }
 
@@ -74,8 +72,8 @@ const Hive : React.FunctionComponent = () => {
     if (cells && cells.length > 0) {
         hiveContent = (
             <div className="row">
-                {title}
                 <div className="col-md-8 mb-4">
+                    {title}
                     <Cell {...currentCell} />
                 </div>
                 <div className="col-md-4">

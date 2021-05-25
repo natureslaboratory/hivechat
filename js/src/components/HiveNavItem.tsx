@@ -12,7 +12,6 @@ interface HiveNavItemProps {
 }
 
 const HiveNavItem : React.FunctionComponent<CellSmall & HiveNavItemProps> = (props) => {
-    console.log(props)
     let button = <button onClick={(e) => {
         e.preventDefault();
         props.selectCell(props.cellID);
@@ -20,14 +19,14 @@ const HiveNavItem : React.FunctionComponent<CellSmall & HiveNavItemProps> = (pro
 
     let subtitle = null;
     if (props.cellSubTitle) {
-        subtitle = <p style={{marginBottom: 0}} className="list-group-item-text">{props.cellSubTitle}</p>
+        subtitle = <p style={{marginBottom: 0, opacity: 0.85}} className="list-group-item-text">{props.cellSubTitle}</p>
     }
 
     return (
         <li style={{cursor: "pointer"}} onClick={() => {
             props.selectCell(props.cellID);
         }} className={`list-group-item ${props.active ? "active" : ""}`}>
-            <h5 className="list-group-item-heading">{props.cellTitle}</h5>
+            <h5 style={{fontSize: "1.15rem", marginBottom: "0.3rem"}} className="list-group-item-heading">{props.cellTitle}</h5>
             {subtitle}
         </li>
     )
