@@ -33707,15 +33707,81 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.formatDate = void 0;
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+function getDayOfMonth(date) {
+    var day = date.getDate().toString();
+    var suffix = "th";
+    switch (day[day.length - 1]) {
+        case "1":
+            suffix = "st";
+            break;
+        case "2":
+            suffix = "nd";
+            break;
+        case "3":
+            suffix = "rd";
+            break;
+        default:
+            suffix = "th";
+    }
+    return "" + day + suffix;
+}
+function getMonth(date) {
+    var month = date.getMonth();
+    switch (month) {
+        case 0:
+            return "Jan";
+        case 1:
+            return "Feb";
+        case 2:
+            return "Mar";
+        case 3:
+            return "Apr";
+        case 4:
+            return "May";
+        case 5:
+            return "June";
+        case 6:
+            return "July";
+        case 7:
+            return "Aug";
+        case 8:
+            return "Sep";
+        case 9:
+            return "Oct";
+        case 10:
+            return "Nov";
+        case 11:
+            return "Dec";
+    }
+}
+function addZeroes(time) {
+    var strTime = time.toString();
+    if (strTime.length == 1) {
+        return "0" + strTime;
+    }
+    return strTime;
+}
+function formatDate(date) {
+    return addZeroes(date.getHours()) + ":" + addZeroes(date.getMinutes()) + ", " + getMonth(date) + " " + getDayOfMonth(date) + " " + date.getFullYear();
+}
+exports.formatDate = formatDate;
 var Cell = function (props) {
     var video = null;
     if (props.video) {
         video = (jsx_runtime_1.jsx("div", __assign({ className: "main-card mb-3 card" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [jsx_runtime_1.jsx("h5", __assign({ className: "card-title" }, { children: "Video - via YouTube" }), void 0),
                     jsx_runtime_1.jsx("div", { className: "fluid-width-video-wrapper", style: { paddingTop: "56.25%" }, dangerouslySetInnerHTML: { __html: props.video } }, void 0)] }), void 0) }), void 0));
     }
-    return (jsx_runtime_1.jsxs(react_1.default.Fragment, { children: [video ? video : null, jsx_runtime_1.jsx("div", __assign({ className: "main-card mb-3 card" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [jsx_runtime_1.jsx("h5", __assign({ className: "card-title" }, { children: "Introduction" }), void 0),
+    var dateStr = "";
+    if (props.cellDateTime !== "2000-01-01 00:00:00") {
+        var date = new Date(props.cellDateTime);
+        dateStr = formatDate(date);
+    }
+    return (jsx_runtime_1.jsxs(react_1.default.Fragment, { children: [jsx_runtime_1.jsx("h1", __assign({ style: { marginBottom: props.cellSubTitle ? "0.3rem" : "1.3rem" } }, { children: props.cellTitle }), void 0),
+            jsx_runtime_1.jsxs("div", __assign({ style: { marginBottom: "1.3rem", opacity: 0.85 } }, { children: [props.cellSubTitle ? jsx_runtime_1.jsx("h4", { children: props.cellSubTitle }, void 0) : null,
+                    dateStr ? jsx_runtime_1.jsx("h6", { children: dateStr }, void 0) : null] }), void 0), video ? video : null, jsx_runtime_1.jsx("div", __assign({ className: "main-card mb-3 card" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [jsx_runtime_1.jsx("h5", __assign({ className: "card-title" }, { children: "Introduction" }), void 0),
                         jsx_runtime_1.jsx("div", { dangerouslySetInnerHTML: { __html: props.introduction } }, void 0)] }), void 0) }), void 0)] }, void 0));
 };
 exports.default = Cell;
@@ -33980,13 +34046,9 @@ var Hive = function () {
         }
         getHiveData(urlSlug);
     }, []);
-    var title = jsx_runtime_1.jsx("div", {}, void 0);
-    if (currentCell) {
-        title = (jsx_runtime_1.jsx("h1", __assign({ style: { marginBottom: "1.3rem" } }, { children: currentCell.cellTitle }), void 0));
-    }
     var hiveContent = jsx_runtime_1.jsx("p", { children: "This hive has no cells" }, void 0);
     if (cells && cells.length > 0) {
-        hiveContent = (jsx_runtime_1.jsxs("div", __assign({ className: "row" }, { children: [jsx_runtime_1.jsxs("div", __assign({ className: "col-md-8 mb-4" }, { children: [title, jsx_runtime_1.jsx(Cell_1.default, __assign({}, currentCell), void 0)] }), void 0),
+        hiveContent = (jsx_runtime_1.jsxs("div", __assign({ className: "row" }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "col-md-8 mb-4" }, { children: jsx_runtime_1.jsx(Cell_1.default, __assign({}, currentCell), void 0) }), void 0),
                 jsx_runtime_1.jsx("div", __assign({ className: "col-md-4" }, { children: jsx_runtime_1.jsx(HiveNav_1.default, { selectCell: selectCell, cells: cells, currentCellID: currentCell ? currentCell.cellID : -1 }, void 0) }), void 0)] }), void 0));
     }
     if (hiveData) {
@@ -34163,6 +34225,7 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var Cell_1 = __webpack_require__(/*! ./Cell */ "./js/src/components/Cell.tsx");
 var HiveNavItem = function (props) {
     var button = jsx_runtime_1.jsx("button", __assign({ onClick: function (e) {
             e.preventDefault();
@@ -34170,11 +34233,16 @@ var HiveNavItem = function (props) {
         }, className: "btn btn-small btn-primary" }, { children: "View" }), void 0);
     var subtitle = null;
     if (props.cellSubTitle) {
-        subtitle = jsx_runtime_1.jsx("p", __assign({ style: { marginBottom: 0, opacity: 0.85 }, className: "list-group-item-text" }, { children: props.cellSubTitle }), void 0);
+        subtitle = props.cellSubTitle;
+    }
+    var date = "";
+    if (props.cellDateTime !== "2000-01-01 00:00:00") {
+        date = props.cellDateTime ? Cell_1.formatDate(new Date(props.cellDateTime)) : "";
     }
     return (jsx_runtime_1.jsxs("li", __assign({ style: { cursor: "pointer" }, onClick: function () {
             props.selectCell(props.cellID);
-        }, className: "list-group-item " + (props.active ? "active" : "") }, { children: [jsx_runtime_1.jsx("h5", __assign({ style: { fontSize: "1.15rem", marginBottom: "0.3rem" }, className: "list-group-item-heading" }, { children: props.cellTitle }), void 0), subtitle] }), void 0));
+        }, className: "list-group-item " + (props.active ? "active" : "") }, { children: [jsx_runtime_1.jsx("h5", __assign({ style: { fontSize: "1.15rem", marginBottom: "0.3rem" }, className: "list-group-item-heading" }, { children: props.cellTitle }), void 0),
+            jsx_runtime_1.jsx("div", __assign({ style: { opacity: 0.85 } }, { children: jsx_runtime_1.jsxs("p", __assign({ style: { marginBottom: 0 } }, { children: [subtitle, (subtitle && date) ? " - " : "", date] }), void 0) }), void 0)] }), void 0));
 };
 exports.default = HiveNavItem;
 

@@ -61,19 +61,11 @@ const Hive : React.FunctionComponent = () => {
         getHiveData(urlSlug)
     }, [])
 
-    let title = <div></div>;
-    if (currentCell) {
-        title = (
-            <h1 style={{marginBottom: "1.3rem"}}>{currentCell.cellTitle}</h1>
-        )
-    }
-
     let hiveContent = <p>This hive has no cells</p>
     if (cells && cells.length > 0) {
         hiveContent = (
             <div className="row">
                 <div className="col-md-8 mb-4">
-                    {title}
                     <Cell {...currentCell} />
                 </div>
                 <div className="col-md-4">
