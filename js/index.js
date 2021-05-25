@@ -34223,7 +34223,7 @@ var HiveNav = function (props) {
                         setPage(page - 1);
                     }
                 }, className: "btn btn-alternate" }, { children: jsx_runtime_1.jsx("i", { className: "fas fa-chevron-left" }, void 0) }), void 0), page + 1, jsx_runtime_1.jsx("button", __assign({ onClick: function () {
-                    var nextPageExists = props.cells.length - (cellsPerPage * (page + 1));
+                    var nextPageExists = slicedCells.length - (cellsPerPage * (page + 1));
                     if (nextPageExists) {
                         setPage(page + 1);
                     }

@@ -59,7 +59,7 @@ const HiveNav : React.FunctionComponent<HiveNavProps & HiveNavFuncs> = (props) =
             }} className="btn btn-alternate"><i className="fas fa-chevron-left"></i></button>
             {page+1}
             <button onClick={() => {
-                let nextPageExists = props.cells.length - (cellsPerPage * (page+1));
+                let nextPageExists = slicedCells.length - (cellsPerPage * (page+1));
                 if (nextPageExists) {
                     setPage(page+1);
                 }
