@@ -1,10 +1,11 @@
 <div class="col-md-4 mb-4">
 	<div class="card mb-3">
+		<perch:showall>
 	    <div class="card-header">
 	        <div class="card-header-title"><perch:hc id="hiveTitle" /></div>
 	    </div>
 	    <div class="card-body">
-		    <p><perch:hc id="introduction" /></p>
+		    <p><perch:hc id="introduction" html/></p>
 			<perch:if exists="organisationID">
 				<a href="/explore/organisations/<perch:hc id="organisationSlug">/<perch:hc id="hiveID" />" class="btn btn-secondary">View</a>
 			<perch:else>
