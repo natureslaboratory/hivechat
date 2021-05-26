@@ -267,8 +267,6 @@ function printArray($item, $depth = 0)
 function browse_hives($opts = [])
 {
 
-
-
   $API  = new PerchAPI(1.0, 'hivechat');
   $hives = new Hivechat_Hives($API);
   $organisations = new Hivechat_Organisations($API);

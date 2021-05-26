@@ -62,7 +62,7 @@ class Hivechat_Hives extends PerchAPI_Factory
 	}
 	
 	public function hives_byLive(){
-		$sql = "SELECT * FROM perch3_hives WHERE hiveLive='Yes' ORDER BY hiveID DESC LIMIT 100";
+		$sql = "SELECT * FROM perch3_hives WHERE hivePrivacy='Public' ORDER BY hiveID DESC LIMIT 100";
 		$result = $this->db->get_rows($sql);
 		return $result;
 	}
