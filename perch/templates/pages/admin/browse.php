@@ -13,8 +13,8 @@
                 </div>
             </div>
         </div>
-			
+			<div class="c-hives__collection" style="margin-bottom: 2rem">
 	            <?php browse_hives(); ?>
-			
+            </div>
         </div>           
 <?php perch_layout('admin.footer'); ?>

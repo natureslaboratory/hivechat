@@ -287,36 +287,19 @@ function browse_hives($opts = [])
     $list = $hives->hives_byLive();
   }
 
-  $i = 0;
-  $rowEnd = false;
-  foreach ($list as $data) {
+  $newList = [];
+  foreach ($list as $hive) {
     $orgInfo = [];
-    if ($data["organisationID"]) {
-      $orgInfo = $organisations->get_organisation($data["organisationID"]);
+    if ($hive["organisationID"]) {
+      $orgInfo = $organisations->get_organisation($hive["organisationID"]);
     }
-    if ($i == 0) {
-      echo '<div class="row">';
-    }
-    if ($data['hiveDynamicFields'] <> '') {
-      $json = json_decode($data['hiveDynamicFields'], true);
-      $desc = array('introduction' => $json['introduction']['processed']);
-      $data = array_merge($data, $json, $desc);
-    }
-    $html = $Template->render(array_merge($data, $orgInfo), true);
-    echo $html;
-    if ($i == 2) {
-      echo '</div> <!--end row-->';
-      $rowEnd = true;
-    }
-    $i++;
-    if ($i == 3) {
-      $i = 0;
-    }
+
+    $newHive = HiveApi::flatten($hive, ["mappings" => ["processed" => "introduction"]]);
+    $newList[] = array_merge($newHive, $orgInfo);
   }
 
-  if (!$rowEnd) {
-    echo '</div>';
-  }
+  $html = $Template->render_group($newList, true);
+  echo $html;
 }
 
 function create_hive($opts = array(), $return = false)
