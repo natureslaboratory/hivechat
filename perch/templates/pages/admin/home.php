@@ -75,15 +75,65 @@ if(!perch_member_logged_in()){
                     <div class="page-title-icon">
                         <i class="pe-7s-user icon-gradient bg-mean-fruit"></i>
                     </div>
-                    <div>Welcome
+                    <div>Welcome, <?= perch_member_get("first_name") ?>
                         <div class="page-title-subheading">Manage your <strong>hivechat</strong> account and create your conferences</div>
                     </div>
                 </div>
             </div>
         </div>
-			<div class="row">
-	            <?php perch_content('Page Content'); ?>
-			</div>
+        <div class="row">
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            Your Hives
+                        </div>
+                        <div class="card-body">
+                            <p>
+                                Keep track of all your hives.
+                            </p>
+                            <a href="/admin/your-hives">
+                                <button class="btn btn-primary">
+                                    View
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            Your Organisations
+                        </div>
+                        <div class="card-body">
+                            <p>
+                                View and manage all your organisations.
+                            </p>
+                            <a href="/admin/organisations">
+                                <button class="btn btn-primary">
+                                    View
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            Your Account
+                        </div>
+                        <div class="card-body">
+                            <p>
+                                Manage your account details.
+                            </p>
+                            <a href="/admin/account">
+                                <button class="btn btn-primary">
+                                    Manage
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>           
    
 <?php    
