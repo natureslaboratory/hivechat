@@ -362,6 +362,10 @@ function hive_cells($hiveID, $opts = [], $return = false)
 
   $list = $hives->cells_byHive($hiveID);
 
+  if ($opts["skip-template"]) {
+    return $list;
+  }
+
   if ($return) {
     return $Template->render_group($list, true);
   }
@@ -1337,4 +1341,11 @@ function create_invites_bulk($emails, $senderID, $organisationID) {
   }
 
   return $invites->create_invites_bulk($filteredEmails, $senderID, $organisationID);
+}
+
+function update_hive($data) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $hives = new Hivechat_Hives($API);
+
+  return $hives->update_hive($data);
 }

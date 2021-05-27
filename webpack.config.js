@@ -10,7 +10,7 @@ module.exports = {
     mode: "development",
     devtool: "source-map",
     resolve: {
-        extensions: [".webpack.js", ".web.ts", ".ts", ".tsx", ".js"]
+        extensions: [".webpack.js", ".web.ts", ".ts", ".tsx", ".js", ".css"]
     },
     module: {
         // rules: [
@@ -31,6 +31,10 @@ module.exports = {
             },
             {
                 test: /\.js$/, loader: "source-map-loader",
+            },
+            {
+                test: /\.css$/,
+                use: ["style-loader", "css-loader"]
             }
         ]
     }
