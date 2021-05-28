@@ -2,6 +2,7 @@ import React, { CSSProperties, useEffect, useState } from 'react';
 
 interface VideoProps {
     videoURL : string
+    type? : string
 }
 
 type Domain = "youtube.com" | "vimeo.com";
@@ -87,15 +88,19 @@ const Video : React.FunctionComponent<VideoProps> = (props) => {
 
     let credit = "";
     if (domain) {
-        switch (domain) {
-            case "vimeo.com":
-                credit = "Video - via Vimeo";
-                break;
-            case "youtube.com":
-                credit = "Video - via Youtube";
-                break;
-            default:
-                credit = "";
+        if (props.type == "question") {
+            credit = "Q&A Video";
+        } else {
+            switch (domain) {
+                case "vimeo.com":
+                    credit = "Video - via Vimeo";
+                    break;
+                case "youtube.com":
+                    credit = "Video - via Youtube";
+                    break;
+                default:
+                    credit = "";
+            }
         }
     }
 

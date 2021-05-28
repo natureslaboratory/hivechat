@@ -5,10 +5,7 @@
 # return data
 
 function returnCell($cell) {
-    echo json_encode(HiveApi::flatten($cell, ["mappings" => [
-        "processed" => "introduction",
-        "video" => "video"
-    ]]));
+    echo json_encode($cell);
 }
 
 function returnOwnerCell($cell, $memberID, $hive) {

@@ -29,7 +29,13 @@ class Hivechat_Cells extends PerchAPI_Factory
 		    'raw' => $introduction,
 		    'processed' => $introduction
 		  ),
-		  'video' => $data['video']
+		  'video' => $data['video'],
+		  'questionVideo' => $data["questionVideo"],
+		  "questionText" => [
+			  "_flang" => "html",
+			  "raw" => $data["questionText"],
+			  "processed" => $data["questionText"]
+		  ]
 		); 
 		$jsonData = $intro;
 		$json = addslashes(json_encode($jsonData));

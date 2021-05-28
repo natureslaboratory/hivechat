@@ -446,12 +446,10 @@ function get_hive_with_cells($hiveID)
   
   $cellIDList = [];
   foreach ($hiveCells as $cell) {
-    $cellData = HiveApi::flatten($cell, [
-      "mappings" => [
-      "processed" => "introduction",
-      "video" => "video"
-  ]]);
-    $cellIDList[] = $cellData;
+    $cellDynamicFields = json_decode($cell["cellDynamicFields"]);
+    $newCell = $cell;
+    $newCell["cellDynamicFields"] = $cellDynamicFields;
+    $cellIDList[] = $newCell;
   }
 
   $data = [];
@@ -637,13 +635,23 @@ function edit_cell($cellID)
 
   $data = $cells->get_cell($cellID);
 
-  $data = HiveApi::flatten($data, [
-    "mappings" => [
-      "raw" => "cellIntroduction_raw",
-      "processed" => "cellIntroduction",
-      "video" => "video"
-    ]
-  ]);
+  // $data = HiveApi::flatten($data, [
+  //   "mappings" => [
+  //     "raw" => "cellIntroduction_raw",
+  //     "processed" => "cellIntroduction",
+  //     "video" => "video"
+  //   ]
+  // ]);
+
+  $cellDynamicFields = json_decode($data["cellDynamicFields"], true);
+  if ($cellDynamicFields) {
+    $data["video"] = $cellDynamicFields["video"];
+    $data["cellIntroduction"] = $cellDynamicFields["introduction"]["processed"];
+    $data["questionVideo"] = $cellDynamicFields["questionVideo"];
+    $data["questionText"] = $cellDynamicFields["questionText"]["processed"];
+  }
+
+  // HiveApi::printArray($data);
 
   $html = $Template->render($data);
   $html = $Template->apply_runtime_post_processing($html, $data);

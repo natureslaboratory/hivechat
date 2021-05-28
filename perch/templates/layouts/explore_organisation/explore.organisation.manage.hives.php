@@ -6,7 +6,7 @@ $organisation = get_organisation_by_slug($organisationSlug, ["skip-template" => 
 ?>
 
             
-<?php perch_layout("admin.title", ["title" => "Manage your organisation hives"]);
+<?php //perch_layout("admin.title", ["title" => "Manage your organisation hives"]);
 
 
 
@@ -31,10 +31,19 @@ switch (perch_layout_var("action", true)) {
             </div>
         <?php
         } else if (perch_layout_has("actionID")) {
-            perch_layout("admin.back", [
-                "href" => "/explore/organisations/$organisationSlug/manage/hives",
-                "label" => "Back to Hives"
-            ]);
+            ?> 
+            <div id="manage-hive" 
+                data-organisationSlug="<?= $organisationSlug ?>" 
+                data-hiveID="<?= perch_layout_var("actionID", true) ?>"
+                data-organisationName="<?= $organisation["organisationName"] ?>"
+                data-organisationID="<?= $organisation["organisationID"] ?>"
+            >
+            </div>
+            <?php
+            // perch_layout("admin.back", [
+            //     "href" => "/explore/organisations/$organisationSlug/manage/hives",
+            //     "label" => "Back to Hives"
+            // ]);
             ?>
             
             <!-- <div id="manage-hive" data-actionID="<?php //perch_layout_var("actionID", true) ?>" data-organisationSlug="<?php //$organisationSlug ?>"></div> -->

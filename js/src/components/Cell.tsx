@@ -13,6 +13,20 @@ export interface CellData {
     video?: string,
     zoomURL?: string,
     documents?: string
+    cellDynamicFields? : CellDynamicFields
+}
+
+interface CellDynamicFields {
+    introduction? : CellHtml
+    qAndAText? : CellHtml
+    qAndAVideo? : string
+    video? : string
+}
+
+interface CellHtml {
+    _flang : string
+    raw : string
+    processed : string
 }
 
 function getDayOfMonth(date : Date) {
@@ -85,6 +99,14 @@ const Cell: React.FunctionComponent<CellData> = (props) => {
         dateStr = formatDate(date);
     }
 
+    const qAndAText = (
+            <div className="main-card mb-3 card">
+                <div className="card-body">
+                    <h5 className="card-title">Q&amp;A</h5>
+                    <div dangerouslySetInnerHTML={{__html: props.cellDynamicFields && props.cellDynamicFields.qAndAText && props.cellDynamicFields.qAndAText.processed}} />
+                </div>
+            </div>
+    )
     return (
         <React.Fragment>
             <h1 style={{marginBottom: props.cellSubTitle ? "0.3rem" : "1.3rem"}}>{props.cellTitle}</h1>
@@ -92,13 +114,15 @@ const Cell: React.FunctionComponent<CellData> = (props) => {
                 {props.cellSubTitle ? <h4>{props.cellSubTitle}</h4> : null}
                 {dateStr ? <h6>{dateStr}</h6> : null}
             </div>
-            {props.video ? <Video videoURL={props.video} /> : null}
+            {props.cellDynamicFields && props.cellDynamicFields.video && <Video videoURL={props.cellDynamicFields.video} />}
             <div className="main-card mb-3 card">
                 <div className="card-body">
                     <h5 className="card-title">Introduction</h5>
-                    <div dangerouslySetInnerHTML={{__html: props.introduction}}></div>                    
+                    {props.cellDynamicFields && props.cellDynamicFields.introduction && <div dangerouslySetInnerHTML={{__html: props.cellDynamicFields.introduction.processed}}></div>}                    
                 </div>
             </div>
+            {props.cellDynamicFields && props.cellDynamicFields.qAndAVideo && <Video type="question" videoURL={props.cellDynamicFields.qAndAVideo} /> }
+            {props.cellDynamicFields && props.cellDynamicFields.qAndAText && qAndAText}
         </React.Fragment>
     )
 }

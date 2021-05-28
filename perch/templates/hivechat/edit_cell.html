@@ -42,6 +42,14 @@
 	            <p>Paste an 'embed code' in here to include a video on your Cell page</p>
 				<perch:input type="text" class="form-control" id="video" />
             </div>
+			<div class="form-group">
+	            <label>Q&A Video</label>
+				<perch:input type="text" class="form-control" id="questionVideo" />
+            </div>
+            <div class="form-group">
+	            <label>Q&A Text</label>
+				<perch:input type="textarea" class="form-control redactor" id="questionText" required="false" />
+            </div>
 			<perch:input type="submit" class="btn btn-secondary" value="Update">
 			<perch:input type="hidden" class="form-control" id="cellID" required="true" />
         </div>

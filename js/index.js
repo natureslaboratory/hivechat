@@ -33861,12 +33861,15 @@ var Cell = function (props) {
         var date = new Date(props.cellDateTime);
         dateStr = formatDate(date);
     }
+    var qAndAText = (jsx_runtime_1.jsx("div", __assign({ className: "main-card mb-3 card" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [jsx_runtime_1.jsx("h5", __assign({ className: "card-title" }, { children: "Q&A" }), void 0),
+                jsx_runtime_1.jsx("div", { dangerouslySetInnerHTML: { __html: props.cellDynamicFields && props.cellDynamicFields.qAndAText && props.cellDynamicFields.qAndAText.processed } }, void 0)] }), void 0) }), void 0));
     return (jsx_runtime_1.jsxs(react_1.default.Fragment, { children: [jsx_runtime_1.jsx("h1", __assign({ style: { marginBottom: props.cellSubTitle ? "0.3rem" : "1.3rem" } }, { children: props.cellTitle }), void 0),
             jsx_runtime_1.jsxs("div", __assign({ style: { marginBottom: "1.3rem", opacity: 0.85 } }, { children: [props.cellSubTitle ? jsx_runtime_1.jsx("h4", { children: props.cellSubTitle }, void 0) : null,
                     dateStr ? jsx_runtime_1.jsx("h6", { children: dateStr }, void 0) : null] }), void 0),
-            props.video ? jsx_runtime_1.jsx(Video_1.default, { videoURL: props.video }, void 0) : null,
+            props.cellDynamicFields && props.cellDynamicFields.video && jsx_runtime_1.jsx(Video_1.default, { videoURL: props.cellDynamicFields.video }, void 0),
             jsx_runtime_1.jsx("div", __assign({ className: "main-card mb-3 card" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [jsx_runtime_1.jsx("h5", __assign({ className: "card-title" }, { children: "Introduction" }), void 0),
-                        jsx_runtime_1.jsx("div", { dangerouslySetInnerHTML: { __html: props.introduction } }, void 0)] }), void 0) }), void 0)] }, void 0));
+                        props.cellDynamicFields && props.cellDynamicFields.introduction && jsx_runtime_1.jsx("div", { dangerouslySetInnerHTML: { __html: props.cellDynamicFields.introduction.processed } }, void 0)] }), void 0) }), void 0),
+            props.cellDynamicFields && props.cellDynamicFields.qAndAVideo && jsx_runtime_1.jsx(Video_1.default, { type: "question", videoURL: props.cellDynamicFields.qAndAVideo }, void 0), props.cellDynamicFields && props.cellDynamicFields.qAndAText && qAndAText] }, void 0));
 };
 exports.default = Cell;
 
@@ -35439,15 +35442,20 @@ var Video = function (props) {
     }, [domain]);
     var credit = "";
     if (domain) {
-        switch (domain) {
-            case "vimeo.com":
-                credit = "Video - via Vimeo";
-                break;
-            case "youtube.com":
-                credit = "Video - via Youtube";
-                break;
-            default:
-                credit = "";
+        if (props.type == "question") {
+            credit = "Q&A Video";
+        }
+        else {
+            switch (domain) {
+                case "vimeo.com":
+                    credit = "Video - via Vimeo";
+                    break;
+                case "youtube.com":
+                    credit = "Video - via Youtube";
+                    break;
+                default:
+                    credit = "";
+            }
         }
     }
     var iframe = null;
