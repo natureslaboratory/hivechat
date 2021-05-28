@@ -32,7 +32,7 @@ switch (perch_layout_var("action", true)) {
         <?php
         } else if (perch_layout_has("actionID")) {
             ?> 
-            <div id="manage-hive" 
+            <div id="anage-hive" 
                 data-organisationSlug="<?= $organisationSlug ?>" 
                 data-hiveID="<?= perch_layout_var("actionID", true) ?>"
                 data-organisationName="<?= $organisation["organisationName"] ?>"
