@@ -67,7 +67,6 @@ const ManageHive: React.FunctionComponent<ManageHiveProps> = ({ organisationSlug
 
         axios.post("/page-api/manage-hive", data)
             .then(res => {
-                console.log(res);
                 getHiveDetails();
             })
     }

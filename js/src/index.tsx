@@ -9,6 +9,7 @@ import "./pages/explore.organsations.manage.members.add";
 import "./pages/explore.organisations.manage.details";
 import "./pages/viewHive";
 import "./pages/manageHive";
+import "./pages/test";
 
 
 
