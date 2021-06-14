@@ -3,25 +3,26 @@ import Text from '../Blocks/Text';
 import Video from '../Blocks/Video';
 import File from '../Blocks/File';
 import { Blocks, IBlock } from '../Cell';
-import VideoForm, { VideoBlock } from './VideoForm';
-import TextForm, { TextBlock } from './TextForm';
+import VideoForm, { VideoBlock } from '../Forms/VideoForm';
+import TextForm, { TextBlock } from '../Forms/TextForm';
 import { Draggable } from 'react-beautiful-dnd'
 import Container from './Container';
-import { FileBlock } from './FileForm';
+import FileForm, { FileBlock } from '../Forms/FileForm';
 
 interface BlockEditorProps {
     index: number
+    block: IBlock<Blocks>
 }
 
 interface BlockEditorFuncs {
-    updateBlock(index: number, block: IBlock<Blocks>): void
+    updateBlock(index: number, block: Blocks): void
 }
 
-const BlockEditor: React.FC<BlockEditorProps & IBlock<Blocks> & BlockEditorFuncs> = (props) => {
+const BlockEditor: React.FC<BlockEditorProps & BlockEditorFuncs> = (props) => {
 
     const [isEdit, setIsEdit] = useState(false);
     const [isPreview, setIsPreview] = useState(false);
-    const [block, setBlock] = useState<IBlock<Blocks>>();
+    const [block, setBlock] = useState<Blocks>();
 
     function save() {
         props.updateBlock(props.index, block);
@@ -35,55 +36,48 @@ const BlockEditor: React.FC<BlockEditorProps & IBlock<Blocks> & BlockEditorFuncs
 
     function edit() {
         setBlock({
-            ...block,
-            data: {
-                ...props.data
-            }
+            ...props.block.data
         })
         setIsEdit(true)
     }
 
     function updateBlock(blockData: Blocks) {
-        setBlock({...block, data: blockData})
+        setBlock(blockData)
     }
 
     let content = null;
-    switch (props.type) {
-        case "video":
+    switch (props.block.type) {
+        case "Video":
             if (isEdit) {
                 content = (
-                    <VideoForm block={block.data as VideoBlock} setBlock={updateBlock} />
+                    <VideoForm block={block as VideoBlock} setBlock={updateBlock} />
                 )
             } else {
                 content = (
-                    <Video handleLoad={() => console.log("load")} {...props.data as VideoBlock} small={!isPreview} />
+                    <Video handleLoad={() => console.log("load")} {...props.block.data as VideoBlock} small={!isPreview} />
                 )
             }
             break;
 
-        case "text":
+        case "Text":
             if (isEdit) {
                 content = (
-                    <TextForm block={block.data as TextBlock} setBlock={updateBlock} />
-                )
-            } else if (isPreview) {
-                content = (
-                    <Text {...props.data as TextBlock} />
+                    <TextForm block={block as TextBlock} setBlock={updateBlock} />
                 )
             } else {
                 content = (
-                    <Text {...props.data as TextBlock} />
+                    <Text {...props.block.data as TextBlock} small={!isPreview} />
                 )
             }
             break;
-        case "file":
+        case "File":
             if (isEdit) {
                 content = (
-                    <div>Not Yet Implemented</div>
+                    <FileForm block={block as FileBlock} setBlock={updateBlock} />
                 )
             } else {
                 content = (
-                    <File {...props.data as FileBlock} />
+                    <File {...props.block.data as FileBlock} />
                 )
             }
             break;
@@ -113,12 +107,12 @@ const BlockEditor: React.FC<BlockEditorProps & IBlock<Blocks> & BlockEditorFuncs
     }
 
     return (
-        <Draggable draggableId={"hello" + props.id.toString()} index={props.index} >
+        <Draggable draggableId={props.block.id.toString()} index={props.index} >
             {(provided) => (
                 <li {...provided.dragHandleProps}
                     {...provided.draggableProps}
                     ref={provided.innerRef}
-                    key={props.id.toString()}
+                    key={props.block.id.toString()}
                     className="card-wrapper"
                 >
                     <div className="main-card card">

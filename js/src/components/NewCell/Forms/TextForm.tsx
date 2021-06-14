@@ -7,7 +7,6 @@ interface TextFormProps {
 }
 
 export interface TextBlock {
-    title?: string
     content: string
 }
 
@@ -33,10 +32,6 @@ const TextForm: React.FC<TextFormProps & TextFormFuncs> = ({ block, setBlock }) 
     if (block) {
         return (
             <form>
-                <div className="form-group">
-                    <label>Title</label>
-                    <input className="form-control" type="text" value={block.title} onChange={(e) => setBlock({ ...block, title: e.target.value })} />
-                </div>
                 <div className="form-group" style={{ minHeight: "300px" }}>
                     <label>Content</label>
                     <RichTextEditor

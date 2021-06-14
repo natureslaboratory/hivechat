@@ -8,7 +8,7 @@
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"title":"A Cell","subtitle":"By Me","datetime":"2021-05-21 09:00:00","blocks":[{"id":0,"type":"video","order":0,"blockID":0,"cellID":0,"data":{"title":"A Video","url":"https://www.youtube.com/watch?v=4547SrIJtU4","description":"A nice description"}},{"id":1,"type":"text","order":1,"blockID":0,"cellID":0,"data":{"title":"Some Text","content":"<p>Hello there <strong>mate</strong></p>"}},{"id":2,"type":"file","order":2,"blockID":0,"cellID":0,"data":{"title":"Some File","url":"https://www.example.com","description":"A great file download."}},{"id":3,"type":"text","order":3,"blockID":0,"cellID":0,"data":{"title":"Some Text","content":"<p>Hello there</p>"}},{"id":4,"type":"text","order":4,"blockID":0,"cellID":0,"data":{"title":"Some Text","content":"<p><strong>mate</strong></p>"}},{"id":5,"type":"text","order":5,"blockID":0,"cellID":0,"data":{"title":"Some Text","content":"<p>there mate</p>"}},{"id":6,"type":"text","order":6,"blockID":0,"cellID":0,"data":{"title":"Some Text","content":"<p>mate</p>"}}]}');
+module.exports = JSON.parse('{"title":"A Cell","subtitle":"By Me","datetime":"2021-05-21 09:00:00","blocks":[{"id":0,"type":"Video","order":0,"blockID":0,"cellID":0,"data":{"title":"A Video","url":"https://www.youtube.com/watch?v=4547SrIJtU4","description":"A nice description"}},{"id":1,"type":"Text","order":1,"blockID":0,"cellID":0,"data":{"title":"Some Text","content":"<p>Hello there <strong>mate</strong></p>"}},{"id":2,"type":"File","order":2,"blockID":0,"cellID":0,"data":{"title":"Some File","url":"https://www.example.com","description":"A great file download."}},{"id":3,"type":"Text","order":3,"blockID":0,"cellID":0,"data":{"title":"Some Text","content":"<p>Hello there</p>"}},{"id":4,"type":"Text","order":4,"blockID":0,"cellID":0,"data":{"title":"Some Text","content":"<p><strong>mate</strong></p>"}},{"id":5,"type":"Text","order":5,"blockID":0,"cellID":0,"data":{"title":"Some Text","content":"<p>there mate</p>"}},{"id":6,"type":"Text","order":6,"blockID":0,"cellID":0,"data":{"title":"Some Text","content":"<p>mate</p>"}}]}');
 
 /***/ }),
 
@@ -47674,13 +47674,28 @@ exports.default = Image;
 /*!***************************************************!*\
   !*** ./js/src/components/NewCell/Blocks/Text.tsx ***!
   \***************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
 
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var Text = function (props) {
+    if (props.small) {
+        return (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("h5", __assign({ className: "card-title" }, { children: "Text" }), void 0),
+                jsx_runtime_1.jsx("div", { style: { maxHeight: "100px", overflow: "hidden" }, dangerouslySetInnerHTML: props.content && { __html: props.content } }, void 0)] }, void 0));
+    }
     return (jsx_runtime_1.jsx("div", { dangerouslySetInnerHTML: props.content && { __html: props.content } }, void 0));
 };
 exports.default = Text;
@@ -47877,7 +47892,8 @@ var Video = function (props) {
                 jsx_runtime_1.jsxs("div", __assign({ className: "c-block-content__video" }, { children: [videoDetails.thumbnail ? jsx_runtime_1.jsx(Image_1.default, { handleLoad: props.handleLoad, url: videoDetails.thumbnail, height: videoDetails === null || videoDetails === void 0 ? void 0 : videoDetails.maxHeight, width: videoDetails === null || videoDetails === void 0 ? void 0 : videoDetails.maxWidth, alt: "Video Thumbnail" }, void 0) : jsx_runtime_1.jsx("div", { style: { height: "" + (videoDetails === null || videoDetails === void 0 ? void 0 : videoDetails.maxWidth) } }, void 0),
                         videoDetails.title && jsx_runtime_1.jsx("strong", { children: videoDetails.title }, void 0)] }), void 0)] }), void 0));
     }
-    return (jsx_runtime_1.jsx("div", __assign({ dangerouslySetInnerHTML: isIframe ? { __html: props.url } : null, className: "c-block-content " + props.small && "c-block-content--small" }, { children: videoDetails.domain && !isIframe && getVideoIFrame() }), void 0));
+    return (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [props.title && jsx_runtime_1.jsx("h5", __assign({ className: "card-title" }, { children: props.title }), void 0),
+            jsx_runtime_1.jsx("div", __assign({ dangerouslySetInnerHTML: isIframe ? { __html: props.url } : null, className: "c-block-content " + props.small && "c-block-content--small" }, { children: videoDetails.domain && !isIframe && getVideoIFrame() }), void 0)] }, void 0));
 };
 exports.default = Video;
 
@@ -47940,11 +47956,11 @@ var Cell = function (props) {
     }, [cell]);
     function getBlock(block) {
         switch (block.type) {
-            case "video":
+            case "Video":
                 return jsx_runtime_1.jsx(Video_1.default, __assign({}, block.data, { handleLoad: null }), void 0);
-            case "text":
+            case "Text":
                 return jsx_runtime_1.jsx(Text_1.default, __assign({}, block.data), void 0);
-            case "file":
+            case "File":
                 return jsx_runtime_1.jsx(File_1.default, __assign({}, block.data), void 0);
             default:
                 return null;
@@ -47960,7 +47976,22 @@ var Cell = function (props) {
             jsx_runtime_1.jsxs("div", __assign({ style: { marginBottom: "1.3rem", opacity: 0.85 } }, { children: [cell.subtitle && jsx_runtime_1.jsx("h4", { children: cell.subtitle }, void 0),
                     dateStr ? jsx_runtime_1.jsx("h6", { children: dateStr }, void 0) : null] }), void 0),
             blocks && blocks.map(function (b) {
-                return (jsx_runtime_1.jsx(Block_1.default, __assign({ title: b.data.title }, { children: getBlock(b) }), void 0));
+                var title = "";
+                switch (b.type) {
+                    case "Video":
+                        title = b.data.title;
+                        break;
+                    case "Text":
+                        title = "";
+                        break;
+                    case "File":
+                        title = b.data.title;
+                        break;
+                    default:
+                        title = "";
+                        break;
+                }
+                return (jsx_runtime_1.jsx(Block_1.default, __assign({ title: title }, { children: getBlock(b) }), void 0));
             })] }, void 0));
 };
 exports.default = Cell;
@@ -48010,7 +48041,9 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var AddBlockButton_1 = __importDefault(__webpack_require__(/*! ./AddBlockButton */ "./js/src/components/NewCell/Editor/AddBlockButton.tsx"));
-var VideoForm_1 = __importDefault(__webpack_require__(/*! ./VideoForm */ "./js/src/components/NewCell/Editor/VideoForm.tsx"));
+var FileForm_1 = __importDefault(__webpack_require__(/*! ../Forms/FileForm */ "./js/src/components/NewCell/Forms/FileForm.tsx"));
+var TextForm_1 = __importDefault(__webpack_require__(/*! ../Forms/TextForm */ "./js/src/components/NewCell/Forms/TextForm.tsx"));
+var VideoForm_1 = __importDefault(__webpack_require__(/*! ../Forms/VideoForm */ "./js/src/components/NewCell/Forms/VideoForm.tsx"));
 var AddBlock = function (props) {
     var _a = __read(react_1.useState(null), 2), blockType = _a[0], setBlockType = _a[1];
     var _b = __read(react_1.useState(null), 2), block = _b[0], setBlock = _b[1];
@@ -48018,37 +48051,70 @@ var AddBlock = function (props) {
     function handleClick(type) {
         switch (type) {
             case "Video":
-                var data = {
+                var videoData = {
                     url: "",
                     title: "",
                     description: ""
                 };
-                setBlock({
-                    type: "",
-                    order: 0,
-                    id: null,
-                    data: data
-                });
+                createBlock(type, videoData);
                 break;
             case "Text":
-                console.log("text");
+                var textData = {
+                    content: ""
+                };
+                createBlock(type, textData);
                 break;
             case "File":
-                console.log("file");
+                var fileData = {
+                    title: "",
+                    url: "",
+                    description: ""
+                };
+                createBlock(type, fileData);
                 break;
             default:
                 console.error("Default");
         }
     }
-    function updateBlock(block) {
+    function createBlock(type, data) {
+        setBlock({
+            type: type,
+            order: props.order,
+            tempID: Math.random(),
+            data: data
+        });
     }
-    if (blockType) {
-        switch (blockType) {
+    function addBlock() {
+        props.addBlock(block);
+        setBlock(null);
+    }
+    function updateBlock(data) {
+        setBlock(__assign(__assign({}, block), { data: data }));
+    }
+    var content = jsx_runtime_1.jsx("div", {}, void 0);
+    var buttons = null;
+    if (block) {
+        switch (block.type) {
             case "Video":
-                return jsx_runtime_1.jsx(VideoForm_1.default, { block: block.data, setBlock: null }, void 0);
+                content = jsx_runtime_1.jsx(VideoForm_1.default, { block: block.data, setBlock: updateBlock }, void 0);
+                break;
+            case "Text":
+                content = jsx_runtime_1.jsx(TextForm_1.default, { block: block.data, setBlock: updateBlock }, void 0);
+                break;
+            case "File":
+                content = jsx_runtime_1.jsx(FileForm_1.default, { block: block.data, setBlock: updateBlock }, void 0);
+                break;
+            default:
+                console.error("No Block");
         }
+        buttons = (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", onClick: addBlock }, { children: "Add" }), void 0),
+                jsx_runtime_1.jsx("button", __assign({ className: "btn btn-secondary", onClick: function () { return setBlock(null); } }, { children: "Cancel" }), void 0)] }, void 0));
     }
-    return (jsx_runtime_1.jsx("div", __assign({ className: "card" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "card-body" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "c-add-block__buttons" }, { children: buttonTypes.map(function (b, i) { return jsx_runtime_1.jsx(AddBlockButton_1.default, { handleClick: handleClick, label: b }, void 0); }) }), void 0) }), void 0) }), void 0));
+    else {
+        content = (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("h6", { children: "Add New Block" }, void 0),
+                jsx_runtime_1.jsx("div", __assign({ className: "c-add-block__buttons" }, { children: buttonTypes.map(function (b, i) { return jsx_runtime_1.jsx(AddBlockButton_1.default, { handleClick: handleClick, label: b }, b); }) }), void 0)] }, void 0));
+    }
+    return (jsx_runtime_1.jsx("div", __assign({ className: "card", style: { marginBottom: "2rem" } }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [content, buttons && (jsx_runtime_1.jsx("div", __assign({ className: "btn-container" }, { children: buttons }), void 0))] }), void 0) }), void 0));
 };
 exports.default = AddBlock;
 
@@ -48078,7 +48144,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var AddBlockButton = function (_a) {
     var label = _a.label, handleClick = _a.handleClick;
-    return jsx_runtime_1.jsx("button", __assign({ onClick: function () { return handleClick(label); } }, { children: label }), void 0);
+    return jsx_runtime_1.jsx("button", __assign({ className: "btn btn-alternate", onClick: function () { return handleClick(label); } }, { children: label }), void 0);
 };
 exports.default = AddBlockButton;
 
@@ -48130,9 +48196,10 @@ var react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var Text_1 = __importDefault(__webpack_require__(/*! ../Blocks/Text */ "./js/src/components/NewCell/Blocks/Text.tsx"));
 var Video_1 = __importDefault(__webpack_require__(/*! ../Blocks/Video */ "./js/src/components/NewCell/Blocks/Video.tsx"));
 var File_1 = __importDefault(__webpack_require__(/*! ../Blocks/File */ "./js/src/components/NewCell/Blocks/File.tsx"));
-var VideoForm_1 = __importDefault(__webpack_require__(/*! ./VideoForm */ "./js/src/components/NewCell/Editor/VideoForm.tsx"));
-var TextForm_1 = __importDefault(__webpack_require__(/*! ./TextForm */ "./js/src/components/NewCell/Editor/TextForm.tsx"));
+var VideoForm_1 = __importDefault(__webpack_require__(/*! ../Forms/VideoForm */ "./js/src/components/NewCell/Forms/VideoForm.tsx"));
+var TextForm_1 = __importDefault(__webpack_require__(/*! ../Forms/TextForm */ "./js/src/components/NewCell/Forms/TextForm.tsx"));
 var react_beautiful_dnd_1 = __webpack_require__(/*! react-beautiful-dnd */ "./node_modules/react-beautiful-dnd/dist/react-beautiful-dnd.esm.js");
+var FileForm_1 = __importDefault(__webpack_require__(/*! ../Forms/FileForm */ "./js/src/components/NewCell/Forms/FileForm.tsx"));
 var BlockEditor = function (props) {
     var _a = __read(react_2.useState(false), 2), isEdit = _a[0], setIsEdit = _a[1];
     var _b = __read(react_2.useState(false), 2), isPreview = _b[0], setIsPreview = _b[1];
@@ -48146,39 +48213,36 @@ var BlockEditor = function (props) {
         setIsEdit(false);
     }
     function edit() {
-        setBlock(__assign(__assign({}, block), { data: __assign({}, props.data) }));
+        setBlock(__assign({}, props.block.data));
         setIsEdit(true);
     }
     function updateBlock(blockData) {
-        setBlock(__assign(__assign({}, block), { data: blockData }));
+        setBlock(blockData);
     }
     var content = null;
-    switch (props.type) {
-        case "video":
+    switch (props.block.type) {
+        case "Video":
             if (isEdit) {
-                content = (jsx_runtime_1.jsx(VideoForm_1.default, { block: block.data, setBlock: updateBlock }, void 0));
+                content = (jsx_runtime_1.jsx(VideoForm_1.default, { block: block, setBlock: updateBlock }, void 0));
             }
             else {
-                content = (jsx_runtime_1.jsx(Video_1.default, __assign({ handleLoad: function () { return console.log("load"); } }, props.data, { small: !isPreview }), void 0));
+                content = (jsx_runtime_1.jsx(Video_1.default, __assign({ handleLoad: function () { return console.log("load"); } }, props.block.data, { small: !isPreview }), void 0));
             }
             break;
-        case "text":
+        case "Text":
             if (isEdit) {
-                content = (jsx_runtime_1.jsx(TextForm_1.default, { block: block.data, setBlock: updateBlock }, void 0));
-            }
-            else if (isPreview) {
-                content = (jsx_runtime_1.jsx(Text_1.default, __assign({}, props.data), void 0));
+                content = (jsx_runtime_1.jsx(TextForm_1.default, { block: block, setBlock: updateBlock }, void 0));
             }
             else {
-                content = (jsx_runtime_1.jsx(Text_1.default, __assign({}, props.data), void 0));
+                content = (jsx_runtime_1.jsx(Text_1.default, __assign({}, props.block.data, { small: !isPreview }), void 0));
             }
             break;
-        case "file":
+        case "File":
             if (isEdit) {
-                content = (jsx_runtime_1.jsx("div", { children: "Not Yet Implemented" }, void 0));
+                content = (jsx_runtime_1.jsx(FileForm_1.default, { block: block, setBlock: updateBlock }, void 0));
             }
             else {
-                content = (jsx_runtime_1.jsx(File_1.default, __assign({}, props.data), void 0));
+                content = (jsx_runtime_1.jsx(File_1.default, __assign({}, props.block.data), void 0));
             }
             break;
         default:
@@ -48194,7 +48258,7 @@ var BlockEditor = function (props) {
                 jsx_runtime_1.jsx("button", __assign({ className: "btn btn-secondary", onClick: function () { return cancel(); } }, { children: "Cancel" }), void 0),
                 jsx_runtime_1.jsx("button", __assign({ className: "btn btn-danger" }, { children: "Delete" }), void 0)] }, void 0));
     }
-    return (jsx_runtime_1.jsx(react_beautiful_dnd_1.Draggable, __assign({ draggableId: "hello" + props.id.toString(), index: props.index }, { children: function (provided) { return (react_1.createElement("li", __assign({}, provided.dragHandleProps, provided.draggableProps, { ref: provided.innerRef, key: props.id.toString(), className: "card-wrapper" }),
+    return (jsx_runtime_1.jsx(react_beautiful_dnd_1.Draggable, __assign({ draggableId: props.block.id.toString(), index: props.index }, { children: function (provided) { return (react_1.createElement("li", __assign({}, provided.dragHandleProps, provided.draggableProps, { ref: provided.innerRef, key: props.block.id.toString(), className: "card-wrapper" }),
             jsx_runtime_1.jsx("div", __assign({ className: "main-card card" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [content, jsx_runtime_1.jsx("div", __assign({ className: "btn-container" }, { children: buttons }), void 0)] }), void 0) }), void 0))); } }), void 0));
 };
 exports.default = BlockEditor;
@@ -48246,22 +48310,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-var react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var NewBlockEditor_1 = __importDefault(__webpack_require__(/*! ./NewBlockEditor */ "./js/src/components/NewCell/Editor/NewBlockEditor.tsx"));
 var react_beautiful_dnd_1 = __webpack_require__(/*! react-beautiful-dnd */ "./node_modules/react-beautiful-dnd/dist/react-beautiful-dnd.esm.js");
 var AddBlock_1 = __importDefault(__webpack_require__(/*! ./AddBlock */ "./js/src/components/NewCell/Editor/AddBlock.tsx"));
 var cell = __webpack_require__(/*! ../../../cell.json */ "./js/src/cell.json");
 var CellEditor = function (props) {
-    var _a = __read(react_2.useState(), 2), blocks = _a[0], setBlocks = _a[1];
-    var _b = __read(react_2.useState(null), 2), saveTimeout = _b[0], setSaveTimeout = _b[1];
-    react_2.useEffect(function () {
+    var _a = __read(react_1.useState(), 2), blocks = _a[0], setBlocks = _a[1];
+    var _b = __read(react_1.useState(null), 2), saveTimeout = _b[0], setSaveTimeout = _b[1];
+    react_1.useEffect(function () {
         if (cell && cell.blocks) {
-            setBlocks(orderBlocks(cell.blocks));
+            updateBlocks(cell.blocks);
         }
     }, [cell]);
-    react_2.useEffect(function () {
+    react_1.useEffect(function () {
         if (saveTimeout) {
             clearTimeout(saveTimeout);
         }
@@ -48269,6 +48332,9 @@ var CellEditor = function (props) {
             console.log("save");
         }, 3000));
     }, [blocks]);
+    function updateBlocks(blocks) {
+        setBlocks(orderBlocks(blocks));
+    }
     function orderBlocks(blocks) {
         return blocks.sort(function (a, b) {
             if (a.order > b.order) {
@@ -48283,27 +48349,29 @@ var CellEditor = function (props) {
         });
     }
     function updateBlock(index, block) {
-        var currentBlock = __assign(__assign({}, blocks[index]), { data: __assign({}, block) });
+        console.log(block);
+        var newBlock = __assign(__assign({}, blocks[index]), { data: block });
         var blocksStart = blocks.slice(0, index);
         var blocksEnd = blocks.slice(index + 1, blocks.length);
-        // setBlocks([...blocksStart, currentBlock, ...blocksEnd]);
+        setBlocks(__spreadArray(__spreadArray(__spreadArray([], __read(blocksStart)), [newBlock]), __read(blocksEnd)));
     }
     function handleDrop(drop, provided) {
-        if (!drop.destination || drop.destination.index == drop.source.index) {
-            return;
-        }
+        var newBlocks = blocks;
+        var startBlock = blocks[drop.source.index];
+        var destinationBlock = blocks[drop.destination.index];
+        newBlocks[drop.source.index].order = newBlocks[drop.destination.index].order;
         if (drop.source.index < drop.destination.index) {
-            var beforeCurrent = blocks.slice(0, drop.source.index);
-            var beforeNew = blocks.slice(drop.source.index + 1, drop.destination.index + 1);
-            var afterNew = blocks.slice(drop.destination.index + 1, blocks.length);
-            setBlocks(__spreadArray(__spreadArray(__spreadArray(__spreadArray([], __read(beforeCurrent)), __read(beforeNew)), [blocks[drop.source.index]]), __read(afterNew)));
+            for (var i = drop.source.index + 1; i < drop.destination.index + 1; i++) {
+                newBlocks[i].order = blocks[i].order - 1;
+            }
         }
-        else {
-            var beforeCurrent = blocks.slice(0, drop.destination.index);
-            var beforeOld = blocks.slice(drop.destination.index, drop.source.index);
-            var afterOld = blocks.slice(drop.source.index + 1, blocks.length);
-            setBlocks(__spreadArray(__spreadArray(__spreadArray(__spreadArray([], __read(beforeCurrent)), [blocks[drop.source.index]]), __read(beforeOld)), __read(afterOld)));
+        else if (drop.source.index > drop.destination.index) {
+            for (var i = drop.destination.index; i < drop.source.index; i++) {
+                newBlocks[i].order = blocks[i].order + 1;
+            }
         }
+        console.log(newBlocks);
+        updateBlocks(newBlocks);
     }
     if (!blocks) {
         return jsx_runtime_1.jsx("div", {}, void 0);
@@ -48326,19 +48394,94 @@ var CellEditor = function (props) {
         return '_' + Math.random().toString(36).substr(2, 9);
     }
     ;
+    function addBlock(block) {
+        setBlocks(__spreadArray(__spreadArray([], __read(blocks)), [block]));
+    }
     console.log(blocks);
-    return (jsx_runtime_1.jsx(react_beautiful_dnd_1.DragDropContext, __assign({ onDragEnd: handleDrop }, { children: jsx_runtime_1.jsx("div", __assign({ className: "row", style: { padding: "0 1rem 0 1rem" } }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "col-md-6" }, { children: [jsx_runtime_1.jsx(react_beautiful_dnd_1.Droppable, __assign({ droppableId: "id" }, { children: function (provided) { return (jsx_runtime_1.jsxs("ul", __assign({ className: "c-block-container" }, provided.droppableProps, { ref: provided.innerRef }, { children: [blocks.map(function (b, i) { return react_1.createElement(NewBlockEditor_1.default, __assign({ updateBlock: updateBlock }, b, { index: i, key: b.id })); }), provided.placeholder] }), void 0)); } }), void 0),
-                    jsx_runtime_1.jsx(AddBlock_1.default, {}, void 0)] }), void 0) }), void 0) }), void 0));
+    return (jsx_runtime_1.jsx(react_beautiful_dnd_1.DragDropContext, __assign({ onDragEnd: handleDrop }, { children: jsx_runtime_1.jsx("div", __assign({ className: "row", style: { padding: "0 1rem 0 1rem" } }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "col-md-6" }, { children: [jsx_runtime_1.jsx(react_beautiful_dnd_1.Droppable, __assign({ droppableId: "id" }, { children: function (provided) { return (jsx_runtime_1.jsxs("ul", __assign({ className: "c-block-container", style: { marginBottom: 0 } }, provided.droppableProps, { ref: provided.innerRef }, { children: [blocks.map(function (b, i) { return jsx_runtime_1.jsx(NewBlockEditor_1.default, { updateBlock: updateBlock, block: b, index: i }, b.id); }), provided.placeholder] }), void 0)); } }), void 0),
+                    jsx_runtime_1.jsx(AddBlock_1.default, { newID: createID(), order: blocks[blocks.length - 1].order + 1, addBlock: addBlock }, void 0)] }), void 0) }), void 0) }), void 0));
 };
 exports.default = CellEditor;
 
 
 /***/ }),
 
-/***/ "./js/src/components/NewCell/Editor/TextForm.tsx":
-/*!*******************************************************!*\
-  !*** ./js/src/components/NewCell/Editor/TextForm.tsx ***!
-  \*******************************************************/
+/***/ "./js/src/components/NewCell/Forms/FileForm.tsx":
+/*!******************************************************!*\
+  !*** ./js/src/components/NewCell/Forms/FileForm.tsx ***!
+  \******************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var react_rte_1 = __importDefault(__webpack_require__(/*! react-rte */ "./node_modules/react-rte/dist/react-rte.js"));
+var FileForm = function (_a) {
+    var block = _a.block, setBlock = _a.setBlock;
+    var _b = __read(react_1.useState(react_rte_1.default.createEmptyValue()), 2), editorValue = _b[0], setEditorValue = _b[1];
+    react_1.useEffect(function () {
+        if (block.description) {
+            setEditorValue(react_rte_1.default.createValueFromString(block.description, 'html'));
+        }
+    }, []);
+    react_1.useEffect(function () {
+        if (editorValue) {
+            setBlock(__assign(__assign({}, block), { description: editorValue.toString("html") }));
+        }
+    }, [editorValue]);
+    if (block) {
+        return (jsx_runtime_1.jsxs("form", { children: [jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Title" }, void 0),
+                        jsx_runtime_1.jsx("input", { className: "form-control", type: "text", value: block.title, onChange: function (e) { return setBlock(__assign(__assign({}, block), { title: e.target.value })); } }, void 0)] }), void 0),
+                jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Url" }, void 0),
+                        jsx_runtime_1.jsx("input", { className: "form-control", type: "text", value: block.url, onChange: function (e) { return setBlock(__assign(__assign({}, block), { url: e.target.value })); } }, void 0)] }), void 0),
+                jsx_runtime_1.jsxs("div", __assign({ className: "form-group", style: { minHeight: "300px" } }, { children: [jsx_runtime_1.jsx("label", { children: "Description" }, void 0),
+                        jsx_runtime_1.jsx(react_rte_1.default, { value: editorValue, onChange: function (e) {
+                                setEditorValue(e);
+                            } }, void 0)] }), void 0)] }, void 0));
+    }
+    return null;
+};
+exports.default = FileForm;
+
+
+/***/ }),
+
+/***/ "./js/src/components/NewCell/Forms/TextForm.tsx":
+/*!******************************************************!*\
+  !*** ./js/src/components/NewCell/Forms/TextForm.tsx ***!
+  \******************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -48391,12 +48534,10 @@ var TextForm = function (_a) {
         }
     }, [editorValue]);
     if (block) {
-        return (jsx_runtime_1.jsxs("form", { children: [jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Title" }, void 0),
-                        jsx_runtime_1.jsx("input", { className: "form-control", type: "text", value: block.title, onChange: function (e) { return setBlock(__assign(__assign({}, block), { title: e.target.value })); } }, void 0)] }), void 0),
-                jsx_runtime_1.jsxs("div", __assign({ className: "form-group", style: { minHeight: "300px" } }, { children: [jsx_runtime_1.jsx("label", { children: "Content" }, void 0),
-                        jsx_runtime_1.jsx(react_rte_1.default, { value: editorValue, onChange: function (e) {
-                                setEditorValue(e);
-                            } }, void 0)] }), void 0)] }, void 0));
+        return (jsx_runtime_1.jsx("form", { children: jsx_runtime_1.jsxs("div", __assign({ className: "form-group", style: { minHeight: "300px" } }, { children: [jsx_runtime_1.jsx("label", { children: "Content" }, void 0),
+                    jsx_runtime_1.jsx(react_rte_1.default, { value: editorValue, onChange: function (e) {
+                            setEditorValue(e);
+                        } }, void 0)] }), void 0) }, void 0));
     }
     return null;
 };
@@ -48405,10 +48546,10 @@ exports.default = TextForm;
 
 /***/ }),
 
-/***/ "./js/src/components/NewCell/Editor/VideoForm.tsx":
-/*!********************************************************!*\
-  !*** ./js/src/components/NewCell/Editor/VideoForm.tsx ***!
-  \********************************************************/
+/***/ "./js/src/components/NewCell/Forms/VideoForm.tsx":
+/*!*******************************************************!*\
+  !*** ./js/src/components/NewCell/Forms/VideoForm.tsx ***!
+  \*******************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";

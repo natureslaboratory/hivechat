@@ -4,9 +4,9 @@ import Video from './Blocks/Video';
 import Text from './Blocks/Text';
 import File from './Blocks/File';
 import Block from './Block';
-import { VideoBlock } from './Editor/VideoForm';
-import { TextBlock } from './Editor/TextForm';
-import { FileBlock } from './Editor/FileForm';
+import { VideoBlock } from './Forms/VideoForm';
+import { TextBlock } from './Forms/TextForm';
+import { FileBlock } from './Forms/FileForm';
 const cell = require("../../cell.json") as ICell;
 
 
@@ -25,7 +25,8 @@ export interface ICell {
 export interface IBlock<T> {
     type: string
     order: number
-    id: number
+    id?: number
+    tempID?: number
     data: T
 }
 
@@ -43,11 +44,11 @@ const Cell: React.FC<CellProps> = (props) => {
 
     function getBlock(block: IBlock<Blocks>) {
         switch (block.type) {
-            case "video":
+            case "Video":
                 return <Video {...block.data as VideoBlock} handleLoad={null} />
-            case "text":
+            case "Text":
                 return <Text {...block.data as TextBlock} />;
-            case "file":
+            case "File":
                 return <File {...block.data as FileBlock} />;
             default:
                 return null
@@ -70,8 +71,23 @@ const Cell: React.FC<CellProps> = (props) => {
                 {dateStr ? <h6>{dateStr}</h6> : null}
             </div>
             {blocks && blocks.map(b => {
+                let title = "";
+                switch (b.type) {
+                    case "Video":
+                        title = (b.data as VideoBlock).title;
+                        break;
+                    case "Text":
+                        title = "";
+                        break;
+                    case "File":
+                        title = (b.data as FileBlock).title;
+                        break;
+                    default:
+                        title = "";
+                        break
+                } 
                 return (
-                    <Block title={b.data.title}>
+                    <Block title={title}>
                         {getBlock(b)}
                     </Block>
                 )

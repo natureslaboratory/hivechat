@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FileBlock } from '../Editor/FileForm';
+import { FileBlock } from '../Forms/FileForm';
 
 interface FileProps {
     url : string

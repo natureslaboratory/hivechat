@@ -29,7 +29,7 @@ const FileForm : React.FC<FileFormProps & FileFormFuncs> = ({block, setBlock}) =
         if (editorValue) {
             setBlock({...block, description: editorValue.toString("html")})
         }
-    }, [editorValue])
+    }, [editorValue]) 
 
     if (block) {
         return (
@@ -37,6 +37,19 @@ const FileForm : React.FC<FileFormProps & FileFormFuncs> = ({block, setBlock}) =
                 <div className="form-group">
                     <label>Title</label>
                     <input className="form-control" type="text" value={block.title} onChange={(e) => setBlock({...block, title: e.target.value})} />
+                </div>
+                <div className="form-group">
+                    <label>Url</label>
+                    <input className="form-control" type="text" value={block.url} onChange={(e) => setBlock({...block, url: e.target.value})} />
+                </div>
+                <div className="form-group" style={{ minHeight: "300px" }}>
+                    <label>Description</label>
+                    <RichTextEditor
+                        value={editorValue}
+                        onChange={(e) => {
+                            setEditorValue(e);
+                        }}
+                    />
                 </div>
             </form>
         )

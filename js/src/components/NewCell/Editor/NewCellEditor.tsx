@@ -2,12 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Blocks, IBlock, ICell } from '../Cell';
 import BlockEditor from './NewBlockEditor';
 import { DragDropContext, Droppable, DropResult, ResponderProvided } from 'react-beautiful-dnd'
-import BlockList from './BlockList';
-import MenuItem from './MenuItem';
 import AddBlock from './AddBlock';
-import { VideoBlock } from './VideoForm';
-import { TextBlock } from './TextForm';
-import { FileBlock } from './FileForm';
 const cell = require("../../../cell.json") as ICell;
 
 interface CellEditorProps {
@@ -22,7 +17,7 @@ const CellEditor: React.FC<CellEditorProps> = (props) => {
 
     useEffect(() => {
         if (cell && cell.blocks) {
-            setBlocks(orderBlocks(cell.blocks));
+            updateBlocks(cell.blocks);
         }
     }, [cell])
 
@@ -34,6 +29,10 @@ const CellEditor: React.FC<CellEditorProps> = (props) => {
             console.log("save")
         }, 3000));
     }, [blocks])
+
+    function updateBlocks(blocks: IBlock<Blocks>[]) {
+        setBlocks(orderBlocks(blocks));
+    }
 
     function orderBlocks(blocks: (IBlock<Blocks>)[]) {
         return blocks.sort((a, b) => {
@@ -47,28 +46,31 @@ const CellEditor: React.FC<CellEditorProps> = (props) => {
         })
     }
 
-    function updateBlock(index: number, block: IBlock<Blocks>) {
-        let currentBlock = { ...blocks[index], data: { ...block } };
+    function updateBlock(index: number, block: Blocks) {
+        console.log(block);
+        let newBlock = {...blocks[index], data: block}
         let blocksStart = blocks.slice(0, index);
         let blocksEnd = blocks.slice(index + 1, blocks.length);
-        // setBlocks([...blocksStart, currentBlock, ...blocksEnd]);
+        setBlocks([...blocksStart, newBlock, ...blocksEnd]);
     }
 
     function handleDrop(drop: DropResult, provided: ResponderProvided) {
-        if (!drop.destination || drop.destination.index == drop.source.index) {
-            return;
-        }
+        let newBlocks = blocks;
+        const startBlock = blocks[drop.source.index];
+        const destinationBlock = blocks[drop.destination.index];
+
+        newBlocks[drop.source.index].order = newBlocks[drop.destination.index].order;
         if (drop.source.index < drop.destination.index) {
-            let beforeCurrent = blocks.slice(0, drop.source.index);
-            let beforeNew = blocks.slice(drop.source.index + 1, drop.destination.index + 1);
-            let afterNew = blocks.slice(drop.destination.index + 1, blocks.length);
-            setBlocks([...beforeCurrent, ...beforeNew, blocks[drop.source.index], ...afterNew]);
-        } else {
-            let beforeCurrent = blocks.slice(0, drop.destination.index);
-            let beforeOld = blocks.slice(drop.destination.index, drop.source.index);
-            let afterOld = blocks.slice(drop.source.index + 1, blocks.length);
-            setBlocks([...beforeCurrent, blocks[drop.source.index], ...beforeOld, ...afterOld]);
+            for (let i = drop.source.index+1; i < drop.destination.index+1; i++) {
+                newBlocks[i].order = blocks[i].order-1;
+            }
+        } else if (drop.source.index > drop.destination.index) {
+            for (let i = drop.destination.index; i < drop.source.index; i++) {
+                newBlocks[i].order = blocks[i].order+1;
+            }
         }
+        console.log(newBlocks);
+        updateBlocks(newBlocks);
     }
 
     if (!blocks) {
@@ -94,22 +96,26 @@ const CellEditor: React.FC<CellEditorProps> = (props) => {
         return '_' + Math.random().toString(36).substr(2, 9);
     };
 
+    function addBlock(block: IBlock<Blocks>) {
+        setBlocks([...blocks, block])
+    }
+
     console.log(blocks)
 
     return (
         <DragDropContext onDragEnd={handleDrop}>
-            <div className="row" style={{ padding: "0 1rem 0 1rem" }}>
+            <div className="row" style={{ padding: "0 1rem 0 1rem"}}>
                 <div className="col-md-6">
                     <Droppable droppableId={"id"} >
                         {(provided) => (
-                            <ul className="c-block-container" {...provided.droppableProps} ref={provided.innerRef}>
-                                {blocks.map((b, i) => <BlockEditor updateBlock={updateBlock} {...b} index={i} key={b.id} />)}
+                            <ul className="c-block-container" style={{marginBottom: 0}} {...provided.droppableProps} ref={provided.innerRef}>
+                                {blocks.map((b, i) => <BlockEditor updateBlock={updateBlock} block={b} index={i} key={b.id} />)}
                                 {provided.placeholder}
                             </ul>
                         )
                         }
                     </Droppable>
-                    <AddBlock />
+                    <AddBlock newID={createID()} order={blocks[blocks.length-1].order+1} addBlock={addBlock} />
                 </div>
             </div>
         </DragDropContext>

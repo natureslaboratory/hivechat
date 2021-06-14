@@ -8,6 +8,6 @@ interface ButtonProps {
 export type ButtonType = "Text" | "Video" | "File";
 
 const AddBlockButton: React.FC<ButtonProps> = ({label, handleClick}) => {
-    return <button onClick={() => handleClick(label)}>{label}</button>
+    return <button className="btn btn-alternate" onClick={() => handleClick(label)}>{label}</button>
 }
 export default AddBlockButton;
