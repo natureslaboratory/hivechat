@@ -7,7 +7,7 @@ import TextForm, { TextBlock } from '../Forms/TextForm';
 import VideoForm, { VideoBlock } from '../Forms/VideoForm';
 
 export interface AddBlockProps {
-    order: number
+    blockOrder: number
     newID: string
 }
 
@@ -51,12 +51,12 @@ const AddBlock: React.FC<AddBlockProps & AddBlockFuncs> = (props) => {
         }
     }
 
-    function createBlock(type: ButtonType, data: Blocks) {
+    function createBlock(blockType: ButtonType, blockData: Blocks) {
         setBlock({
-            type,
-            order: props.order,
+            blockType,
+            blockOrder: props.blockOrder,
             tempID: Math.random(),
-            data
+            blockData
         })
     }
 
@@ -66,10 +66,10 @@ const AddBlock: React.FC<AddBlockProps & AddBlockFuncs> = (props) => {
         setBlock(null);
     }
 
-    function updateBlock(data: Blocks) {
+    function updateBlock(blockData: Blocks) {
         setBlock({
             ...block,
-            data
+            blockData
         })
     }
 
@@ -77,15 +77,15 @@ const AddBlock: React.FC<AddBlockProps & AddBlockFuncs> = (props) => {
     let buttons: React.ReactNode = null;
 
     if (block) {
-        switch (block.type) {
+        switch (block.blockType) {
             case "Video":
-                content =  <VideoForm block={block.data as VideoBlock} setBlock={updateBlock} />
+                content =  <VideoForm block={block.blockData as VideoBlock} setBlock={updateBlock} />
                 break;
             case "Text":
-                content = <TextForm block={block.data as TextBlock} setBlock={updateBlock} />
+                content = <TextForm block={block.blockData as TextBlock} setBlock={updateBlock} />
                 break;
             case "File":
-                content = <FileForm block={block.data as FileBlock} setBlock={updateBlock} />
+                content = <FileForm block={block.blockData as FileBlock} setBlock={updateBlock} />
                 break;
             default:
                 console.error("No Block")

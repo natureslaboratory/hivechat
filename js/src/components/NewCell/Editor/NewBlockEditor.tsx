@@ -15,7 +15,8 @@ interface BlockEditorProps {
 }
 
 interface BlockEditorFuncs {
-    updateBlock(index: number, block: Blocks): void
+    updateBlock(index: number, block: Blocks): Promise<void>
+    deleteBlock(index: number): Promise<void>
 }
 
 const BlockEditor: React.FC<BlockEditorProps & BlockEditorFuncs> = (props) => {
@@ -23,9 +24,10 @@ const BlockEditor: React.FC<BlockEditorProps & BlockEditorFuncs> = (props) => {
     const [isEdit, setIsEdit] = useState(false);
     const [isPreview, setIsPreview] = useState(false);
     const [block, setBlock] = useState<Blocks>();
+    const [showDelete, setShowDelete] = useState(false);
 
-    function save() {
-        props.updateBlock(props.index, block);
+    async function save() {
+        await props.updateBlock(props.index, block);
         cancel();
     }
 
@@ -36,7 +38,7 @@ const BlockEditor: React.FC<BlockEditorProps & BlockEditorFuncs> = (props) => {
 
     function edit() {
         setBlock({
-            ...props.block.data
+            ...props.block.blockData
         })
         setIsEdit(true)
     }
@@ -46,7 +48,7 @@ const BlockEditor: React.FC<BlockEditorProps & BlockEditorFuncs> = (props) => {
     }
 
     let content = null;
-    switch (props.block.type) {
+    switch (props.block.blockType) {
         case "Video":
             if (isEdit) {
                 content = (
@@ -54,7 +56,7 @@ const BlockEditor: React.FC<BlockEditorProps & BlockEditorFuncs> = (props) => {
                 )
             } else {
                 content = (
-                    <Video handleLoad={() => console.log("load")} {...props.block.data as VideoBlock} small={!isPreview} />
+                    <Video handleLoad={() => console.log("load")} {...props.block.blockData as VideoBlock} small={!isPreview} />
                 )
             }
             break;
@@ -66,7 +68,7 @@ const BlockEditor: React.FC<BlockEditorProps & BlockEditorFuncs> = (props) => {
                 )
             } else {
                 content = (
-                    <Text {...props.block.data as TextBlock} small={!isPreview} />
+                    <Text {...props.block.blockData as TextBlock} small={!isPreview} />
                 )
             }
             break;
@@ -77,7 +79,7 @@ const BlockEditor: React.FC<BlockEditorProps & BlockEditorFuncs> = (props) => {
                 )
             } else {
                 content = (
-                    <File {...props.block.data as FileBlock} />
+                    <File {...props.block.blockData as FileBlock} />
                 )
             }
             break;
@@ -92,7 +94,16 @@ const BlockEditor: React.FC<BlockEditorProps & BlockEditorFuncs> = (props) => {
         </>
     )
 
-    if (isPreview) {
+    if (isEdit && showDelete) {
+        buttons = (
+            <>
+                <button className="btn btn-secondary" onClick={() => setShowDelete(false)}>Cancel</button>
+                <button className="btn btn-danger" onClick={() => props.deleteBlock(props.index)}>Confirm Delete</button>
+            </>
+           
+        )
+
+    } else if (isPreview) {
         buttons = (
             <button className="btn btn-alternate" onClick={() => setIsPreview(false)}>Back</button>
         )
@@ -101,18 +112,20 @@ const BlockEditor: React.FC<BlockEditorProps & BlockEditorFuncs> = (props) => {
             <>
                 <button className="btn btn-primary" onClick={() => save()}>Save</button>
                 <button className="btn btn-secondary" onClick={() => cancel()}>Cancel</button>
-                <button className="btn btn-danger">Delete</button>
+                <button className="btn btn-danger" onClick={() => setShowDelete(true)}>Delete</button>
             </>
         )
     }
+    
+    let id = props.block.blockID != (null || undefined) ? props.block.blockID : props.block.tempID;
 
     return (
-        <Draggable draggableId={props.block.id.toString()} index={props.index} >
+        <Draggable draggableId={id.toString()} index={props.index} >
             {(provided) => (
                 <li {...provided.dragHandleProps}
                     {...provided.draggableProps}
                     ref={provided.innerRef}
-                    key={props.block.id.toString()}
+                    key={id.toString()}
                     className="card-wrapper"
                 >
                     <div className="main-card card">

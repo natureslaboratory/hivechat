@@ -21,6 +21,10 @@ include('Hivechat.invite.class.php');
 include('Hivechat.invites.class.php');
 include('Hivechat.orgsocial.class.php');
 include('Hivechat.orgsocials.class.php');
+include('Hivechat.newCell.class.php');
+include('Hivechat.newCells.class.php');
+include('Hivechat.block.class.php');
+include('Hivechat.blocks.class.php');
 include('HiveApi.php');
 
 # Create the function(s) users will call from their pages
@@ -1356,4 +1360,123 @@ function update_hive($data) {
   $hives = new Hivechat_Hives($API);
 
   return $hives->update_hive($data);
+}
+
+function create_new_cell($cellData) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $cells = new Hivechat_NewCells($API);
+
+  $currentCells = $cells->get_hive_cells($cellData["hiveID"]);
+
+  
+  $fields = [
+    "cellTitle",
+    "cellSubtitle",
+    "cellDate",
+    "memberID",
+    "hiveID"
+  ];
+  
+  $data = HiveApi::filter($cellData, $fields);
+  $data["cellOrder"] = count($currentCells);
+  
+  return $cells->create_cell($data);
+}
+
+function update_new_cell($cellData) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $cells = new Hivechat_NewCells($API);
+
+  $fields = [
+    "cellID",
+    "cellTitle",
+    "cellSubtitle",
+    "cellDate",
+    "hiveID"
+  ];
+
+  $data = HiveApi::filter($cellData, $fields);
+  return $cells->update_cell($data);
+} 
+
+function get_new_cell($cellID) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $cells = new Hivechat_NewCells($API);
+
+  $cell = $cells->get_cell($cellID);
+  $cell["blocks"] = get_cell_blocks($cellID);
+
+  return $cell;
+}
+
+function get_cell_blocks($cellID) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $blocks = new Hivechat_Blocks($API);
+
+  return $blocks->get_blocks_by_cell($cellID);
+}
+
+function create_new_block($blockData) {
+  // cellID, blockType, blockData
+
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $blocks = new Hivechat_Blocks($API);
+
+  return $blocks->create_block($blockData);
+}
+
+function update_block($block) {
+  // [blockID, blockOrder, blockType, blockData]
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $blocks = new Hivechat_Blocks($API);
+
+  $fields = [
+    "blockID",
+    "blockOrder",
+    "blockType",
+    "blockData"
+  ];
+
+  $data = HiveApi::filter($block, $fields);
+
+  if (is_array($data["blockData"])) {
+    $data["blockData"] = json_encode($data["blockData"]);
+  }
+
+  echo $data["blockData"];
+
+  return $blocks->update_block($data);
+}
+
+function update_blocks($blocks) {
+  // [[blockID...], [], []]
+
+  $results = [];
+  foreach ($blocks as $block) {
+    $results[] = update_block($block);
+  }
+
+  return $results;
+}
+
+function get_block($blockID) {
+  
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $blocks = new Hivechat_Blocks($API);
+
+  return $blocks->get_block($blockID);
+}
+
+function delete_block($blockID) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $blocks = new Hivechat_Blocks($API);
+
+  return $blocks->delete_block($blockID);
+}
+
+function get_hive_cells($hiveID) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $cells = new Hivechat_NewCells($API);
+
+  return $cells->get_hive_cells($hiveID);
 }

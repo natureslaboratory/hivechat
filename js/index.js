@@ -8,7 +8,7 @@
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"title":"A Cell","subtitle":"By Me","datetime":"2021-05-21 09:00:00","blocks":[{"id":0,"type":"Video","order":0,"blockID":0,"cellID":0,"data":{"title":"A Video","url":"https://www.youtube.com/watch?v=4547SrIJtU4","description":"A nice description"}},{"id":1,"type":"Text","order":1,"blockID":0,"cellID":0,"data":{"title":"Some Text","content":"<p>Hello there <strong>mate</strong></p>"}},{"id":2,"type":"File","order":2,"blockID":0,"cellID":0,"data":{"title":"Some File","url":"https://www.example.com","description":"A great file download."}},{"id":3,"type":"Text","order":3,"blockID":0,"cellID":0,"data":{"title":"Some Text","content":"<p>Hello there</p>"}},{"id":4,"type":"Text","order":4,"blockID":0,"cellID":0,"data":{"title":"Some Text","content":"<p><strong>mate</strong></p>"}},{"id":5,"type":"Text","order":5,"blockID":0,"cellID":0,"data":{"title":"Some Text","content":"<p>there mate</p>"}},{"id":6,"type":"Text","order":6,"blockID":0,"cellID":0,"data":{"title":"Some Text","content":"<p>mate</p>"}}]}');
+module.exports = JSON.parse('{"cellTitle":"A Cell","cellSubtitle":"By Me","cellDate":"2021-05-21 09:00:00","blocks":[{"blockID":0,"blockType":"Video","order":0,"cellID":0,"blockData":{"title":"A Video","url":"https://www.youtube.com/watch?v=4547SrIJtU4","description":"A nice description"}},{"blockID":1,"blockType":"Text","order":1,"cellID":0,"blockData":{"title":"Some Text","content":"<p>Hello there <strong>mate</strong></p>"}},{"blockID":2,"blockType":"File","order":2,"cellID":0,"blockData":{"title":"Some File","url":"https://www.example.com","description":"A great file download."}},{"blockID":3,"blockType":"Text","order":3,"cellID":0,"blockData":{"title":"Some Text","content":"<p>Hello there</p>"}},{"blockID":4,"blockType":"Text","order":4,"cellID":0,"blockData":{"title":"Some Text","content":"<p><strong>mate</strong></p>"}},{"blockID":5,"blockType":"Text","order":5,"cellID":0,"blockData":{"title":"Some Text","content":"<p>there mate</p>"}},{"blockID":6,"blockType":"Text","order":6,"cellID":0,"blockData":{"title":"Some Text","content":"<p>mate</p>"}}]}');
 
 /***/ }),
 
@@ -46350,40 +46350,6 @@ exports.default = AddSocial;
 
 /***/ }),
 
-/***/ "./js/src/components/Back.tsx":
-/*!************************************!*\
-  !*** ./js/src/components/Back.tsx ***!
-  \************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-var Back = function (props) {
-    if (props.link) {
-        return (jsx_runtime_1.jsx("a", __assign({ href: props.link }, { children: jsx_runtime_1.jsx("button", __assign({ className: "btn btn-outline-primary mb-4" }, { children: props.label }), void 0) }), void 0));
-    }
-    else {
-        jsx_runtime_1.jsx("button", __assign({ className: "btn btn-outline-primary mb-4", onClick: props.goBack }, { children: props.label }), void 0);
-    }
-};
-exports.default = Back;
-
-
-/***/ }),
-
 /***/ "./js/src/components/Cell.tsx":
 /*!************************************!*\
   !*** ./js/src/components/Cell.tsx ***!
@@ -47371,44 +47337,21 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __read = (this && this.__read) || function (o, n) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator];
-    if (!m) return o;
-    var i = m.call(o), r, ar = [], e;
-    try {
-        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
-    }
-    catch (error) { e = { error: error }; }
-    finally {
-        try {
-            if (r && !r.done && (m = i["return"])) m.call(i);
-        }
-        finally { if (e) throw e.error; }
-    }
-    return ar;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var CellPreview_1 = __importDefault(__webpack_require__(/*! ./CellPreview */ "./js/src/components/ManageHive/CellPreview.tsx"));
 var ListCells = function (_a) {
-    var cells = _a.cells, getCells = _a.getCells;
-    var _b = __read(react_1.useState(null), 2), cell = _b[0], setCell = _b[1];
+    var cells = _a.cells, getCells = _a.getCells, setCell = _a.setCell;
     function generateKey() {
         return '_' + Math.random().toString(36).substr(2, 9);
     }
-    function selectCell(cell) {
-        setCell(cell);
+    function selectCell(cellID) {
+        setCell(cellID);
     }
-    if (cell) {
-        return (jsx_runtime_1.jsxs("div", __assign({ className: "card" }, { children: [jsx_runtime_1.jsxs("div", __assign({ className: "card-header", style: { justifyContent: "space-between" } }, { children: ["Edit Cell", jsx_runtime_1.jsx("button", __assign({ className: "btn btn-alternate", onClick: function () { return setCell(null); } }, { children: "Back" }), void 0)] }), void 0),
-                jsx_runtime_1.jsx("form", __assign({ className: "card-body" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", __assign({ htmlFor: "cellTitle" }, { children: "Title" }), void 0),
-                            jsx_runtime_1.jsx("input", { className: "form-control", type: "text", id: "cellTitle", value: cell.cellTitle, onChange: function (e) { return setCell(__assign(__assign({}, cell), { cellTitle: e.target.value })); } }, void 0)] }), void 0) }), void 0)] }), void 0));
-    }
-    return (jsx_runtime_1.jsx("div", __assign({ className: "cells", style: { display: "flex", flexDirection: "column", gap: "2rem" } }, { children: cells.map(function (c) { return jsx_runtime_1.jsx(CellPreview_1.default, { cell: c, selectCell: selectCell }, generateKey()); }) }), void 0));
+    return (jsx_runtime_1.jsx("div", __assign({ className: "cells", style: { display: "flex", flexDirection: "column", gap: "2rem" } }, { children: cells.map(function (c) { return jsx_runtime_1.jsx(CellPreview_1.default, { cell: c, selectCell: function () { return selectCell(c.cellID); } }, generateKey()); }) }), void 0));
 };
 exports.default = ListCells;
 
@@ -47493,19 +47436,17 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var Back_1 = __importDefault(__webpack_require__(/*! ../Back */ "./js/src/components/Back.tsx"));
 var Title_1 = __importDefault(__webpack_require__(/*! ../Title */ "./js/src/components/Title.tsx"));
 var HiveDetails_1 = __importDefault(__webpack_require__(/*! ./HiveDetails */ "./js/src/components/ManageHive/HiveDetails.tsx"));
 var ListCells_1 = __importDefault(__webpack_require__(/*! ./ListCells */ "./js/src/components/ManageHive/ListCells.tsx"));
+var NewCellEditor_1 = __importDefault(__webpack_require__(/*! ../NewCell/Editor/NewCellEditor */ "./js/src/components/NewCell/Editor/NewCellEditor.tsx"));
+var CreateCell_1 = __importDefault(__webpack_require__(/*! ../NewCell/Editor/CreateCell */ "./js/src/components/NewCell/Editor/CreateCell.tsx"));
 var ManageHive = function (_a) {
     var organisationSlug = _a.organisationSlug, hiveID = _a.hiveID, organisationID = _a.organisationID, organisationName = _a.organisationName;
-    var _b = __read(react_1.useState({
-        organisationID: "",
-        organisationName: "",
-        organisationSlug: ""
-    }), 2), organisation = _b[0], setOrganisation = _b[1];
-    var _c = __read(react_1.useState(null), 2), hiveDetails = _c[0], setHiveDetails = _c[1];
-    var _d = __read(react_1.useState([]), 2), cells = _d[0], setCells = _d[1];
+    var _b = __read(react_1.useState(null), 2), hiveDetails = _b[0], setHiveDetails = _b[1];
+    var _c = __read(react_1.useState([]), 2), cells = _c[0], setCells = _c[1];
+    var _d = __read(react_1.useState(null), 2), cell = _d[0], setCell = _d[1];
+    var _e = __read(react_1.useState(false), 2), newCell = _e[0], setNewCell = _e[1];
     function goBack(e) {
     }
     react_1.useEffect(function () {
@@ -47547,10 +47488,50 @@ var ManageHive = function (_a) {
     }
     function editDetails(e) {
     }
+    function addCell(newCell) {
+        console.log("create");
+        var formData = new FormData();
+        formData.append("cellTitle", newCell.cellTitle);
+        formData.append("cellSubtitle", newCell.cellSubtitle);
+        console.log(newCell);
+        if (newCell.cellDate && newCell.cellTime) {
+            formData.append("cellDate", newCell.cellDate + " " + newCell.cellTime);
+        }
+        formData.append("hiveID", hiveID.toString());
+        axios_1.default.post("/page-api/cell/create", formData).then(function (res) {
+            console.log(res);
+            setNewCell(false);
+            getCells();
+        });
+    }
+    function handleBack() {
+        if (cell) {
+            setCell(null);
+        }
+        else if (newCell) {
+            setNewCell(false);
+        }
+        else {
+            window.location.href = "/explore/organisations/" + organisationSlug + "/manage/hives/";
+        }
+    }
+    var content = null;
+    var rightColumn = (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("div", __assign({ style: { marginBottom: "2rem", display: "flex", justifyContent: "flex-end" } }, { children: jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", onClick: function () { return setNewCell(true); } }, { children: "+ New Cell" }), void 0) }), void 0),
+            cells.length > 0 && jsx_runtime_1.jsx(ListCells_1.default, { cells: cells, getCells: getCells, setCell: function (cellID) { return setCell({ cellID: cellID, hiveID: hiveID }); } }, void 0)] }, void 0));
+    var link = "/explore/organisations/" + organisationSlug + "/manage";
+    if (newCell) {
+        rightColumn = jsx_runtime_1.jsx(CreateCell_1.default, { hiveID: hiveID, addCell: addCell, cancelCreateCell: function () { return setNewCell(false); } }, void 0);
+    }
+    if (cell) {
+        link = window.location.href;
+        content = (jsx_runtime_1.jsx(jsx_runtime_1.Fragment, { children: jsx_runtime_1.jsx(NewCellEditor_1.default, __assign({ getCells: getCells }, cell), void 0) }, void 0));
+    }
+    else {
+        content = (jsx_runtime_1.jsxs("div", __assign({ className: "row" }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "col-md-6" }, { children: hiveDetails && jsx_runtime_1.jsx(HiveDetails_1.default, __assign({}, hiveDetails, { getHive: getHiveDetails, updateHive: updateHive }), void 0) }), void 0),
+                jsx_runtime_1.jsx("div", __assign({ className: "col-md-6", style: { margin: "0 auto" } }, { children: rightColumn }), void 0)] }), void 0));
+    }
     return (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx(Title_1.default, { title: hiveDetails && "Manage " + hiveDetails.hiveTitle }, void 0),
-            jsx_runtime_1.jsx(Back_1.default, { goBack: goBack, label: "Back", link: "/explore/organisations/" + organisation.organisationSlug + "/manage" }, void 0),
-            jsx_runtime_1.jsxs("div", __assign({ className: "row", style: { marginBottom: "20rem" } }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "col-md-6" }, { children: hiveDetails && jsx_runtime_1.jsx(HiveDetails_1.default, __assign({}, hiveDetails, { getHive: getHiveDetails, updateHive: updateHive }), void 0) }), void 0),
-                    jsx_runtime_1.jsx("div", __assign({ className: "col-md-6", style: { margin: "0 auto" } }, { children: cells.length > 0 && jsx_runtime_1.jsx(ListCells_1.default, { cells: cells, getCells: getCells }, void 0) }), void 0)] }), void 0)] }, void 0));
+            jsx_runtime_1.jsx("button", __assign({ style: { marginBottom: "2rem" }, onClick: handleBack, className: "btn btn-outline-primary" }, { children: "Back" }), void 0), content] }, void 0));
 };
 exports.default = ManageHive;
 
@@ -47585,6 +47566,52 @@ var Member = function (props) {
                 } }, { children: "Remove" }), void 0)] }), void 0));
 };
 exports.default = Member;
+
+
+/***/ }),
+
+/***/ "./js/src/components/Message.tsx":
+/*!***************************************!*\
+  !*** ./js/src/components/Message.tsx ***!
+  \***************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var Message = function (props) {
+    var style = {
+        width: "100%",
+        padding: "0.5rem"
+    };
+    switch (props.type) {
+        case "Default":
+            style = {
+                backgroundColor: "#3f6ad836",
+                color: "#3f6ad8"
+            };
+            break;
+        case "Success":
+            style = {
+                backgroundColor: "",
+                color: "#39C16C"
+            };
+    }
+    return (jsx_runtime_1.jsx("div", { children: jsx_runtime_1.jsx("a", __assign({ href: props.link }, { children: jsx_runtime_1.jsx("p", { children: props.message }, void 0) }), void 0) }, void 0));
+};
+exports.default = Message;
 
 
 /***/ }),
@@ -47955,37 +47982,37 @@ var Cell = function (props) {
         }
     }, [cell]);
     function getBlock(block) {
-        switch (block.type) {
+        switch (block.blockType) {
             case "Video":
-                return jsx_runtime_1.jsx(Video_1.default, __assign({}, block.data, { handleLoad: null }), void 0);
+                return jsx_runtime_1.jsx(Video_1.default, __assign({}, block.blockData, { handleLoad: null }), void 0);
             case "Text":
-                return jsx_runtime_1.jsx(Text_1.default, __assign({}, block.data), void 0);
+                return jsx_runtime_1.jsx(Text_1.default, __assign({}, block.blockData), void 0);
             case "File":
-                return jsx_runtime_1.jsx(File_1.default, __assign({}, block.data), void 0);
+                return jsx_runtime_1.jsx(File_1.default, __assign({}, block.blockData), void 0);
             default:
                 return null;
         }
     }
     // Dummy data
     var dateStr = "";
-    if (cell.datetime !== "2000-01-01 00:00:00") {
-        var date = new Date(cell.datetime);
+    if (cell.cellDate !== "2000-01-01 00:00:00") {
+        var date = new Date(cell.cellDate);
         dateStr = helpers_1.formatDate(date);
     }
-    return (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("h1", __assign({ style: { marginBottom: cell.subtitle ? "0.3rem" : "1.3rem" } }, { children: cell.title }), void 0),
-            jsx_runtime_1.jsxs("div", __assign({ style: { marginBottom: "1.3rem", opacity: 0.85 } }, { children: [cell.subtitle && jsx_runtime_1.jsx("h4", { children: cell.subtitle }, void 0),
+    return (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("h1", __assign({ style: { marginBottom: cell.cellSubtitle ? "0.3rem" : "1.3rem" } }, { children: cell.cellTitle }), void 0),
+            jsx_runtime_1.jsxs("div", __assign({ style: { marginBottom: "1.3rem", opacity: 0.85 } }, { children: [cell.cellSubtitle && jsx_runtime_1.jsx("h4", { children: cell.cellSubtitle }, void 0),
                     dateStr ? jsx_runtime_1.jsx("h6", { children: dateStr }, void 0) : null] }), void 0),
             blocks && blocks.map(function (b) {
                 var title = "";
-                switch (b.type) {
+                switch (b.blockType) {
                     case "Video":
-                        title = b.data.title;
+                        title = b.blockData.title;
                         break;
                     case "Text":
                         title = "";
                         break;
                     case "File":
-                        title = b.data.title;
+                        title = b.blockData.title;
                         break;
                     default:
                         title = "";
@@ -48076,33 +48103,33 @@ var AddBlock = function (props) {
                 console.error("Default");
         }
     }
-    function createBlock(type, data) {
+    function createBlock(blockType, blockData) {
         setBlock({
-            type: type,
-            order: props.order,
+            blockType: blockType,
+            blockOrder: props.blockOrder,
             tempID: Math.random(),
-            data: data
+            blockData: blockData
         });
     }
     function addBlock() {
         props.addBlock(block);
         setBlock(null);
     }
-    function updateBlock(data) {
-        setBlock(__assign(__assign({}, block), { data: data }));
+    function updateBlock(blockData) {
+        setBlock(__assign(__assign({}, block), { blockData: blockData }));
     }
     var content = jsx_runtime_1.jsx("div", {}, void 0);
     var buttons = null;
     if (block) {
-        switch (block.type) {
+        switch (block.blockType) {
             case "Video":
-                content = jsx_runtime_1.jsx(VideoForm_1.default, { block: block.data, setBlock: updateBlock }, void 0);
+                content = jsx_runtime_1.jsx(VideoForm_1.default, { block: block.blockData, setBlock: updateBlock }, void 0);
                 break;
             case "Text":
-                content = jsx_runtime_1.jsx(TextForm_1.default, { block: block.data, setBlock: updateBlock }, void 0);
+                content = jsx_runtime_1.jsx(TextForm_1.default, { block: block.blockData, setBlock: updateBlock }, void 0);
                 break;
             case "File":
-                content = jsx_runtime_1.jsx(FileForm_1.default, { block: block.data, setBlock: updateBlock }, void 0);
+                content = jsx_runtime_1.jsx(FileForm_1.default, { block: block.blockData, setBlock: updateBlock }, void 0);
                 break;
             default:
                 console.error("No Block");
@@ -48151,6 +48178,156 @@ exports.default = AddBlockButton;
 
 /***/ }),
 
+/***/ "./js/src/components/NewCell/Editor/CreateCell.tsx":
+/*!*********************************************************!*\
+  !*** ./js/src/components/NewCell/Editor/CreateCell.tsx ***!
+  \*********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var Message_1 = __importDefault(__webpack_require__(/*! ../../Message */ "./js/src/components/Message.tsx"));
+var CreateCell = function (props) {
+    var blankCell = {
+        cellTitle: "",
+        cellDate: "",
+        cellTime: "",
+        cellSubtitle: ""
+    };
+    var _a = __read(react_1.useState(blankCell), 2), newCell = _a[0], setNewCell = _a[1];
+    var _b = __read(react_1.useState(null), 2), message = _b[0], setMessage = _b[1];
+    function reset(e) {
+        e.preventDefault();
+        setNewCell(blankCell);
+        setMessage(null);
+    }
+    var content = null;
+    if (message && message.type == "Success") {
+        content = (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx(Message_1.default, __assign({}, message), void 0),
+                jsx_runtime_1.jsx("div", __assign({ className: "btn-container" }, { children: jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", onClick: reset }, { children: "Create Another" }), void 0) }), void 0)] }, void 0));
+    }
+    else {
+        content = (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Title" }, void 0),
+                        jsx_runtime_1.jsx("input", { type: "text", className: "form-control", value: newCell.cellTitle, onChange: function (e) { return setNewCell(__assign(__assign({}, newCell), { cellTitle: e.target.value })); } }, void 0)] }), void 0),
+                jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Subtitle" }, void 0),
+                        jsx_runtime_1.jsx("input", { type: "text", className: "form-control", value: newCell.cellSubtitle, onChange: function (e) { return setNewCell(__assign(__assign({}, newCell), { cellSubtitle: e.target.value })); } }, void 0)] }), void 0),
+                jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Date" }, void 0),
+                        jsx_runtime_1.jsxs("div", __assign({ className: "c-date-time-form" }, { children: [jsx_runtime_1.jsx("input", { type: "date", className: "form-control", value: newCell.cellDate, onChange: function (e) { return setNewCell(__assign(__assign({}, newCell), { cellDate: e.target.value })); } }, void 0),
+                                jsx_runtime_1.jsx("input", { type: "time", className: "form-control", value: newCell.cellTime, onChange: function (e) { return setNewCell(__assign(__assign({}, newCell), { cellTime: e.target.value })); } }, void 0)] }), void 0)] }), void 0),
+                jsx_runtime_1.jsxs("div", __assign({ className: "btn-container" }, { children: [jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", onClick: function (e) {
+                                e.preventDefault();
+                                props.addCell(newCell);
+                            } }, { children: "Create" }), void 0),
+                        jsx_runtime_1.jsx("button", __assign({ className: "btn btn-secondary", onClick: function (e) {
+                                e.preventDefault();
+                                props.cancelCreateCell();
+                            } }, { children: "Cancel" }), void 0)] }), void 0)] }, void 0));
+    }
+    return (jsx_runtime_1.jsx("div", __assign({ className: "card" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [jsx_runtime_1.jsx("h5", __assign({ className: "card-title" }, { children: "Create Cell" }), void 0),
+                jsx_runtime_1.jsx("form", { children: content }, void 0)] }), void 0) }), void 0));
+};
+exports.default = CreateCell;
+
+
+/***/ }),
+
+/***/ "./js/src/components/NewCell/Editor/EditCellDetails.tsx":
+/*!**************************************************************!*\
+  !*** ./js/src/components/NewCell/Editor/EditCellDetails.tsx ***!
+  \**************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var UpdateCell = function (props) {
+    var _a = __read(react_1.useState(null), 2), cell = _a[0], setCell = _a[1];
+    react_1.useEffect(function () {
+        setCell(props.cell);
+    }, [props.cell]);
+    var content = null;
+    if (cell) {
+        content = (jsx_runtime_1.jsxs("form", { children: [jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Title" }, void 0),
+                        jsx_runtime_1.jsx("input", { type: "text", className: "form-control", value: cell.cellTitle, onChange: function (e) { return setCell(__assign(__assign({}, cell), { cellTitle: e.target.value })); } }, void 0)] }), void 0),
+                jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Subtitle" }, void 0),
+                        jsx_runtime_1.jsx("input", { type: "text", className: "form-control", value: cell.cellSubtitle, onChange: function (e) { return setCell(__assign(__assign({}, cell), { cellSubtitle: e.target.value })); } }, void 0)] }), void 0),
+                jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Date" }, void 0),
+                        jsx_runtime_1.jsxs("div", __assign({ className: "c-date-time-form" }, { children: [jsx_runtime_1.jsx("input", { type: "date", className: "form-control", value: cell.cellDate, onChange: function (e) { return setCell(__assign(__assign({}, cell), { cellDate: e.target.value })); } }, void 0),
+                                jsx_runtime_1.jsx("input", { type: "time", className: "form-control", value: cell.cellTime, onChange: function (e) { return setCell(__assign(__assign({}, cell), { cellTime: e.target.value })); } }, void 0)] }), void 0)] }), void 0),
+                jsx_runtime_1.jsx("div", __assign({ className: "btn-container" }, { children: jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", onClick: function (e) {
+                            e.preventDefault();
+                            props.updateCell(e, cell);
+                        } }, { children: "Save" }), void 0) }), void 0)] }, void 0));
+    }
+    return (jsx_runtime_1.jsx("div", __assign({ className: "card" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [jsx_runtime_1.jsx("h5", __assign({ className: "card-title" }, { children: "Edit Cell" }), void 0), content] }), void 0) }), void 0));
+};
+exports.default = UpdateCell;
+
+
+/***/ }),
+
 /***/ "./js/src/components/NewCell/Editor/NewBlockEditor.tsx":
 /*!*************************************************************!*\
   !*** ./js/src/components/NewCell/Editor/NewBlockEditor.tsx ***!
@@ -48169,6 +48346,42 @@ var __assign = (this && this.__assign) || function () {
         return t;
     };
     return __assign.apply(this, arguments);
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
 };
 var __read = (this && this.__read) || function (o, n) {
     var m = typeof Symbol === "function" && o[Symbol.iterator];
@@ -48204,29 +48417,39 @@ var BlockEditor = function (props) {
     var _a = __read(react_2.useState(false), 2), isEdit = _a[0], setIsEdit = _a[1];
     var _b = __read(react_2.useState(false), 2), isPreview = _b[0], setIsPreview = _b[1];
     var _c = __read(react_2.useState(), 2), block = _c[0], setBlock = _c[1];
+    var _d = __read(react_2.useState(false), 2), showDelete = _d[0], setShowDelete = _d[1];
     function save() {
-        props.updateBlock(props.index, block);
-        cancel();
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, props.updateBlock(props.index, block)];
+                    case 1:
+                        _a.sent();
+                        cancel();
+                        return [2 /*return*/];
+                }
+            });
+        });
     }
     function cancel() {
         setBlock(null);
         setIsEdit(false);
     }
     function edit() {
-        setBlock(__assign({}, props.block.data));
+        setBlock(__assign({}, props.block.blockData));
         setIsEdit(true);
     }
     function updateBlock(blockData) {
         setBlock(blockData);
     }
     var content = null;
-    switch (props.block.type) {
+    switch (props.block.blockType) {
         case "Video":
             if (isEdit) {
                 content = (jsx_runtime_1.jsx(VideoForm_1.default, { block: block, setBlock: updateBlock }, void 0));
             }
             else {
-                content = (jsx_runtime_1.jsx(Video_1.default, __assign({ handleLoad: function () { return console.log("load"); } }, props.block.data, { small: !isPreview }), void 0));
+                content = (jsx_runtime_1.jsx(Video_1.default, __assign({ handleLoad: function () { return console.log("load"); } }, props.block.blockData, { small: !isPreview }), void 0));
             }
             break;
         case "Text":
@@ -48234,7 +48457,7 @@ var BlockEditor = function (props) {
                 content = (jsx_runtime_1.jsx(TextForm_1.default, { block: block, setBlock: updateBlock }, void 0));
             }
             else {
-                content = (jsx_runtime_1.jsx(Text_1.default, __assign({}, props.block.data, { small: !isPreview }), void 0));
+                content = (jsx_runtime_1.jsx(Text_1.default, __assign({}, props.block.blockData, { small: !isPreview }), void 0));
             }
             break;
         case "File":
@@ -48242,7 +48465,7 @@ var BlockEditor = function (props) {
                 content = (jsx_runtime_1.jsx(FileForm_1.default, { block: block, setBlock: updateBlock }, void 0));
             }
             else {
-                content = (jsx_runtime_1.jsx(File_1.default, __assign({}, props.block.data), void 0));
+                content = (jsx_runtime_1.jsx(File_1.default, __assign({}, props.block.blockData), void 0));
             }
             break;
         default:
@@ -48250,15 +48473,20 @@ var BlockEditor = function (props) {
     }
     var buttons = (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("button", __assign({ className: "btn btn-alternate", onClick: function () { return setIsPreview(true); } }, { children: "Preview" }), void 0),
             jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", onClick: function () { return edit(); } }, { children: "Edit" }), void 0)] }, void 0));
-    if (isPreview) {
+    if (isEdit && showDelete) {
+        buttons = (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("button", __assign({ className: "btn btn-secondary", onClick: function () { return setShowDelete(false); } }, { children: "Cancel" }), void 0),
+                jsx_runtime_1.jsx("button", __assign({ className: "btn btn-danger", onClick: function () { return props.deleteBlock(props.index); } }, { children: "Confirm Delete" }), void 0)] }, void 0));
+    }
+    else if (isPreview) {
         buttons = (jsx_runtime_1.jsx("button", __assign({ className: "btn btn-alternate", onClick: function () { return setIsPreview(false); } }, { children: "Back" }), void 0));
     }
     else if (isEdit) {
         buttons = (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", onClick: function () { return save(); } }, { children: "Save" }), void 0),
                 jsx_runtime_1.jsx("button", __assign({ className: "btn btn-secondary", onClick: function () { return cancel(); } }, { children: "Cancel" }), void 0),
-                jsx_runtime_1.jsx("button", __assign({ className: "btn btn-danger" }, { children: "Delete" }), void 0)] }, void 0));
+                jsx_runtime_1.jsx("button", __assign({ className: "btn btn-danger", onClick: function () { return setShowDelete(true); } }, { children: "Delete" }), void 0)] }, void 0));
     }
-    return (jsx_runtime_1.jsx(react_beautiful_dnd_1.Draggable, __assign({ draggableId: props.block.id.toString(), index: props.index }, { children: function (provided) { return (react_1.createElement("li", __assign({}, provided.dragHandleProps, provided.draggableProps, { ref: provided.innerRef, key: props.block.id.toString(), className: "card-wrapper" }),
+    var id = props.block.blockID != ( false || undefined) ? props.block.blockID : props.block.tempID;
+    return (jsx_runtime_1.jsx(react_beautiful_dnd_1.Draggable, __assign({ draggableId: id.toString(), index: props.index }, { children: function (provided) { return (react_1.createElement("li", __assign({}, provided.dragHandleProps, provided.draggableProps, { ref: provided.innerRef, key: id.toString(), className: "card-wrapper" }),
             jsx_runtime_1.jsx("div", __assign({ className: "main-card card" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [content, jsx_runtime_1.jsx("div", __assign({ className: "btn-container" }, { children: buttons }), void 0)] }), void 0) }), void 0))); } }), void 0));
 };
 exports.default = BlockEditor;
@@ -48285,6 +48513,42 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 var __read = (this && this.__read) || function (o, n) {
     var m = typeof Symbol === "function" && o[Symbol.iterator];
     if (!m) return o;
@@ -48301,11 +48565,6 @@ var __read = (this && this.__read) || function (o, n) {
     }
     return ar;
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from) {
-    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-        to[j] = from[i];
-    return to;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -48315,32 +48574,67 @@ var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var NewBlockEditor_1 = __importDefault(__webpack_require__(/*! ./NewBlockEditor */ "./js/src/components/NewCell/Editor/NewBlockEditor.tsx"));
 var react_beautiful_dnd_1 = __webpack_require__(/*! react-beautiful-dnd */ "./node_modules/react-beautiful-dnd/dist/react-beautiful-dnd.esm.js");
 var AddBlock_1 = __importDefault(__webpack_require__(/*! ./AddBlock */ "./js/src/components/NewCell/Editor/AddBlock.tsx"));
-var cell = __webpack_require__(/*! ../../../cell.json */ "./js/src/cell.json");
+var axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
+var EditCellDetails_1 = __importDefault(__webpack_require__(/*! ./EditCellDetails */ "./js/src/components/NewCell/Editor/EditCellDetails.tsx"));
 var CellEditor = function (props) {
-    var _a = __read(react_1.useState(), 2), blocks = _a[0], setBlocks = _a[1];
-    var _b = __read(react_1.useState(null), 2), saveTimeout = _b[0], setSaveTimeout = _b[1];
+    var _a = __read(react_1.useState([]), 2), blocks = _a[0], setBlocks = _a[1];
+    var _b = __read(react_1.useState(null), 2), cell = _b[0], setCell = _b[1];
+    var _c = __read(react_1.useState(null), 2), saveTimeout = _c[0], setSaveTimeout = _c[1];
     react_1.useEffect(function () {
-        if (cell && cell.blocks) {
-            updateBlocks(cell.blocks);
+        getCell();
+    }, []);
+    function getCell() {
+        var url = "/page-api/cell/get?cellID=" + props.cellID;
+        axios_1.default.get(url).then(function (res) {
+            console.log(res.data);
+            if (res.data) {
+                console.log(res.data);
+                var newBlocks = res.data.blocks.map(function (b) {
+                    var newBlocks = __assign({}, b);
+                    if (b.blockData) {
+                        newBlocks.blockData = JSON.parse(b.blockData);
+                    }
+                    return newBlocks;
+                });
+                updateBlocks(newBlocks);
+                var date = res.data.cellDate.split(" ");
+                setCell({
+                    cellTitle: res.data.cellTitle,
+                    cellSubtitle: res.data.cellSubtitle,
+                    cellTime: date[1],
+                    cellDate: date[0],
+                    cellID: res.data.cellID
+                });
+            }
+        }).catch(function (err) {
+            console.error(err);
+        });
+    }
+    function updateBlocks(blocks) {
+        var _this = this;
+        if (!blocks) {
+            return;
         }
-    }, [cell]);
-    react_1.useEffect(function () {
         if (saveTimeout) {
             clearTimeout(saveTimeout);
         }
-        setSaveTimeout(__webpack_require__.g.setTimeout(function () {
-            console.log("save");
-        }, 3000));
-    }, [blocks]);
-    function updateBlocks(blocks) {
+        setSaveTimeout(__webpack_require__.g.setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
+            var data;
+            return __generator(this, function (_a) {
+                data = new FormData();
+                data.append("blocks", JSON.stringify(blocks));
+                clearTimeout(saveTimeout);
+                return [2 /*return*/];
+            });
+        }); }, 100));
         setBlocks(orderBlocks(blocks));
     }
     function orderBlocks(blocks) {
         return blocks.sort(function (a, b) {
-            if (a.order > b.order) {
+            if (a.blockOrder > b.blockOrder) {
                 return 1;
             }
-            else if (a.order < b.order) {
+            else if (a.blockOrder < b.blockOrder) {
                 return -1;
             }
             else {
@@ -48350,56 +48644,87 @@ var CellEditor = function (props) {
     }
     function updateBlock(index, block) {
         console.log(block);
-        var newBlock = __assign(__assign({}, blocks[index]), { data: block });
-        var blocksStart = blocks.slice(0, index);
-        var blocksEnd = blocks.slice(index + 1, blocks.length);
-        setBlocks(__spreadArray(__spreadArray(__spreadArray([], __read(blocksStart)), [newBlock]), __read(blocksEnd)));
+        var newBlock = __assign(__assign({}, blocks[index]), { blockData: block });
+        var data = new FormData();
+        data.append("blockID", newBlock.blockID.toString());
+        data.append("blockData", JSON.stringify(newBlock.blockData));
+        return axios_1.default.post("/page-api/block/update", data)
+            .then(function (res) {
+            console.log(res);
+            getCell();
+        });
+    }
+    function updateCell(e, newCell) {
+        e.preventDefault();
+        var data = new FormData();
+        data.append("cellID", cell.cellID);
+        data.append("cellTitle", newCell.cellTitle);
+        data.append("cellSubtitle", newCell.cellSubtitle);
+        data.append("cellDate", newCell.cellDate + " " + newCell.cellTime);
+        axios_1.default.post("/page-api/cell/update", data)
+            .then(function (res) {
+            console.log(res);
+            getCell();
+            props.getCells();
+        });
+    }
+    function deleteBlock(index) {
+        var data = new FormData();
+        data.append("blockID", blocks[index].blockID.toString());
+        return axios_1.default.post("/page-api/block/delete", data)
+            .then(function (res) {
+            console.log(res.data);
+            getCell();
+        });
     }
     function handleDrop(drop, provided) {
-        var newBlocks = blocks;
-        var startBlock = blocks[drop.source.index];
-        var destinationBlock = blocks[drop.destination.index];
-        newBlocks[drop.source.index].order = newBlocks[drop.destination.index].order;
-        if (drop.source.index < drop.destination.index) {
-            for (var i = drop.source.index + 1; i < drop.destination.index + 1; i++) {
-                newBlocks[i].order = blocks[i].order - 1;
-            }
-        }
-        else if (drop.source.index > drop.destination.index) {
-            for (var i = drop.destination.index; i < drop.source.index; i++) {
-                newBlocks[i].order = blocks[i].order + 1;
-            }
-        }
-        console.log(newBlocks);
-        updateBlocks(newBlocks);
+        return __awaiter(this, void 0, void 0, function () {
+            var newBlocks, i, i, data;
+            return __generator(this, function (_a) {
+                newBlocks = blocks;
+                newBlocks[drop.source.index].blockOrder = newBlocks[drop.destination.index].blockOrder;
+                if (drop.source.index < drop.destination.index) {
+                    for (i = drop.source.index + 1; i < drop.destination.index + 1; i++) {
+                        newBlocks[i].blockOrder = blocks[i].blockOrder - 1;
+                    }
+                }
+                else if (drop.source.index > drop.destination.index) {
+                    for (i = drop.destination.index; i < drop.source.index; i++) {
+                        newBlocks[i].blockOrder = blocks[i].blockOrder + 1;
+                    }
+                }
+                updateBlocks(newBlocks);
+                data = new FormData();
+                data.append("blocks", JSON.stringify(newBlocks));
+                axios_1.default.post("/page-api/block/update-bulk", data)
+                    .then(function (res) {
+                    console.log(res);
+                    getCell();
+                });
+                return [2 /*return*/];
+            });
+        });
     }
-    if (!blocks) {
-        return jsx_runtime_1.jsx("div", {}, void 0);
-    }
-    var menuItems = [
-        {
-            type: "video",
-            id: createID()
-        },
-        {
-            type: "text",
-            id: createID()
-        },
-        {
-            type: "file",
-            id: createID()
-        }
-    ];
     function createID() {
         return '_' + Math.random().toString(36).substr(2, 9);
     }
     ;
     function addBlock(block) {
-        setBlocks(__spreadArray(__spreadArray([], __read(blocks)), [block]));
+        var data = new FormData();
+        var order = (blocks.length > 0 ? blocks[blocks.length - 1].blockOrder + 1 : 0).toString();
+        data.append("blockType", block.blockType);
+        data.append("cellID", props.cellID.toString());
+        data.append("blockData", JSON.stringify(block.blockData));
+        data.append("blockOrder", order);
+        axios_1.default.post("/page-api/block/create", data)
+            .then(function (res) {
+            console.log(res);
+            getCell();
+        });
     }
-    console.log(blocks);
-    return (jsx_runtime_1.jsx(react_beautiful_dnd_1.DragDropContext, __assign({ onDragEnd: handleDrop }, { children: jsx_runtime_1.jsx("div", __assign({ className: "row", style: { padding: "0 1rem 0 1rem" } }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "col-md-6" }, { children: [jsx_runtime_1.jsx(react_beautiful_dnd_1.Droppable, __assign({ droppableId: "id" }, { children: function (provided) { return (jsx_runtime_1.jsxs("ul", __assign({ className: "c-block-container", style: { marginBottom: 0 } }, provided.droppableProps, { ref: provided.innerRef }, { children: [blocks.map(function (b, i) { return jsx_runtime_1.jsx(NewBlockEditor_1.default, { updateBlock: updateBlock, block: b, index: i }, b.id); }), provided.placeholder] }), void 0)); } }), void 0),
-                    jsx_runtime_1.jsx(AddBlock_1.default, { newID: createID(), order: blocks[blocks.length - 1].order + 1, addBlock: addBlock }, void 0)] }), void 0) }), void 0) }), void 0));
+    return (jsx_runtime_1.jsxs("div", __assign({ className: "row" }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "col-md-6" }, { children: cell && jsx_runtime_1.jsx(EditCellDetails_1.default, { cell: cell, updateCell: updateCell }, void 0) }), void 0),
+            jsx_runtime_1.jsx(react_beautiful_dnd_1.DragDropContext, __assign({ onDragEnd: handleDrop }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "col-md-6" }, { children: [jsx_runtime_1.jsx(react_beautiful_dnd_1.Droppable, __assign({ droppableId: "id" }, { children: function (provided) { return (jsx_runtime_1.jsxs("ul", __assign({ className: "c-block-container", style: { marginBottom: 0 } }, provided.droppableProps, { ref: provided.innerRef }, { children: [blocks.map(function (b, i) { return jsx_runtime_1.jsx(NewBlockEditor_1.default, { deleteBlock: deleteBlock, updateBlock: updateBlock, block: b, index: i }, b.blockID); }), provided.placeholder] }), void 0)); } }), void 0),
+                        jsx_runtime_1.jsx(AddBlock_1.default, { newID: createID(), blockOrder: blocks.length > 0 ? blocks[blocks.length - 1].blockOrder + 1 : 0, addBlock: addBlock }, void 0)] }), void 0) }), void 0)] }), void 0));
 };
 exports.default = CellEditor;
 
@@ -49381,14 +49706,17 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 var Cell_1 = __importDefault(__webpack_require__(/*! ../components/NewCell/Cell */ "./js/src/components/NewCell/Cell.tsx"));
-var NewCellEditor_1 = __importDefault(__webpack_require__(/*! ../components/NewCell/Editor/NewCellEditor */ "./js/src/components/NewCell/Editor/NewCellEditor.tsx"));
 var manageHive = document.getElementById("test");
 if (manageHive) {
     ReactDOM.render(jsx_runtime_1.jsx(Cell_1.default, { cellID: 1, hiveID: 1 }, void 0), manageHive);
 }
 var editCell = document.getElementById("edit-cell");
 if (editCell) {
-    ReactDOM.render(jsx_runtime_1.jsx(NewCellEditor_1.default, { cellID: 0 }, void 0), editCell);
+    // ReactDOM.render(<CellEditor cellID={1} />, editCell);
+}
+var createCell = document.getElementById("create-cell");
+if (createCell) {
+    // ReactDOM.render(<CreateCell organisationID={createCell.dataset.organisationID && parseInt(createCell.dataset.organisationID)} />, createCell)
 }
 
 

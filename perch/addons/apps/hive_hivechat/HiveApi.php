@@ -54,5 +54,16 @@ class HiveApi {
     public static function returnData($data) {
         echo json_encode(["success" => true, "data" => $data]);
     }
+
+    public static function filter($array, $keys) {
+        $data = [];
+        foreach ($array as $key => $value) {
+            if (in_array($key, $keys)) {
+            $data[$key] = $value;
+            }
+        }
+
+        return $data;
+    }
     
 }

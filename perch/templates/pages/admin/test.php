@@ -15,7 +15,7 @@ if(perch_member_logged_in()){
                 </div>
             </div>
         </div>
-        <div id="edit-cell"></div>
+        <div id="edit-cell" data-cellID="1"></div>
     </div>           
 <?php    
 }

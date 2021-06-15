@@ -1,84 +1,77 @@
 {
-    "title": "A Cell",
-    "subtitle": "By Me",
-    "datetime": "2021-05-21 09:00:00",
+    "cellTitle": "A Cell",
+    "cellSubtitle": "By Me",
+    "cellDate": "2021-05-21 09:00:00",
     "blocks": [
         {
-            "id": 0,
-            "type": "Video",
-            "order": 0,
             "blockID": 0,
+            "blockType": "Video",
+            "order": 0,
             "cellID": 0,
-            "data" : {
+            "blockData" : {
                 "title": "A Video",
                 "url": "https://www.youtube.com/watch?v=4547SrIJtU4",
                 "description": "A nice description"
             }
         },
         {
-            "id": 1,
-            "type": "Text",
+            "blockID": 1,
+            "blockType": "Text",
             "order": 1,
-            "blockID": 0,
             "cellID": 0,
-            "data" : {
+            "blockData" : {
                 "title": "Some Text",
                 "content": "<p>Hello there <strong>mate</strong></p>"
             }
         },
         {
-            "id": 2,
-            "type": "File",
+            "blockID": 2,
+            "blockType": "File",
             "order": 2,
-            "blockID": 0,
             "cellID": 0,
-            "data": {
+            "blockData": {
                 "title": "Some File",
                 "url": "https://www.example.com",
                 "description": "A great file download."
             }
         },
         {
-            "id": 3,
-            "type": "Text",
+            "blockID": 3,
+            "blockType": "Text",
             "order": 3,
-            "blockID": 0,
             "cellID": 0,
-            "data" : {
+            "blockData" : {
                 "title": "Some Text",
                 "content": "<p>Hello there</p>"
             }
         },
         {
-            "id": 4,
-            "type": "Text",
+            "blockID": 4,
+            "blockType": "Text",
             "order": 4,
-            "blockID": 0,
             "cellID": 0,
-            "data" : {
+            "blockData" : {
                 "title": "Some Text",
                 "content": "<p><strong>mate</strong></p>"
             }
         },
         {
-            "id": 5,
-            "type": "Text",
+            "blockID": 5,
+            "blockType": "Text",
             "order": 5,
-            "blockID": 0,
             "cellID": 0,
-            "data" : {
+            "blockData" : {
                 "title": "Some Text",
                 "content": "<p>there mate</p>"
             }
         },
         {
             
-            "id": 6,
-            "type": "Text",
+            "blockID": 6,
+            "blockType": "Text",
             "order": 6,
-            "blockID": 0,
             "cellID": 0,
-            "data" : {
+            "blockData" : {
                 "title": "Some Text",
                 "content": "<p>mate</p>"
             }

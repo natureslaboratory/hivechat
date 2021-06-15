@@ -16,18 +16,18 @@ interface CellProps {
 }
 
 export interface ICell {
-    title: string,
-    subtitle?: string,
-    datetime: string,
+    cellTitle: string,
+    cellSubtitle?: string,
+    cellDate: string,
     blocks: IBlock<Blocks>[]
 }
 
 export interface IBlock<T> {
-    type: string
-    order: number
-    id?: number
+    blockType: string
+    blockOrder: number
+    blockID?: number
     tempID?: number
-    data: T
+    blockData: T
 }
 
 
@@ -43,13 +43,13 @@ const Cell: React.FC<CellProps> = (props) => {
     }, [cell])
 
     function getBlock(block: IBlock<Blocks>) {
-        switch (block.type) {
+        switch (block.blockType) {
             case "Video":
-                return <Video {...block.data as VideoBlock} handleLoad={null} />
+                return <Video {...block.blockData as VideoBlock} handleLoad={null} />
             case "Text":
-                return <Text {...block.data as TextBlock} />;
+                return <Text {...block.blockData as TextBlock} />;
             case "File":
-                return <File {...block.data as FileBlock} />;
+                return <File {...block.blockData as FileBlock} />;
             default:
                 return null
         }
@@ -58,29 +58,29 @@ const Cell: React.FC<CellProps> = (props) => {
     // Dummy data
 
     let dateStr = "";
-    if (cell.datetime !== "2000-01-01 00:00:00") {
-        let date = new Date(cell.datetime);
+    if (cell.cellDate !== "2000-01-01 00:00:00") {
+        let date = new Date(cell.cellDate);
         dateStr = formatDate(date);
     }
 
     return (
         <>
-            <h1 style={{ marginBottom: cell.subtitle ? "0.3rem" : "1.3rem" }}>{cell.title}</h1>
+            <h1 style={{ marginBottom: cell.cellSubtitle ? "0.3rem" : "1.3rem" }}>{cell.cellTitle}</h1>
             <div style={{ marginBottom: "1.3rem", opacity: 0.85 }}>
-                {cell.subtitle && <h4>{cell.subtitle}</h4>}
+                {cell.cellSubtitle && <h4>{cell.cellSubtitle}</h4>}
                 {dateStr ? <h6>{dateStr}</h6> : null}
             </div>
             {blocks && blocks.map(b => {
                 let title = "";
-                switch (b.type) {
+                switch (b.blockType) {
                     case "Video":
-                        title = (b.data as VideoBlock).title;
+                        title = (b.blockData as VideoBlock).title;
                         break;
                     case "Text":
                         title = "";
                         break;
                     case "File":
-                        title = (b.data as FileBlock).title;
+                        title = (b.blockData as FileBlock).title;
                         break;
                     default:
                         title = "";

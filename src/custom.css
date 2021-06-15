@@ -199,6 +199,12 @@ p:last-child {
     gap: 0.5rem;
 }
 
-.DraftEditor-editorContainer {
+.public-DraftStyleDefault-block {
     min-height: 200px;
+}
+
+.c-date-time-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+    gap: 1rem;
 }
