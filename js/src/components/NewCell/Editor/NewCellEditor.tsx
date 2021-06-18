@@ -6,6 +6,7 @@ import AddBlock from './AddBlock';
 import axios from 'axios';
 import { CellDetails } from './CreateCell';
 import EditCellDetails from './EditCellDetails';
+import { FileBlock } from '../Forms/FileForm';
 
 export interface CellEditorProps {
     cellID: number
@@ -88,7 +89,6 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
     }
 
     function updateBlock(index: number, block: Blocks) {
-        console.log(block);
         let newBlock = { ...blocks[index], blockData: block }
 
         let data = new FormData();
@@ -97,7 +97,6 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
 
         return axios.post("/page-api/block/update", data)
             .then(res => {
-                console.log(res)
                 getCell();
             })
     }
@@ -125,7 +124,6 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
 
         return axios.post("/page-api/block/delete", data)
             .then(res => {
-                console.log(res.data);
                 getCell();
             })
     }
@@ -164,14 +162,28 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
         let data = new FormData();
 
         let order = (blocks.length > 0 ? blocks[blocks.length - 1].blockOrder + 1 : 0).toString();
+        console.log(block);
+        if (block.blockType == "File") {
+            let files = (block.blockData as FileBlock).newFiles
+            let fileNames = files.map((f, i) => {
+                data.append("file_" + i, f.file);
+                return f.fileName;
+            })
+            data.append("fileNames", JSON.stringify(fileNames));
+            delete (block.blockData as FileBlock).newFiles;
+            delete (block.blockData as FileBlock).currentFiles;
+        }
+
         data.append("blockType", block.blockType);
         data.append("cellID", props.cellID.toString());
+
+
         data.append("blockData", JSON.stringify(block.blockData));
         data.append("blockOrder", order);
 
         axios.post("/page-api/block/create", data)
             .then(res => {
-                console.log(res)
+                console.log(res);
                 getCell();
             });
     }

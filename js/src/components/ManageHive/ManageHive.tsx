@@ -58,7 +58,6 @@ const ManageHive: React.FunctionComponent<ManageHiveProps> = ({ organisationSlug
     }
 
     useEffect(() => {
-        console.log("cell change")
     }, [cells]);
 
     async function updateHive(hive: HiveDetailsProps) {
@@ -79,13 +78,10 @@ const ManageHive: React.FunctionComponent<ManageHiveProps> = ({ organisationSlug
     }
 
     function addCell(newCell: CellDetails) {
-        console.log("create");
         let formData = new FormData();
 
         formData.append("cellTitle", newCell.cellTitle);
         formData.append("cellSubtitle", newCell.cellSubtitle);
-
-        console.log(newCell)
 
         if (newCell.cellDate && newCell.cellTime) {
             formData.append("cellDate", `${newCell.cellDate} ${newCell.cellTime}`)
@@ -94,7 +90,6 @@ const ManageHive: React.FunctionComponent<ManageHiveProps> = ({ organisationSlug
         formData.append("hiveID", hiveID.toString())
 
         axios.post("/page-api/cell/create", formData).then((res) => {
-            console.log(res);
             setNewCell(false);
             getCells();
         })

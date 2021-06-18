@@ -58,11 +58,8 @@ const Hives: React.FunctionComponent<HivesProps> = (props) => {
             }
         })
 
-        console.log("here we go")
-
         axios.get(url)
             .then(res => {
-                console.log(res)
                 if (res.data) {
                     setHives(res.data as Array<HiveCardProps>)
                 }

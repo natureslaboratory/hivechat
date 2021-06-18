@@ -208,3 +208,10 @@ p:last-child {
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
     gap: 1rem;
 }
+
+.c-add-file-form {
+    padding: 0.8rem;
+    border: 1px solid #d4d4d4;
+    border-radius: .25rem;
+    margin-bottom: 1rem;
+}

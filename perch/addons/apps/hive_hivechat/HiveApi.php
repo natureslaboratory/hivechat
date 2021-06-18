@@ -1,20 +1,22 @@
 <?php
 
-class HiveApi {
+class HiveApi
+{
     public static function printArray($item, $depth = 0)
     {
-      foreach ($item as $key => $value) {
-          $depthString = str_repeat("--", $depth);
-          if (gettype($value) !== "array") {
-              echo "$depthString $key: $value <br>";
-          } else {
-              echo "$depthString $key: <br>";
-              printArray($value, $depth + 1);
-          }
-      }
+        foreach ($item as $key => $value) {
+            $depthString = str_repeat("--", $depth);
+            if (gettype($value) !== "array") {
+                echo "$depthString $key: $value <br>";
+            } else {
+                echo "$depthString $key: <br>";
+                printArray($value, $depth + 1);
+            }
+        }
     }
 
-    public static function flatten($data, $opts = [], $parentKey = "") {
+    public static function flatten($data, $opts = [], $parentKey = "")
+    {
         $array = [];
         foreach ($data as $key => $value) {
             if ($opts["no-prefix"]) {
@@ -51,22 +53,25 @@ class HiveApi {
         return $array;
     }
 
-    public static function returnData($data) {
+    public static function returnData($data)
+    {
         echo json_encode(["success" => true, "data" => $data]);
     }
 
-    public static function filter($array, $keys) {
+    public static function filter($array, $keys)
+    {
         $data = [];
         foreach ($array as $key => $value) {
             if (in_array($key, $keys)) {
-            $data[$key] = $value;
+                $data[$key] = $value;
             }
         }
 
         return $data;
     }
 
-    public static function formatAllStrings($array) {
+    public static function formatAllStrings($array)
+    {
         $newArray = [];
         foreach ($array as $key => $value) {
             if (is_string($value)) {
@@ -77,5 +82,19 @@ class HiveApi {
         }
         return $newArray;
     }
-    
+
+    public static function random_str(
+        int $length = 64,
+        string $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    ): string {
+        if ($length < 1) {
+            throw new \RangeException("Length must be a positive integer");
+        }
+        $pieces = [];
+        $max = mb_strlen($keyspace, '8bit') - 1;
+        for ($i = 0; $i < $length; ++$i) {
+            $pieces[] = $keyspace[random_int(0, $max)];
+        }
+        return implode('', $pieces);
+    }
 }

@@ -23,6 +23,8 @@ include('Hivechat.orgsocial.class.php');
 include('Hivechat.orgsocials.class.php');
 include('Hivechat.newCell.class.php');
 include('Hivechat.newCells.class.php');
+include('Hivechat.file.class.php');
+include('Hivechat.files.class.php');
 include('Hivechat.block.class.php');
 include('Hivechat.blocks.class.php');
 include('HiveApi.php');
@@ -1440,12 +1442,42 @@ function get_cell_blocks($cellID) {
 }
 
 function create_new_block($blockData) {
-  // cellID, blockType, blockData
+  // cellID, blockOrder, blockType, blockData, fileNames, files
 
   $API  = new PerchAPI(1.0, 'hivechat');
   $blocks = new Hivechat_Blocks($API);
+  $files = $blockData["files"];
+  $fileNames = json_decode($blockData["fileNames"]);
 
-  return $blocks->create_block(HiveApi::formatAllStrings($blockData));
+  $fileArray = [];
+  foreach ($files as $fileRef => $file) {
+    $fileIndex = explode("_", $fileRef)[1];
+    $fileArray[] = [
+      "file" => $file,
+      "fileName" => $fileNames[$fileIndex]
+    ];
+  }
+
+  $fields = [
+    "blockOrder",
+    "blockType",
+    "blockData",
+    "cellID"
+  ];
+
+  $data = HiveApi::filter($blockData, $fields);
+
+  $blockID = $blocks->create_block(HiveApi::formatAllStrings($data));
+  // echo "BlockID = $blockID";
+  // echo json_encode($fileNames);
+
+  $files = new Hivechat_Files($API);
+  $results = [];
+  foreach ($fileArray as $file) {
+    // echo json_encode([$file["file"]["name"], $file["fileName"]]);
+    $results[] = upload_file($file["file"], $file["fileName"], $blockID);
+  }
+  // return $results;
 }
 
 function update_block($block) {
@@ -1466,7 +1498,7 @@ function update_block($block) {
     $data["blockData"] = json_encode($data["blockData"]);
   }
 
-  echo $data["blockData"];
+  echo "data[blockData] = " . $data["blockData"];
 
   return $blocks->update_block(HiveApi::formatAllStrings($data));
 }
@@ -1502,4 +1534,44 @@ function get_hive_cells($hiveID) {
   $cells = new Hivechat_NewCells($API);
 
   return $cells->get_hive_cells($hiveID);
+}
+
+function upload_file($file, $fileName, $blockID) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $files = new Hivechat_Files($API);
+
+  $debug = [];
+
+  if (!is_dir("./file_uploads")) {
+    echo "creating dir";
+    echo mkdir("./file_uploads", 0777, true) ? "created" : "failed";
+  }
+
+  $name_exists = $files->get_files_by_name($file["name"]);
+
+  if ($name_exists) {
+    $info = pathinfo($_FILES['userFile']['name']);
+    $ext = $info['extension']; // get the extension of the file
+    $newname = HiveApi::random_str(10) . "." . $ext;
+    
+    $target = './file_uploads/.' . $newname;
+  } else {
+    $target = './file_uploads' . "/" . $file["name"];
+  }
+
+  echo json_encode(["target" => $target]);
+
+  $result = move_uploaded_file($file["tmp_name"], $target);
+
+  if ($result) {
+    $query = $files->create_file([
+      "fileName" => $fileName,
+      "fileLocation" => $target,
+      "blockID" => $blockID
+    ]);
+  }
+
+  if ($query) {
+    return [$files->get_files_by_location($target), "debug" => $debug];
+  }
 }

@@ -46659,10 +46659,8 @@ var Hive = function (props) {
         if (orgSlug === void 0) { orgSlug = ""; }
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                console.log(props.hiveID);
                 axios_1.default.get("/page-api/get-hive?hiveID=" + props.hiveID)
                     .then(function (res) {
-                    console.log(res.data);
                     if (res.status == 200 && res.data) {
                         setHiveData(res.data.hive);
                         setCells(res.data.cells);
@@ -46699,7 +46697,6 @@ var Hive = function (props) {
         }
         getHiveData(urlSlug);
     }, []);
-    console.log(cells);
     var hiveContent = jsx_runtime_1.jsx("p", { children: "This hive has no cells" }, void 0);
     if (cells && cells.length > 0) {
         hiveContent = (jsx_runtime_1.jsxs("div", __assign({ className: "row" }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "col-md-8 mb-4" }, { children: jsx_runtime_1.jsx(Cell_1.default, { hiveID: null, cell: currentCell }, void 0) }), void 0),
@@ -46994,10 +46991,8 @@ var Hives = function (props) {
                 url += "&";
             }
         });
-        console.log("here we go");
         axios_1.default.get(url)
             .then(function (res) {
-            console.log(res);
             if (res.data) {
                 setHives(res.data);
             }
@@ -47489,7 +47484,6 @@ var ManageHive = function (_a) {
         });
     }
     react_1.useEffect(function () {
-        console.log("cell change");
     }, [cells]);
     function updateHive(hive) {
         return __awaiter(this, void 0, void 0, function () {
@@ -47510,17 +47504,14 @@ var ManageHive = function (_a) {
     function editDetails(e) {
     }
     function addCell(newCell) {
-        console.log("create");
         var formData = new FormData();
         formData.append("cellTitle", newCell.cellTitle);
         formData.append("cellSubtitle", newCell.cellSubtitle);
-        console.log(newCell);
         if (newCell.cellDate && newCell.cellTime) {
             formData.append("cellDate", newCell.cellDate + " " + newCell.cellTime);
         }
         formData.append("hiveID", hiveID.toString());
         axios_1.default.post("/page-api/cell/create", formData).then(function (res) {
-            console.log(res);
             setNewCell(false);
             getCells();
         });
@@ -47735,8 +47726,8 @@ var __assign = (this && this.__assign) || function () {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var File = function (props) {
-    return (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("a", __assign({ href: props.url }, { children: "Download" }), void 0),
-            jsx_runtime_1.jsx("p", { children: props.description }, void 0)] }, void 0));
+    return (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("a", __assign({ href: null }, { children: "Download" }), void 0),
+            jsx_runtime_1.jsx("div", { dangerouslySetInnerHTML: { __html: props.description } }, void 0)] }, void 0));
 };
 exports.default = File;
 
@@ -48096,7 +48087,6 @@ var Cell = function (_a) {
                             title = "";
                             break;
                     }
-                    console.log(b.blockOrder);
                     return (jsx_runtime_1.jsx(Block_1.default, __assign({ title: title }, { children: getBlock(b) }), i));
                 })] }, void 0));
     }
@@ -48175,7 +48165,8 @@ var AddBlock = function (props) {
             case "File":
                 var fileData = {
                     title: "",
-                    url: "",
+                    currentFiles: [],
+                    newFiles: [],
                     description: ""
                 };
                 createBlock(type, fileData);
@@ -48201,6 +48192,9 @@ var AddBlock = function (props) {
     }
     var content = jsx_runtime_1.jsx("div", {}, void 0);
     var buttons = null;
+    react_1.useEffect(function () {
+        console.log(block);
+    }, [block]);
     if (block) {
         switch (block.blockType) {
             case "Video":
@@ -48530,7 +48524,7 @@ var BlockEditor = function (props) {
                 content = (jsx_runtime_1.jsx(VideoForm_1.default, { block: block, setBlock: updateBlock }, void 0));
             }
             else {
-                content = (jsx_runtime_1.jsx(Video_1.default, __assign({ handleLoad: function () { return console.log("load"); } }, props.block.blockData, { small: !isPreview }), void 0));
+                content = (jsx_runtime_1.jsx(Video_1.default, __assign({ handleLoad: null }, props.block.blockData, { small: !isPreview }), void 0));
             }
             break;
         case "Text":
@@ -48728,14 +48722,12 @@ var CellEditor = function (props) {
         });
     }
     function updateBlock(index, block) {
-        console.log(block);
         var newBlock = __assign(__assign({}, blocks[index]), { blockData: block });
         var data = new FormData();
         data.append("blockID", newBlock.blockID.toString());
         data.append("blockData", JSON.stringify(newBlock.blockData));
         return axios_1.default.post("/page-api/block/update", data)
             .then(function (res) {
-            console.log(res);
             getCell();
         });
     }
@@ -48757,7 +48749,6 @@ var CellEditor = function (props) {
         data.append("blockID", blocks[index].blockID.toString());
         return axios_1.default.post("/page-api/block/delete", data)
             .then(function (res) {
-            console.log(res.data);
             getCell();
         });
     }
@@ -48798,6 +48789,17 @@ var CellEditor = function (props) {
     function addBlock(block) {
         var data = new FormData();
         var order = (blocks.length > 0 ? blocks[blocks.length - 1].blockOrder + 1 : 0).toString();
+        console.log(block);
+        if (block.blockType == "File") {
+            var files = block.blockData.newFiles;
+            var fileNames = files.map(function (f, i) {
+                data.append("file_" + i, f.file);
+                return f.fileName;
+            });
+            data.append("fileNames", JSON.stringify(fileNames));
+            delete block.blockData.newFiles;
+            delete block.blockData.currentFiles;
+        }
         data.append("blockType", block.blockType);
         data.append("cellID", props.cellID.toString());
         data.append("blockData", JSON.stringify(block.blockData));
@@ -48854,6 +48856,11 @@ var __read = (this && this.__read) || function (o, n) {
     }
     return ar;
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -48861,6 +48868,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var react_rte_1 = __importDefault(__webpack_require__(/*! react-rte */ "./node_modules/react-rte/dist/react-rte.js"));
+var FileUpload_1 = __importDefault(__webpack_require__(/*! ./FileUpload */ "./js/src/components/NewCell/Forms/FileUpload.tsx"));
 var FileForm = function (_a) {
     var block = _a.block, setBlock = _a.setBlock;
     var _b = __read(react_1.useState(react_rte_1.default.createEmptyValue()), 2), editorValue = _b[0], setEditorValue = _b[1];
@@ -48874,11 +48882,15 @@ var FileForm = function (_a) {
             setBlock(__assign(__assign({}, block), { description: editorValue.toString("html") }));
         }
     }, [editorValue]);
+    function getFiles() {
+        //
+    }
     if (block) {
         return (jsx_runtime_1.jsxs("form", { children: [jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Title" }, void 0),
                         jsx_runtime_1.jsx("input", { className: "form-control", type: "text", value: block.title, onChange: function (e) { return setBlock(__assign(__assign({}, block), { title: e.target.value })); } }, void 0)] }), void 0),
-                jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Url" }, void 0),
-                        jsx_runtime_1.jsx("input", { className: "form-control", type: "text", value: block.url, onChange: function (e) { return setBlock(__assign(__assign({}, block), { url: e.target.value })); } }, void 0)] }), void 0),
+                jsx_runtime_1.jsx(FileUpload_1.default, { newFiles: block.newFiles, currentFiles: block.currentFiles, addFile: function (file) {
+                        setBlock(__assign(__assign({}, block), { newFiles: __spreadArray(__spreadArray([], __read(block.newFiles)), [file]) }));
+                    } }, void 0),
                 jsx_runtime_1.jsxs("div", __assign({ className: "form-group", style: { minHeight: "300px" } }, { children: [jsx_runtime_1.jsx("label", { children: "Description" }, void 0),
                         jsx_runtime_1.jsx(react_rte_1.default, { value: editorValue, onChange: function (e) {
                                 setEditorValue(e);
@@ -48887,6 +48899,87 @@ var FileForm = function (_a) {
     return null;
 };
 exports.default = FileForm;
+
+
+/***/ }),
+
+/***/ "./js/src/components/NewCell/Forms/FileUpload.tsx":
+/*!********************************************************!*\
+  !*** ./js/src/components/NewCell/Forms/FileUpload.tsx ***!
+  \********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var FileUpload = function (_a) {
+    var addFile = _a.addFile, newFiles = _a.newFiles, currentFiles = _a.currentFiles;
+    var ref = react_1.useRef();
+    var _b = __read(react_1.useState(false), 2), showAddForm = _b[0], setShowAddForm = _b[1];
+    var _c = __read(react_1.useState(null), 2), file = _c[0], setFile = _c[1];
+    var _d = __read(react_1.useState(""), 2), name = _d[0], setName = _d[1];
+    function handleClick() {
+        ref.current.click();
+    }
+    var content = (jsx_runtime_1.jsx("div", __assign({ className: "btn-container" }, { children: jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", onClick: function (e) {
+                setShowAddForm(true);
+            } }, { children: "+ Add File" }), void 0) }), void 0));
+    if (showAddForm) {
+        content = (jsx_runtime_1.jsxs("div", __assign({ className: "c-add-file-form" }, { children: [jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Name" }, void 0),
+                        jsx_runtime_1.jsx("input", { type: "text", value: name, onChange: function (e) { return setName(e.target.value); }, className: "form-control" }, void 0)] }), void 0),
+                jsx_runtime_1.jsx("input", { type: "file", onChange: function (e) { return setFile(e.currentTarget.files[0]); } }, void 0),
+                jsx_runtime_1.jsxs("div", __assign({ className: "btn-container" }, { children: [jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", onClick: function (e) {
+                                e.preventDefault();
+                                console.log(file, name);
+                                addFile({ file: file, fileName: name });
+                                setName("");
+                                setFile(null);
+                                setShowAddForm(false);
+                            } }, { children: "Add" }), void 0),
+                        jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", onClick: function (e) {
+                                e.preventDefault();
+                                setShowAddForm(false);
+                                setName("");
+                                setFile(null);
+                            } }, { children: "Cancel" }), void 0)] }), void 0)] }), void 0));
+    }
+    return (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsxs("div", { children: [currentFiles && currentFiles.map(function (file, i) {
+                        return (jsx_runtime_1.jsx("div", { children: jsx_runtime_1.jsx("p", { children: file.fileName }, void 0) }, void 0));
+                    }),
+                    newFiles && newFiles.map(function (file, i) {
+                        return (jsx_runtime_1.jsx("div", { children: jsx_runtime_1.jsxs("p", { children: [file.fileName, " (", file.file.name, ")"] }, void 0) }, void 0));
+                    })] }, void 0), content] }, void 0));
+};
+exports.default = FileUpload;
 
 
 /***/ }),

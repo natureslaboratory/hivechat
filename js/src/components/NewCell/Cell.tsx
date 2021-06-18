@@ -97,7 +97,6 @@ const Cell: React.FC<CellProps> = ({hiveID, cell}) => {
                             title = "";
                             break
                     } 
-                    console.log(b.blockOrder);
                     return (
                         <Block title={title} key={i}>
                             {getBlock(b)}

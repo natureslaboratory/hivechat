@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { updateBlock } from 'typescript';
 import { Blocks, IBlock } from '../Cell';
 import Button, { ButtonType } from './AddBlockButton';
@@ -41,7 +41,8 @@ const AddBlock: React.FC<AddBlockProps & AddBlockFuncs> = (props) => {
             case "File":
                 let fileData: FileBlock = {
                     title: "",
-                    url: "",
+                    currentFiles: [],
+                    newFiles: [],
                     description: ""
                 }
                 createBlock(type, fileData)
@@ -75,6 +76,10 @@ const AddBlock: React.FC<AddBlockProps & AddBlockFuncs> = (props) => {
 
     let content = <div />;
     let buttons: React.ReactNode = null;
+
+    useEffect(() => {
+        console.log(block)
+    }, [block])
 
     if (block) {
         switch (block.blockType) {

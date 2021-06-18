@@ -56,7 +56,7 @@ const BlockEditor: React.FC<BlockEditorProps & BlockEditorFuncs> = (props) => {
                 )
             } else {
                 content = (
-                    <Video handleLoad={() => console.log("load")} {...props.block.blockData as VideoBlock} small={!isPreview} />
+                    <Video handleLoad={null} {...props.block.blockData as VideoBlock} small={!isPreview} />
                 )
             }
             break;

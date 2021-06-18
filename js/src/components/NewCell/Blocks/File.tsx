@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FileBlock } from '../Forms/FileForm';
 
 interface FileProps {
-    url : string
+    files : string[]
     description : string
     title? : string
 }
@@ -10,8 +10,8 @@ interface FileProps {
 const File : React.FC<FileBlock> = (props) => {
     return (
         <>
-            <a href={props.url}>Download</a>        
-            <p>{props.description}</p>  
+            <a href={null}>Download</a>        
+            <div dangerouslySetInnerHTML={{__html: props.description}}></div>
         </>     
     )
 }

@@ -25,10 +25,8 @@ const Hive : React.FunctionComponent<HiveProps> = (props) => {
     const [orgSlug, setOrgSlug] = useState("");
 
     async function getHiveData(orgSlug = "") {
-        console.log(props.hiveID)
         axios.get(`/page-api/get-hive?hiveID=${props.hiveID}`)
             .then(res => {
-                console.log(res.data);
                 if (res.status == 200 && res.data) {
                     setHiveData(res.data.hive as HiveData);
 
@@ -64,7 +62,6 @@ const Hive : React.FunctionComponent<HiveProps> = (props) => {
         getHiveData(urlSlug)
     }, [])
 
-    console.log(cells)
 
     let hiveContent = <p>This hive has no cells</p>
     if (cells && cells.length > 0) {
