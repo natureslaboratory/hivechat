@@ -79,7 +79,7 @@ if (perch_layout_var("manage", true) == "manage" && $isAdmin) {
 </div>
 <div class="row">
     <div class="col-md-12">
-        <div id='hives'></div>
+        <div id='hives' data-orgid=<?= $organisation["organisationID"] ?>></div>
     </div>
 </div>
 <?php   

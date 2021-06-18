@@ -8,6 +8,9 @@
 	<perch:else>
 		action="" 
 	</perch:if>
+	<perch:if exists="action">
+		action="<perch:hc id="action"/>"
+	</perch:if>
 	class=""
 	>
 	<div class="card mb-3">

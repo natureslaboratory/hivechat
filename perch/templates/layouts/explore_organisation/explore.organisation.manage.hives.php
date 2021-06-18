@@ -37,6 +37,7 @@ switch (perch_layout_var("action", true)) {
                 data-hiveID="<?= perch_layout_var("actionID", true) ?>"
                 data-organisationName="<?= $organisation["organisationName"] ?>"
                 data-organisationID="<?= $organisation["organisationID"] ?>"
+                data-backurl="/explore/organisations/<?= $organisation["organisationSlug"] ?>/manage/hives"
             >
             </div>
             <?php
@@ -102,7 +103,7 @@ switch (perch_layout_var("action", true)) {
                             // "memberID" => perch_member_get("id")
                         // ];
                         // get_organisation_hives($organisation["organisationID"], $opts) ?>
-                    <div id="admin-hives"></div>
+                    <div id="admin-hives" data-orgid=<?= $organisation["organisationID"] ?>></div>
                 </div>
                 <div class="col-md-6">
                     <?php //create_hive(["organisationID" => $organisation["organisationID"]]); ?>

@@ -74,7 +74,7 @@ class Hivechat_NewCells extends PerchAPI_Factory
         }
 
         $sql .= ");";
-        echo $sql;
+        // echo $sql;
         return $this->db->execute($sql);
     }
 
@@ -96,7 +96,7 @@ class Hivechat_NewCells extends PerchAPI_Factory
         }
         
         $sql .= " WHERE cellID=$cellData[cellID]";
-        echo $sql;
+        // echo $sql;
         return $this->db->execute($sql);
     }
 

@@ -1,17 +1,6 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./js/src/cell.json":
-/*!**************************!*\
-  !*** ./js/src/cell.json ***!
-  \**************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = JSON.parse('{"cellTitle":"A Cell","cellSubtitle":"By Me","cellDate":"2021-05-21 09:00:00","blocks":[{"blockID":0,"blockType":"Video","order":0,"cellID":0,"blockData":{"title":"A Video","url":"https://www.youtube.com/watch?v=4547SrIJtU4","description":"A nice description"}},{"blockID":1,"blockType":"Text","order":1,"cellID":0,"blockData":{"title":"Some Text","content":"<p>Hello there <strong>mate</strong></p>"}},{"blockID":2,"blockType":"File","order":2,"cellID":0,"blockData":{"title":"Some File","url":"https://www.example.com","description":"A great file download."}},{"blockID":3,"blockType":"Text","order":3,"cellID":0,"blockData":{"title":"Some Text","content":"<p>Hello there</p>"}},{"blockID":4,"blockType":"Text","order":4,"cellID":0,"blockData":{"title":"Some Text","content":"<p><strong>mate</strong></p>"}},{"blockID":5,"blockType":"Text","order":5,"cellID":0,"blockData":{"title":"Some Text","content":"<p>there mate</p>"}},{"blockID":6,"blockType":"Text","order":6,"cellID":0,"blockData":{"title":"Some Text","content":"<p>mate</p>"}}]}');
-
-/***/ }),
-
 /***/ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js":
 /*!*******************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/esm/defineProperty.js ***!
@@ -46659,9 +46648,9 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var Cell_1 = __importDefault(__webpack_require__(/*! ./Cell */ "./js/src/components/Cell.tsx"));
+var Cell_1 = __importDefault(__webpack_require__(/*! ./NewCell/Cell */ "./js/src/components/NewCell/Cell.tsx"));
 var HiveNav_1 = __importDefault(__webpack_require__(/*! ./HiveNav */ "./js/src/components/HiveNav.tsx"));
-var Hive = function () {
+var Hive = function (props) {
     var _a = __read(react_1.useState(), 2), hiveData = _a[0], setHiveData = _a[1];
     var _b = __read(react_1.useState(), 2), currentCell = _b[0], setCurrentCell = _b[1];
     var _c = __read(react_1.useState([]), 2), cells = _c[0], setCells = _c[1];
@@ -46669,12 +46658,11 @@ var Hive = function () {
     function getHiveData(orgSlug) {
         if (orgSlug === void 0) { orgSlug = ""; }
         return __awaiter(this, void 0, void 0, function () {
-            var urlSplit, hiveID;
             return __generator(this, function (_a) {
-                urlSplit = window.location.href.split("/");
-                hiveID = urlSplit[urlSplit.length - 1];
-                axios_1.default.get("/page-api/get-hive?hiveID=" + hiveID)
+                console.log(props.hiveID);
+                axios_1.default.get("/page-api/get-hive?hiveID=" + props.hiveID)
                     .then(function (res) {
+                    console.log(res.data);
                     if (res.status == 200 && res.data) {
                         setHiveData(res.data.hive);
                         setCells(res.data.cells);
@@ -46711,15 +46699,16 @@ var Hive = function () {
         }
         getHiveData(urlSlug);
     }, []);
+    console.log(cells);
     var hiveContent = jsx_runtime_1.jsx("p", { children: "This hive has no cells" }, void 0);
     if (cells && cells.length > 0) {
-        hiveContent = (jsx_runtime_1.jsxs("div", __assign({ className: "row" }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "col-md-8 mb-4" }, { children: jsx_runtime_1.jsx(Cell_1.default, __assign({}, currentCell), void 0) }), void 0),
+        hiveContent = (jsx_runtime_1.jsxs("div", __assign({ className: "row" }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "col-md-8 mb-4" }, { children: jsx_runtime_1.jsx(Cell_1.default, { hiveID: null, cell: currentCell }, void 0) }), void 0),
                 jsx_runtime_1.jsx("div", __assign({ className: "col-md-4" }, { children: jsx_runtime_1.jsx(HiveNav_1.default, { selectCell: selectCell, cells: cells, currentCellID: currentCell ? currentCell.cellID : -1 }, void 0) }), void 0)] }), void 0));
     }
     if (hiveData) {
         return (jsx_runtime_1.jsxs(react_1.default.Fragment, { children: [jsx_runtime_1.jsx("div", __assign({ className: "app-page-title" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "page-title-wrapper" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "page-title-heading" }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "page-title-icon" }, { children: jsx_runtime_1.jsx("i", { className: "pe-7s-users icon-gradient bg-mean-fruit" }, void 0) }), void 0),
                                 jsx_runtime_1.jsxs("div", { children: [" ", hiveData.hiveTitle, jsx_runtime_1.jsx("div", { className: "page-title-subheading", dangerouslySetInnerHTML: { __html: hiveData.introduction } }, void 0)] }, void 0)] }), void 0) }), void 0) }), void 0),
-                jsx_runtime_1.jsx("a", __assign({ href: "/explore/organisations/" + orgSlug }, { children: jsx_runtime_1.jsx("button", __assign({ className: "btn btn-outline-primary mb-4" }, { children: "Back" }), void 0) }), void 0), hiveContent] }, void 0));
+                jsx_runtime_1.jsx("button", __assign({ onClick: function () { return history.back(); }, className: "btn btn-outline-primary mb-4" }, { children: "Back" }), void 0), hiveContent] }, void 0));
     }
     return jsx_runtime_1.jsx("div", {}, void 0);
 };
@@ -46768,7 +46757,8 @@ function HiveCard(props) {
     }
     var link = jsx_runtime_1.jsx("a", __assign({ href: linkURL, className: "btn btn-secondary" }, { children: linkText }), void 0);
     return (jsx_runtime_1.jsxs("div", __assign({ className: "card" }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "card-header" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "card-header-title" }, { children: props.hiveTitle }), void 0) }), void 0),
-            jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [intro, link] }), void 0)] }), void 0));
+            jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [intro, jsx_runtime_1.jsxs("div", __assign({ className: "btn-container" }, { children: [jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", onClick: function () { window.location.href = linkURL; } }, { children: linkText }), void 0),
+                            props.showEdit && jsx_runtime_1.jsx("button", __assign({ className: "btn btn-secondary", onClick: function () { window.location.href = "/admin/your-hives/edit/" + props.hiveID; } }, { children: "Edit" }), void 0)] }), void 0)] }), void 0)] }), void 0));
 }
 exports.default = HiveCard;
 
@@ -46828,7 +46818,7 @@ var HiveNav = function (props) {
     var _c = __read(react_2.useState([]), 2), filteredCells = _c[0], setFilteredCells = _c[1];
     var _d = __read(react_2.useState(""), 2), search = _d[0], setSearch = _d[1];
     var cellsPerPage = 10;
-    function filterCells(cells) {
+    function filterCells() {
         return props.cells.filter(function (c) {
             var match = false;
             for (var key in c) {
@@ -46848,7 +46838,7 @@ var HiveNav = function (props) {
         return cells.slice(firstIndex, lastIndex);
     }
     react_2.useEffect(function () {
-        setFilteredCells(filterCells(props.cells));
+        setFilteredCells(filterCells());
     }, [search, props.cells]);
     react_2.useEffect(function () {
         setSlicedCells(sliceCells(filteredCells));
@@ -46902,13 +46892,10 @@ var HiveNavItem = function (props) {
             props.selectCell(props.cellID);
         }, className: "btn btn-small btn-primary" }, { children: "View" }), void 0);
     var subtitle = null;
-    if (props.cellSubTitle) {
-        subtitle = props.cellSubTitle;
+    if (props.cellSubtitle) {
+        subtitle = props.cellSubtitle;
     }
-    var date = "";
-    if (props.cellDateTime !== "2000-01-01 00:00:00") {
-        date = props.cellDateTime ? Cell_1.formatDate(new Date(props.cellDateTime)) : "";
-    }
+    var date = props.cellDate ? Cell_1.formatDate(new Date(props.cellDate)) : "";
     return (jsx_runtime_1.jsxs("li", __assign({ style: { cursor: "pointer" }, onClick: function () {
             props.selectCell(props.cellID);
         }, className: "list-group-item " + (props.active ? "active" : "") }, { children: [jsx_runtime_1.jsx("h5", __assign({ style: { fontSize: "1.15rem", marginBottom: "0.3rem" }, className: "list-group-item-heading" }, { children: props.cellTitle }), void 0),
@@ -46954,12 +46941,18 @@ var __read = (this && this.__read) || function (o, n) {
     }
     return ar;
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
 var react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var HiveCard_1 = __importDefault(__webpack_require__(/*! ./HiveCard */ "./js/src/components/HiveCard.tsx"));
 var Hives = function (props) {
@@ -46979,7 +46972,7 @@ var Hives = function (props) {
     }
     react_2.useEffect(function () {
         getHives();
-    }, [hives]);
+    }, []);
     react_2.useEffect(function () {
         filterHives();
     }, [searchTerm, hives]);
@@ -46987,11 +46980,26 @@ var Hives = function (props) {
         sliceHives();
     }, [page, filteredHives]);
     function getHives() {
-        fetch("/page-api/organisation-hives?orgSlug=" + urlSlug + "&type=" + props.type)
-            .then(function (res) { return res.json(); })
-            .then(function (data) {
-            if (data) {
-                setHives(data);
+        var url = "/page-api/hive/get?";
+        var params = [];
+        if (props.organisationID) {
+            params = __spreadArray(__spreadArray([], __read(params)), ["organisationID=" + props.organisationID]);
+        }
+        if (props.type) {
+            params = __spreadArray(__spreadArray([], __read(params)), ["privacy=" + props.type]);
+        }
+        params.forEach(function (p, i) {
+            url += p;
+            if (i < params.length - 1) {
+                url += "&";
+            }
+        });
+        console.log("here we go");
+        axios_1.default.get(url)
+            .then(function (res) {
+            console.log(res);
+            if (res.data) {
+                setHives(res.data);
             }
         });
     }
@@ -47019,7 +47027,7 @@ var Hives = function (props) {
         }
         return false;
     }
-    var hivesRendered = slicedHives.map(function (hive) { return react_1.createElement(HiveCard_1.default, __assign({}, hive, { key: hive.hiveID })); });
+    var hivesRendered = slicedHives.map(function (hive) { return react_1.createElement(HiveCard_1.default, __assign({ showEdit: props.organisationID ? false : true }, hive, { key: hive.hiveID })); });
     var pagination = null;
     if (filteredHives.length > hivesPerPage) {
         pagination = (jsx_runtime_1.jsxs("div", __assign({ className: "c-pagination" }, { children: [jsx_runtime_1.jsx("button", __assign({ className: "btn btn-outline-alternate", onClick: function () {
@@ -47193,10 +47201,13 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var react_beautiful_dnd_1 = __webpack_require__(/*! react-beautiful-dnd */ "./node_modules/react-beautiful-dnd/dist/react-beautiful-dnd.esm.js");
 var CellPreview = function (_a) {
-    var cell = _a.cell, selectCell = _a.selectCell;
-    return (jsx_runtime_1.jsx(jsx_runtime_1.Fragment, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card" }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "card-header", style: { minHeight: "3.5rem", height: "auto" } }, { children: cell.cellTitle }), void 0),
-                jsx_runtime_1.jsx("div", __assign({ className: "card-body" }, { children: jsx_runtime_1.jsx("button", __assign({ className: "btn btn-alternate", onClick: function () { return selectCell(cell); } }, { children: "Edit" }), void 0) }), void 0)] }), void 0) }, void 0));
+    var cell = _a.cell, index = _a.index, selectCell = _a.selectCell;
+    return (jsx_runtime_1.jsx(react_beautiful_dnd_1.Draggable, __assign({ draggableId: "cell_" + cell.cellID.toString(), index: index }, { children: function (provided) { return (react_1.createElement("div", __assign({}, provided.dragHandleProps, provided.draggableProps, { ref: provided.innerRef, key: cell.cellID.toString() }),
+            jsx_runtime_1.jsxs("div", __assign({ className: "card", style: { marginBottom: "2rem" } }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "card-header", style: { minHeight: "3.5rem", height: "auto" } }, { children: cell.cellTitle }), void 0),
+                    jsx_runtime_1.jsx("div", __assign({ className: "card-body" }, { children: jsx_runtime_1.jsx("button", __assign({ className: "btn btn-alternate", onClick: function () { return selectCell(cell); } }, { children: "Edit" }), void 0) }), void 0)] }), void 0))); } }), void 0));
 };
 exports.default = CellPreview;
 
@@ -47342,16 +47353,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var react_beautiful_dnd_1 = __webpack_require__(/*! react-beautiful-dnd */ "./node_modules/react-beautiful-dnd/dist/react-beautiful-dnd.esm.js");
 var CellPreview_1 = __importDefault(__webpack_require__(/*! ./CellPreview */ "./js/src/components/ManageHive/CellPreview.tsx"));
 var ListCells = function (_a) {
-    var cells = _a.cells, getCells = _a.getCells, setCell = _a.setCell;
+    var cells = _a.cells, getCells = _a.getCells, setCell = _a.setCell, handleDrop = _a.handleDrop;
     function generateKey() {
         return '_' + Math.random().toString(36).substr(2, 9);
     }
     function selectCell(cellID) {
         setCell(cellID);
     }
-    return (jsx_runtime_1.jsx("div", __assign({ className: "cells", style: { display: "flex", flexDirection: "column", gap: "2rem" } }, { children: cells.map(function (c) { return jsx_runtime_1.jsx(CellPreview_1.default, { cell: c, selectCell: function () { return selectCell(c.cellID); } }, generateKey()); }) }), void 0));
+    return (jsx_runtime_1.jsx(react_beautiful_dnd_1.DragDropContext, __assign({ onDragEnd: handleDrop }, { children: jsx_runtime_1.jsx(react_beautiful_dnd_1.Droppable, __assign({ droppableId: "id" }, { children: function (provided) { return (react_1.createElement("div", __assign({}, provided.droppableProps, { ref: provided.innerRef, key: "id", className: "cells c-block-container" }),
+                cells.map(function (c, i) { return jsx_runtime_1.jsx(CellPreview_1.default, { index: i, cell: c, selectCell: function () { return selectCell(c.cellID); } }, c.cellID); }),
+                provided.placeholder)); } }), void 0) }), void 0));
 };
 exports.default = ListCells;
 
@@ -47429,6 +47444,11 @@ var __read = (this && this.__read) || function (o, n) {
     }
     return ar;
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -47442,7 +47462,7 @@ var ListCells_1 = __importDefault(__webpack_require__(/*! ./ListCells */ "./js/s
 var NewCellEditor_1 = __importDefault(__webpack_require__(/*! ../NewCell/Editor/NewCellEditor */ "./js/src/components/NewCell/Editor/NewCellEditor.tsx"));
 var CreateCell_1 = __importDefault(__webpack_require__(/*! ../NewCell/Editor/CreateCell */ "./js/src/components/NewCell/Editor/CreateCell.tsx"));
 var ManageHive = function (_a) {
-    var organisationSlug = _a.organisationSlug, hiveID = _a.hiveID, organisationID = _a.organisationID, organisationName = _a.organisationName;
+    var organisationSlug = _a.organisationSlug, hiveID = _a.hiveID, organisationID = _a.organisationID, organisationName = _a.organisationName, backURL = _a.backURL;
     var _b = __read(react_1.useState(null), 2), hiveDetails = _b[0], setHiveDetails = _b[1];
     var _c = __read(react_1.useState([]), 2), cells = _c[0], setCells = _c[1];
     var _d = __read(react_1.useState(null), 2), cell = _d[0], setCell = _d[1];
@@ -47465,10 +47485,11 @@ var ManageHive = function (_a) {
     function getCells() {
         axios_1.default.get("/page-api/manage-hive?hiveID=" + hiveID + "&action=get-cells")
             .then(function (res) {
-            setCells(res.data);
+            updateCells(res.data);
         });
     }
     react_1.useEffect(function () {
+        console.log("cell change");
     }, [cells]);
     function updateHive(hive) {
         return __awaiter(this, void 0, void 0, function () {
@@ -47512,21 +47533,68 @@ var ManageHive = function (_a) {
             setNewCell(false);
         }
         else {
-            window.location.href = "/explore/organisations/" + organisationSlug + "/manage/hives/";
+            window.location.href = backURL;
         }
     }
-    var content = null;
-    var rightColumn = (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("div", __assign({ style: { marginBottom: "2rem", display: "flex", justifyContent: "flex-end" } }, { children: jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", onClick: function () { return setNewCell(true); } }, { children: "+ New Cell" }), void 0) }), void 0),
-            cells.length > 0 && jsx_runtime_1.jsx(ListCells_1.default, { cells: cells, getCells: getCells, setCell: function (cellID) { return setCell({ cellID: cellID, hiveID: hiveID }); } }, void 0)] }, void 0));
-    var link = "/explore/organisations/" + organisationSlug + "/manage";
-    if (newCell) {
-        rightColumn = jsx_runtime_1.jsx(CreateCell_1.default, { hiveID: hiveID, addCell: addCell, cancelCreateCell: function () { return setNewCell(false); } }, void 0);
+    function updateCells(cells) {
+        var newCells = cells.sort(function (a, b) {
+            if (a.cellOrder > b.cellOrder) {
+                return 1;
+            }
+            else if (a.cellOrder < b.cellOrder) {
+                return -1;
+            }
+            else {
+                return 0;
+            }
+        });
+        setCells(newCells);
     }
+    function handleDrop(drop) {
+        var newCells = __spreadArray([], __read(cells));
+        newCells[drop.source.index].cellOrder = newCells[drop.destination.index].cellOrder;
+        if (drop.source.index < drop.destination.index) {
+            for (var i = drop.source.index + 1; i < drop.destination.index + 1; i++) {
+                newCells[i].cellOrder = newCells[i].cellOrder - 1;
+            }
+        }
+        else if (drop.source.index > drop.destination.index) {
+            for (var i = drop.destination.index; i < drop.source.index; i++) {
+                newCells[i].cellOrder = newCells[i].cellOrder + 1;
+            }
+        }
+        updateCells(newCells);
+        var data = new FormData();
+        newCells = newCells.map(function (c, i) {
+            var newCell = __assign({}, c);
+            if (!newCell.cellDate) {
+                delete newCell.cellDate;
+            }
+            return newCell;
+        });
+        data.append("cellList", JSON.stringify(newCells));
+        axios_1.default.post("/page-api/cell/update-bulk", data)
+            .then(function (res) {
+            getCells();
+        }).catch(function (err) {
+            console.error(err);
+        });
+    }
+    var content = null;
+    var link = "/explore/organisations/" + organisationSlug + "/manage";
     if (cell) {
         link = window.location.href;
         content = (jsx_runtime_1.jsx(jsx_runtime_1.Fragment, { children: jsx_runtime_1.jsx(NewCellEditor_1.default, __assign({ getCells: getCells }, cell), void 0) }, void 0));
     }
     else {
+        var rightColumn = null;
+        if (newCell) {
+            rightColumn = jsx_runtime_1.jsx(CreateCell_1.default, { hiveID: hiveID, addCell: addCell, cancelCreateCell: function () { return setNewCell(false); } }, void 0);
+        }
+        else {
+            rightColumn = (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("div", __assign({ style: { marginBottom: "2rem", display: "flex", justifyContent: "flex-end" } }, { children: jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", onClick: function () { return setNewCell(true); } }, { children: "+ New Cell" }), void 0) }), void 0),
+                    jsx_runtime_1.jsx("div", { children: cells.length > 0 && jsx_runtime_1.jsx(ListCells_1.default, { handleDrop: handleDrop, cells: cells, getCells: getCells, setCell: function (cellID) { return setCell({ cellID: cellID, hiveID: hiveID }); } }, void 0) }, void 0)] }, void 0));
+        }
         content = (jsx_runtime_1.jsxs("div", __assign({ className: "row" }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "col-md-6" }, { children: hiveDetails && jsx_runtime_1.jsx(HiveDetails_1.default, __assign({}, hiveDetails, { getHive: getHiveDetails, updateHive: updateHive }), void 0) }), void 0),
                 jsx_runtime_1.jsx("div", __assign({ className: "col-md-6", style: { margin: "0 auto" } }, { children: rightColumn }), void 0)] }), void 0));
     }
@@ -47973,12 +48041,21 @@ var Video_1 = __importDefault(__webpack_require__(/*! ./Blocks/Video */ "./js/sr
 var Text_1 = __importDefault(__webpack_require__(/*! ./Blocks/Text */ "./js/src/components/NewCell/Blocks/Text.tsx"));
 var File_1 = __importDefault(__webpack_require__(/*! ./Blocks/File */ "./js/src/components/NewCell/Blocks/File.tsx"));
 var Block_1 = __importDefault(__webpack_require__(/*! ./Block */ "./js/src/components/NewCell/Block.tsx"));
-var cell = __webpack_require__(/*! ../../cell.json */ "./js/src/cell.json");
-var Cell = function (props) {
-    var _a = __read(react_1.useState(), 2), blocks = _a[0], setBlocks = _a[1];
+var axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
+var Cell = function (_a) {
+    var hiveID = _a.hiveID, cell = _a.cell;
+    var _b = __read(react_1.useState(), 2), blocks = _b[0], setBlocks = _b[1];
     react_1.useEffect(function () {
-        if (cell && cell.blocks) {
-            setBlocks(cell.blocks);
+        if (cell && cell.cellID) {
+            axios_1.default.get("/page-api/cell/get?cellID=" + cell.cellID)
+                .then(function (res) {
+                var newBlocks = res.data.blocks.map(function (b, i) {
+                    var newBlock = __assign({}, b);
+                    newBlock.blockData = JSON.parse(newBlock.blockData);
+                    return newBlock;
+                });
+                setBlocks(newBlocks);
+            });
         }
     }, [cell]);
     function getBlock(block) {
@@ -47993,33 +48070,37 @@ var Cell = function (props) {
                 return null;
         }
     }
-    // Dummy data
-    var dateStr = "";
-    if (cell.cellDate !== "2000-01-01 00:00:00") {
-        var date = new Date(cell.cellDate);
-        dateStr = helpers_1.formatDate(date);
+    // // Dummy data
+    if (cell) {
+        var dateStr = "";
+        if (cell.cellDate) {
+            var date = new Date(cell.cellDate);
+            dateStr = helpers_1.formatDate(date);
+        }
+        return (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("h1", __assign({ style: { marginBottom: cell.cellSubtitle ? "0.3rem" : "1.3rem" } }, { children: cell.cellTitle }), void 0),
+                jsx_runtime_1.jsxs("div", __assign({ style: { marginBottom: "1.3rem", opacity: 0.85 } }, { children: [cell.cellSubtitle && jsx_runtime_1.jsx("h4", { children: cell.cellSubtitle }, void 0),
+                        dateStr ? jsx_runtime_1.jsx("h6", { children: dateStr }, void 0) : null] }), void 0),
+                blocks && blocks.map(function (b, i) {
+                    var title = "";
+                    switch (b.blockType) {
+                        case "Video":
+                            title = b.blockData.title;
+                            break;
+                        case "Text":
+                            title = "";
+                            break;
+                        case "File":
+                            title = b.blockData.title;
+                            break;
+                        default:
+                            title = "";
+                            break;
+                    }
+                    console.log(b.blockOrder);
+                    return (jsx_runtime_1.jsx(Block_1.default, __assign({ title: title }, { children: getBlock(b) }), i));
+                })] }, void 0));
     }
-    return (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("h1", __assign({ style: { marginBottom: cell.cellSubtitle ? "0.3rem" : "1.3rem" } }, { children: cell.cellTitle }), void 0),
-            jsx_runtime_1.jsxs("div", __assign({ style: { marginBottom: "1.3rem", opacity: 0.85 } }, { children: [cell.cellSubtitle && jsx_runtime_1.jsx("h4", { children: cell.cellSubtitle }, void 0),
-                    dateStr ? jsx_runtime_1.jsx("h6", { children: dateStr }, void 0) : null] }), void 0),
-            blocks && blocks.map(function (b) {
-                var title = "";
-                switch (b.blockType) {
-                    case "Video":
-                        title = b.blockData.title;
-                        break;
-                    case "Text":
-                        title = "";
-                        break;
-                    case "File":
-                        title = b.blockData.title;
-                        break;
-                    default:
-                        title = "";
-                        break;
-                }
-                return (jsx_runtime_1.jsx(Block_1.default, __assign({ title: title }, { children: getBlock(b) }), void 0));
-            })] }, void 0));
+    return jsx_runtime_1.jsx("h1", { children: "Hello" }, void 0);
 };
 exports.default = Cell;
 
@@ -48486,7 +48567,7 @@ var BlockEditor = function (props) {
                 jsx_runtime_1.jsx("button", __assign({ className: "btn btn-danger", onClick: function () { return setShowDelete(true); } }, { children: "Delete" }), void 0)] }, void 0));
     }
     var id = props.block.blockID != ( false || undefined) ? props.block.blockID : props.block.tempID;
-    return (jsx_runtime_1.jsx(react_beautiful_dnd_1.Draggable, __assign({ draggableId: id.toString(), index: props.index }, { children: function (provided) { return (react_1.createElement("li", __assign({}, provided.dragHandleProps, provided.draggableProps, { ref: provided.innerRef, key: id.toString(), className: "card-wrapper" }),
+    return (jsx_runtime_1.jsx(react_beautiful_dnd_1.Draggable, __assign({ draggableId: "block_" + id.toString(), index: props.index }, { children: function (provided) { return (react_1.createElement("li", __assign({}, provided.dragHandleProps, provided.draggableProps, { ref: provided.innerRef, key: id.toString(), className: "card-wrapper" }),
             jsx_runtime_1.jsx("div", __assign({ className: "main-card card" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [content, jsx_runtime_1.jsx("div", __assign({ className: "btn-container" }, { children: buttons }), void 0)] }), void 0) }), void 0))); } }), void 0));
 };
 exports.default = BlockEditor;
@@ -48569,26 +48650,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var NewBlockEditor_1 = __importDefault(__webpack_require__(/*! ./NewBlockEditor */ "./js/src/components/NewCell/Editor/NewBlockEditor.tsx"));
 var react_beautiful_dnd_1 = __webpack_require__(/*! react-beautiful-dnd */ "./node_modules/react-beautiful-dnd/dist/react-beautiful-dnd.esm.js");
 var AddBlock_1 = __importDefault(__webpack_require__(/*! ./AddBlock */ "./js/src/components/NewCell/Editor/AddBlock.tsx"));
 var axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
 var EditCellDetails_1 = __importDefault(__webpack_require__(/*! ./EditCellDetails */ "./js/src/components/NewCell/Editor/EditCellDetails.tsx"));
 var CellEditor = function (props) {
-    var _a = __read(react_1.useState([]), 2), blocks = _a[0], setBlocks = _a[1];
-    var _b = __read(react_1.useState(null), 2), cell = _b[0], setCell = _b[1];
-    var _c = __read(react_1.useState(null), 2), saveTimeout = _c[0], setSaveTimeout = _c[1];
-    react_1.useEffect(function () {
+    var _a = __read(react_2.useState([]), 2), blocks = _a[0], setBlocks = _a[1];
+    var _b = __read(react_2.useState({
+        cellTitle: "",
+        cellSubtitle: "",
+        cellDate: "",
+        cellTime: ""
+    }), 2), cell = _b[0], setCell = _b[1];
+    var _c = __read(react_2.useState(null), 2), saveTimeout = _c[0], setSaveTimeout = _c[1];
+    react_2.useEffect(function () {
         getCell();
     }, []);
     function getCell() {
         var url = "/page-api/cell/get?cellID=" + props.cellID;
         axios_1.default.get(url).then(function (res) {
-            console.log(res.data);
             if (res.data) {
-                console.log(res.data);
                 var newBlocks = res.data.blocks.map(function (b) {
                     var newBlocks = __assign({}, b);
                     if (b.blockData) {
@@ -48597,12 +48682,12 @@ var CellEditor = function (props) {
                     return newBlocks;
                 });
                 updateBlocks(newBlocks);
-                var date = res.data.cellDate.split(" ");
+                var date = res.data.cellDate && res.data.cellDate.split(" ");
                 setCell({
                     cellTitle: res.data.cellTitle,
                     cellSubtitle: res.data.cellSubtitle,
-                    cellTime: date[1],
-                    cellDate: date[0],
+                    cellTime: date ? date[1] : "",
+                    cellDate: date ? date[0] : "",
                     cellID: res.data.cellID
                 });
             }
@@ -48663,7 +48748,6 @@ var CellEditor = function (props) {
         data.append("cellDate", newCell.cellDate + " " + newCell.cellTime);
         axios_1.default.post("/page-api/cell/update", data)
             .then(function (res) {
-            console.log(res);
             getCell();
             props.getCells();
         });
@@ -48693,12 +48777,14 @@ var CellEditor = function (props) {
                         newBlocks[i].blockOrder = blocks[i].blockOrder + 1;
                     }
                 }
+                else {
+                    return [2 /*return*/];
+                }
                 updateBlocks(newBlocks);
                 data = new FormData();
                 data.append("blocks", JSON.stringify(newBlocks));
                 axios_1.default.post("/page-api/block/update-bulk", data)
                     .then(function (res) {
-                    console.log(res);
                     getCell();
                 });
                 return [2 /*return*/];
@@ -48723,7 +48809,9 @@ var CellEditor = function (props) {
         });
     }
     return (jsx_runtime_1.jsxs("div", __assign({ className: "row" }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "col-md-6" }, { children: cell && jsx_runtime_1.jsx(EditCellDetails_1.default, { cell: cell, updateCell: updateCell }, void 0) }), void 0),
-            jsx_runtime_1.jsx(react_beautiful_dnd_1.DragDropContext, __assign({ onDragEnd: handleDrop }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "col-md-6" }, { children: [jsx_runtime_1.jsx(react_beautiful_dnd_1.Droppable, __assign({ droppableId: "id" }, { children: function (provided) { return (jsx_runtime_1.jsxs("ul", __assign({ className: "c-block-container", style: { marginBottom: 0 } }, provided.droppableProps, { ref: provided.innerRef }, { children: [blocks.map(function (b, i) { return jsx_runtime_1.jsx(NewBlockEditor_1.default, { deleteBlock: deleteBlock, updateBlock: updateBlock, block: b, index: i }, b.blockID); }), provided.placeholder] }), void 0)); } }), void 0),
+            jsx_runtime_1.jsx(react_beautiful_dnd_1.DragDropContext, __assign({ onDragEnd: handleDrop }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "col-md-6" }, { children: [jsx_runtime_1.jsx(react_beautiful_dnd_1.Droppable, __assign({ droppableId: "id" }, { children: function (provided) { return (react_1.createElement("ul", __assign({ className: "c-block-container", style: { marginBottom: 0 } }, provided.droppableProps, { ref: provided.innerRef, key: "id" }),
+                                blocks.map(function (b, i) { return jsx_runtime_1.jsx(NewBlockEditor_1.default, { deleteBlock: deleteBlock, updateBlock: updateBlock, block: b, index: i }, b.blockID); }),
+                                provided.placeholder)); } }), void 0),
                         jsx_runtime_1.jsx(AddBlock_1.default, { newID: createID(), blockOrder: blocks.length > 0 ? blocks[blocks.length - 1].blockOrder + 1 : 0, addBlock: addBlock }, void 0)] }), void 0) }), void 0)] }), void 0));
 };
 exports.default = CellEditor;
@@ -49589,14 +49677,15 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 var Hives_1 = __importDefault(__webpack_require__(/*! ../components/Hives */ "./js/src/components/Hives.tsx"));
-function OrgHives() {
-    return (jsx_runtime_1.jsxs("div", __assign({ className: "c-hives-container" }, { children: [jsx_runtime_1.jsx(Hives_1.default, { type: "Public", adminPage: true }, void 0),
-            jsx_runtime_1.jsx(Hives_1.default, { type: "Private", adminPage: true }, void 0),
-            jsx_runtime_1.jsx(Hives_1.default, { type: "Draft", adminPage: true }, void 0)] }), void 0));
+function HivesWrapper(props) {
+    return (jsx_runtime_1.jsxs("div", __assign({ className: "c-hives-container" }, { children: [jsx_runtime_1.jsx(Hives_1.default, { organisationID: props.orgID, type: "Public", adminPage: true }, void 0),
+            jsx_runtime_1.jsx(Hives_1.default, { organisationID: props.orgID, type: "Private", adminPage: true }, void 0),
+            jsx_runtime_1.jsx(Hives_1.default, { organisationID: props.orgID, type: "Draft", adminPage: true }, void 0)] }), void 0));
 }
 var hives = document.getElementById("admin-hives");
 if (hives) {
-    ReactDOM.render(jsx_runtime_1.jsx(OrgHives, {}, void 0), hives);
+    var orgID = parseInt(hives.dataset.orgid);
+    ReactDOM.render(jsx_runtime_1.jsx(HivesWrapper, { orgID: orgID }, void 0), hives);
 }
 
 
@@ -49628,13 +49717,14 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 var Hives_1 = __importDefault(__webpack_require__(/*! ../components/Hives */ "./js/src/components/Hives.tsx"));
-function OrgHives() {
-    return (jsx_runtime_1.jsxs("div", __assign({ className: "c-hives-container" }, { children: [jsx_runtime_1.jsx(Hives_1.default, { type: "Public", adminPage: false }, void 0),
-            jsx_runtime_1.jsx(Hives_1.default, { type: "Private", adminPage: false }, void 0)] }), void 0));
+function OrgHives(props) {
+    return (jsx_runtime_1.jsxs("div", __assign({ className: "c-hives-container" }, { children: [jsx_runtime_1.jsx(Hives_1.default, { organisationID: props.orgID, type: "Public", adminPage: false }, void 0),
+            jsx_runtime_1.jsx(Hives_1.default, { organisationID: props.orgID, type: "Private", adminPage: false }, void 0)] }), void 0));
 }
 var hives = document.getElementById("hives");
 if (hives) {
-    ReactDOM.render(jsx_runtime_1.jsx(OrgHives, {}, void 0), hives);
+    var orgID = parseInt(hives.dataset.orgid);
+    ReactDOM.render(jsx_runtime_1.jsx(OrgHives, { orgID: orgID }, void 0), hives);
 }
 
 
@@ -49685,7 +49775,7 @@ var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/in
 var ManageHive_1 = __importDefault(__webpack_require__(/*! ../components/ManageHive/ManageHive */ "./js/src/components/ManageHive/ManageHive.tsx"));
 var manageHive = document.getElementById("manage-hive");
 if (manageHive) {
-    ReactDOM.render(jsx_runtime_1.jsx(ManageHive_1.default, { organisationSlug: manageHive.dataset.organisationslug, hiveID: parseInt(manageHive.dataset.hiveid), organisationID: parseInt(manageHive.dataset.organisationid), organisationName: manageHive.dataset.organisationname }, void 0), manageHive);
+    ReactDOM.render(jsx_runtime_1.jsx(ManageHive_1.default, { organisationSlug: manageHive.dataset.organisationslug, hiveID: parseInt(manageHive.dataset.hiveid), organisationID: parseInt(manageHive.dataset.organisationid), organisationName: manageHive.dataset.organisationname, backURL: manageHive.dataset.backurl }, void 0), manageHive);
 }
 
 
@@ -49695,29 +49785,27 @@ if (manageHive) {
 /*!*******************************!*\
   !*** ./js/src/pages/test.tsx ***!
   \*******************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ (() => {
 
-"use strict";
-
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-var Cell_1 = __importDefault(__webpack_require__(/*! ../components/NewCell/Cell */ "./js/src/components/NewCell/Cell.tsx"));
-var manageHive = document.getElementById("test");
-if (manageHive) {
-    ReactDOM.render(jsx_runtime_1.jsx(Cell_1.default, { cellID: 1, hiveID: 1 }, void 0), manageHive);
-}
-var editCell = document.getElementById("edit-cell");
-if (editCell) {
-    // ReactDOM.render(<CellEditor cellID={1} />, editCell);
-}
-var createCell = document.getElementById("create-cell");
-if (createCell) {
-    // ReactDOM.render(<CreateCell organisationID={createCell.dataset.organisationID && parseInt(createCell.dataset.organisationID)} />, createCell)
-}
+// import React = require('react');
+// import ReactDOM = require('react-dom');
+// import Cell from '../components/NewCell/Cell';
+// import CreateCell from '../components/NewCell/Editor/CreateCell';
+// import UpdateCell from '../components/NewCell/Editor/EditCellDetails';
+// import CellEditor from '../components/NewCell/Editor/NewCellEditor';
+// const manageHive = document.getElementById("test");
+// if (manageHive) {
+//     ReactDOM.render(
+//     <Cell cellID={1} hiveID={1} />, manageHive);
+// }
+// const editCell = document.getElementById("edit-cell");
+// if (editCell) {
+//     // ReactDOM.render(<CellEditor cellID={1} />, editCell);
+// }
+// const createCell = document.getElementById("create-cell");
+// if (createCell) {
+//     // ReactDOM.render(<CreateCell organisationID={createCell.dataset.organisationID && parseInt(createCell.dataset.organisationID)} />, createCell)
+// }
 
 
 /***/ }),
@@ -49739,7 +49827,7 @@ var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/in
 var Hive_1 = __importDefault(__webpack_require__(/*! ../components/Hive */ "./js/src/components/Hive.tsx"));
 var hive = document.getElementById("hive");
 if (hive) {
-    ReactDOM.render(jsx_runtime_1.jsx(Hive_1.default, {}, void 0), hive);
+    ReactDOM.render(jsx_runtime_1.jsx(Hive_1.default, { hiveID: parseInt(hive.dataset.hiveid) }, void 0), hive);
 }
 
 

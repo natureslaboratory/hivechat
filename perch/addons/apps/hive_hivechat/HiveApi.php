@@ -65,5 +65,17 @@ class HiveApi {
 
         return $data;
     }
+
+    public static function formatAllStrings($array) {
+        $newArray = [];
+        foreach ($array as $key => $value) {
+            if (is_string($value)) {
+                $newArray[$key] = addslashes($value);
+            } else {
+                $newArray[$key] = $value;
+            }
+        }
+        return $newArray;
+    }
     
 }

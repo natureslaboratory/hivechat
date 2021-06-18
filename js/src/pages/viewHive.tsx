@@ -5,5 +5,5 @@ import Hive from '../components/Hive';
 
 const hive = document.getElementById("hive");
 if (hive) {
-    ReactDOM.render(<Hive />, hive);
+    ReactDOM.render(<Hive hiveID={parseInt(hive.dataset.hiveid)} />, hive);
 }

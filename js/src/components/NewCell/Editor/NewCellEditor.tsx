@@ -13,14 +13,19 @@ export interface CellEditorProps {
 }
 
 interface CellEditorFuncs {
-    getCells() : void
+    getCells(): void
 }
 
 
 const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
 
     const [blocks, setBlocks] = useState<IBlock<Blocks>[]>([]);
-    const [cell, setCell] = useState<CellDetails>(null);
+    const [cell, setCell] = useState<CellDetails>({
+        cellTitle: "",
+        cellSubtitle: "",
+        cellDate: "",
+        cellTime: ""
+    });
     const [saveTimeout, setSaveTimeout] = useState<NodeJS.Timeout>(null);
 
     useEffect(() => {
@@ -30,11 +35,9 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
     function getCell() {
         let url = "/page-api/cell/get?cellID=" + props.cellID;
         axios.get(url).then(res => {
-            console.log(res.data);
-            if (res.data) { 
-                console.log(res.data);
+            if (res.data) {
                 let newBlocks = res.data.blocks.map((b) => {
-                    let newBlocks = {...b};
+                    let newBlocks = { ...b };
                     if (b.blockData) {
                         newBlocks.blockData = JSON.parse(b.blockData)
                     }
@@ -42,12 +45,12 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
                 }) as IBlock<Blocks>[];
 
                 updateBlocks(newBlocks);
-                let date = res.data.cellDate.split(" ");
+                let date = res.data.cellDate && res.data.cellDate.split(" ");
                 setCell({
                     cellTitle: res.data.cellTitle,
                     cellSubtitle: res.data.cellSubtitle,
-                    cellTime: date[1],
-                    cellDate: date[0],
+                    cellTime: date ? date[1] : "",
+                    cellDate: date ? date[0] : "",
                     cellID: res.data.cellID
                 })
             }
@@ -110,7 +113,6 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
 
         axios.post("/page-api/cell/update", data)
             .then(res => {
-                console.log(res);
                 getCell();
                 props.getCells();
             })
@@ -125,7 +127,7 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
             .then(res => {
                 console.log(res.data);
                 getCell();
-            }) 
+            })
     }
 
     async function handleDrop(drop: DropResult, provided: ResponderProvided) {
@@ -140,6 +142,8 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
             for (let i = drop.destination.index; i < drop.source.index; i++) {
                 newBlocks[i].blockOrder = blocks[i].blockOrder + 1;
             }
+        } else {
+            return;
         }
 
         updateBlocks(newBlocks);
@@ -148,7 +152,6 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
         data.append("blocks", JSON.stringify(newBlocks));
         axios.post("/page-api/block/update-bulk", data)
             .then(res => {
-                console.log(res);
                 getCell();
             })
     }
@@ -160,7 +163,7 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
     function addBlock(block: IBlock<Blocks>) {
         let data = new FormData();
 
-        let order = (blocks.length > 0 ? blocks[blocks.length-1].blockOrder+1 : 0).toString();
+        let order = (blocks.length > 0 ? blocks[blocks.length - 1].blockOrder + 1 : 0).toString();
         data.append("blockType", block.blockType);
         data.append("cellID", props.cellID.toString());
         data.append("blockData", JSON.stringify(block.blockData));
@@ -181,12 +184,13 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
             <DragDropContext onDragEnd={handleDrop}>
                 <div className="col-md-6">
                     <Droppable droppableId={"id"} >
-                        {(provided) => (
-                            <ul className="c-block-container" style={{ marginBottom: 0 }} {...provided.droppableProps} ref={provided.innerRef}>
-                                {blocks.map((b, i) => <BlockEditor deleteBlock={deleteBlock} updateBlock={updateBlock} block={b} index={i} key={b.blockID} />)}
-                                {provided.placeholder}
-                            </ul>
-                        )
+                        {
+                            (provided) => (
+                                <ul className="c-block-container" style={{ marginBottom: 0 }} {...provided.droppableProps} ref={provided.innerRef} key={"id"}>
+                                    {blocks.map((b, i) => <BlockEditor deleteBlock={deleteBlock} updateBlock={updateBlock} block={b} index={i} key={b.blockID} />)}
+                                    {provided.placeholder}
+                                </ul>
+                            )
                         }
                     </Droppable>
                     {<AddBlock newID={createID()} blockOrder={blocks.length > 0 ? blocks[blocks.length - 1].blockOrder + 1 : 0} addBlock={addBlock} />}

@@ -316,6 +316,7 @@ function create_hive($opts = array(), $return = false)
   $Template = $API->get('Template');
   $Template->set('hivechat/create_hive.html', 'hc');
 
+  $data["action"] = $opts["action"];
 
   $html = $Template->render($data);
   $html = $Template->apply_runtime_post_processing($html, $data);
@@ -527,9 +528,20 @@ function get_organisation_public_hives($organisationID)
   return $newData;
 }
 
+function get_member_hives($opts = []) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $hives = new Hivechat_Hives($API);
+
+  $memberID = perch_member_get("id");
+
+  return $hives->get_member_hives($memberID, $opts["privacy"]);
+
+}
+
 function get_organisation_hives($organisationID, $opts = [])
 {
 
+  // echo json_encode($opts);
   $API  = new PerchAPI(1.0, 'hivechat');
   $hives = new Hivechat_Hives($API);
   $orgs = new Hivechat_Organisations($API);
@@ -566,6 +578,7 @@ function get_organisation_hives($organisationID, $opts = [])
     default:
       return;
   }
+
 
   if (!$data) {
     return;
@@ -1380,7 +1393,7 @@ function create_new_cell($cellData) {
   $data = HiveApi::filter($cellData, $fields);
   $data["cellOrder"] = count($currentCells);
   
-  return $cells->create_cell($data);
+  return $cells->create_cell(HiveApi::formatAllStrings($data));
 }
 
 function update_new_cell($cellData) {
@@ -1392,12 +1405,22 @@ function update_new_cell($cellData) {
     "cellTitle",
     "cellSubtitle",
     "cellDate",
-    "hiveID"
+    "hiveID",
+    "cellOrder"
   ];
 
   $data = HiveApi::filter($cellData, $fields);
-  return $cells->update_cell($data);
+  return $cells->update_cell(HiveApi::formatAllStrings($data));
 } 
+
+function update_new_cell_bulk($cellList) {
+  $results = [];
+  foreach ($cellList as $cell) {
+    $results[] = update_new_cell($cell);
+    // $results[] = $cell;
+  }
+  return $results;
+}
 
 function get_new_cell($cellID) {
   $API  = new PerchAPI(1.0, 'hivechat');
@@ -1422,7 +1445,7 @@ function create_new_block($blockData) {
   $API  = new PerchAPI(1.0, 'hivechat');
   $blocks = new Hivechat_Blocks($API);
 
-  return $blocks->create_block($blockData);
+  return $blocks->create_block(HiveApi::formatAllStrings($blockData));
 }
 
 function update_block($block) {
@@ -1445,7 +1468,7 @@ function update_block($block) {
 
   echo $data["blockData"];
 
-  return $blocks->update_block($data);
+  return $blocks->update_block(HiveApi::formatAllStrings($data));
 }
 
 function update_blocks($blocks) {

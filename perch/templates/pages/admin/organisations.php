@@ -5,7 +5,8 @@
         
         ?>
         <?php if (perch_get("hiveID") || (perch_get("manage") && perch_get("manage") !== "manage")) { 
-            echo "<div id='hive'></div>";
+            $hiveID = perch_get("hiveID") | perch_get("manage");
+            echo "<div id='hive' data-hiveid='$hiveID' ></div>";
         } else if (perch_get("organisationSlug")) { 
             $opts = [
                 "organisationSlug" => perch_get("organisationSlug"),

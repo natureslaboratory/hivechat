@@ -11,5 +11,6 @@ if (manageHive) {
         hiveID={parseInt(manageHive.dataset.hiveid)} 
         organisationID={parseInt(manageHive.dataset.organisationid)}
         organisationName={manageHive.dataset.organisationname}
+        backURL={manageHive.dataset.backurl}
     />, manageHive);
 }

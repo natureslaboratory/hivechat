@@ -94,7 +94,7 @@ class Hivechat_Blocks extends PerchAPI_Factory
     }
 
     function get_blocks_by_cell($cellID) {
-        $sql = "SELECT * FROM $this->table WHERE cellID='$cellID' ORDER BY blockOrder DESC";
+        $sql = "SELECT * FROM $this->table WHERE cellID='$cellID' ORDER BY blockOrder ASC";
         return $this->db->get_rows($sql);
     }
 

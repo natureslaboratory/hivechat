@@ -45,8 +45,13 @@ function returnOwnerHive($memberID, $data) {
     }
 }
 
-$data = get_hive_with_cells(perch_get("hiveID"));
-$hive = $data["hive"];
+$hive = get_hive(perch_get("hiveID"));
+$cells = get_hive_cells($hive["hiveID"]);
+$data = [
+    "hive" => $hive,
+    "cells" => $cells
+];
+
 $memberID = perch_member_get("id");
 
 if ($hive) {

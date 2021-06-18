@@ -7,19 +7,21 @@ import Block from './Block';
 import { VideoBlock } from './Forms/VideoForm';
 import { TextBlock } from './Forms/TextForm';
 import { FileBlock } from './Forms/FileForm';
-const cell = require("../../cell.json") as ICell;
+import axios from 'axios';
 
 
 interface CellProps {
-    hiveID: number,
-    cellID: number
+    hiveID: number
+    cell: ICell
 }
 
 export interface ICell {
+    cellID: number
     cellTitle: string,
     cellSubtitle?: string,
     cellDate: string,
-    blocks: IBlock<Blocks>[]
+    cellOrder: number
+    blocks?: IBlock<Blocks>[]
 }
 
 export interface IBlock<T> {
@@ -33,12 +35,20 @@ export interface IBlock<T> {
 
 export type Blocks = VideoBlock | TextBlock | FileBlock;
 
-const Cell: React.FC<CellProps> = (props) => {
+const Cell: React.FC<CellProps> = ({hiveID, cell}) => {
     const [blocks, setBlocks] = useState<IBlock<Blocks>[]>();
 
     useEffect(() => {
-        if (cell && cell.blocks) {
-            setBlocks(cell.blocks);
+        if (cell && cell.cellID) {
+            axios.get("/page-api/cell/get?cellID=" + cell.cellID)
+                .then(res => {
+                    let newBlocks: IBlock<Blocks>[] = res.data.blocks.map((b, i) => {
+                        let newBlock = {...b};
+                        newBlock.blockData = JSON.parse(newBlock.blockData);
+                        return newBlock as IBlock<Blocks>;
+                    })
+                    setBlocks(newBlocks)
+                })
         }
     }, [cell])
 
@@ -55,46 +65,51 @@ const Cell: React.FC<CellProps> = (props) => {
         }
     }
 
-    // Dummy data
+    // // Dummy data
 
-    let dateStr = "";
-    if (cell.cellDate !== "2000-01-01 00:00:00") {
-        let date = new Date(cell.cellDate);
-        dateStr = formatDate(date);
+    
+    if (cell) {
+        let dateStr = "";
+        if (cell.cellDate) {
+            let date = new Date(cell.cellDate);
+            dateStr = formatDate(date);
+        }
+        return (
+            <>
+                <h1 style={{ marginBottom: cell.cellSubtitle ? "0.3rem" : "1.3rem" }}>{cell.cellTitle}</h1>
+                <div style={{ marginBottom: "1.3rem", opacity: 0.85 }}>
+                    {cell.cellSubtitle && <h4>{cell.cellSubtitle}</h4>}
+                    {dateStr ? <h6>{dateStr}</h6> : null}
+                </div>
+                {blocks && blocks.map((b, i) => {
+                    let title = "";
+                    switch (b.blockType) {
+                        case "Video":
+                            title = (b.blockData as VideoBlock).title;
+                            break;
+                        case "Text":
+                            title = "";
+                            break;
+                        case "File":
+                            title = (b.blockData as FileBlock).title;
+                            break;
+                        default:
+                            title = "";
+                            break
+                    } 
+                    console.log(b.blockOrder);
+                    return (
+                        <Block title={title} key={i}>
+                            {getBlock(b)}
+                        </Block>
+                    )
+                })
+                }
+            </>
+        )
     }
 
-    return (
-        <>
-            <h1 style={{ marginBottom: cell.cellSubtitle ? "0.3rem" : "1.3rem" }}>{cell.cellTitle}</h1>
-            <div style={{ marginBottom: "1.3rem", opacity: 0.85 }}>
-                {cell.cellSubtitle && <h4>{cell.cellSubtitle}</h4>}
-                {dateStr ? <h6>{dateStr}</h6> : null}
-            </div>
-            {blocks && blocks.map(b => {
-                let title = "";
-                switch (b.blockType) {
-                    case "Video":
-                        title = (b.blockData as VideoBlock).title;
-                        break;
-                    case "Text":
-                        title = "";
-                        break;
-                    case "File":
-                        title = (b.blockData as FileBlock).title;
-                        break;
-                    default:
-                        title = "";
-                        break
-                } 
-                return (
-                    <Block title={title}>
-                        {getBlock(b)}
-                    </Block>
-                )
-            })
-            }
-        </>
-    )
+    return <h1>Hello</h1>
 }
 
 export default Cell;

@@ -120,5 +120,10 @@ class Hivechat_Hives extends PerchAPI_Factory
 		return $this->db->get_rows($sql);
 	}
 
+	public function get_member_hives($memberID, $privacy = "Public") {
+		$sql = "SELECT * FROM perch3_hives WHERE memberID='$memberID' AND organisationID='-1' AND hivePrivacy='$privacy'";
+		return $this->db->get_rows($sql);
+	}
+
   
 }

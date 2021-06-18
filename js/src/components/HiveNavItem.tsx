@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { formatDate } from './Cell';
+import { ICell } from './NewCell/Cell';
 
 export interface CellSmall {
     cellID : number,
@@ -13,21 +14,19 @@ interface HiveNavItemProps {
     selectCell(cellID : number) : void
 }
 
-const HiveNavItem : React.FunctionComponent<CellSmall & HiveNavItemProps> = (props) => {
+const HiveNavItem : React.FunctionComponent<ICell & HiveNavItemProps> = (props) => {
     let button = <button onClick={(e) => {
         e.preventDefault();
         props.selectCell(props.cellID);
     }} className="btn btn-small btn-primary">View</button>;
 
     let subtitle = null;
-    if (props.cellSubTitle) {
-        subtitle = props.cellSubTitle
+    if (props.cellSubtitle) {
+        subtitle = props.cellSubtitle
     }
     
-    let date = "";
-    if (props.cellDateTime !== "2000-01-01 00:00:00") {
-        date = props.cellDateTime ? formatDate(new Date(props.cellDateTime)) : "";
-    }
+    let date = props.cellDate ? formatDate(new Date(props.cellDate)) : "";
+    
 
     return (
         <li style={{cursor: "pointer"}} onClick={() => {

@@ -120,7 +120,7 @@ const BlockEditor: React.FC<BlockEditorProps & BlockEditorFuncs> = (props) => {
     let id = props.block.blockID != (null || undefined) ? props.block.blockID : props.block.tempID;
 
     return (
-        <Draggable draggableId={id.toString()} index={props.index} >
+        <Draggable draggableId={"block_"+ id.toString()} index={props.index} >
             {(provided) => (
                 <li {...provided.dragHandleProps}
                     {...provided.draggableProps}

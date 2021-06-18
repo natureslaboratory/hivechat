@@ -8,6 +8,8 @@ import HiveDetails, { HiveDetailsFuncs, HiveDetailsProps } from './HiveDetails';
 import ListCells from './ListCells';
 import CellEditor, { CellEditorProps } from '../NewCell/Editor/NewCellEditor';
 import CreateCell, { CellDetails } from '../NewCell/Editor/CreateCell';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+import { ICell } from '../NewCell/Cell';
 
 interface Organisation {
     organisationID: string,
@@ -20,11 +22,12 @@ interface ManageHiveProps {
     organisationName: string,
     organisationID: number,
     hiveID: number
+    backURL: string
 }
 
-const ManageHive: React.FunctionComponent<ManageHiveProps> = ({ organisationSlug, hiveID, organisationID, organisationName }) => {
+const ManageHive: React.FunctionComponent<ManageHiveProps> = ({ organisationSlug, hiveID, organisationID, organisationName, backURL }) => {
     const [hiveDetails, setHiveDetails] = useState<HiveDetailsProps>(null);
-    const [cells, setCells] = useState<CellProps[]>([]);
+    const [cells, setCells] = useState<ICell[]>([]);
     const [cell, setCell] = useState<CellEditorProps>(null);
     const [newCell, setNewCell] = useState(false);
 
@@ -50,11 +53,12 @@ const ManageHive: React.FunctionComponent<ManageHiveProps> = ({ organisationSlug
     function getCells() {
         axios.get(`/page-api/manage-hive?hiveID=${hiveID}&action=get-cells`)
             .then(res => {
-                setCells(res.data as CellProps[])
+                updateCells(res.data as ICell[])
             })
     }
 
     useEffect(() => {
+        console.log("cell change")
     }, [cells]);
 
     async function updateHive(hive: HiveDetailsProps) {
@@ -102,24 +106,59 @@ const ManageHive: React.FunctionComponent<ManageHiveProps> = ({ organisationSlug
         } else if (newCell) {
             setNewCell(false)
         } else {
-            window.location.href = `/explore/organisations/${organisationSlug}/manage/hives/`
+            window.location.href = backURL;
         }
     }
 
-    let content = null;
-    let rightColumn = (
-        <>
-            <div style={{ marginBottom: "2rem", display: "flex", justifyContent: "flex-end" }}>
-                <button className="btn btn-primary" onClick={() => setNewCell(true)}>+ New Cell</button>
-            </div>
-            {cells.length > 0 && <ListCells cells={cells} getCells={getCells} setCell={(cellID: number) => setCell({ cellID, hiveID })} />}
-        </>
-    );
-    let link = `/explore/organisations/${organisationSlug}/manage`;
-
-    if (newCell) {
-        rightColumn = <CreateCell hiveID={hiveID} addCell={addCell} cancelCreateCell={() => setNewCell(false)}  />
+    function updateCells(cells: ICell[]) {
+        let newCells = cells.sort((a, b) => {
+            if (a.cellOrder > b.cellOrder) {
+                return 1;
+            } else if (a.cellOrder < b.cellOrder) {
+                return -1;
+            } else {
+                return 0;
+            }
+        })
+        setCells(newCells);
     }
+
+    function handleDrop(drop: DropResult) {
+        let newCells = [...cells];
+        newCells[drop.source.index].cellOrder = newCells[drop.destination.index].cellOrder;
+        if (drop.source.index < drop.destination.index) {
+            for (let i = drop.source.index + 1; i < drop.destination.index + 1; i++) {
+                newCells[i].cellOrder = newCells[i].cellOrder - 1;
+            }
+        } else if (drop.source.index > drop.destination.index) {
+            for (let i = drop.destination.index; i < drop.source.index; i++) {
+                newCells[i].cellOrder = newCells[i].cellOrder + 1;
+            }
+        }
+        updateCells(newCells);
+
+        let data = new FormData();
+
+        newCells = newCells.map((c, i) => {
+            let newCell = {...c};
+            if (!newCell.cellDate) {
+                delete newCell.cellDate;
+            }
+            return newCell;
+        })
+
+        data.append("cellList", JSON.stringify(newCells));
+
+        axios.post("/page-api/cell/update-bulk", data)
+            .then(res => {
+                getCells();
+            }).catch(err => {
+                console.error(err);
+            })
+    }
+
+    let content = null;
+    let link = `/explore/organisations/${organisationSlug}/manage`;
 
     if (cell) {
         link = window.location.href;
@@ -129,6 +168,22 @@ const ManageHive: React.FunctionComponent<ManageHiveProps> = ({ organisationSlug
             </>
         )
     } else {
+        let rightColumn = null;
+        if (newCell) {
+            rightColumn = <CreateCell hiveID={hiveID} addCell={addCell} cancelCreateCell={() => setNewCell(false)} />
+        } else {
+            rightColumn = (
+                <>
+                    <div style={{ marginBottom: "2rem", display: "flex", justifyContent: "flex-end" }}>
+                        <button className="btn btn-primary" onClick={() => setNewCell(true)}>+ New Cell</button>
+                    </div>
+                    <div>
+                        {cells.length > 0 && <ListCells handleDrop={handleDrop} cells={cells} getCells={getCells} setCell={(cellID: number) => setCell({ cellID, hiveID })} />}
+                    </div>
+                </>
+            );
+        }
+
         content = (
             <div className="row">
                 <div className="col-md-6">
@@ -142,9 +197,10 @@ const ManageHive: React.FunctionComponent<ManageHiveProps> = ({ organisationSlug
     }
 
     return (
+        
         <>
             <Title title={hiveDetails && `Manage ${hiveDetails.hiveTitle}`} />
-            <button style={{marginBottom: "2rem"}} onClick={handleBack} className="btn btn-outline-primary">Back</button>
+            <button style={{ marginBottom: "2rem" }} onClick={handleBack} className="btn btn-outline-primary">Back</button>
             {content}
         </>
     )
