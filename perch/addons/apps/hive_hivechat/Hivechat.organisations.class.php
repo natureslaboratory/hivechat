@@ -155,10 +155,10 @@ class Hivechat_Organisations extends PerchAPI_Factory
 
 	public function add_member($data)
 	{
-		$member = $this->get_member_by_email($data["memberEmail"]);
+		$member = $this->get_member($data["memberID"]);
 		
 		// Checks it already an org member
-		$memberOrg = $this->get_memberorg($data["organisationID"], $member["memberID"]);
+		$memberOrg = $this->get_memberorg($data["organisationID"], $data["memberID"]);
 		if ($memberOrg) {
 			return;
 		}

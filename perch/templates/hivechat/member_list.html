@@ -2,7 +2,10 @@
     <div class="card mb-3">
         <div style="justify-content: space-between;" class="card-header">
             <h5 class="card-title m-b-0">Members</h5>
-            <a href="/explore/organisations/<perch:hc id="organisationSlug" />/manage/members/add"><button class="btn btn-alternate">+ Add Member</button></a>
+            <div style="display: flex; gap: 1rem">
+                <a href="/explore/organisations/<perch:hc id="organisationSlug" />/manage/members/requests"><button class="btn btn-alternate">Member Requests</button></a>
+                <a href="/explore/organisations/<perch:hc id="organisationSlug" />/manage/members/add"><button class="btn btn-alternate">+ Add Member</button></a>
+            </div>
         </div>
         <div class="table-responsive">
             <table class="align-middle mb-0 table table-borderless table-striped table-hover">

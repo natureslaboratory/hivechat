@@ -231,3 +231,10 @@ p:last-child {
 .c-file-upload {
     margin-bottom: 1rem;
 }
+
+.table-action {
+    width: 100%; 
+    display: flex; 
+    justify-content: flex-end; 
+    gap: 0.5rem;
+}

@@ -4,7 +4,7 @@
         <?php 
         
         ?>
-        <?php if (perch_get("hiveID") || (perch_get("manage") && perch_get("manage") !== "manage")) { 
+        <?php if (perch_get("hiveID")) { 
             $hiveID = perch_get("hiveID") | perch_get("manage");
             echo "<div id='hive' data-hiveid='$hiveID' ></div>";
         } else if (perch_get("organisationSlug")) { 

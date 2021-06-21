@@ -47726,9 +47726,8 @@ var __assign = (this && this.__assign) || function () {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var File = function (props) {
-    return (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [props.title && jsx_runtime_1.jsx("h5", __assign({ className: "card-title" }, { children: props.title }), void 0),
-            props.description && jsx_runtime_1.jsx("div", { dangerouslySetInnerHTML: { __html: props.description } }, void 0),
-            props.currentFiles.map(function (f, i) {
+    return (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [props.description && jsx_runtime_1.jsx("div", { dangerouslySetInnerHTML: { __html: props.description } }, void 0),
+            props.currentFiles && props.currentFiles.map(function (f, i) {
                 return (jsx_runtime_1.jsx("div", { children: jsx_runtime_1.jsx("a", __assign({ download: encodeURI(f.fileName), href: encodeURI(f.fileLocation) }, { children: f.fileName }), void 0) }, i));
             })] }, void 0));
 };
