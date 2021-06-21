@@ -215,3 +215,19 @@ p:last-child {
     border-radius: .25rem;
     margin-bottom: 1rem;
 }
+
+.c-file-upload__file > p {
+    margin: 0;
+    font-weight: bolder;
+}
+
+.c-file-upload__file {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.c-file-upload {
+    margin-bottom: 1rem;
+}

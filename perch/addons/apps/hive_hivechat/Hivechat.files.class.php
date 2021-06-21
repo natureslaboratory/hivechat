@@ -60,7 +60,6 @@ class Hivechat_Files extends PerchAPI_Factory
         }
 
         $sql .= ");";
-        // echo $sql;
         return $this->db->execute($sql);
     }
 

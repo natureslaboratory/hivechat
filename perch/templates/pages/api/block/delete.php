@@ -3,12 +3,13 @@
 $blockID = $_POST["blockID"];
 $block = get_block($blockID);
 $cell = get_new_cell($block["cellID"]);
+$hive = get_hive($cell["hiveID"]);
 
-if ($cell["organisationID"] !== "-1") {
-    if (is_admin($cell["organisationID"], perch_member_get("id"))) {
+if ($hive["organisationID"] !== "-1") {
+    if (is_admin($hive["organisationID"], perch_member_get("id"))) {
         $isAdmin = true;
     }
-} else if ($cell["memberID"] == perch_member_get("id")) {
+} else if ($hive["memberID"] == perch_member_get("id")) {
     $isOwner = true;
 }
 

@@ -41,7 +41,12 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
                     let newBlocks = { ...b };
                     if (b.blockData) {
                         newBlocks.blockData = JSON.parse(b.blockData)
+                        if (newBlocks.blockType == "File") {
+                            newBlocks.blockData.currentFiles = b.currentFiles;
+                            newBlocks.blockData.newFiles = [];
+                        }
                     }
+                    
                     return newBlocks;
                 }) as IBlock<Blocks>[];
 
@@ -92,11 +97,23 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
         let newBlock = { ...blocks[index], blockData: block }
 
         let data = new FormData();
+
+        if (newBlock.blockType == "File") {
+            let files = (newBlock.blockData as FileBlock).newFiles;
+            let fileNames = files.map((f, i) => {
+                data.append("file_" + i, f.file);
+                return f.fileName;
+            })
+            data.append("fileNames", JSON.stringify(fileNames));
+        }
+
         data.append("blockID", newBlock.blockID.toString());
         data.append("blockData", JSON.stringify(newBlock.blockData));
+        data.append("currentFiles", JSON.stringify((newBlock.blockData as FileBlock).currentFiles));
 
         return axios.post("/page-api/block/update", data)
             .then(res => {
+                console.log(res.data);
                 getCell();
             })
     }
@@ -183,7 +200,7 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
 
         axios.post("/page-api/block/create", data)
             .then(res => {
-                console.log(res);
+                console.log(res.data);
                 getCell();
             });
     }

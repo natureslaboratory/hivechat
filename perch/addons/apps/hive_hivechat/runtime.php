@@ -7,6 +7,8 @@
 */
 
 # Include your class files as needed - up to you.
+
+
 include('Hivechat.class.php');
 include('Hivechats.class.php');
 include('Hivechat.hive.class.php');
@@ -1429,7 +1431,19 @@ function get_new_cell($cellID) {
   $cells = new Hivechat_NewCells($API);
 
   $cell = $cells->get_cell($cellID);
-  $cell["blocks"] = get_cell_blocks($cellID);
+  $blocks = get_cell_blocks($cellID);
+  $newBlocks = [];
+  foreach ($blocks as $block) {
+    $newBlock = $block;
+    if ($block["blockType"] == "File") {
+      $files = new Hivechat_Files($API);
+      $currentFiles = $files->get_block_files($block["blockID"]);
+      $newBlock["currentFiles"] = $currentFiles;
+    }
+    $newBlocks[] = $newBlock;
+  }
+
+  $cell["blocks"] = $newBlocks;
 
   return $cell;
 }
@@ -1447,7 +1461,8 @@ function create_new_block($blockData) {
   $API  = new PerchAPI(1.0, 'hivechat');
   $blocks = new Hivechat_Blocks($API);
   $files = $blockData["files"];
-  $fileNames = json_decode($blockData["fileNames"]);
+
+  $fileNames = $blockData["fileNames"] ? json_decode($blockData["fileNames"], true) : [];
 
   $fileArray = [];
   foreach ($files as $fileRef => $file) {
@@ -1467,23 +1482,23 @@ function create_new_block($blockData) {
 
   $data = HiveApi::filter($blockData, $fields);
 
-  $blockID = $blocks->create_block(HiveApi::formatAllStrings($data));
-  // echo "BlockID = $blockID";
-  // echo json_encode($fileNames);
+  $blockID = $blocks->create_block(HiveApi::formatAllStrings($data))["LAST_INSERT_ID()"];
 
   $files = new Hivechat_Files($API);
   $results = [];
   foreach ($fileArray as $file) {
-    // echo json_encode([$file["file"]["name"], $file["fileName"]]);
     $results[] = upload_file($file["file"], $file["fileName"], $blockID);
   }
-  // return $results;
+
 }
 
-function update_block($block) {
+function update_block($block, $newFiles = []) {
   // [blockID, blockOrder, blockType, blockData]
   $API  = new PerchAPI(1.0, 'hivechat');
   $blocks = new Hivechat_Blocks($API);
+  $files = new Hivechat_Files($API);
+  $debug = [];
+  $debug["files"] = $newFiles;
 
   $fields = [
     "blockID",
@@ -1492,15 +1507,55 @@ function update_block($block) {
     "blockData"
   ];
 
+  // Filters the data for entering block details into db
   $data = HiveApi::filter($block, $fields);
 
+  // Decodes blockData
   if (is_array($data["blockData"])) {
     $data["blockData"] = json_encode($data["blockData"]);
   }
 
-  echo "data[blockData] = " . $data["blockData"];
+  $debug["update_block_result"] = $blocks->update_block(HiveApi::formatAllStrings($data));
 
-  return $blocks->update_block(HiveApi::formatAllStrings($data));
+  // Loops through currentFiles and newCurrentFiles to check if 
+  // any have been deleted, and if so deletes them
+  if ($block["currentFiles"]) {
+    $currentFiles = json_decode($block["currentFiles"], true);
+    $debug["currentFileID"] = $currentFiles[0]["fileID"];
+    $prevCurrentFiles = $files->get_block_files($block["blockID"]);
+    $debug["prevCurrentFileID"] = $prevCurrentFiles[0]["fileID"];
+    $filesToDelete = [];
+    foreach ($prevCurrentFiles as $prevFile) {
+      $stillExists = false;
+      foreach ($currentFiles as $currentFile) {
+        if ($currentFile["fileID"] == $prevFile["fileID"]) {
+          $stillExists = true;
+        }
+      }
+      if (!$stillExists) {
+        $filesToDelete[] = $prevFile["fileID"];
+      }
+    }
+
+    foreach ($filesToDelete as $fileID) {
+      delete_file($fileID);
+    }
+  }
+
+  // Uploads any new files;
+  if ($newFiles) {
+    $fileNames = json_decode($block["fileNames"]);
+    $debug["fileNames"] = $fileNames;
+    $debug["upload_file_results"] = [];
+    foreach ($newFiles as $fileRef => $newFile) {
+      $fileIndex = explode("_", $fileRef)[1];
+      $fileName = $fileNames[$fileIndex];
+      $debug["upload_file_results"][] = upload_file($newFile, $fileName, $block["blockID"]);
+    }
+  }
+
+
+  return $debug;
 }
 
 function update_blocks($blocks) {
@@ -1514,12 +1569,25 @@ function update_blocks($blocks) {
   return $results;
 }
 
+function delete_file($fileID) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $files = new Hivechat_Files($API);
+
+  $file = $files->get_file($fileID);
+
+  unlink($file["fileLocation"]);
+  $files->delete_file($fileID);
+
+}
+
 function get_block($blockID) {
   
   $API  = new PerchAPI(1.0, 'hivechat');
   $blocks = new Hivechat_Blocks($API);
 
-  return $blocks->get_block($blockID);
+  $block = $blocks->get_block($blockID);
+
+  return $block;
 }
 
 function delete_block($blockID) {
@@ -1537,41 +1605,64 @@ function get_hive_cells($hiveID) {
 }
 
 function upload_file($file, $fileName, $blockID) {
-  $API  = new PerchAPI(1.0, 'hivechat');
-  $files = new Hivechat_Files($API);
-
-  $debug = [];
-
-  if (!is_dir("./file_uploads")) {
-    echo "creating dir";
-    echo mkdir("./file_uploads", 0777, true) ? "created" : "failed";
-  }
-
-  $name_exists = $files->get_files_by_name($file["name"]);
-
-  if ($name_exists) {
-    $info = pathinfo($_FILES['userFile']['name']);
-    $ext = $info['extension']; // get the extension of the file
-    $newname = HiveApi::random_str(10) . "." . $ext;
+  try {
+    $API  = new PerchAPI(1.0, 'hivechat');
+    $files = new Hivechat_Files($API);
+  
+    // Create the file directory
+    if (!is_dir($_SERVER["DOCUMENT_ROOT"] . "/file_uploads")) {
+      mkdir($_SERVER["DOCUMENT_ROOT"] . "/file_uploads", 0777, true);
+    }
     
-    $target = './file_uploads/.' . $newname;
-  } else {
-    $target = './file_uploads' . "/" . $file["name"];
-  }
+    // Creates the target location, updating the name if necessary
+    $target = '/file_uploads' . "/" . $file["name"];
+    $name_exists = $files->get_files_by_location(addslashes($target));
+    $count = 0;
+    while ($name_exists) {
+      $info = pathinfo($file['name']);
+      $ext = $info['extension']; // get the extension of the file
+      $newname = $info["filename"] . "($count)" . "." . $ext;
+      
+      $target = '/file_uploads' . "/" . $newname;
+  
+      $name_exists = $files->get_files_by_location(addslashes($target));
+      $count++;
+    }
 
-  echo json_encode(["target" => $target]);
+    // Moves file to target location
+    $result = move_uploaded_file($file["tmp_name"], $_SERVER["DOCUMENT_ROOT"] . $target);
+  
+    // Creates Database row for file
+    if ($result) {
+      $data = [
+        "fileName" => addslashes($fileName),
+        "fileLocation" => addslashes($target),
+        "blockID" => $blockID
+      ];
+  
+      $query = $files->create_file($data);
+    }
 
-  $result = move_uploaded_file($file["tmp_name"], $target);
-
-  if ($result) {
-    $query = $files->create_file([
+    // Not sure why this is here
+    if ($query) {
+      $theFiles = $files->get_files_by_location($_SERVER["DOCUMENT_ROOT"] . $target);
+    }
+  
+    // Debugging
+    return [
+      "file" => $file,
       "fileName" => $fileName,
-      "fileLocation" => $target,
-      "blockID" => $blockID
-    ]);
-  }
-
-  if ($query) {
-    return [$files->get_files_by_location($target), "debug" => $debug];
+      "blockID" => $blockID,
+      "target" => $_SERVER["DOCUMENT_ROOT"] . $target,
+      "result" => $result,
+      "query" => $query,
+      "files" => $theFiles
+    ];
+  } catch(Error $err) {
+    return  [
+      "error" => $err->getMessage(),
+      "line" => $err->getLine(),
+      "file" => $err->getFile()
+    ];
   }
 }

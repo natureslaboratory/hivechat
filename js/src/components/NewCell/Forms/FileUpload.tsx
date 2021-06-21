@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 interface FileUploadProps {
     addFile(file: TempFile): void
+    deleteFile(index: number, type: string): void
     newFiles: TempFile[]
     currentFiles: CustomFile[]
 }
@@ -14,11 +15,11 @@ export interface TempFile {
 
 export interface CustomFile {
     fileID: number
-    fileURL: string
+    fileLocation: string
     fileName: string
 }
 
-const FileUpload: React.FC<FileUploadProps> = ({addFile, newFiles, currentFiles}) => {
+const FileUpload: React.FC<FileUploadProps> = ({ addFile, deleteFile, newFiles, currentFiles }) => {
     const ref = useRef<HTMLInputElement>();
     const [showAddForm, setShowAddForm] = useState(false);
     const [file, setFile] = useState<File>(null);
@@ -29,11 +30,13 @@ const FileUpload: React.FC<FileUploadProps> = ({addFile, newFiles, currentFiles}
     }
 
     let content = (
-        <div className="btn-container">
-            <button className="btn btn-primary" onClick={(e) => {
-                setShowAddForm(true);
-            }}>+ Add File</button>
-        </div>
+        <>
+            <div className="btn-container">
+                <button className="btn btn-primary" onClick={(e) => {
+                    setShowAddForm(true);
+                }}>+ Add File</button>
+            </div>
+        </>
     )
 
     if (showAddForm) {
@@ -48,7 +51,7 @@ const FileUpload: React.FC<FileUploadProps> = ({addFile, newFiles, currentFiles}
                     <button className="btn btn-primary" onClick={(e) => {
                         e.preventDefault();
                         console.log(file, name);
-                        addFile({file, fileName: name});
+                        addFile({ file, fileName: name });
                         setName("");
                         setFile(null);
                         setShowAddForm(false);
@@ -67,20 +70,36 @@ const FileUpload: React.FC<FileUploadProps> = ({addFile, newFiles, currentFiles}
     return (
         <>
             <div>
-                {currentFiles && currentFiles.map((file, i) => {
-                    return (
-                        <div>
-                            <p>{file.fileName}</p>
-                        </div>
-                    )
-                })}
-                {newFiles && newFiles.map((file, i) => {
-                    return (
-                        <div>
-                            <p>{file.fileName} ({file.file.name})</p>
-                        </div>
-                    )
-                })}
+                {currentFiles.length > 0 && <div className="c-file-upload">
+                    <label>Current Files</label>
+                    {!(currentFiles.length > 0 || showAddForm) && <p style={{ opacity: "0.5", fontStyle: "italic" }}>No Files</p>}
+                    {currentFiles && currentFiles.map((file, i) => {
+                        return (
+                            <div key={file.fileName + i} className="c-file-upload__file">
+                                <p>{file.fileName}</p>
+                                <button className="btn btn-outline-danger" onClick={(e) => {
+                                    e.preventDefault();
+                                    deleteFile(i, "current")
+                                }}>Delete</button>
+                            </div>
+                        )
+                    })}
+                </div>}
+                <div className="c-file-upload">
+                    <label>New Files</label>
+
+                    {newFiles.length > 0 ? newFiles.map((file, i) => {
+                        return (
+                            <div key={file.fileName + i} className="c-file-upload__file">
+                                <p>{file.fileName} ({file.file.name})</p>
+                                <button className="btn btn-outline-danger"onClick={(e) => {
+                                    e.preventDefault();
+                                    deleteFile(i, "new")
+                                }}>Delete</button>
+                            </div>
+                        )
+                    }) : <p style={{ opacity: "0.5", fontStyle: "italic" }}>No Files</p>}
+                </div>
             </div>
             {content}
         </>

@@ -62,9 +62,10 @@ class Hivechat_Blocks extends PerchAPI_Factory
             $count++;
         }
 
-        $sql .= ") SELECT LAST_INSERT_ID();";
+        $sql .= ");";
 
-        return $this->db->execute($sql);
+        $this->db->execute($sql);
+        return $this->db->get_row("SELECT LAST_INSERT_ID()");
     }
 
     function update_block($blockData) {

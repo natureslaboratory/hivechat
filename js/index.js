@@ -47726,8 +47726,11 @@ var __assign = (this && this.__assign) || function () {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var File = function (props) {
-    return (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("a", __assign({ href: null }, { children: "Download" }), void 0),
-            jsx_runtime_1.jsx("div", { dangerouslySetInnerHTML: { __html: props.description } }, void 0)] }, void 0));
+    return (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [props.title && jsx_runtime_1.jsx("h5", __assign({ className: "card-title" }, { children: props.title }), void 0),
+            props.description && jsx_runtime_1.jsx("div", { dangerouslySetInnerHTML: { __html: props.description } }, void 0),
+            props.currentFiles.map(function (f, i) {
+                return (jsx_runtime_1.jsx("div", { children: jsx_runtime_1.jsx("a", __assign({ download: encodeURI(f.fileName), href: encodeURI(f.fileLocation) }, { children: f.fileName }), void 0) }, i));
+            })] }, void 0));
 };
 exports.default = File;
 
@@ -48192,9 +48195,6 @@ var AddBlock = function (props) {
     }
     var content = jsx_runtime_1.jsx("div", {}, void 0);
     var buttons = null;
-    react_1.useEffect(function () {
-        console.log(block);
-    }, [block]);
     if (block) {
         switch (block.blockType) {
             case "Video":
@@ -48672,6 +48672,10 @@ var CellEditor = function (props) {
                     var newBlocks = __assign({}, b);
                     if (b.blockData) {
                         newBlocks.blockData = JSON.parse(b.blockData);
+                        if (newBlocks.blockType == "File") {
+                            newBlocks.blockData.currentFiles = b.currentFiles;
+                            newBlocks.blockData.newFiles = [];
+                        }
                     }
                     return newBlocks;
                 });
@@ -48724,10 +48728,20 @@ var CellEditor = function (props) {
     function updateBlock(index, block) {
         var newBlock = __assign(__assign({}, blocks[index]), { blockData: block });
         var data = new FormData();
+        if (newBlock.blockType == "File") {
+            var files = newBlock.blockData.newFiles;
+            var fileNames = files.map(function (f, i) {
+                data.append("file_" + i, f.file);
+                return f.fileName;
+            });
+            data.append("fileNames", JSON.stringify(fileNames));
+        }
         data.append("blockID", newBlock.blockID.toString());
         data.append("blockData", JSON.stringify(newBlock.blockData));
+        data.append("currentFiles", JSON.stringify(newBlock.blockData.currentFiles));
         return axios_1.default.post("/page-api/block/update", data)
             .then(function (res) {
+            console.log(res.data);
             getCell();
         });
     }
@@ -48806,7 +48820,7 @@ var CellEditor = function (props) {
         data.append("blockOrder", order);
         axios_1.default.post("/page-api/block/create", data)
             .then(function (res) {
-            console.log(res);
+            console.log(res.data);
             getCell();
         });
     }
@@ -48885,12 +48899,26 @@ var FileForm = function (_a) {
     function getFiles() {
         //
     }
+    function deleteFile(i, type) {
+        if (type == "new") {
+            var newFiles = block.newFiles;
+            var newFilesStart = newFiles.slice(0, i);
+            var newFilesEnd = newFiles.slice(i + 1, newFiles.length);
+            setBlock(__assign(__assign({}, block), { newFiles: __spreadArray(__spreadArray([], __read(newFilesStart)), __read(newFilesEnd)) }));
+        }
+        else if (type == "current") {
+            var newCurrentFiles = block.currentFiles;
+            var newCurrentFilesStart = newCurrentFiles.slice(0, i);
+            var newCurrentFilesEnd = newCurrentFiles.slice(i + 1, newCurrentFiles.length);
+            setBlock(__assign(__assign({}, block), { currentFiles: __spreadArray(__spreadArray([], __read(newCurrentFilesStart)), __read(newCurrentFilesEnd)) }));
+        }
+    }
     if (block) {
         return (jsx_runtime_1.jsxs("form", { children: [jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Title" }, void 0),
                         jsx_runtime_1.jsx("input", { className: "form-control", type: "text", value: block.title, onChange: function (e) { return setBlock(__assign(__assign({}, block), { title: e.target.value })); } }, void 0)] }), void 0),
                 jsx_runtime_1.jsx(FileUpload_1.default, { newFiles: block.newFiles, currentFiles: block.currentFiles, addFile: function (file) {
                         setBlock(__assign(__assign({}, block), { newFiles: __spreadArray(__spreadArray([], __read(block.newFiles)), [file]) }));
-                    } }, void 0),
+                    }, deleteFile: deleteFile }, void 0),
                 jsx_runtime_1.jsxs("div", __assign({ className: "form-group", style: { minHeight: "300px" } }, { children: [jsx_runtime_1.jsx("label", { children: "Description" }, void 0),
                         jsx_runtime_1.jsx(react_rte_1.default, { value: editorValue, onChange: function (e) {
                                 setEditorValue(e);
@@ -48942,7 +48970,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var FileUpload = function (_a) {
-    var addFile = _a.addFile, newFiles = _a.newFiles, currentFiles = _a.currentFiles;
+    var addFile = _a.addFile, deleteFile = _a.deleteFile, newFiles = _a.newFiles, currentFiles = _a.currentFiles;
     var ref = react_1.useRef();
     var _b = __read(react_1.useState(false), 2), showAddForm = _b[0], setShowAddForm = _b[1];
     var _c = __read(react_1.useState(null), 2), file = _c[0], setFile = _c[1];
@@ -48950,9 +48978,9 @@ var FileUpload = function (_a) {
     function handleClick() {
         ref.current.click();
     }
-    var content = (jsx_runtime_1.jsx("div", __assign({ className: "btn-container" }, { children: jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", onClick: function (e) {
-                setShowAddForm(true);
-            } }, { children: "+ Add File" }), void 0) }), void 0));
+    var content = (jsx_runtime_1.jsx(jsx_runtime_1.Fragment, { children: jsx_runtime_1.jsx("div", __assign({ className: "btn-container" }, { children: jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", onClick: function (e) {
+                    setShowAddForm(true);
+                } }, { children: "+ Add File" }), void 0) }), void 0) }, void 0));
     if (showAddForm) {
         content = (jsx_runtime_1.jsxs("div", __assign({ className: "c-add-file-form" }, { children: [jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Name" }, void 0),
                         jsx_runtime_1.jsx("input", { type: "text", value: name, onChange: function (e) { return setName(e.target.value); }, className: "form-control" }, void 0)] }), void 0),
@@ -48972,12 +49000,23 @@ var FileUpload = function (_a) {
                                 setFile(null);
                             } }, { children: "Cancel" }), void 0)] }), void 0)] }), void 0));
     }
-    return (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsxs("div", { children: [currentFiles && currentFiles.map(function (file, i) {
-                        return (jsx_runtime_1.jsx("div", { children: jsx_runtime_1.jsx("p", { children: file.fileName }, void 0) }, void 0));
-                    }),
-                    newFiles && newFiles.map(function (file, i) {
-                        return (jsx_runtime_1.jsx("div", { children: jsx_runtime_1.jsxs("p", { children: [file.fileName, " (", file.file.name, ")"] }, void 0) }, void 0));
-                    })] }, void 0), content] }, void 0));
+    return (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsxs("div", { children: [currentFiles.length > 0 && jsx_runtime_1.jsxs("div", __assign({ className: "c-file-upload" }, { children: [jsx_runtime_1.jsx("label", { children: "Current Files" }, void 0),
+                            !(currentFiles.length > 0 || showAddForm) && jsx_runtime_1.jsx("p", __assign({ style: { opacity: "0.5", fontStyle: "italic" } }, { children: "No Files" }), void 0),
+                            currentFiles && currentFiles.map(function (file, i) {
+                                return (jsx_runtime_1.jsxs("div", __assign({ className: "c-file-upload__file" }, { children: [jsx_runtime_1.jsx("p", { children: file.fileName }, void 0),
+                                        jsx_runtime_1.jsx("button", __assign({ className: "btn btn-outline-danger", onClick: function (e) {
+                                                e.preventDefault();
+                                                deleteFile(i, "current");
+                                            } }, { children: "Delete" }), void 0)] }), file.fileName + i));
+                            })] }), void 0),
+                    jsx_runtime_1.jsxs("div", __assign({ className: "c-file-upload" }, { children: [jsx_runtime_1.jsx("label", { children: "New Files" }, void 0),
+                            newFiles.length > 0 ? newFiles.map(function (file, i) {
+                                return (jsx_runtime_1.jsxs("div", __assign({ className: "c-file-upload__file" }, { children: [jsx_runtime_1.jsxs("p", { children: [file.fileName, " (", file.file.name, ")"] }, void 0),
+                                        jsx_runtime_1.jsx("button", __assign({ className: "btn btn-outline-danger", onClick: function (e) {
+                                                e.preventDefault();
+                                                deleteFile(i, "new");
+                                            } }, { children: "Delete" }), void 0)] }), file.fileName + i));
+                            }) : jsx_runtime_1.jsx("p", __assign({ style: { opacity: "0.5", fontStyle: "italic" } }, { children: "No Files" }), void 0)] }), void 0)] }, void 0), content] }, void 0));
 };
 exports.default = FileUpload;
 

@@ -13,7 +13,7 @@ if ($cell["organisationID"] !== -1) {
 $isOwner = $cell["memberID"] == perch_member_get("id");
 
 if ($isAdmin || $isOwner) {
-    echo json_encode(update_block($_POST));
+    echo json_encode(update_block($_POST, $_FILES));
 } else {
     http_response_code(403);
 }

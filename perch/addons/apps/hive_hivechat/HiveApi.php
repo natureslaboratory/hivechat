@@ -19,7 +19,7 @@ class HiveApi
     {
         $array = [];
         foreach ($data as $key => $value) {
-            if ($opts["no-prefix"]) {
+            if ($opts["noPrefix"]) {
                 $newKey = "";
             } else {
                 $newKey = $parentKey ? $parentKey . "_" . $key : $key;

@@ -77,10 +77,6 @@ const AddBlock: React.FC<AddBlockProps & AddBlockFuncs> = (props) => {
     let content = <div />;
     let buttons: React.ReactNode = null;
 
-    useEffect(() => {
-        console.log(block)
-    }, [block])
-
     if (block) {
         switch (block.blockType) {
             case "Video":
