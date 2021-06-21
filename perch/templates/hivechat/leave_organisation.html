@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col-md-6" style="margin: 0 auto;">
+        <div class="card mb-3">
+            <div class="card-body">
+                <perch:form id="leave_organisation" method="post" app="hive_hivechat" type="default" action="" class="org-form">
+                        <perch:success>
+                            <div class="alert alert-success" role="alert">You have left <perch:hc id="organisationName" /></div>
+                        </perch:success>
+                        <perch:input type="hidden" id="organisationID" />
+                        <div style="margin-bottom: 1rem;">Are you sure?</div>
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <perch:input id="submit-button" type="submit" class="btn btn-danger" value="Leave">
+                            <a href="/explore/organisations/<perch:hc id="organisationSlug" />">Cancel</a>
+                        </div>
+                    </perch:form>
+            </div>
+        </div>
+    </div>
+</div>

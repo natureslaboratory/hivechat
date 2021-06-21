@@ -37,6 +37,9 @@ class Hivechat_Requests extends PerchAPI_Factory
 	}
 
     function create_request($data) {
+        if ($this->has_request($data["memberID"], $data["organisationID"])) {
+            return;
+        }
         $sql = "INSERT INTO $this->table (";
         $count = 0;
         foreach ($this->static_fields as $key) {

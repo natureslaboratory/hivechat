@@ -49732,6 +49732,12 @@ var deleteForms = Array.from(document.getElementsByClassName("delete-form"));
 deleteForms.forEach(function (form) {
     new DeleteForm_1.default(form);
 });
+var preventDefaulters = Array.from(document.getElementsByClassName("prevent-default"));
+preventDefaulters.forEach(function (b) {
+    b.addEventListener("click", function (e) {
+        e.preventDefault();
+    });
+});
 
 
 /***/ }),

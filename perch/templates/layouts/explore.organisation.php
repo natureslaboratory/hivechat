@@ -18,7 +18,8 @@ $isMember = is_organisation_member(perch_member_get("id"), $organisation["organi
 $manage = perch_layout_var("manage", true);
 $manageOptions = [
     "manage", 
-    "join"
+    "join",
+    "leave"
 ];
 $isValidOption = false;
 foreach ($manageOptions as $option) {
@@ -73,7 +74,7 @@ if (perch_layout_var("manage", true) == "manage" && $isAdmin) {
                             ?>
                                 <li class="nav-item">
                                     <!-- Opens modal with leave option -->
-                                    <a href="javascript:void(0);" class="nav-link">
+                                    <a href="/explore/organisations/<?= $organisation["organisationSlug"] ?>/leave" class="nav-link">
                                         <i class="nav-link-icon lnr-inbox"></i>
                                         <span>
                                             Leave Organisation
@@ -83,7 +84,7 @@ if (perch_layout_var("manage", true) == "manage" && $isAdmin) {
                             <?php } else { ?>
                                 <li class="nav-item">
                                     <!-- Redirects to form which creates join request -->
-                                    <a href="/explore/organisations/<?= $organisation["organisationSlug"] ?>/join" class="nav-link">
+                                    <a <?= has_request($organisation["organisationID"]) ? "disabled" : null ?> href="/explore/organisations/<?= $organisation["organisationSlug"] ?>/join" class="nav-link <?= has_request($organisation["organisationID"]) ? "disabled" : null ?>">
                                         <i class="nav-link-icon lnr-inbox"></i>
                                         <span>
                                             Request To Join
@@ -99,7 +100,17 @@ if (perch_layout_var("manage", true) == "manage" && $isAdmin) {
     </div>
     <?php
         if (perch_layout_var("manage", true) == "join") {
+            perch_layout("admin.back", [
+                "href" => "/explore/organisations/$organisation[organisationSlug]/",
+                "label" => "Back to $organisation[organisationName]"
+            ]);
             create_request($organisation["organisationID"]);
+        } else if ($manage == "leave") {
+            perch_layout("admin.back", [
+                "href" => "/explore/organisations/$organisation[organisationSlug]/",
+                "label" => "Back to $organisation[organisationName]"
+            ]);
+            leave_organisation($organisation["organisationID"]);
         } else {
     ?>
     <div style="display: flex; justify-content: space-between">

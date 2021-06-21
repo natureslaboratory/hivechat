@@ -280,6 +280,11 @@ function hive_hivechat_form_handler($SubmittedForm)
         $requests = new Hivechat_Requests($API);
         $requests->delete_request($requestID);
         break;
+      case "leave_organisation":
+        $data = $SubmittedForm->data;
+        $organisations = new Hivechat_Organisations($API);
+        $organisations->delete_member($data["organisationID"], perch_member_get("id"));
+        break;
     }
   }
 }
@@ -1709,11 +1714,24 @@ function create_request($organisationID)
 {
   $API  = new PerchAPI(1.0, 'hivechat');
   $organisations = new Hivechat_Organisations($API);
+  $requests = new Hivechat_Requests($API);
   $Template = $API->get('Template');
   $Template->set('hivechat/create_request.html', 'hc');
 
-  $data = $organisations->get_organisation($organisationID);
-  $data["memberID"] = perch_member_get("id");
+  $data = [];
+
+  if ($requests->has_request(perch_member_get("id"), $organisationID)) {
+    $organisation = $organisations->get_organisation($organisationID);
+    ?> 
+    <script>
+      window.location.href="/explore/organisations/<?= $organisation["organisationSlug"] ?>"
+    </script>
+    <?php
+  } else {
+    $data = $organisations->get_organisation($organisationID);
+    $data["memberID"] = perch_member_get("id");
+  }
+
 
   $html = $Template->render($data);
   $html = $Template->apply_runtime_post_processing($html, $data);
@@ -1797,3 +1815,29 @@ function member_requests() {
 
 }
 
+function leave_organisation($organisationID) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $organisations = new Hivechat_Organisations($API);
+
+  $Template = $API->get('Template');
+  $Template->set('hivechat/leave_organisation.html', 'hc');
+
+  $data = $organisations->get_organisation($organisationID);
+  $data["memberID"] = perch_member_get("id");
+
+  $html = $Template->render($data);
+  $html = $Template->apply_runtime_post_processing($html, $data);
+
+  echo $html;
+
+}
+
+function has_request($organisationID) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $requests = new Hivechat_Requests($API);
+
+  if ($requests->has_request(perch_member_get("id"), $organisationID)) {
+    return true;
+  }
+  return false;
+}

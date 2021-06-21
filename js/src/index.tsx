@@ -34,6 +34,13 @@ deleteForms.forEach(form => {
     new DeleteForm(form);
 })
 
+let preventDefaulters = Array.from(document.getElementsByClassName("prevent-default") as HTMLCollectionOf<HTMLInputElement>);
+preventDefaulters.forEach(b => {
+    b.addEventListener("click", (e) => {
+        e.preventDefault();
+    })
+})
+
 
 
 
