@@ -11,19 +11,31 @@
 		<perch:input type="text" id="last_name" required="true" label="Last name" class="form-control" />
 		<perch:error for="last_name" type="required"><div class="alert alert-danger fade show" role="alert">Please add a your name</div></perch:error>
 	</div>
-	
-	<div class="position-relative form-group">
-		<perch:label for="organisation">Organisation</perch:label>
-		<perch:input type="text" id="organisation" required="true" label="Organisation" class="form-control" />
-		<perch:error for="organisation" type="required"><div class="alert alert-danger fade show" role="alert">Please add a your organisation name</div></perch:error>
-	</div>
-
 	<div class="position-relative form-group">
 		<perch:label for="email">Email</perch:label>
 		<perch:input type="email" id="email" required="true" placeholder="you@company.com" class="form-control" />
 		<perch:error for="email" type="required"><div class="alert alert-danger fade show" role="alert">Please add a your email address</div></perch:error>
 		<perch:error for="email" type="format"><div class="alert alert-danger fade show" role="alert">Please check a your email address</div></perch:error>
 	</div>
+
+	<div class="position-relative form-group">
+		<perch:label for="organisation">Phone</perch:label>
+		<perch:input type="text" id="phone" label="Organisation" class="form-control" />
+	</div>
+	<div class="position-relative form-group">
+		<perch:label for="organisation">Organisation</perch:label>
+		<perch:input type="text" id="organisation" required="true" label="Organisation" class="form-control" />
+		<perch:error for="organisation" type="required"><div class="alert alert-danger fade show" role="alert">Please add a your organisation name</div></perch:error>
+	</div>
+	<div class="position-relative form-group">
+		<perch:label for="organisation">Job Title</perch:label>
+		<perch:input type="text" id="job_title" label="Job Title" class="form-control" />
+	</div>
+	<div class="position-relative form-group">
+		<perch:label for="organisation">Website</perch:label>
+		<perch:input type="text" id="website" label="Website" class="form-control" />
+	</div>
+
 
 	<div class="position-relative form-group">
 		<perch:input type="submit" value="Save" class="mt-1 btn btn-primary" />

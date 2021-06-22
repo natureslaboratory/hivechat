@@ -32,6 +32,7 @@ class Hivechat_Organisations extends PerchAPI_Factory
 			memberID INT(11) NOT NULL,
 			organisationID INT(11) NOT NULL,
 			memberRole INT(11) NOT NULL,
+			memberOrgDynamicFields text,
 			dateCreated datetime DEFAULT NOW()
 		);";
 
@@ -163,8 +164,14 @@ class Hivechat_Organisations extends PerchAPI_Factory
 			return;
 		}
 
+		if ($data["contactList"]) {
+			$contactList = true;
+		} else {
+			$contactList = false;
+		}
+
 		if ($member) {
-			$sql = "INSERT INTO perch3_memberorg (organisationID, memberID, memberRole) VALUES ('$data[organisationID]', '$data[memberID]', 1)";
+			$sql = "INSERT INTO perch3_memberorg (organisationID, memberID, memberRole, contactList, memberOrgDynamicFields) VALUES ('$data[organisationID]', '$data[memberID]', 1, $contactList '$data[memberOrgDynamicFields]')";
 			return $this->db->execute($sql);
 		}
 	}
@@ -229,9 +236,12 @@ class Hivechat_Organisations extends PerchAPI_Factory
 				break;
 		}
 
+		$newData = $data;
+		$newData["contactList"] = $newData["contactList"] ? true : false;
+		
 		$sql = "UPDATE perch3_memberorg SET ";
 		$i = 0;
-		foreach ($data as $key => $value) {
+		foreach ($newData as $key => $value) {
 			if ($i == 0) {
 				$sql .= " $key='$value'";
 			} else {
@@ -250,5 +260,10 @@ class Hivechat_Organisations extends PerchAPI_Factory
 		$sql = "SELECT * FROM perch3_memberorg WHERE organisationID='$organisationID' AND memberID='$memberID' AND memberRole=0 LIMIT 1";
 		$result = $this->db->get_row($sql);
 		return $result;
+	}
+
+	public function get_organisation_contacts($organisationID) {
+		$sql = "SELECT * FROM perch3_memberorg WHERE organisationID='$organisationID' AND contactList='1'";
+		return $this->db->get_rows($sql); 
 	}
 }

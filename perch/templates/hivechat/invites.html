@@ -38,32 +38,7 @@
                             </div>
                         </td>
                         <td style="display: flex; gap: 0.4rem;">
-                            <div>
-                                <perch:form 
-                                    id="accept_organisation_invite" 
-                                    method="post" 
-                                    app="hive_hivechat" 
-                                    type="default" 
-                                    action="" 
-                                    class="form"
-                                >
-                                    <perch:input type="hidden" id="inviteID" value="<perch:hc id="inviteID">" />
-                                    <perch:input type="submit" class="btn btn-primary" id="submit-button" value="Accept" />
-                                </perch:form>
-                            </div>
-                            <div>
-                                <perch:form 
-                                    id="decline_organisation_invite" 
-                                    method="post" 
-                                    app="hive_hivechat" 
-                                    type="default" 
-                                    action="" 
-                                    class="form"
-                                >
-                                
-                                    <perch:input type="hidden" id="inviteID" value="<perch:hc id="inviteID">" />
-                                    <perch:input type="submit" class="btn btn-danger" id="submit-button" value="Decline" />
-                                </perch:form>
+                            <a href="/admin/invites/<perch:hc id="inviteID" />"><button class="btn btn-primary">View</button></a>
                             </div>
                         </td>
                     </tr>

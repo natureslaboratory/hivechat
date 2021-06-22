@@ -238,3 +238,19 @@ p:last-child {
     justify-content: flex-end; 
     gap: 0.5rem;
 }
+
+.c-form-check {
+    display: flex;
+    gap: 
+    0.6rem;
+    flex-direction: row-reverse;
+}
+
+
+.c-form-check__input {
+    margin-top: 0.3rem;
+}
+
+.c-form-check__label {
+
+}

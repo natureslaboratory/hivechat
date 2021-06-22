@@ -73,7 +73,22 @@ if (perch_layout_var("manage", true) == "manage" && $isAdmin) {
                             if ($isMember || $isAdmin) {
                             ?>
                                 <li class="nav-item">
-                                    <!-- Opens modal with leave option -->
+                                    <a href="/explore/organisations/<?= $organisation["organisationSlug"] ?>/member-details" class="nav-link">
+                                        <i class="nav-link-icon lnr-inbox"></i>
+                                        <span>
+                                            Edit Your Details
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/explore/organisations/<?= $organisation["organisationSlug"] ?>/contact-list" class="nav-link">
+                                        <i class="nav-link-icon lnr-inbox"></i>
+                                        <span>
+                                            Contact List
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="/explore/organisations/<?= $organisation["organisationSlug"] ?>/leave" class="nav-link">
                                         <i class="nav-link-icon lnr-inbox"></i>
                                         <span>
@@ -111,6 +126,31 @@ if (perch_layout_var("manage", true) == "manage" && $isAdmin) {
                 "label" => "Back to $organisation[organisationName]"
             ]);
             leave_organisation($organisation["organisationID"]);
+        } else if ($manage == "member-details") {
+            perch_layout("admin.back", [
+                "href" => "/explore/organisations/$organisation[organisationSlug]/",
+                "label" => "Back to $organisation[organisationName]"
+            ]);
+            ?>
+            <div class="row">
+                <div class="col-md-6">
+                    <?php update_organisation_member_details($organisation["organisationID"]); ?>
+                </div>
+            </div>
+
+            <?php
+        } else if ($manage == "contact-list") {
+            if ($isMember || $isAdmin) {
+                perch_layout("admin.back", [
+                    "href" => "/explore/organisations/$organisation[organisationSlug]/",
+                    "label" => "Back to $organisation[organisationName]"
+                ]);
+                organisation_contact_list($organisation["organisationID"]);
+            } else { ?>
+                <script>
+                    window.location.href = "/explore/organisations/<?= $organisation["organisationSlug"] ?>"
+                </script>
+            <?php }
         } else {
     ?>
     <div style="display: flex; justify-content: space-between">
