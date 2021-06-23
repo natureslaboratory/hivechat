@@ -3,6 +3,15 @@
     <div class="app-main__inner">
         <?php 
             echo "manage: " . perch_get("manage") . ". hiveID: " . perch_get("hiveID") . "<br>";
+            try {
+                $hiveID = intval(perch_get("hiveID"));
+                if (!$hiveID) {
+                    $hiveID = intval(perch_get("manage"));
+                }
+            } catch (\Throwable $th) {
+                echo "error";
+            }
+            echo $hiveID;
         ?>
         <?php if (perch_get("hiveID")) { 
             $hiveID = perch_get("hiveID") | perch_get("manage");
