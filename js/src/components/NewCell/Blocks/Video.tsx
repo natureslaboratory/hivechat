@@ -158,7 +158,6 @@ const Video: React.FunctionComponent<VideoProps & VideoFuncs> = (props) => {
 
     return (
         <>
-            {props.title && <h5 className="card-title">{props.title}</h5>}
             <div dangerouslySetInnerHTML={isIframe ? { __html: props.url } : null} className={"c-block-content " + props.small && "c-block-content--small"}>
                 {videoDetails.domain && !isIframe && getVideoIFrame()}
             </div>

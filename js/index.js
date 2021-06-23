@@ -47981,8 +47981,7 @@ var Video = function (props) {
                 jsx_runtime_1.jsxs("div", __assign({ className: "c-block-content__video" }, { children: [videoDetails.thumbnail ? jsx_runtime_1.jsx(Image_1.default, { handleLoad: props.handleLoad, url: videoDetails.thumbnail, height: videoDetails === null || videoDetails === void 0 ? void 0 : videoDetails.maxHeight, width: videoDetails === null || videoDetails === void 0 ? void 0 : videoDetails.maxWidth, alt: "Video Thumbnail" }, void 0) : jsx_runtime_1.jsx("div", { style: { height: "" + (videoDetails === null || videoDetails === void 0 ? void 0 : videoDetails.maxWidth) } }, void 0),
                         videoDetails.title && jsx_runtime_1.jsx("strong", { children: videoDetails.title }, void 0)] }), void 0)] }), void 0));
     }
-    return (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [props.title && jsx_runtime_1.jsx("h5", __assign({ className: "card-title" }, { children: props.title }), void 0),
-            jsx_runtime_1.jsx("div", __assign({ dangerouslySetInnerHTML: isIframe ? { __html: props.url } : null, className: "c-block-content " + props.small && "c-block-content--small" }, { children: videoDetails.domain && !isIframe && getVideoIFrame() }), void 0)] }, void 0));
+    return (jsx_runtime_1.jsx(jsx_runtime_1.Fragment, { children: jsx_runtime_1.jsx("div", __assign({ dangerouslySetInnerHTML: isIframe ? { __html: props.url } : null, className: "c-block-content " + props.small && "c-block-content--small" }, { children: videoDetails.domain && !isIframe && getVideoIFrame() }), void 0) }, void 0));
 };
 exports.default = Video;
 
