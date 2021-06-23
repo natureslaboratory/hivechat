@@ -32,8 +32,6 @@ if ($hiveID) {
     $hives = get_organisation_hives($organisationID, ["type" => $privacy, "memberID" => $memberID, "skip-template" => true]);
     if ($hives) {
         echo json_encode($hives);
-    } else {
-        http_response_code(403);
     }
 } else {
     echo json_encode(get_member_hives(["privacy" => $privacy]));

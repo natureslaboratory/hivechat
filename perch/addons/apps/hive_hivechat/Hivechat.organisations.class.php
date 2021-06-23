@@ -32,6 +32,7 @@ class Hivechat_Organisations extends PerchAPI_Factory
 			memberID INT(11) NOT NULL,
 			organisationID INT(11) NOT NULL,
 			memberRole INT(11) NOT NULL,
+			contactList TINYINT(1) NOT NULL,
 			memberOrgDynamicFields text,
 			dateCreated datetime DEFAULT NOW()
 		);";
@@ -50,9 +51,9 @@ class Hivechat_Organisations extends PerchAPI_Factory
 			return;
 		}
 		$sql = "INSERT INTO perch3_organisations (organisationName, organisationSlug, createdBy) VALUES ('$title', '$data[organisationSlug]', '$data[memberID]')";
-		$orgID = $this->db->execute($sql);
+		$orgID = $this->db->get_row("SELECT LAST_INSERT_ID()")["organisationID"];
 
-		$sql = "INSERT INTO perch3_memberorg (memberID, organisationID, memberRole) VALUES ('$data[memberID]', $orgID, 0)";
+		$sql = "INSERT INTO perch3_memberorg (memberID, organisationID, memberRole, contactList) VALUES ('$data[memberID]', $orgID, 0, 0)";
 		$this->db->execute($sql);
 	}
 
