@@ -46659,8 +46659,9 @@ var Hive = function (props) {
         if (orgSlug === void 0) { orgSlug = ""; }
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                axios_1.default.get("/page-api/get-hive?hiveID=" + props.hiveID)
+                axios_1.default.get("/page-api/hive/get?hiveID=" + props.hiveID)
                     .then(function (res) {
+                    console.log(res.data);
                     if (res.status == 200 && res.data) {
                         setHiveData(res.data.hive);
                         setCells(res.data.cells);
@@ -46977,7 +46978,7 @@ var Hives = function (props) {
         sliceHives();
     }, [page, filteredHives]);
     function getHives() {
-        var url = "/page-api/hive/get?";
+        var url = "/page-api/hive/get-hives?";
         var params = [];
         if (props.organisationID) {
             params = __spreadArray(__spreadArray([], __read(params)), ["organisationID=" + props.organisationID]);

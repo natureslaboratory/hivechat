@@ -38,7 +38,7 @@ const Hives: React.FunctionComponent<HivesProps> = (props) => {
     }, [page, filteredHives])
 
     function getHives() {
-        let url = "/page-api/hive/get?";
+        let url = "/page-api/hive/get-hives?";
 
         let params: string[] = [
         ]

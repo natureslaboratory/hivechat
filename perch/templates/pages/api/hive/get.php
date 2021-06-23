@@ -1,39 +1,73 @@
 <?php
 
-// Params - hiveID, organisationID, privacy
-// if no params, return member public hives
-// if just privacy, return member {privacy} hives
+# gets hive details
 
-$hiveID = perch_get("hiveID");
-$organisationID = perch_get("organisationID");
-$privacy = perch_get("privacy") ? perch_get("privacy") : "Public";
-$memberID = perch_member_get("id");
-
-// echo json_encode($_GET);
-
-if ($hiveID) {
-    $hive = get_hive($hiveID);
-    if ($hive["hivePrivacy"] == "Draft") {
-        if (is_admin($hive["organisationID"], $memberID)) {
-            echo json_encode($hive);
-        } else {
-            http_response_code(403);
-        }
-    } else if ($hive["hivePrivacy"] == "Private") {
-        if (is_organisation_member($memberID, $hive["organisationID"])) {
-            echo json_encode($hive);
-        } else {
-            http_response_code(403);
-        }
-    } else {
-        echo json_encode($hive);
-    }
-} else if ($organisationID) {
-    $hives = get_organisation_hives($organisationID, ["type" => $privacy, "memberID" => $memberID, "skip-template" => true]);
-    if ($hives) {
-        echo json_encode($hives);
-    }
-} else {
-    echo json_encode(get_member_hives(["privacy" => $privacy]));
+function returnHive($hive) {
+    echo json_encode($hive);
 }
 
+function returnPrivateHive($memberID, $data) {
+    $hive = $data["hive"];
+    if ($hive["organisationID"] >= 0) {
+        $isMember = is_organisation_member($memberID, $hive["organisationID"]);
+        if ($isMember) {
+            returnHive($data);
+        } else {
+            http_response_code(401);
+        }
+    } else {
+        returnOwnerHive($memberID, $data);
+    }
+}
+
+
+function returnDraftHive($memberID, $data) {
+    $hive = $data["hive"];
+    if ($hive["organisationID"] >= 0) {
+        $isAdmin = is_admin($hive["organisationID"], $memberID);
+        if ($isAdmin) {
+            returnHive($data);
+        } else {
+            http_response_code(401);
+        }
+    } else {
+        returnOwnerHive($memberID, $data);
+    }
+}
+
+function returnOwnerHive($memberID, $data) {
+    $hive = $data["hive"];
+    $isOwner = is_hive_owner($memberID, $hive["hiveID"]);
+    if ($isOwner) {
+        returnHive($data);
+    } else {
+        http_response_code(401);
+    }
+}
+
+$hive = get_hive(perch_get("hiveID"));
+$cells = get_hive_cells($hive["hiveID"]);
+$data = [
+    "hive" => $hive,
+    "cells" => $cells
+];
+
+$memberID = perch_member_get("id");
+
+if ($hive) {
+    switch ($hive["hivePrivacy"]) {
+        case "Public":
+            returnHive($data);
+            break;
+        case "Private":
+            returnPrivateHive($memberID, $data);
+            break;
+        case "Draft":
+            returnDraftHive($memberID, $data);
+            break;
+        default:
+            http_response_code(500);
+    }
+} else {
+    http_response_code(404);
+}
