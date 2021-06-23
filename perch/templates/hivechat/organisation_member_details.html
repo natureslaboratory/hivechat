@@ -9,8 +9,12 @@
         <div class="card-header">
 			<perch:if id="action" value="join_organisation">
 				<h5 class="card-title m-b-0">Fill in these details to join <perch:hc id="organisationName" /></h5>
-			<perch:else>
+			</perch:if>
+			<perch:if id="action" value="update_organisation_details">
 				<h5 class="card-title m-b-0">Edit your details</h5>
+			</perch:if>
+			<perch:if id="action" value="create_request">
+				<h5 class="card-title m-b-0">Enter your details</h5>
 			</perch:if>
         </div>
         <div class="card-body">
@@ -42,6 +46,12 @@
 				<label>Website</label>
 				<perch:input type="text" class="form-control" id="website" required="true" value="<perch:hc id="website" />" />
             </div>
+			<perch:if id="action" value="create_request">
+				<div class="form-group">
+					<label>Request</label>
+					<perch:input type="textarea" html class="form-control" id="requestText" required="true" placeholder="Your Request" />
+				</div>
+			</perch:if>
 			<div class="form-group c-form-check">
 				<label class="c-form-check__label">
 					Would you like to be listed in the organisation address book? This is viewable by other organisation members.

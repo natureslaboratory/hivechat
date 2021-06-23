@@ -15,7 +15,8 @@ class Hivechat_Requests extends PerchAPI_Factory
 	public $static_fields   = [
         'memberID',
         'organisationID',
-        'requestText'
+        'requestText',
+        'requestDynamicFields'
     ];
 
     function __construct($API)
@@ -26,6 +27,7 @@ class Hivechat_Requests extends PerchAPI_Factory
             memberID INT(11) NOT NULL,
             organisationID INT(11) NOT NULL,
             requestText text NOT NULL,
+            requestDynamicFields text,
 			dateCreated datetime default NOW()
 		);";
 

@@ -78,12 +78,40 @@ function hive_hivechat_form_handler($SubmittedForm)
 
       if ($type == "join") {
         $result = $organisations->add_member($newData);
+        echo "Hello there $result";
       } else {
         $result = $organisations->update_member($newData);
       }
       if ($result) {
         $invites->delete_invite($data["inviteID"]);
       }
+    }
+
+    function split_fields($data, $staticFields, $exclusions) {
+      $newData = [];
+      $dynamicFields = [];
+      foreach ($data as $key => $value) {
+        $isStaticField = false;
+        foreach ($staticFields as $field) {
+          if ($field == $key) {
+            $isStaticField = true;
+            $newData[$key] = $value;
+          }
+        }
+        $isExcluded = false;
+        foreach ($exclusions as $field) {
+          if ($field == $key) {
+            $isExcluded = true;
+          }
+        }
+        if (!$isStaticField && !$isExcluded) {
+          $dynamicFields[$key] = $value;
+        }
+      }
+      return [
+        "static" => $newData,
+        "dynamic" => $dynamicFields
+      ];
     }
 
     switch ($SubmittedForm->formID) {
@@ -305,7 +333,20 @@ function hive_hivechat_form_handler($SubmittedForm)
       case "create_request":
         $requests = new Hivechat_Requests($API);
         $data = $SubmittedForm->data;
-        $requests->create_request($data);
+        $staticFields = [
+          "memberID",
+          "organisationID",
+          "requestText"
+        ];
+        $exclusions = [
+          "organisationName",
+          "inviteID"
+        ];
+
+        $split = split_fields($data, $staticFields, $exclusions);
+        $newData = $split["static"];
+        $newData["requestDynamicFields"] = addslashes(json_encode($split["dynamic"]));
+        $requests->create_request($newData);
         break;
       case "accept_request":
         $requestID = $SubmittedForm->data["requestID"];
@@ -1817,23 +1858,32 @@ function create_request($organisationID)
   $API  = new PerchAPI(1.0, 'hivechat');
   $organisations = new Hivechat_Organisations($API);
   $requests = new Hivechat_Requests($API);
-  $Template = $API->get('Template');
-  $Template->set('hivechat/create_request.html', 'hc');
 
+  
   $data = [];
-
+  
   if ($requests->has_request(perch_member_get("id"), $organisationID)) {
     $organisation = $organisations->get_organisation($organisationID);
     ?> 
     <script>
       window.location.href="/explore/organisations/<?= $organisation["organisationSlug"] ?>"
-    </script>
+      </script>
     <?php
   } else {
-    $data = $organisations->get_organisation($organisationID);
-    $data["memberID"] = perch_member_get("id");
+    $organisation = $organisations->get_organisation($organisationID);
+    $member = $organisations->get_member(perch_member_get("id"));
+    $member = array_merge($member, json_decode($member["memberProperties"], true));
+    $data = array_merge($member, [
+      "organisationName" => $organisation["organisationName"],
+      "organisationID" => $organisationID
+    ]);
   }
+  
+  $data["action"] = "create_request";
+  $data["contactList"] = $data["contactList"] ? "true" : "";
 
+  $Template = $API->get('Template');
+  $Template->set('hivechat/organisation_member_details.html', 'hc');
 
   $html = $Template->render($data);
   $html = $Template->apply_runtime_post_processing($html, $data);
