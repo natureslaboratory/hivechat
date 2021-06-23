@@ -46957,9 +46957,10 @@ var Hives = function (props) {
     var _a = __read(react_2.useState(1), 2), page = _a[0], setPage = _a[1];
     var _b = __read(react_2.useState(6), 2), hivesPerPage = _b[0], setHivesPerPage = _b[1];
     var _c = __read(react_2.useState([]), 2), hives = _c[0], setHives = _c[1];
-    var _d = __read(react_2.useState([]), 2), filteredHives = _d[0], setFilteredHives = _d[1];
-    var _e = __read(react_2.useState([]), 2), slicedHives = _e[0], setSlicedHives = _e[1];
-    var _f = __read(react_2.useState(""), 2), searchTerm = _f[0], setSearchTerm = _f[1];
+    var _d = __read(react_2.useState(true), 2), loading = _d[0], setLoading = _d[1];
+    var _e = __read(react_2.useState([]), 2), filteredHives = _e[0], setFilteredHives = _e[1];
+    var _f = __read(react_2.useState([]), 2), slicedHives = _f[0], setSlicedHives = _f[1];
+    var _g = __read(react_2.useState(""), 2), searchTerm = _g[0], setSearchTerm = _g[1];
     var urlSlug = "";
     var urlSplit = window.location.href.split("/");
     for (var i = 0; i < urlSplit.length; i++) {
@@ -46992,8 +46993,10 @@ var Hives = function (props) {
                 url += "&";
             }
         });
+        setLoading(true);
         axios_1.default.get(url)
             .then(function (res) {
+            setLoading(false);
             if (res.data) {
                 setHives(res.data);
             }
@@ -47041,14 +47044,9 @@ var Hives = function (props) {
                         }
                     } }, { children: ">" }), void 0)] }), void 0));
     }
-    if (hives.length > 0) {
-        return (jsx_runtime_1.jsxs("div", __assign({ className: "c-hives" }, { children: [jsx_runtime_1.jsxs("div", __assign({ className: "c-hives__header" }, { children: [jsx_runtime_1.jsxs("h2", __assign({ className: "c-hives__title" }, { children: [props.type, " Hives"] }), void 0),
-                        jsx_runtime_1.jsxs("div", __assign({ className: "c-hives__controls" }, { children: [jsx_runtime_1.jsx("input", { type: "search", value: searchTerm, onChange: function (e) { return setSearchTerm(e.target.value); }, placeholder: "Search" }, void 0), pagination] }), void 0)] }), void 0),
-                jsx_runtime_1.jsx("div", __assign({ className: "c-hives__collection" }, { children: hivesRendered }), void 0)] }), void 0));
-    }
-    else {
-        return null;
-    }
+    return (jsx_runtime_1.jsxs("div", __assign({ className: "c-hives" }, { children: [jsx_runtime_1.jsxs("div", __assign({ className: "c-hives__header" }, { children: [jsx_runtime_1.jsxs("h2", __assign({ className: "c-hives__title" }, { children: [props.type, " Hives"] }), void 0),
+                    jsx_runtime_1.jsxs("div", __assign({ className: "c-hives__controls" }, { children: [jsx_runtime_1.jsx("input", { type: "search", value: searchTerm, onChange: function (e) { return setSearchTerm(e.target.value); }, placeholder: "Search" }, void 0), pagination] }), void 0)] }), void 0),
+            loading ? jsx_runtime_1.jsx("p", { children: "Loading..." }, void 0) : (jsx_runtime_1.jsx("div", __assign({ className: "c-hives__collection" }, { children: hives.length > 0 ? hivesRendered : jsx_runtime_1.jsxs("p", { children: ["No ", props.type, " hives"] }, void 0) }), void 0))] }), void 0));
 };
 exports.default = Hives;
 

@@ -12,6 +12,7 @@ const Hives: React.FunctionComponent<HivesProps> = (props) => {
     const [page, setPage] = useState(1);
     const [hivesPerPage, setHivesPerPage] = useState(6);
     const [hives, setHives] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [filteredHives, setFilteredHives] = useState([]);
     const [slicedHives, setSlicedHives] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -58,8 +59,10 @@ const Hives: React.FunctionComponent<HivesProps> = (props) => {
             }
         })
 
+        setLoading(true);
         axios.get(url)
             .then(res => {
+                setLoading(false);
                 if (res.data) {
                     setHives(res.data as Array<HiveCardProps>)
                 }
@@ -121,29 +124,28 @@ const Hives: React.FunctionComponent<HivesProps> = (props) => {
         )
     }
 
-    if (hives.length > 0) {
-        return (
-            <div className="c-hives">
-                <div className="c-hives__header">
-                    <h2 className="c-hives__title">{props.type} Hives</h2>
-                    <div className="c-hives__controls">
-                        <input
-                            type="search"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            placeholder="Search"
-                        />
-                        {pagination}
-                    </div>
-                </div>
-                <div className="c-hives__collection">
-                    {hivesRendered}
+    return (
+        <div className="c-hives">
+            <div className="c-hives__header">
+                <h2 className="c-hives__title">{props.type} Hives</h2>
+                <div className="c-hives__controls">
+                    <input
+                        type="search"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        placeholder="Search"
+                    />
+                    {pagination}
                 </div>
             </div>
-        )
-    } else {
-        return null
-    }
+            {loading ? <p>Loading...</p> : (
+            <div className="c-hives__collection">
+                {hives.length > 0 ? hivesRendered : <p>No {props.type} hives</p>}
+            </div>
+            )}
+        </div>
+    )
+    
 }
 
 
