@@ -37,12 +37,8 @@ function processRequest($hive, $action = "get-hive") {
             echo json_encode($hiveFlat);
             break;
         case "get-cells":
-            $cells = hive_cells($hive["hiveID"], ["skip-template" => true]);
-            $newCells = [];
-            foreach ($cells as $cell) {
-                $newCells[] = HiveApi::flatten($cell, ["mappings" => ["processed" => "introduction", "video" => "video"]]);
-            }
-            echo json_encode($newCells);
+            $cells = get_hive_cells($hive["hiveID"]);
+            echo json_encode($cells);
             break;
         default:
             http_response_code(406);

@@ -1,11 +1,11 @@
-<?php 
+<?php
 
 $organisationSlug = perch_layout_var("organisationSlug", true);
 $organisation = get_organisation_by_slug($organisationSlug, ["skip-template" => true], true);
 
 ?>
 
-<?php 
+<?php
 perch_layout("admin.title", ["title" => "Manage your organisation members"]);
 
 ?>
@@ -40,9 +40,21 @@ perch_layout("admin.title", ["title" => "Manage your organisation members"]);
                 <?php remove_organisation_member($organisation["organisationID"], perch_layout_var("actionID", true)) ?>
             </div>
         </div>
-        <?php
+    <?php
         break;
-    default: 
+    case "requests":
+        perch_layout("admin.back", [
+            "href" => "/explore/organisations/$organisationSlug/manage/members",
+            "label" => "Back to members"
+        ]); ?>
+        <div class="row">
+            <div class="col-md-12">
+                <?php organisation_member_requests($organisation["organisationID"]) ?>
+            </div>
+        </div>
+    <?php break;
+
+    default:
         perch_layout("admin.back", [
             "href" => "/explore/organisations/$organisationSlug/manage/",
             "label" => "Back to $organisation[organisationName]"
@@ -52,5 +64,5 @@ perch_layout("admin.title", ["title" => "Manage your organisation members"]);
                 <?php organisation_members($organisation["organisationID"]) ?>
             </div>
         </div>
-    <?php
+<?php
 } ?>

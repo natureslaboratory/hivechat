@@ -110,13 +110,12 @@ const Video : React.FunctionComponent<VideoProps> = (props) => {
     }
 
     const isIframe = props.videoURL.includes("iframe");
-    
     return (
         <div className="main-card mb-3 card">
             <div className="card-body">
-                {credit ? <h5 className="card-title">{credit}</h5> : null}
+                {credit && <h5 className="card-title">{credit}</h5>}
                 <div dangerouslySetInnerHTML={isIframe ? {__html: props.videoURL} : null}>
-                    {domain && !isIframe ? getVideoIFrame() : null}
+                    {domain && !isIframe && getVideoIFrame()}
                 </div>  
             </div>
         </div>

@@ -32,41 +32,13 @@ switch (perch_layout_var("action", true)) {
         <?php
         } else if (perch_layout_has("actionID")) {
             ?> 
-            <div id="anage-hive" 
+            <div id="manage-hive" 
                 data-organisationSlug="<?= $organisationSlug ?>" 
                 data-hiveID="<?= perch_layout_var("actionID", true) ?>"
                 data-organisationName="<?= $organisation["organisationName"] ?>"
                 data-organisationID="<?= $organisation["organisationID"] ?>"
+                data-backurl="/explore/organisations/<?= $organisation["organisationSlug"] ?>/manage/hives"
             >
-            </div>
-            <?php
-            // perch_layout("admin.back", [
-            //     "href" => "/explore/organisations/$organisationSlug/manage/hives",
-            //     "label" => "Back to Hives"
-            // ]);
-            ?>
-            
-            <!-- <div id="manage-hive" data-actionID="<?php //perch_layout_var("actionID", true) ?>" data-organisationSlug="<?php //$organisationSlug ?>"></div> -->
-            <div class="row">
-                <div class="col-md-6">
-                    <?php edit_hive(perch_layout_var("actionID", true), ["organisationSlug" => $organisationSlug]); ?> 
-                    <?php delete_hive(perch_layout_var("actionID", true)) ?>
-                </div>
-                <div class="col-md-6">
-                    <?php // create_cell(perch_layout_var("actionID", true), ["organisationSlug" => $organisationSlug]); 
-                        $cells = hive_cells(perch_layout_var("actionID", true), ["organisationSlug" => $organisationSlug], true);
-                        ?> 
-                        <div style="display: flex; justify-content: flex-end; margin-bottom: 1rem;">
-                            <a href="/explore/organisations/<?= $organisationSlug ?>/manage/hives/create/<?= perch_layout_var("actionID", true) ?>/">
-                                <button class="btn btn-alternate">+ New Cell</button>
-                            </a>
-                        </div>
-                        <?php
-                        if ($cells) {
-                            echo $cells;
-                        }
-                    ?> 
-                </div>
             </div>
             <?php
         } else {
@@ -131,7 +103,7 @@ switch (perch_layout_var("action", true)) {
                             // "memberID" => perch_member_get("id")
                         // ];
                         // get_organisation_hives($organisation["organisationID"], $opts) ?>
-                    <div id="admin-hives"></div>
+                    <div id="admin-hives" data-orgid=<?= $organisation["organisationID"] ?>></div>
                 </div>
                 <div class="col-md-6">
                     <?php //create_hive(["organisationID" => $organisation["organisationID"]]); ?>

@@ -65,7 +65,6 @@ const HiveDetails: React.FunctionComponent<HiveDetailsProps & HiveDetailsFuncs> 
 
 
     function editDetails(e: React.MouseEvent<HTMLElement>) {
-        console.log("Edit");
     }
 
     if (showEdit) {

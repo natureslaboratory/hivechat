@@ -9,6 +9,7 @@ import "./pages/explore.organsations.manage.members.add";
 import "./pages/explore.organisations.manage.details";
 import "./pages/viewHive";
 import "./pages/manageHive";
+import "./pages/test";
 
 
 
@@ -31,6 +32,13 @@ if (addOrgMemberForm) {
 let deleteForms = Array.from(document.getElementsByClassName("delete-form") as HTMLCollectionOf<HTMLElement>);
 deleteForms.forEach(form => {
     new DeleteForm(form);
+})
+
+let preventDefaulters = Array.from(document.getElementsByClassName("prevent-default") as HTMLCollectionOf<HTMLInputElement>);
+preventDefaulters.forEach(b => {
+    b.addEventListener("click", (e) => {
+        e.preventDefault();
+    })
 })
 
 

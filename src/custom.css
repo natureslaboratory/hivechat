@@ -119,3 +119,138 @@
     background-color: rgb(190, 190, 190);
     margin: calc(4rem - 30px) auto 4rem auto;
 }
+
+p:last-child {
+    margin-bottom: 0;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+    gap: 0.5rem;
+}
+
+.c-block-content {
+    pointer-events: none;
+}
+
+.c-block-content--small {
+}
+
+.c-block-content__video {
+    display: flex;
+    gap: 1rem;
+}
+
+.c-block-content__video img {
+    max-width: 250px;
+}
+
+.c-placeholder {
+    border-radius: 0.25rem;
+    background-color: #3f6ad828;
+    border: 1px solid #3f6ad891;
+    position: absolute;
+}
+
+.c-block-container {
+    display: grid;
+    position: relative;
+    list-style-type: none;
+    padding: 0;
+}
+
+@media screen and (max-width: 600px) {
+    .c-block-container {
+        width: 100%;
+    }
+}
+
+.c-add-block {
+    position: absolute;
+    height: 1px;
+    background-color: rgb(182, 182, 182);
+    width: 100%;
+}
+
+.c-add-block__menu {
+}
+
+.c-add-block__button {
+    cursor: pointer;
+    background-color: white;
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    border: 1px solid rgb(194, 194, 194);
+    color: rgb(139, 139, 139);
+}
+
+.card-wrapper {
+    display: block;
+    margin-bottom: 2rem;
+}
+
+.c-add-block__buttons {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 80px), 1fr));
+    gap: 0.5rem;
+}
+
+.public-DraftStyleDefault-block {
+    min-height: 200px;
+}
+
+.c-date-time-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+    gap: 1rem;
+}
+
+.c-add-file-form {
+    padding: 0.8rem;
+    border: 1px solid #d4d4d4;
+    border-radius: .25rem;
+    margin-bottom: 1rem;
+}
+
+.c-file-upload__file > p {
+    margin: 0;
+    font-weight: bolder;
+}
+
+.c-file-upload__file {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.c-file-upload {
+    margin-bottom: 1rem;
+}
+
+.table-action {
+    width: 100%; 
+    display: flex; 
+    justify-content: flex-end; 
+    gap: 0.5rem;
+}
+
+.c-form-check {
+    display: flex;
+    gap: 
+    0.6rem;
+    flex-direction: row-reverse;
+}
+
+
+.c-form-check__input {
+    margin-top: 0.3rem;
+}
+
+.c-form-check__label {
+
+}

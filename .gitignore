@@ -5,4 +5,5 @@
 /perch/config/config.hivechat-co-uk.php
 /perch/config/config.localhost.php
 /perch/resources/
+/file_uploads/
 node_modules

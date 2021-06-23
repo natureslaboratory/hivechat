@@ -9,6 +9,7 @@ export interface HiveCardProps {
     organisationSlug : string,
     [propName: string]: any,
     adminPage : boolean
+    showEdit: boolean
 }
 
 
@@ -41,7 +42,10 @@ function HiveCard(props : HiveCardProps) {
             </div>
             <div className="card-body">
                 {intro}
-                {link}
+                <div className="btn-container">
+                    <button className="btn btn-primary" onClick={() => {window.location.href=linkURL}}>{linkText}</button>
+                    {props.showEdit && <button className="btn btn-secondary" onClick={() => {window.location.href=`/admin/your-hives/edit/${props.hiveID}`}}>Edit</button>}
+                </div>
             </div>
         </div>
     )

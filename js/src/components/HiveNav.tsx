@@ -1,9 +1,10 @@
 import React, { useState, useEffect, CSSProperties } from 'react';
 import HiveNavItem, { CellSmall } from './HiveNavItem';
 import { CellData } from './Cell';
+import { ICell } from './NewCell/Cell';
 
 export interface HiveNavProps {
-    cells : CellData[],
+    cells : ICell[],
     currentCellID : number 
 }
 
@@ -18,12 +19,12 @@ const cardStyle : CSSProperties = {
 
 const HiveNav : React.FunctionComponent<HiveNavProps & HiveNavFuncs> = (props) => {
     const [page, setPage] = useState(0);
-    const [slicedCells, setSlicedCells] = useState<CellData[]>([]);
-    const [filteredCells, setFilteredCells] = useState<CellData[]>([]);
+    const [slicedCells, setSlicedCells] = useState<ICell[]>([]);
+    const [filteredCells, setFilteredCells] = useState<ICell[]>([]);
     const [search, setSearch] = useState("");
     const cellsPerPage = 10;
 
-    function filterCells(cells : CellData[]) {
+    function filterCells() {
         return props.cells.filter(c => {
             let match = false;
             for (const key in c) {
@@ -38,7 +39,7 @@ const HiveNav : React.FunctionComponent<HiveNavProps & HiveNavFuncs> = (props) =
         })
     }
 
-    function sliceCells(cells : CellData[]) {
+    function sliceCells(cells : ICell[]) {
         let firstIndex = cellsPerPage * page;
         let lastIndex = firstIndex + cellsPerPage;
         return cells.slice(firstIndex, lastIndex);
@@ -47,7 +48,7 @@ const HiveNav : React.FunctionComponent<HiveNavProps & HiveNavFuncs> = (props) =
 
 
     useEffect(() => {
-        setFilteredCells(filterCells(props.cells));
+        setFilteredCells(filterCells());
     }, [search, props.cells])
 
     useEffect(() => {
