@@ -123,28 +123,27 @@ const Hives: React.FunctionComponent<HivesProps> = (props) => {
             </div>
         )
     }
-
-    return (
-        <div className="c-hives">
-            <div className="c-hives__header">
-                <h2 className="c-hives__title">{props.type} Hives</h2>
-                <div className="c-hives__controls">
-                    <input
-                        type="search"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        placeholder="Search"
-                    />
-                    {pagination}
+    if (hives.length > 0) {
+        return (
+            <div className="c-hives">
+                <div className="c-hives__header">
+                    <h2 className="c-hives__title">{props.type} Hives</h2>
+                    <div className="c-hives__controls">
+                        <input
+                            type="search"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            placeholder="Search"
+                        />
+                        {pagination}
+                    </div>
+                </div>
+                <div className="c-hives__collection">
+                    {hivesRendered}
                 </div>
             </div>
-            {loading ? <p>Loading...</p> : (
-            <div className="c-hives__collection">
-                {hives.length > 0 ? hivesRendered : <p>No {props.type} hives</p>}
-            </div>
-            )}
-        </div>
-    )
+        )
+    }
     
 }
 

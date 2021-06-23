@@ -47044,9 +47044,11 @@ var Hives = function (props) {
                         }
                     } }, { children: ">" }), void 0)] }), void 0));
     }
-    return (jsx_runtime_1.jsxs("div", __assign({ className: "c-hives" }, { children: [jsx_runtime_1.jsxs("div", __assign({ className: "c-hives__header" }, { children: [jsx_runtime_1.jsxs("h2", __assign({ className: "c-hives__title" }, { children: [props.type, " Hives"] }), void 0),
-                    jsx_runtime_1.jsxs("div", __assign({ className: "c-hives__controls" }, { children: [jsx_runtime_1.jsx("input", { type: "search", value: searchTerm, onChange: function (e) { return setSearchTerm(e.target.value); }, placeholder: "Search" }, void 0), pagination] }), void 0)] }), void 0),
-            loading ? jsx_runtime_1.jsx("p", { children: "Loading..." }, void 0) : (jsx_runtime_1.jsx("div", __assign({ className: "c-hives__collection" }, { children: hives.length > 0 ? hivesRendered : jsx_runtime_1.jsxs("p", { children: ["No ", props.type, " hives"] }, void 0) }), void 0))] }), void 0));
+    if (hives.length > 0) {
+        return (jsx_runtime_1.jsxs("div", __assign({ className: "c-hives" }, { children: [jsx_runtime_1.jsxs("div", __assign({ className: "c-hives__header" }, { children: [jsx_runtime_1.jsxs("h2", __assign({ className: "c-hives__title" }, { children: [props.type, " Hives"] }), void 0),
+                        jsx_runtime_1.jsxs("div", __assign({ className: "c-hives__controls" }, { children: [jsx_runtime_1.jsx("input", { type: "search", value: searchTerm, onChange: function (e) { return setSearchTerm(e.target.value); }, placeholder: "Search" }, void 0), pagination] }), void 0)] }), void 0),
+                jsx_runtime_1.jsx("div", __assign({ className: "c-hives__collection" }, { children: hivesRendered }), void 0)] }), void 0));
+    }
 };
 exports.default = Hives;
 
