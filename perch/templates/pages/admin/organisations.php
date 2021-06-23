@@ -2,7 +2,7 @@
 <div class="app-main__outer">
     <div class="app-main__inner">
         <?php 
-        
+            echo "manage: " . perch_get("manage") . ". hiveID: " . perch_get("hiveID") . "<br>";
         ?>
         <?php if (perch_get("hiveID")) { 
             $hiveID = perch_get("hiveID") | perch_get("manage");
