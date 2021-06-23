@@ -47049,6 +47049,9 @@ var Hives = function (props) {
                         jsx_runtime_1.jsxs("div", __assign({ className: "c-hives__controls" }, { children: [jsx_runtime_1.jsx("input", { type: "search", value: searchTerm, onChange: function (e) { return setSearchTerm(e.target.value); }, placeholder: "Search" }, void 0), pagination] }), void 0)] }), void 0),
                 jsx_runtime_1.jsx("div", __assign({ className: "c-hives__collection" }, { children: hivesRendered }), void 0)] }), void 0));
     }
+    else {
+        return null;
+    }
 };
 exports.default = Hives;
 

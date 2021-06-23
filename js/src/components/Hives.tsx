@@ -143,6 +143,8 @@ const Hives: React.FunctionComponent<HivesProps> = (props) => {
                 </div>
             </div>
         )
+    } else {
+        return null;
     }
     
 }
