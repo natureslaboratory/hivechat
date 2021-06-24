@@ -39,6 +39,7 @@
     </div>
 <script type="text/javascript" src="/src/assets/scripts/main.js"></script>
 <script src="/src/assets/scripts/fitvids.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/react-rte@0.16.3/dist/react-rte.min.js"></script> -->
 <script src="/js/index.js"></script>
 
 <script src="/redactor/redactor.js"></script>

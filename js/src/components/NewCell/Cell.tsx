@@ -8,6 +8,7 @@ import { VideoBlock } from './Forms/VideoForm';
 import { TextBlock } from './Forms/TextForm';
 import { FileBlock } from './Forms/FileForm';
 import axios from 'axios';
+import { QuestionBlock } from './Blocks/Question';
 
 
 interface CellProps {
@@ -34,7 +35,7 @@ export interface IBlock<T> {
 }
 
 
-export type Blocks = VideoBlock | TextBlock | FileBlock;
+export type Blocks = VideoBlock | TextBlock | FileBlock | QuestionBlock;
 
 const Cell: React.FC<CellProps> = ({hiveID, cell}) => {
     const [blocks, setBlocks] = useState<IBlock<Blocks>[]>();

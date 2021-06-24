@@ -1,4 +1,5 @@
 const path = require('path');
+const BundelAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
     entry: './js/src/index.tsx',
@@ -7,7 +8,7 @@ module.exports = {
         path: path.resolve(__dirname)
     },
     watch: true,
-    mode: "development",
+    mode: "production",
     devtool: "source-map",
     resolve: {
         extensions: [".webpack.js", ".web.ts", ".ts", ".tsx", ".js", ".css"]
@@ -40,3 +41,8 @@ module.exports = {
     }
 
 }
+
+
+    // plugins: [
+    //     new BundelAnalyzerPlugin()
+    // ]

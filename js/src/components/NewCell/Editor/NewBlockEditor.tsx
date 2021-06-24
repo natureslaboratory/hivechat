@@ -8,6 +8,8 @@ import TextForm, { TextBlock } from '../Forms/TextForm';
 import { Draggable } from 'react-beautiful-dnd'
 import Container from './Container';
 import FileForm, { FileBlock } from '../Forms/FileForm';
+import QuestionForm from '../Forms/QuestionForm';
+import Question, { QuestionBlock } from '../Blocks/Question';
 
 interface BlockEditorProps {
     index: number
@@ -80,6 +82,17 @@ const BlockEditor: React.FC<BlockEditorProps & BlockEditorFuncs> = (props) => {
             } else {
                 content = (
                     <File {...props.block.blockData as FileBlock} />
+                )
+            }
+            break;
+        case "Question":
+            if (isEdit) {
+                content = (
+                    <QuestionForm block={block as QuestionBlock} setBlock={updateBlock} />
+                )
+            } else {
+                content = (
+                    <Question {...props.block as IBlock<QuestionBlock>} />
                 )
             }
             break;

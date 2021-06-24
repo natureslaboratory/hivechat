@@ -33,6 +33,8 @@ include('Hivechat.block.class.php');
 include('Hivechat.blocks.class.php');
 include('Hivechat.request.class.php');
 include('Hivechat.requests.class.php');
+include('Hivechat.question.class.php');
+include('Hivechat.questions.class.php');
 include('HiveApi.php');
 
 # Create the function(s) users will call from their pages
@@ -2050,5 +2052,86 @@ function organisation_contact_list($organisationID) {
   $html = $Template->apply_runtime_post_processing($html, $newContacts);
 
   echo $html;
+
+}
+
+// Questions
+
+function create_question($data) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $questions = new Hivechat_Questions($API);
+
+  $fields = [
+    "blockID",
+    "questionText"
+  ];
+
+  $newData = HiveApi::filter($data, $fields);
+  $newData["questionerID"] = perch_member_get("id");
+
+  $result = $questions->create_question($newData);
+
+  if ($result) {
+    $organisations = new Hivechat_Organisations($API);
+    $blocks = new Hivechat_Blocks($API);
+    $cells = new Hivechat_NewCells($API);
+    $hives = new Hivechat_Hives($API);
+
+    $block = $blocks->get_block($data["blockID"]);
+    $block["blockData"] = json_decode($block["blockData"], true);
+    $cell = $cells->get_cell($block["cellID"]);
+    $hive = $hives->get_hive($cell["hiveID"]);
+    $emailRecipient = "";
+    if ($hive["organisationID"] != -1) {
+      $organisation = $organisations->get_organisation($hive["organisationID"]);
+      $creatorID = $organisation["createdBy"];
+      $creator = $organisations->get_member($creatorID);
+      $emailRecipient = $creator["memberEmail"];
+    } else {
+      $creator = $organisations->get_member($hive["memberID"]);
+      $emailRecipient = $creator["memberEmail"];
+    }
+
+    $member = $organisations->get_member(perch_member_get("id"));
+
+    $member = array_merge($member, json_decode($member["memberProperties"], true));
+
+    $email = new PerchEmail("hivechat/emails/question.html");
+    $subject = "$member[first_name] $member[last_name] has asked a question in $hive[hiveTitle]";
+    $emailFields = [
+      "email_subject" => $subject,
+      "question" => "$newData[questionText]",
+      "hive_title" => $hive["hiveTitle"],
+      "cell_title" => $cell["cellTitle"],
+      "block_title" => $block["blockData"]["title"]
+    ];
+
+    
+    
+    $email->set_bulk($emailFields);
+    
+    $email->subject($subject);
+    $email->senderName("Hivechat");
+    $email->senderEmail("caleb@natureslaboratory.co.uk");
+    $email->recipientEmail($emailRecipient);
+    
+    $result = $email->send();
+
+    $debug = [
+      "recipient" => $emailRecipient,
+      "success" => $result
+    ];
+
+    echo json_encode(array_merge($emailFields, $debug));
+
+  }
+
+}
+
+function get_questions($blockID) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $questions = new Hivechat_Questions($API);
+
+  return $questions->get_block_questions($blockID);
 
 }

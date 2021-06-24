@@ -5,6 +5,8 @@ import Button, { ButtonType } from './AddBlockButton';
 import FileForm, { FileBlock } from '../Forms/FileForm';
 import TextForm, { TextBlock } from '../Forms/TextForm';
 import VideoForm, { VideoBlock } from '../Forms/VideoForm';
+import { QuestionBlock } from '../Blocks/Question';
+import QuestionForm from '../Forms/QuestionForm';
 
 export interface AddBlockProps {
     blockOrder: number
@@ -20,7 +22,7 @@ const AddBlock: React.FC<AddBlockProps & AddBlockFuncs> = (props) => {
     const [blockType, setBlockType] = useState<ButtonType>(null);
     const [block, setBlock] = useState<IBlock<Blocks>>(null);
 
-    const buttonTypes: ButtonType[] = ["Text", "Video", "File"];
+    const buttonTypes: ButtonType[] = ["Text", "Video", "File", "Question"];
 
     function handleClick(type: ButtonType) {
         switch(type) {
@@ -46,6 +48,13 @@ const AddBlock: React.FC<AddBlockProps & AddBlockFuncs> = (props) => {
                     description: ""
                 }
                 createBlock(type, fileData)
+                break;
+            case "Question":
+                let questionData: QuestionBlock = {
+                    title: "",
+                    label: ""
+                }
+                createBlock(type, questionData)
                 break;
             default:
                 console.error("Default")
@@ -88,6 +97,8 @@ const AddBlock: React.FC<AddBlockProps & AddBlockFuncs> = (props) => {
             case "File":
                 content = <FileForm block={block.blockData as FileBlock} setBlock={updateBlock} />
                 break;
+            case "Question":
+                content = <QuestionForm block={block.blockData as QuestionBlock} setBlock={updateBlock}  />
             default:
                 console.error("No Block")
         }
