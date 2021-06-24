@@ -33,6 +33,10 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
         getCell();
     }, []);
 
+    useEffect(() => {
+        console.log(blocks)
+    }, [blocks]);
+
     function getCell() {
         let url = "/page-api/cell/get?cellID=" + props.cellID;
         axios.get(url).then(res => {
@@ -69,15 +73,6 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
         if (!blocks) {
             return;
         }
-        if (saveTimeout) {
-            clearTimeout(saveTimeout);
-        }
-        setSaveTimeout(global.setTimeout(async () => {
-            let data = new FormData();
-            data.append("blocks", JSON.stringify(blocks));
-
-            clearTimeout(saveTimeout)
-        }, 100));
         setBlocks(orderBlocks(blocks));
     }
 
@@ -164,9 +159,17 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
         updateBlocks(newBlocks);
 
         let data = new FormData();
-        data.append("blocks", JSON.stringify(newBlocks));
+        let strippedBlocks = blocks.map((b, i) => {
+            return {
+                blockID: b.blockID,
+                blockOrder: b.blockOrder,
+                cellID: b.cellID
+            }
+        })
+        data.append("blocks", JSON.stringify(strippedBlocks));
         axios.post("/page-api/block/update-bulk", data)
             .then(res => {
+                console.log(res.data);
                 getCell();
             })
     }

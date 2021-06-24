@@ -1695,7 +1695,7 @@ function create_new_block($blockData)
   }
 }
 
-function update_block($block, $newFiles = [])
+function update_block($block, $newFiles = [], $opts = [])
 {
   // [blockID, blockOrder, blockType, blockData]
   $API  = new PerchAPI(1.0, 'hivechat');
@@ -1710,11 +1710,13 @@ function update_block($block, $newFiles = [])
     "blockType",
     "blockData"
   ];
+  
+
 
   // Filters the data for entering block details into db
   $data = HiveApi::filter($block, $fields);
 
-  // Decodes blockData
+  // Encodes blockData
   if (is_array($data["blockData"])) {
     $data["blockData"] = json_encode($data["blockData"]);
   }
@@ -1723,7 +1725,7 @@ function update_block($block, $newFiles = [])
 
   // Loops through currentFiles and newCurrentFiles to check if 
   // any have been deleted, and if so deletes them
-  if ($block["currentFiles"]) {
+  if ($block["currentFiles"] && !$opts["skip_files"]) {
     $currentFiles = json_decode($block["currentFiles"], true);
     $debug["currentFileID"] = $currentFiles[0]["fileID"];
     $prevCurrentFiles = $files->get_block_files($block["blockID"]);
@@ -1747,7 +1749,7 @@ function update_block($block, $newFiles = [])
   }
 
   // Uploads any new files;
-  if ($newFiles) {
+  if ($newFiles && !$opts["skip-files"]) {
     $fileNames = json_decode($block["fileNames"]);
     $debug["fileNames"] = $fileNames;
     $debug["upload_file_results"] = [];
@@ -1768,7 +1770,8 @@ function update_blocks($blocks)
 
   $results = [];
   foreach ($blocks as $block) {
-    $results[] = update_block($block);
+    echo json_encode($block);
+    $results[] = update_block($block, null, ["skip-files" => true]);
   }
 
   return $results;

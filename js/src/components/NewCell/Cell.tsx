@@ -26,6 +26,7 @@ export interface ICell {
 
 export interface IBlock<T> {
     blockType: string
+    cellID?: number
     blockOrder: number
     blockID?: number
     tempID?: number

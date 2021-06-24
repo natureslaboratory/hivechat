@@ -48666,6 +48666,9 @@ var CellEditor = function (props) {
     react_2.useEffect(function () {
         getCell();
     }, []);
+    react_2.useEffect(function () {
+        console.log(blocks);
+    }, [blocks]);
     function getCell() {
         var url = "/page-api/cell/get?cellID=" + props.cellID;
         axios_1.default.get(url).then(function (res) {
@@ -48696,22 +48699,9 @@ var CellEditor = function (props) {
         });
     }
     function updateBlocks(blocks) {
-        var _this = this;
         if (!blocks) {
             return;
         }
-        if (saveTimeout) {
-            clearTimeout(saveTimeout);
-        }
-        setSaveTimeout(__webpack_require__.g.setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
-            var data;
-            return __generator(this, function (_a) {
-                data = new FormData();
-                data.append("blocks", JSON.stringify(blocks));
-                clearTimeout(saveTimeout);
-                return [2 /*return*/];
-            });
-        }); }, 100));
         setBlocks(orderBlocks(blocks));
     }
     function orderBlocks(blocks) {
@@ -48770,7 +48760,7 @@ var CellEditor = function (props) {
     }
     function handleDrop(drop, provided) {
         return __awaiter(this, void 0, void 0, function () {
-            var newBlocks, i, i, data;
+            var newBlocks, i, i, data, strippedBlocks;
             return __generator(this, function (_a) {
                 newBlocks = blocks;
                 newBlocks[drop.source.index].blockOrder = newBlocks[drop.destination.index].blockOrder;
@@ -48789,9 +48779,17 @@ var CellEditor = function (props) {
                 }
                 updateBlocks(newBlocks);
                 data = new FormData();
-                data.append("blocks", JSON.stringify(newBlocks));
+                strippedBlocks = blocks.map(function (b, i) {
+                    return {
+                        blockID: b.blockID,
+                        blockOrder: b.blockOrder,
+                        cellID: b.cellID
+                    };
+                });
+                data.append("blocks", JSON.stringify(strippedBlocks));
                 axios_1.default.post("/page-api/block/update-bulk", data)
                     .then(function (res) {
+                    console.log(res.data);
                     getCell();
                 });
                 return [2 /*return*/];
@@ -50022,18 +50020,6 @@ if (hive) {
 /******/ 				}
 /******/ 			}
 /******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/global */
-/******/ 	(() => {
-/******/ 		__webpack_require__.g = (function() {
-/******/ 			if (typeof globalThis === 'object') return globalThis;
-/******/ 			try {
-/******/ 				return this || new Function('return this')();
-/******/ 			} catch (e) {
-/******/ 				if (typeof window === 'object') return window;
-/******/ 			}
-/******/ 		})();
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
