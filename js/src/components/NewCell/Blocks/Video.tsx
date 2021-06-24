@@ -61,11 +61,15 @@ const Video: React.FunctionComponent<VideoProps & VideoFuncs> = (props) => {
         let url = props.url;
         if (props.url.includes("iframe")) {
             let urlArr = props.url.split("\"");
-            urlArr.forEach(e => {
+            for (let i = 0; i < urlArr.length; i++) {
+                const e = urlArr[i];
                 if (e.includes("https") || e.includes("http")) {
                     url = e;
+                    details.embedURL = e;
+                    break;
                 }
-            })
+                
+            }
         }
         console.log(url);
         switch (details.domain) {
@@ -82,15 +86,17 @@ const Video: React.FunctionComponent<VideoProps & VideoFuncs> = (props) => {
                 details.title = props.title ? props.title : videoDetails.snippet.title;
                 break;
             case "vimeo.com":
-                let urlSplit = url.split("/");
-                for (let i = urlSplit.length - 1; i >= 0; i--) {
-                    const element = urlSplit[i];
-                    if (element) {
-                        details.id = element;
-                        break;
+                if (!details.embedURL) {
+                    let urlSplit = url.split("/");
+                    for (let i = urlSplit.length - 1; i >= 0; i--) {
+                        const element = urlSplit[i];
+                        if (element) {
+                            details.id = element;
+                            break;
+                        }
                     }
+                    details.embedURL = "https://player.vimeo.com/video/" + details.id;
                 }
-                details.embedURL = "https://player.vimeo.com/video/" + details.id;
                 details.title = props.title || "";
                 break;
             default:
@@ -164,17 +170,17 @@ const Video: React.FunctionComponent<VideoProps & VideoFuncs> = (props) => {
         )
     }
     
-    if (isIframe) {
-        return (
-            <div dangerouslySetInnerHTML={isIframe ? { __html: props.url } : null} className={"c-block-content " + props.small && "c-block-content--small"}>
-            </div>
-        )
-    }
+    // if (isIframe) {
+    //     return (
+    //         <div dangerouslySetInnerHTML={isIframe ? { __html: props.url } : null} className={"c-block-content " + props.small && "c-block-content--small"}>
+    //         </div>
+    //     )
+    // }
 
     return (
         <>
             <div className={"c-block-content " + props.small && "c-block-content--small"}>
-                {videoDetails.domain && !isIframe && getVideoIFrame()}
+                {videoDetails.domain && getVideoIFrame()}
             </div>
         </>
     )

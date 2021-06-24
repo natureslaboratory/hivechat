@@ -16,7 +16,6 @@ interface VideoFormFuncs {
 }
 
 const VideoForm : React.FC<VideoFormProps & VideoFormFuncs> = ({block, setBlock}) => {
-    console.log(block);
     if (block) {
         return (
             <form>
