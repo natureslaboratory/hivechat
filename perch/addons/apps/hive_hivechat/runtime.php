@@ -17,6 +17,8 @@ include('Hivechat.cell.class.php');
 include('Hivechat.cells.class.php');
 include('Hivechat.organisation.class.php');
 include('Hivechat.organisations.class.php');
+include('Hivechat.memberOrg.class.php');
+include('Hivechat.memberOrgs.class.php');
 include('Hivechat.notification.class.php');
 include('Hivechat.notifications.class.php');
 include('Hivechat.invite.class.php');
@@ -38,7 +40,6 @@ include('HiveApi.php');
 function hive_hivechat_form_handler($SubmittedForm)
 {
   if ($SubmittedForm->validate()) {
-
     $API  = new PerchAPI(1.0, 'hive_hivechat');
 
     function member_organisation_details($data, $type, $API) {
@@ -73,14 +74,15 @@ function hive_hivechat_form_handler($SubmittedForm)
       }
       $newData["memberOrgDynamicFields"] = addslashes(json_encode($dynamicFields));
 
-      $organisations = new Hivechat_Organisations($API);
+      $memberOrgs = new Hivechat_MemberOrgs($API);
       $invites = new Hivechat_Invites($API);
 
+      $newData["memberOrgID"] = $memberOrgs->get_memberorg_id($newData["organisationID"], $newData["memberID"]);
+
       if ($type == "join") {
-        $result = $organisations->add_member($newData);
-        echo "Hello there $result";
+        $result = $memberOrgs->add_member($newData);
       } else {
-        $result = $organisations->update_member($newData);
+        $result = $memberOrgs->update_member($newData);
       }
       if ($result) {
         $invites->delete_invite($data["inviteID"]);
@@ -352,10 +354,30 @@ function hive_hivechat_form_handler($SubmittedForm)
         $requestID = $SubmittedForm->data["requestID"];
         $API  = new PerchAPI(1.0, 'hivechat');
         $requests = new Hivechat_Requests($API);
-        $organisations = new Hivechat_Organisations($API);
+        $memberOrgs = new Hivechat_MemberOrgs($API);
 
         $request = $requests->get_request($requestID);
-        $result = $organisations->add_member($request);
+
+        $data = [];
+
+        foreach ($request as $key => $value) {
+          if ($key == "requestDynamicFields") {
+            $newDynamic = [];
+            $decoded = json_decode($value, true);
+            foreach ($decoded as $dynamicKey => $dynamicValue) {
+              if ($dynamicKey == "contactList") {
+                $data["contactList"] = $dynamicValue ? 1 : 0;
+              } else {
+                $newDynamic[$dynamicKey] = $dynamicValue;
+              }
+            }
+            $data["memberOrgDynamicFields"] = addslashes(json_encode($newDynamic));
+          } else {
+            $data[$key] = $value;
+          }
+        }
+
+        $result = $memberOrgs->add_member($data);
         if ($result) {
           $requests->delete_request($requestID);
         }
@@ -380,6 +402,8 @@ function hive_hivechat_form_handler($SubmittedForm)
         member_organisation_details($data, "update", $API);
         break;
     }
+  } else {
+    echo "Not Validated";
   }
 }
 
@@ -1310,7 +1334,6 @@ function update_organisation_member_details($organisationID) {
 
   $data = array_merge($memberOrg, $organisation);
   $data["action"] = "update_member_organisation_details";
-  $data["contactList"] = $data["contactList"] ? "true" : "";
 
 
   $Template = $API->get('Template');

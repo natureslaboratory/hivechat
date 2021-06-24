@@ -12,7 +12,22 @@ class Hivechat_Organisations extends PerchAPI_Factory
 
 	protected $default_sort_column = 'organisationID';
 
-	public $static_fields   = array('organisationID', 'organisationName', 'organisationSlug');
+	public $static_fields   = [
+		"organisationName",
+		"organisationSlug",
+		"organisationLogo",
+		"organisationScope",
+		"createdBy",
+		"organisationDesc"
+	];
+
+	public $memberOrg_static_fields = [
+		"memberID",
+		"organisationID",
+		"memberRole",
+		"contactList",
+		"memberOrgDynamicFields"
+	];
 
 	function __construct($API)
 	{
@@ -27,14 +42,6 @@ class Hivechat_Organisations extends PerchAPI_Factory
 			organisationDesc text,
 			dateCreated datetime default NOW(),
 			lastUpdated datetime default NOW()
-		); CREATE TABLE IF NOT EXISTS perch3_memberorg (
-			memberOrgID INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-			memberID INT(11) NOT NULL,
-			organisationID INT(11) NOT NULL,
-			memberRole INT(11) NOT NULL,
-			contactList TINYINT(1) NOT NULL,
-			memberOrgDynamicFields text,
-			dateCreated datetime DEFAULT NOW()
 		);";
 
 		$statements = explode(';', $sql);
@@ -175,6 +182,34 @@ class Hivechat_Organisations extends PerchAPI_Factory
 			$sql = "INSERT INTO perch3_memberorg (organisationID, memberID, memberRole, contactList, memberOrgDynamicFields) VALUES ('$data[organisationID]', '$data[memberID]', 1, $contactList '$data[memberOrgDynamicFields]')";
 			return $this->db->execute($sql);
 		}
+
+        $sql = "INSERT INTO $this->table (";
+        $count = 0;
+        foreach ($this->static_fields as $key) {
+            if ($data[$key]) {
+                if ($count == 0) {
+                    $sql .= $key;
+                } else {
+                    $sql .= ", $key";
+                }
+                $count++;
+            }
+        }
+        $sql .= ") VALUES (";
+        $count = 0;
+        foreach ($this->static_fields as $key) {
+            if ($data[$key]) {
+                if ($count == 0) {
+                    $sql .= "'$data[$key]'";
+                } else {
+                    $sql .= ", '$data[$key]'";
+                }
+                $count++;
+            }
+        }
+
+        $sql .= ");";
+        return $this->db->execute($sql);
 	}
 
 	public function get_member($memberID)
