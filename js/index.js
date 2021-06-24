@@ -47894,7 +47894,7 @@ var Video = function (props) {
     };
     function getVideoDetails() {
         return __awaiter(this, void 0, void 0, function () {
-            var details, _a, youtubeSplit, data, videoDetails_1, urlSplit, i, element;
+            var details, url, urlArr, _a, youtubeSplit, data, videoDetails_1, urlSplit, i, element;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -47908,6 +47908,16 @@ var Video = function (props) {
                             title: ""
                         };
                         details.domain = domains.find(function (d) { return props.url.includes(d); });
+                        url = props.url;
+                        if (props.url.includes("iframe")) {
+                            urlArr = props.url.split("\"");
+                            urlArr.forEach(function (e) {
+                                if (e.includes("https") || e.includes("http")) {
+                                    url = e;
+                                }
+                            });
+                        }
+                        console.log(url);
                         _a = details.domain;
                         switch (_a) {
                             case "youtube.com": return [3 /*break*/, 1];
@@ -47915,7 +47925,7 @@ var Video = function (props) {
                         }
                         return [3 /*break*/, 4];
                     case 1:
-                        youtubeSplit = props.url.split("?v=");
+                        youtubeSplit = url.split("?v=");
                         details.id = youtubeSplit[youtubeSplit.length - 1];
                         return [4 /*yield*/, axios_1.default.get("/page-api/youtube-details?id=" + details.id)
                                 .then(function (res) { return res.data; })];
@@ -47929,7 +47939,7 @@ var Video = function (props) {
                         details.title = props.title ? props.title : videoDetails_1.snippet.title;
                         return [3 /*break*/, 5];
                     case 3:
-                        urlSplit = props.url.split("/");
+                        urlSplit = url.split("/");
                         for (i = urlSplit.length - 1; i >= 0; i--) {
                             element = urlSplit[i];
                             if (element) {
@@ -47938,7 +47948,7 @@ var Video = function (props) {
                             }
                         }
                         details.embedURL = "https://player.vimeo.com/video/" + details.id;
-                        details.title = props.title;
+                        details.title = props.title || "";
                         return [3 /*break*/, 5];
                     case 4: return [3 /*break*/, 5];
                     case 5:
@@ -47984,7 +47994,10 @@ var Video = function (props) {
                 jsx_runtime_1.jsxs("div", __assign({ className: "c-block-content__video" }, { children: [videoDetails.thumbnail ? jsx_runtime_1.jsx(Image_1.default, { handleLoad: props.handleLoad, url: videoDetails.thumbnail, height: videoDetails === null || videoDetails === void 0 ? void 0 : videoDetails.maxHeight, width: videoDetails === null || videoDetails === void 0 ? void 0 : videoDetails.maxWidth, alt: "Video Thumbnail" }, void 0) : jsx_runtime_1.jsx("div", { style: { height: "" + (videoDetails === null || videoDetails === void 0 ? void 0 : videoDetails.maxWidth) } }, void 0),
                         videoDetails.title && jsx_runtime_1.jsx("strong", { children: videoDetails.title }, void 0)] }), void 0)] }), void 0));
     }
-    return (jsx_runtime_1.jsx(jsx_runtime_1.Fragment, { children: jsx_runtime_1.jsx("div", __assign({ dangerouslySetInnerHTML: isIframe ? { __html: props.url } : null, className: "c-block-content " + props.small && "c-block-content--small" }, { children: videoDetails.domain && !isIframe && getVideoIFrame() }), void 0) }, void 0));
+    if (isIframe) {
+        return (jsx_runtime_1.jsx("div", { dangerouslySetInnerHTML: isIframe ? { __html: props.url } : null, className: "c-block-content " + props.small && "c-block-content--small" }, void 0));
+    }
+    return (jsx_runtime_1.jsx(jsx_runtime_1.Fragment, { children: jsx_runtime_1.jsx("div", __assign({ className: "c-block-content " + props.small && "c-block-content--small" }, { children: videoDetails.domain && !isIframe && getVideoIFrame() }), void 0) }, void 0));
 };
 exports.default = Video;
 
@@ -49120,12 +49133,18 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var VideoForm = function (_a) {
     var block = _a.block, setBlock = _a.setBlock;
-    return (jsx_runtime_1.jsxs("form", { children: [jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Title" }, void 0),
-                    jsx_runtime_1.jsx("input", { className: "form-control", type: "text", value: block.title, onChange: function (e) { return setBlock(__assign(__assign({}, block), { title: e.target.value })); } }, void 0)] }), void 0),
-            jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "URL" }, void 0),
-                    jsx_runtime_1.jsx("input", { className: "form-control", type: "text", value: block.url, onChange: function (e) { return setBlock(__assign(__assign({}, block), { url: e.target.value })); } }, void 0)] }), void 0),
-            jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Description" }, void 0),
-                    jsx_runtime_1.jsx("textarea", { className: "form-control", value: block.description, onChange: function (e) { return setBlock(__assign(__assign({}, block), { description: e.target.value })); } }, void 0)] }), void 0)] }, void 0));
+    console.log(block);
+    if (block) {
+        return (jsx_runtime_1.jsxs("form", { children: [jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Title" }, void 0),
+                        jsx_runtime_1.jsx("input", { className: "form-control", type: "text", value: block.title, onChange: function (e) { return setBlock(__assign(__assign({}, block), { title: e.target.value })); } }, void 0)] }), void 0),
+                jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "URL" }, void 0),
+                        jsx_runtime_1.jsx("input", { className: "form-control", type: "text", value: block.url, onChange: function (e) { return setBlock(__assign(__assign({}, block), { url: e.target.value })); } }, void 0)] }), void 0),
+                jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Description" }, void 0),
+                        jsx_runtime_1.jsx("textarea", { className: "form-control", value: block.description, onChange: function (e) { return setBlock(__assign(__assign({}, block), { description: e.target.value })); } }, void 0)] }), void 0)] }, void 0));
+    }
+    else {
+        return null;
+    }
 };
 exports.default = VideoForm;
 
