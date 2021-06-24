@@ -47937,7 +47937,7 @@ var Video = function (props) {
                                 break;
                             }
                         }
-                        details.embedURL = "https://player.vimeo.com/video/" + videoDetails_1.id;
+                        details.embedURL = "https://player.vimeo.com/video/" + details.id;
                         details.title = props.title;
                         return [3 /*break*/, 5];
                     case 4: return [3 /*break*/, 5];
@@ -48381,10 +48381,19 @@ var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var UpdateCell = function (props) {
     var _a = __read(react_1.useState(null), 2), cell = _a[0], setCell = _a[1];
+    var _b = __read(react_1.useState(false), 2), showDelete = _b[0], setShowDelete = _b[1];
     react_1.useEffect(function () {
         setCell(props.cell);
     }, [props.cell]);
     var content = null;
+    var buttons = (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", onClick: function (e) {
+                    e.preventDefault();
+                    props.updateCell(e, cell);
+                } }, { children: "Save" }), void 0),
+            jsx_runtime_1.jsx("button", __assign({ className: "btn btn-danger", onClick: function (e) {
+                    e.preventDefault();
+                    setShowDelete(true);
+                } }, { children: "Delete Cell" }), void 0)] }, void 0));
     if (cell) {
         content = (jsx_runtime_1.jsxs("form", { children: [jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Title" }, void 0),
                         jsx_runtime_1.jsx("input", { type: "text", className: "form-control", value: cell.cellTitle, onChange: function (e) { return setCell(__assign(__assign({}, cell), { cellTitle: e.target.value })); } }, void 0)] }), void 0),
@@ -48393,10 +48402,7 @@ var UpdateCell = function (props) {
                 jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Date" }, void 0),
                         jsx_runtime_1.jsxs("div", __assign({ className: "c-date-time-form" }, { children: [jsx_runtime_1.jsx("input", { type: "date", className: "form-control", value: cell.cellDate, onChange: function (e) { return setCell(__assign(__assign({}, cell), { cellDate: e.target.value })); } }, void 0),
                                 jsx_runtime_1.jsx("input", { type: "time", className: "form-control", value: cell.cellTime, onChange: function (e) { return setCell(__assign(__assign({}, cell), { cellTime: e.target.value })); } }, void 0)] }), void 0)] }), void 0),
-                jsx_runtime_1.jsx("div", __assign({ className: "btn-container" }, { children: jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", onClick: function (e) {
-                            e.preventDefault();
-                            props.updateCell(e, cell);
-                        } }, { children: "Save" }), void 0) }), void 0)] }, void 0));
+                jsx_runtime_1.jsx("div", __assign({ className: "btn-container" }, { children: buttons }), void 0)] }, void 0));
     }
     return (jsx_runtime_1.jsx("div", __assign({ className: "card" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [jsx_runtime_1.jsx("h5", __assign({ className: "card-title" }, { children: "Edit Cell" }), void 0), content] }), void 0) }), void 0));
 };

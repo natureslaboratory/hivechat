@@ -82,7 +82,7 @@ const Video: React.FunctionComponent<VideoProps & VideoFuncs> = (props) => {
                         break;
                     }
                 }
-                details.embedURL = "https://player.vimeo.com/video/" + videoDetails.id;
+                details.embedURL = "https://player.vimeo.com/video/" + details.id;
                 details.title = props.title;
                 break;
             default:

@@ -11,12 +11,26 @@ interface EditCellProps {
 
 const UpdateCell: React.FC<EditCellProps> = (props) => {
     const [cell, setCell] = useState<CellDetails>(null)
+    const [showDelete, setShowDelete] = useState(false);
 
     useEffect(() => {
         setCell(props.cell)
     }, [props.cell])
 
     let content = null;
+
+    let buttons = (
+        <>
+            <button className="btn btn-primary" onClick={(e) => {
+                e.preventDefault();
+                props.updateCell(e, cell)}
+                }>Save</button>
+            <button className="btn btn-danger" onClick={(e) => {
+                e.preventDefault();
+                setShowDelete(true);
+            }}>Delete Cell</button>
+        </>
+    )
 
     if (cell) {
         content = (
@@ -37,10 +51,7 @@ const UpdateCell: React.FC<EditCellProps> = (props) => {
                     </div>
                 </div>
                 <div className="btn-container">
-                    <button className="btn btn-primary" onClick={(e) => {
-                        e.preventDefault();
-                        props.updateCell(e, cell)}
-                        }>Save</button>
+                    {buttons}
                 </div>
             </form>
         )
