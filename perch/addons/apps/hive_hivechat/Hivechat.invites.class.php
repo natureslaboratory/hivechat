@@ -114,6 +114,14 @@ class Hivechat_Invites extends PerchAPI_Factory
         }
         return false;
     }
+    
+    function has_invites($memberEmail) {
+        $sql = "SELECT * FROM perch3_invites WHERE memberEmail='$memberEmail' LIMIT 1";
+        if ($this->db->get_row($sql)) {
+            return true;
+        }
+        return false;
+    }
 
     function has_organisation_invite($memberEmail, $organisationID) {
         $sql = "SELECT * FROM perch3_invites WHERE memberEmail='$memberEmail' AND organisationID='$organisationID' LIMIT 1";
