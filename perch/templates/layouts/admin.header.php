@@ -57,10 +57,6 @@ function get_gravatar($email, $s = 80, $d = 'mp', $r = 'g', $img = true, $atts =
         });
     </script>
     <link href="/src/main.css?v=<?php echo rand(); ?>" rel="stylesheet">
-    
-    <?php
-		   
-	?>
 </head>
 <link href="/src/custom.css?v=<?php echo rand(); ?>" rel="stylesheet">
 </head>
