@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
 import { QuestionResponse } from '../Blocks/Question';
+import { useSelector, useDispatch } from 'react-redux'
+import { set, unset } from '../../../slices/questionSlice'
+import { AppDispatch, RootState } from '../../../pages/manageHive';
 
-interface QuestionAdminProps {
+export interface QuestionAdminProps {
     responses: QuestionResponse[]
     selectedQuestion?: QuestionResponse
+}
+
+interface QuestionAdminFuncs {
     setShowManage(set: boolean): void
     setSelectedQuestion(question: QuestionResponse): void
     submitAnswer(answerText: string, questionID: number, answerPrivacy?: string) : Promise<void>
 }
 
-const QuestionAdminModal: React.FC<QuestionAdminProps> = (props) => {
+const QuestionAdminModal: React.FC<QuestionAdminProps & QuestionAdminFuncs> = (props) => {
     const [answer, setAnswer] = useState("");
     const [privacy, setPrivacy] = useState<"Public" | "Private">("Private");
+    const dispatch = useDispatch<AppDispatch>();
 
     let content = (
         <table className="mb-0 table">
@@ -32,7 +39,7 @@ const QuestionAdminModal: React.FC<QuestionAdminProps> = (props) => {
                                 <button className="btn btn-outline-primary" onClick={() => {
                                     props.setSelectedQuestion(r);
                                 }}>
-                                    Answer
+                                    View
                                 </button>
                                 <button className="btn btn-outline-danger">
                                     Delete
@@ -49,24 +56,41 @@ const QuestionAdminModal: React.FC<QuestionAdminProps> = (props) => {
 
     if (props.selectedQuestion) {
         content = (
-            <form>
-                <div className="form-group">
-                    <label>{props.selectedQuestion.questionText}</label>
-                    <textarea className="form-control" onChange={(e) => setAnswer(e.target.value)} value={answer} />
+            <>
+                <h5>{props.selectedQuestion.questionText}</h5>
+                <p>from {props.selectedQuestion.memberName}</p>
+                <h6>Current Answers</h6>
+                <div className="c-answers">
+                    {props.selectedQuestion.answers ? props.selectedQuestion.answers.map((a, i) => {
+                        return (
+                            <div className="c-answer">
+                                <p>{a.answerText}</p>
+                                <div className="c-answer__details">
+                                    <p>{a.answererName}</p>
+                                </div>
+                            </div>
+                        )
+                    }) : <em>No answers</em>}
                 </div>
-                <div className="form-group c-form-check">
-                    <label className="c-form-check__label">
-                        Would you like this answer to be listed on the question block?
-                    </label>
-                    <input type="checkbox" className="c-form-check__input" id="contactList" value="1" onChange={() => {
-                        if (privacy == "Private") {
-                            setPrivacy("Public");
-                        } else {
-                            setPrivacy("Private");
-                        }
-                    }} checked={privacy == "Private" ? false : true} />
-                </div>
-            </form>
+                <form>
+                    <div className="form-group">
+                        <label>Answer</label>
+                        <textarea style={{minHeight: "120px"}} className="form-control" onChange={(e) => setAnswer(e.target.value)} value={answer} />
+                    </div>
+                    <div className="form-group c-form-check">
+                        <label className="c-form-check__label">
+                            Would you like this answer to be listed on the question block?
+                        </label>
+                        <input type="checkbox" className="c-form-check__input" id="contactList" value="1" onChange={() => {
+                            if (privacy == "Private") {
+                                setPrivacy("Public");
+                            } else {
+                                setPrivacy("Private");
+                            }
+                        }} checked={privacy == "Private" ? false : true} />
+                    </div>
+                </form>
+            </>
         )
 
         back = (
@@ -77,7 +101,7 @@ const QuestionAdminModal: React.FC<QuestionAdminProps> = (props) => {
                 }}>Submit</button>
                 <button className="btn btn-secondary" onClick={(e) => {
                     e.preventDefault();
-                    props.setSelectedQuestion(null);
+                    dispatch(unset());
                 }}>Back</button>
             </>
         )

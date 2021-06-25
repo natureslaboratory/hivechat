@@ -15,7 +15,7 @@ class Hivechat_Answers extends PerchAPI_Factory
 	public $static_fields   = [
         'questionID',
         'answerPrivacy',
-        'anwsererID',
+        'answererID',
         'answerText'
     ];
 

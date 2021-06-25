@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/natureslaboratory/hivechat#readme",
   "dependencies": {
+    "@reduxjs/toolkit": "^1.6.0",
     "@tinymce/tinymce-react": "^3.12.6",
     "@types/react-beautiful-dnd": "^13.0.0",
     "axios": "^0.21.1",

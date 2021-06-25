@@ -256,22 +256,9 @@ p:last-child {
 }
 
 .c-question__manage-wrapper {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.26);
-    z-index: 200;
 }
 
 .c-question__manage {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    max-width: 800px;
-    width: 80%;
 }
 
 span.invites{
@@ -286,4 +273,27 @@ span.invites{
 	border-radius: 12px;
 	line-height:14px;
 	margin-left:10px;
+}
+
+.c-answers {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.c-answer {
+
+}
+
+.c-answer > p {
+    margin: 0;
+}
+
+.c-answer > em {
+    font-style: italic;
+}
+
+.c-answer__details p {
+    opacity: 0.8;
 }

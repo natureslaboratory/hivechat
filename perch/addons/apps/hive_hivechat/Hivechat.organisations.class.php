@@ -58,10 +58,12 @@ class Hivechat_Organisations extends PerchAPI_Factory
 			return;
 		}
 		$sql = "INSERT INTO perch3_organisations (organisationName, organisationSlug, createdBy) VALUES ('$title', '$data[organisationSlug]', '$data[memberID]')";
-		$orgID = $this->db->get_row("SELECT LAST_INSERT_ID()")["organisationID"];
+		echo $this->db->execute($sql) ? "Success" : "Fail";
+		$orgID = $this->db->get_row("SELECT LAST_INSERT_ID()")["LAST_INSERT_ID()"];
 
 		$sql = "INSERT INTO perch3_memberorg (memberID, organisationID, memberRole, contactList) VALUES ('$data[memberID]', $orgID, 0, 0)";
-		$this->db->execute($sql);
+		echo $sql;
+		echo $this->db->execute($sql) ? "Success" : "Fail";
 	}
 
 	public function update_organisation($data)

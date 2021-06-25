@@ -25,6 +25,7 @@ export interface QuestionAnswer {
     answerID: number,
     answerText: number,
     answererID: number,
+    answererName: string,
     dateCreated: number
 }
 

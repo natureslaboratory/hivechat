@@ -7,6 +7,15 @@ import axios from 'axios';
 import { CellDetails } from './CreateCell';
 import EditCellDetails from './EditCellDetails';
 import { FileBlock } from '../Forms/FileForm';
+import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { Provider } from 'react-redux';
+import { QuestionBlock } from '../Blocks/Question';
+import questionReducer from '../../../slices/questionSlice';
+
+import { useSelector, useDispatch } from 'react-redux'
+import { set, unset } from '../../../slices/questionSlice'
+import QuestionAdminModal, { QuestionAdminProps } from '../Admin/QuestionAdminModal';
+import { RootState } from '../../../pages/manageHive';
 
 export interface CellEditorProps {
     cellID: number
@@ -17,9 +26,7 @@ interface CellEditorFuncs {
     getCells(): void
 }
 
-
 const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
-
     const [blocks, setBlocks] = useState<IBlock<Blocks>[]>([]);
     const [cell, setCell] = useState<CellDetails>({
         cellTitle: "",
@@ -27,7 +34,6 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
         cellDate: "",
         cellTime: ""
     });
-    const [saveTimeout, setSaveTimeout] = useState<NodeJS.Timeout>(null);
 
     useEffect(() => {
         getCell();
@@ -205,6 +211,24 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
                 console.log(res.data);
                 getCell();
             });
+    }
+
+    
+    const selectedQuestion = useSelector((state: RootState) => {
+        console.log(state);
+        return state.question;
+    });
+
+    if (selectedQuestion.blockID > 0) {
+        return (
+            <QuestionAdminModal
+                selectedQuestion={null}
+                responses={selectedQuestion.responses}
+                setShowManage={null}
+                submitAnswer={null}
+                setSelectedQuestion={null}
+            />
+        )
     }
 
     return (

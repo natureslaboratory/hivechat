@@ -2155,7 +2155,11 @@ function get_questions($blockID, $adminAccess = false) {
     $filteredAnswers = [];
     foreach ($questionAnswers as $answer) {
       if ($answer["answerPrivacy"] == "Public" || $adminAccess) {
-        $filteredAnswers[] = $answer;
+        $answerer = $organisations->get_member($answer["answererID"]);
+        $answererProps = json_decode($answerer["memberProperties"], true);
+        $filteredAnswers[] = array_merge($answer, [
+          "answererName" => "$answererProps[first_name] $answererProps[last_name]"
+        ]);
       }
     }
 
@@ -2165,7 +2169,7 @@ function get_questions($blockID, $adminAccess = false) {
       "questionText" => $response["questionText"],
       "dateCreated" => $response["dateCreated"],
       "memberName" => "$memberProps[first_name] $memberProps[last_name]",
-      "answers" => $questionAnswers
+      "answers" => $filteredAnswers
     ];
   }
 
@@ -2186,6 +2190,7 @@ function create_answer($data) {
 
   $filteredData = HiveApi::filter($data, $answers->static_fields);
   $filteredData["answerText"] = addslashes($filteredData["answerText"]);
+  $filteredData["answererID"] = perch_member_get("id");
   return $answers->create_answer($filteredData);
 }
 

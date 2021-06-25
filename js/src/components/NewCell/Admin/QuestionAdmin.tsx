@@ -2,17 +2,23 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { QuestionBlock, QuestionResponse } from '../Blocks/Question';
 import { IBlock } from '../Cell';
-import QuestionAdminModal from './QuestionAdminModal';
+import QuestionAdminModal, { QuestionAdminProps } from './QuestionAdminModal';
+import { useSelector, useDispatch } from 'react-redux'
+import { QuestionModalProps, set, unset } from '../../../slices/questionSlice'
+import { AppDispatch, RootState } from '../../../pages/manageHive';
 
-interface QuestionAdminProps {
+interface QuestionAdminWrapperProps {
     responses: QuestionResponse[]
     getResponses(): void;
 }
 
 
-const QuestionAdmin: React.FC<IBlock<QuestionBlock> & QuestionAdminProps> = (props) => {
+const QuestionAdmin: React.FC<IBlock<QuestionBlock> & QuestionAdminWrapperProps> = (props) => {
     const [showManage, setShowManage] = useState(false);
     const [selectedQuestion, setSelectedQuestion] = useState<QuestionResponse>(null);
+
+    const dispatch = useDispatch<AppDispatch>();
+    const question = useSelector((state: RootState) => state.question);
 
     function submitAnswer(answerText: string, questionID: number, answerPrivacy = "Private") {
         let data = new FormData();
@@ -28,7 +34,6 @@ const QuestionAdmin: React.FC<IBlock<QuestionBlock> & QuestionAdminProps> = (pro
             })
 
     }
-
     return (
         <div>
             <h5 className="card-title">{props.blockData.title}</h5>
@@ -36,7 +41,9 @@ const QuestionAdmin: React.FC<IBlock<QuestionBlock> & QuestionAdminProps> = (pro
             <div className="btn-container">
                 <button className="btn btn-primary" onClick={(e) => {
                     e.preventDefault();
-                    setShowManage(true);
+                    // setShowManage(true);
+                    // dispatch(set())
+                    dispatch(set(props));
                 }}>Manage</button>
             </div>
 
