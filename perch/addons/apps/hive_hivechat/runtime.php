@@ -2035,7 +2035,14 @@ function has_invite($inviteID) {
     return true;
   }
   return false;
+}
 
+function has_invites() {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $invites = new Hivechat_Invites($API);
+
+  $count = $invites->has_invites(perch_member_get("email"));
+  return $count;
 }
 
 function organisation_contact_list($organisationID) {

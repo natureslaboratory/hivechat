@@ -1,8 +1,10 @@
 <?php
 
-//     ini_set('display_errors', 1);
-//     ini_set('display_startup_errors', 1);
-//     error_reporting(E_ALL);
+/*
+     ini_set('display_errors', 1);
+     ini_set('display_startup_errors', 1);
+     error_reporting(E_ALL);
+*/
 
 class Hivechat_Invites extends PerchAPI_Factory
 {
@@ -113,6 +115,12 @@ class Hivechat_Invites extends PerchAPI_Factory
             return true;
         }
         return false;
+    }
+    
+    function has_invites($memberEmail) {
+       $sql = "SELECT COUNT(memberEmail) AS count FROM perch3_invites WHERE memberEmail='$memberEmail'";
+        $data = $this->db->get_row($sql);
+        return $data['count'];
     }
 
     function has_organisation_invite($memberEmail, $organisationID) {

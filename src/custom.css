@@ -274,6 +274,20 @@ p:last-child {
     width: 80%;
 }
 
+span.invites{
+	padding:5px;
+	display:inline-block;
+	font-weight:700;
+	color:#fff;
+	background:gold;
+	height:24px;
+	width:24px;
+	text-align: center;
+	border-radius: 12px;
+	line-height:14px;
+	margin-left:10px;
+}
+
 .app-sidebar {
     z-index: 0;
 }
