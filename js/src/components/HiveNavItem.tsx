@@ -25,7 +25,7 @@ const HiveNavItem : React.FunctionComponent<ICell & HiveNavItemProps> = (props) 
         subtitle = props.cellSubtitle
     }
     
-    let date = props.cellDate ? formatDate(new Date(props.cellDate)) : "";
+    let date = props.cellDate && props.cellDate != "0000-00-00 00:00:00" ? formatDate(new Date(props.cellDate)) : "";
     
 
     return (
