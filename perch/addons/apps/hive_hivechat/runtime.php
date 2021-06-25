@@ -1524,53 +1524,61 @@ function is_hive_owner($memberID, $hiveID)
 
 function create_invites_bulk($emails, $senderID, $organisationID)
 {
-  $API  = new PerchAPI(1.0, 'hivechat');
-  $invites = new Hivechat_Invites($API);
-  $organisations = new Hivechat_Organisations($API);
-
-  if ($organisations->is_admin($organisationID, $senderID)) {
-    http_response_code(403);
-    return;
-  }
-
-  $filteredEmails = [];
-  $debug = [];
-  foreach ($emails as $email) {
-    $member = $organisations->get_member_by_email($email);
-    if ($member) {
-      $memberOrg = $organisations->is_organisation_member($member["memberID"], $organisationID);
-      if ($memberOrg) {
-        $debug[$email] = "Already Member";
+  try {
+    $API  = new PerchAPI(1.0, 'hivechat');
+    $invites = new Hivechat_Invites($API);
+    $organisations = new Hivechat_Organisations($API);
+  
+    if (!$organisations->is_admin($organisationID, $senderID)) {
+      http_response_code(403);
+      return;
+    }
+  
+    $filteredEmails = [];
+    $debug = [];
+    foreach ($emails as $email) {
+      $member = $organisations->get_member_by_email($email);
+      if ($member) {
+        $memberOrg = $organisations->is_organisation_member($member["memberID"], $organisationID);
+        if ($memberOrg) {
+          $debug[$email] = "Already Member";
+          continue;
+        }
+      }
+  
+      $invite = $invites->has_organisation_invite($email, $organisationID);
+      if ($invite) {
+        $debug[$email] = "Has Invite";
         continue;
-      }
-    }
-
-    $invite = $invites->has_organisation_invite($email, $organisationID);
-    if ($invite) {
-      $debug[$email] = "Has Invite";
-      continue;
-    } else {
-      $debug[$email] = "No Invite";
-    }
-
-    $exists = false;
-    foreach ($filteredEmails as $filteredEmail) {
-      if ($email == $filteredEmail) {
-        $debug[$email] = "Already in filteredEmails";
-        $exists = true;
       } else {
-        $debug[$email] = "Not in filteredEmails";
+        $debug[$email] = "No Invite";
+      }
+  
+      $exists = false;
+      foreach ($filteredEmails as $filteredEmail) {
+        if ($email == $filteredEmail) {
+          $debug[$email] = "Already in filteredEmails";
+          $exists = true;
+        } else {
+          $debug[$email] = "Not in filteredEmails";
+        }
+      }
+      if (!$exists) {
+        $debug[$email] = "Adding to filteredEmails";
+        $filteredEmails[] = $email;
+      } else {
+        $debug[$email] = "Not adding to filteredEmails";
       }
     }
-    if (!$exists) {
-      $debug[$email] = "Adding to filteredEmails";
-      $filteredEmails[] = $email;
-    } else {
-      $debug[$email] = "Not adding to filteredEmails";
-    }
+  
+    return $invites->create_invites_bulk($filteredEmails, $senderID, $organisationID);
+  } catch (Error $err) {
+    return [
+      "error" => $err->getMessage(),
+      "line" => $err->getLine(),
+      "file" => $err->getFile()
+    ];
   }
-
-  return $invites->create_invites_bulk($filteredEmails, $senderID, $organisationID);
 }
 
 function update_hive($data)
