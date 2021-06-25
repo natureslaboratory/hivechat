@@ -58,6 +58,11 @@ function get_gravatar($email, $s = 80, $d = 'mp', $r = 'g', $img = true, $atts =
     </script>
     <link href="/src/main.css?v=<?php echo rand(); ?>" rel="stylesheet">
 	<link href="/src/custom.css?v=<?php echo rand(); ?>" rel="stylesheet">
+	<?php
+		if(has_invites()>0){
+			echo '<script>$(document).ready(function(){$("#Invites a").append("<span class=\'invites\'>'.has_invites().'</span>")});</script>';
+		}	
+	?>
 </head>
 
 <body onload="setInterval('chat.update()', 1000)">
