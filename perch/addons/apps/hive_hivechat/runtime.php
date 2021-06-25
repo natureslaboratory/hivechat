@@ -262,7 +262,7 @@ function hive_hivechat_form_handler($SubmittedForm)
         $sender = HiveApi::flatten($orgs->get_member($data["senderID"]), ["mappings" => ["first_name" => "first_name", "last_name" => "last_name"]]);
         $organisation = $orgs->get_organisation($data["organisationID"]);
         $message = "$sender[first_name] $sender[last_name] has invited you to join $organisation[organisationName]";
-        $link = "/admin/register";
+        $link = "/admin/invites";
 
         if ($member) {
           $link = "/admin/invites";
