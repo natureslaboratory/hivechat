@@ -60,7 +60,7 @@ function get_gravatar($email, $s = 80, $d = 'mp', $r = 'g', $img = true, $atts =
 	<link href="/src/custom.css?v=<?php echo rand(); ?>" rel="stylesheet">
 	<?php
 		if(has_invites()>0){
-			echo '<script>$(document).ready(function(){$("#Invites a").append("<span class=\'invites\'>'.has_invites().'</span>")});</script>';
+			echo '<script>$(document).ready(function(){$("#Invites a,#button-invites").append("<span class=\'invites\'>'.has_invites().'</span>")});</script>';
 		}	
 	?>
 </head>
@@ -143,7 +143,7 @@ function get_gravatar($email, $s = 80, $d = 'mp', $r = 'g', $img = true, $atts =
                                             <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
                                                 <a href="/admin/account"><button class="dropdown-item">Account Settings</button></a>
                                                 <a href="/admin/notifications"><button class="dropdown-item">Notifications</button></a>
-                                                <a href="/admin/invites"><button class="dropdown-item">Invites</button></a>
+                                                <a href="/admin/invites"><button class="dropdown-item" id="button-invites">Invites</button></a>
                                                 <div tabindex="-1" class="dropdown-divider"></div>
                                                 <a href="/admin/logout"><button class="dropdown-item">Logout</button></a>
                                             </div>
