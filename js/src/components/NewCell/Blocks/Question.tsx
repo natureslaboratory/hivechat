@@ -14,9 +14,18 @@ export interface QuestionBlock {
 }
 
 export interface QuestionResponse {
+    questionID: number,
     questionText: string,
     dateCreated: string,
-    memberName: string
+    memberName: string,
+    answers: QuestionAnswer[]
+}
+
+export interface QuestionAnswer {
+    answerID: number,
+    answerText: number,
+    answererID: number,
+    dateCreated: number
 }
 
 const Question: React.FC<IBlock<QuestionBlock> & BlockProps> = (props) => {
@@ -42,7 +51,13 @@ const Question: React.FC<IBlock<QuestionBlock> & BlockProps> = (props) => {
     function getResponses() {
         axios.get(`/page-api/q-and-a/get-questions?blockID=${props.blockID}`)
             .then(res => {
-                setResponses(res.data);
+                console.log(res.data);
+                setResponses(res.data.map(r => {
+                    return {
+                        ...r,
+                        questionID: parseInt(r.questionID)
+                    }
+                }));
             })
     }
 
@@ -68,7 +83,7 @@ const Question: React.FC<IBlock<QuestionBlock> & BlockProps> = (props) => {
     if (props.blockData.title && props.blockData.label) {
         if (!props.preview) {
             return (
-                <QuestionAdmin {...props} responses={responses} />
+                <QuestionAdmin getResponses={getResponses} {...props} responses={responses} />
             )
         }
         return (
