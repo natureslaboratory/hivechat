@@ -33,10 +33,6 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
         getCell();
     }, []);
 
-    useEffect(() => {
-        console.log(blocks)
-    }, [blocks]);
-
     function getCell() {
         let url = "/page-api/cell/get?cellID=" + props.cellID;
         axios.get(url).then(res => {

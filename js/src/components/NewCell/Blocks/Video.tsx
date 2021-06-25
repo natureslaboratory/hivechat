@@ -71,7 +71,6 @@ const Video: React.FunctionComponent<VideoProps & VideoFuncs> = (props) => {
                 
             }
         }
-        console.log(url);
         switch (details.domain) {
             case "youtube.com":
                 let youtubeSplit = url.split("?v=");
@@ -136,7 +135,7 @@ const Video: React.FunctionComponent<VideoProps & VideoFuncs> = (props) => {
 
     useEffect(() => {
         getVideoDetails();
-    }, [])
+    }, [props])
 
     let credit = "";
     if (videoDetails.domain) {

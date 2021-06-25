@@ -2116,7 +2116,6 @@ function create_question($data) {
     $email->recipientEmail($emailRecipient);
     
     $result = $email->send();
-
     $debug = [
       "recipient" => $emailRecipient,
       "success" => $result
@@ -2131,7 +2130,20 @@ function create_question($data) {
 function get_questions($blockID) {
   $API  = new PerchAPI(1.0, 'hivechat');
   $questions = new Hivechat_Questions($API);
+  $organisations = new Hivechat_Organisations($API);
 
-  return $questions->get_block_questions($blockID);
+  $responses = $questions->get_block_questions($blockID);
 
+  $data = [];
+  foreach ($responses as $response) {
+    $member = $organisations->get_member($response["questionerID"]);
+    $memberProps = json_decode($member["memberProperties"], true);
+    $data[] = [
+      "questionText" => $response["questionText"],
+      "dateCreated" => $response["dateCreated"],
+      "memberName" => "$memberProps[first_name] $memberProps[last_name]"
+    ];
+  }
+
+  return $data;
 }

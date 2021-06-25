@@ -1,16 +1,27 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import QuestionAdmin from '../Admin/QuestionAdmin';
 import { IBlock } from '../Cell';
 
 
+interface BlockProps {
+    preview: boolean
+}
 
 export interface QuestionBlock {
     title: string
     label: string
 }
 
-const Question: React.FC<IBlock<QuestionBlock>> = (props) => {
+export interface QuestionResponse {
+    questionText: string,
+    dateCreated: string,
+    memberName: string
+}
+
+const Question: React.FC<IBlock<QuestionBlock> & BlockProps> = (props) => {
     const [question, setQuestion] = useState("");
+    const [responses, setResponses] = useState<QuestionResponse[]>([]);
     const [message, setMessage] = useState("");
 
     function submitQuestion() {
@@ -27,7 +38,24 @@ const Question: React.FC<IBlock<QuestionBlock>> = (props) => {
             })
     }
 
+    function getResponses() {
+        axios.get(`/page-api/q-and-a/get-questions?blockID=${props.blockID}`)
+            .then(res => {
+                console.log(res.data);
+                setResponses(res.data);
+            })
+    }
+
+    useEffect(() => {
+        getResponses();
+    }, [])
+
     if (props.blockData.title && props.blockData.label) {
+        if (!props.preview) {
+            return (
+                <QuestionAdmin {...props} responses={responses} />
+            )
+        }
         return (
             <div>
                 <h5 className="card-title">{props.blockData.title}</h5>

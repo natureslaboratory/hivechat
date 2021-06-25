@@ -63,7 +63,7 @@ const Cell: React.FC<CellProps> = ({hiveID, cell}) => {
             case "File":
                 return <File {...block.blockData as FileBlock} />;
             case "Question":
-                return <Question {...block as IBlock<QuestionBlock>} />
+                return <Question preview={false} {...block as IBlock<QuestionBlock>} />
             default:
                 return null
         }
@@ -76,7 +76,9 @@ const Cell: React.FC<CellProps> = ({hiveID, cell}) => {
         let dateStr = "";
         if (cell.cellDate) {
             let date = new Date(cell.cellDate);
-            dateStr = formatDate(date);
+            if (date) {
+                dateStr = formatDate(date);
+            }
         }
         return (
             <>

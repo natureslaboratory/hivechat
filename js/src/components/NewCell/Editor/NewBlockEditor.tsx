@@ -92,7 +92,7 @@ const BlockEditor: React.FC<BlockEditorProps & BlockEditorFuncs> = (props) => {
                 )
             } else {
                 content = (
-                    <Question {...props.block as IBlock<QuestionBlock>} />
+                    <Question preview={isPreview} {...props.block as IBlock<QuestionBlock>} />
                 )
             }
             break;
