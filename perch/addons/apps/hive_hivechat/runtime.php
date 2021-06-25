@@ -1616,6 +1616,9 @@ function update_new_cell($cellData)
   ];
 
   $data = HiveApi::filter($cellData, $fields);
+  if (!trim($data["cellDate"])) {
+    $data["cellDate"] = null;
+  }
   return $cells->update_cell(HiveApi::formatAllStrings($data));
 }
 

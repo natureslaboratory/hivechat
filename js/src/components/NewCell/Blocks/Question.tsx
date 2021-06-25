@@ -42,7 +42,6 @@ const Question: React.FC<IBlock<QuestionBlock> & BlockProps> = (props) => {
     function getResponses() {
         axios.get(`/page-api/q-and-a/get-questions?blockID=${props.blockID}`)
             .then(res => {
-                console.log(res.data);
                 setResponses(res.data);
             })
     }

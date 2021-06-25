@@ -87,16 +87,17 @@ class Hivechat_NewCells extends PerchAPI_Factory
                 continue;
             }
 
+            $nullSafeValue = $value ? "'" . $value . "'" : "NULL";
+
             if ($count == 0) {
-                $sql .= "$key='$value'";
+                $sql .= "$key=$nullSafeValue";
             } else {
-                $sql .= ", $key='$value'";
+                $sql .= ", $key=$nullSafeValue";
             }
             $count++;
         }
         
         $sql .= " WHERE cellID=$cellData[cellID]";
-        // echo $sql;
         return $this->db->execute($sql);
     }
 

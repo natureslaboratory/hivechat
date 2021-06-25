@@ -75,6 +75,7 @@ const Cell: React.FC<CellProps> = ({hiveID, cell}) => {
     if (cell) {
         let dateStr = "";
         if (cell.cellDate) {
+            console.log(cell.cellDate);
             let date = new Date(cell.cellDate);
             if (date) {
                 dateStr = formatDate(date);
