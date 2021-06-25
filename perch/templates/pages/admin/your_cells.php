@@ -57,6 +57,12 @@
                         </div>
                     </div>
                 </div>
+                <?php
+                perch_layout("admin.back", [
+                    "href" => "/admin/your-hives",
+                    "label" => "Back to hives"
+                ]);
+                ?>
                 <div class="row">
                     <div class="col-md-6">
                         <?php create_hive(["action" => "/admin/your-hives"]) ?>
@@ -78,16 +84,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="row">
-                    <div class="col-md-6">
-                        <?php //list_hives(perch_member_get('id')); 
-                        ?>
-                    </div>
-                    <div class="col-md-6">
-                        <?php //create_hive(); 
-                        ?>
-                    </div>
-                </div> -->
                 <div id="admin-hives"></div>
         <?php
             }
