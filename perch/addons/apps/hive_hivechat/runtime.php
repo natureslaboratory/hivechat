@@ -35,6 +35,8 @@ include('Hivechat.request.class.php');
 include('Hivechat.requests.class.php');
 include('Hivechat.question.class.php');
 include('Hivechat.questions.class.php');
+include('Hivechat.answer.class.php');
+include('Hivechat.answers.class.php');
 include('HiveApi.php');
 
 # Create the function(s) users will call from their pages
@@ -2065,7 +2067,7 @@ function organisation_contact_list($organisationID) {
 
 }
 
-// Questions
+// Q&A
 
 function create_question($data) {
   $API  = new PerchAPI(1.0, 'hivechat');
@@ -2137,9 +2139,10 @@ function create_question($data) {
 
 }
 
-function get_questions($blockID) {
+function get_questions($blockID, $adminAccess = false) {
   $API  = new PerchAPI(1.0, 'hivechat');
   $questions = new Hivechat_Questions($API);
+  $answers = new Hivechat_Answers($API);
   $organisations = new Hivechat_Organisations($API);
 
   $responses = $questions->get_block_questions($blockID);
@@ -2147,13 +2150,48 @@ function get_questions($blockID) {
   $data = [];
   foreach ($responses as $response) {
     $member = $organisations->get_member($response["questionerID"]);
+    $questionAnswers = $answers->get_answers_by_question($response["questionID"]);
+
+    $filteredAnswers = [];
+    foreach ($questionAnswers as $answer) {
+      if ($answer["answerPrivacy"] == "Public" || $adminAccess) {
+        $filteredAnswers[] = $answer;
+      }
+    }
+
     $memberProps = json_decode($member["memberProperties"], true);
     $data[] = [
+      "questionID" => $response["questionID"],
       "questionText" => $response["questionText"],
       "dateCreated" => $response["dateCreated"],
-      "memberName" => "$memberProps[first_name] $memberProps[last_name]"
+      "memberName" => "$memberProps[first_name] $memberProps[last_name]",
+      "answers" => $questionAnswers
     ];
   }
 
   return $data;
+}
+
+function get_question($questionID) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $questions = new Hivechat_Questions($API);
+
+  return $questions->get_question($questionID);
+}
+
+function create_answer($data) {
+  // questionID, answerText, answerPrivacy (Public | Private)
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $answers = new Hivechat_Answers($API);
+
+  $filteredData = HiveApi::filter($data, $answers->static_fields);
+  $filteredData["answerText"] = addslashes($filteredData["answerText"]);
+  return $answers->create_answer($filteredData);
+}
+
+function get_answers_by_question($questionID) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $answers = new Hivechat_Answers($API);
+
+  return $answers->get_answers_by_question($questionID);
 }
