@@ -261,7 +261,7 @@ function hive_hivechat_form_handler($SubmittedForm)
         $invites->create_invite($data["memberEmail"], $data["senderID"], $data["organisationID"]);
         $sender = HiveApi::flatten($orgs->get_member($data["senderID"]), ["mappings" => ["first_name" => "first_name", "last_name" => "last_name"]]);
         $organisation = $orgs->get_organisation($data["organisationID"]);
-        $message = "$sender[first_name] $sender[last_name] has invited you to join $organisation[organisationName]";
+        $message = "$sender[first_name] $sender[last_name] has invited you to join $organisation[organisationName] on Hivechat. Click the button below to sign in or sign up for an account and get access to $organisation[organisationName]'s content on Hivechat.";
         $link = "/admin/invites";
 
         if ($member) {
