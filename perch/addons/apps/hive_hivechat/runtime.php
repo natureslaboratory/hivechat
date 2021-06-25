@@ -1311,6 +1311,7 @@ function get_invite($inviteID) {
   $organisation = $organisations->get_organisation($invite["organisationID"]);
   $member = $organisations->get_member(perch_member_get("id"));
   $member = array_merge($member, json_decode($member["memberProperties"], true));
+  $member['email'] = $member['memberEmail'];
 
   $data = array_merge($organisation, $member, $invite);
   $data["action"] = "join_organisation";
