@@ -8,7 +8,7 @@ module.exports = {
         path: path.resolve(__dirname)
     },
     watch: true,
-    mode: "production",
+    mode: "development",
     devtool: "source-map",
     resolve: {
         extensions: [".webpack.js", ".web.ts", ".ts", ".tsx", ".js", ".css"]

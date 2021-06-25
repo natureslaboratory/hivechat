@@ -23,6 +23,7 @@ const Hive : React.FunctionComponent<HiveProps> = (props) => {
     const [currentCell, setCurrentCell] = useState<ICell>();
     const [cells, setCells] = useState<ICell[]>([]);
     const [orgSlug, setOrgSlug] = useState("");
+    const [referrer, setReferrer] = useState("");
 
     async function getHiveData(orgSlug = "") {
         axios.get(`/page-api/hive/get?hiveID=${props.hiveID}`)
@@ -77,6 +78,29 @@ const Hive : React.FunctionComponent<HiveProps> = (props) => {
             </div>
         )
     }
+    
+    useEffect(() => {
+        if (document.referrer) {
+            setReferrer(document.referrer);
+        } else {
+            if (window.location.href.includes("organisations")) {
+                let urlSplit = window.location.href.split("/");
+                for (let i = urlSplit.length-1; i >= 0; i--) {
+                    const element = urlSplit[i];
+                    if (element == props.hiveID.toString()) {
+                        setReferrer(urlSplit.slice(0, i).join("/"));
+                        break;
+                    }
+                }
+            } else {
+                setReferrer("/explore/browse");
+            }
+        }
+    }, [])
+
+    useEffect(() => {
+        console.log(history);
+    }, [history]);
 
     if (hiveData) {
         return (
@@ -93,7 +117,7 @@ const Hive : React.FunctionComponent<HiveProps> = (props) => {
                         </div>
                     </div>
                 </div>
-                <button onClick={() => history.back()} className="btn btn-outline-primary mb-4">Back</button> 
+                <button onClick={() => window.location.href = referrer} className="btn btn-outline-primary mb-4">Back</button> 
                 {hiveContent}
             </React.Fragment>
         )
