@@ -8,7 +8,7 @@ import { VideoBlock } from './Forms/VideoForm';
 import { TextBlock } from './Forms/TextForm';
 import { FileBlock } from './Forms/FileForm';
 import axios from 'axios';
-import { QuestionBlock } from './Blocks/Question';
+import Question, { QuestionBlock } from './Blocks/Question';
 
 
 interface CellProps {
@@ -62,6 +62,8 @@ const Cell: React.FC<CellProps> = ({hiveID, cell}) => {
                 return <Text {...block.blockData as TextBlock} />;
             case "File":
                 return <File {...block.blockData as FileBlock} />;
+            case "Question":
+                return <Question {...block as IBlock<QuestionBlock>} />
             default:
                 return null
         }
