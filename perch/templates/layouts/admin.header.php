@@ -57,7 +57,14 @@ function get_gravatar($email, $s = 80, $d = 'mp', $r = 'g', $img = true, $atts =
         });
     </script>
     <link href="/src/main.css?v=<?php echo rand(); ?>" rel="stylesheet">
-</head>
+    
+    <?php
+	if(perch_member_logged_in()){
+		if(has_invites()){
+			echo '1';
+		}
+	}	    
+	?>
 <link href="/src/custom.css?v=<?php echo rand(); ?>" rel="stylesheet">
 </head>
 

@@ -2033,7 +2033,16 @@ function has_invite($inviteID) {
     return true;
   }
   return false;
+}
 
+function has_invites($inviteID) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $invites = new Hivechat_Invites($API);
+
+  if ($invites->has_invites(perch_member_get("email")) {
+    return true;
+  }
+  return false;
 }
 
 function organisation_contact_list($organisationID) {
