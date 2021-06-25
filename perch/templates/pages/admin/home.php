@@ -1,4 +1,5 @@
 <?php perch_layout('admin.header'); ?>   
+<?php PerchSystem::set_var('url_redirect', perch_get('r')); ?>
 <?php
 if (true) {
     // PerchSystem::redirect("/admin");

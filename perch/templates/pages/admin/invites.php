@@ -4,7 +4,7 @@
     <?php
         if (!perch_member_logged_in()) { ?>
             <script>
-                window.location.href="/admin/login";
+                window.location.href="/admin/register?r=invite";
             </script>
         <?php }
     ?>

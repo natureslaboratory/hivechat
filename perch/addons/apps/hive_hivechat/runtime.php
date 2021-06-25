@@ -261,8 +261,8 @@ function hive_hivechat_form_handler($SubmittedForm)
         $invites->create_invite($data["memberEmail"], $data["senderID"], $data["organisationID"]);
         $sender = HiveApi::flatten($orgs->get_member($data["senderID"]), ["mappings" => ["first_name" => "first_name", "last_name" => "last_name"]]);
         $organisation = $orgs->get_organisation($data["organisationID"]);
-        $message = "$sender[first_name] $sender[last_name] has invited you to join $organisation[organisationName]";
-        $link = "/admin/register";
+        $message = "$sender[first_name] $sender[last_name] has invited you to join $organisation[organisationName] on Hivechat.";
+        $link = "/admin/invites";
 
         if ($member) {
           $link = "/admin/invites";
@@ -1311,6 +1311,7 @@ function get_invite($inviteID) {
   $organisation = $organisations->get_organisation($invite["organisationID"]);
   $member = $organisations->get_member(perch_member_get("id"));
   $member = array_merge($member, json_decode($member["memberProperties"], true));
+  $member['email'] = $member['memberEmail'];
 
   $data = array_merge($organisation, $member, $invite);
   $data["action"] = "join_organisation";

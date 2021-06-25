@@ -1,4 +1,12 @@
-<perch:form id="login" method="post" app="perch_members">
+<perch:form id="login" method="post" app="perch_members" type="default"
+	<perch:if exists="url_redirect">
+		<perch:if id="url_redirect" value="invite">
+			action="/admin/invites"
+		</perch:if>
+	<perch:else>
+		action="/admin"
+	</perch:if>
+>
 	
 	<perch:error for="all" type="login">
 		<div class="alert alert-danger fade show" role="alert">Those details do not match our records</div>
@@ -17,11 +25,10 @@
 	</div>
 	<div>
 		<perch:input type="submit" id="submit" value="Log in" class="mt-1 btn btn-primary" />
-		<perch:input type="hidden" id="r" />
 		<br />
 		<br />
 		<p>Forgotten your password? <a href="/admin/reset">Reset it now</a>.</p>
-		<p>No account? <a href="/admin/register">Register</a>.</p>
+		<p>No account? <a href="/admin/register?r=<perch:members id="url_redirect" />">Register</a>.</p>
 	</div>
 
 </perch:form>

@@ -1,4 +1,4 @@
-<perch:form id="register" method="post" app="perch_members" type="default" 
+<perch:form id="register" method="post" app="perch_members" type="default"
 	<perch:if exists="url_redirect">
 		<perch:if id="url_redirect" value="invite">
 			action="/admin/invites"
@@ -42,6 +42,6 @@
 	<div class="position-relative form-group">
 		<perch:input type="submit" value="Register" class="mt-1 btn btn-primary" />
 	</div>
-	<p>Already have an account? <a href="/admin/login" >Log in</a>.</p>
+	<p>Already have an account? <a href="/admin/login?r=<perch:forms id="url_redirect" />" >Log in</a>.</p>
 
 </perch:form>
