@@ -23,6 +23,7 @@ const Question: React.FC<IBlock<QuestionBlock> & BlockProps> = (props) => {
     const [question, setQuestion] = useState("");
     const [responses, setResponses] = useState<QuestionResponse[]>([]);
     const [message, setMessage] = useState("");
+    const [messageTimeout, setMessageTimeout] = useState(null)
 
     function submitQuestion() {
         let data = new FormData();
@@ -45,6 +46,21 @@ const Question: React.FC<IBlock<QuestionBlock> & BlockProps> = (props) => {
                 setResponses(res.data);
             })
     }
+
+    useEffect(() => {
+        if (message) {
+            setMessageTimeout(setTimeout(() => {
+                setMessage("");
+            }, 2000));
+            return () => {
+                clearTimeout(messageTimeout);
+            }
+        }
+    }, [message])
+
+    useEffect(() => {
+        setMessage("");
+    }, [props]);
 
     useEffect(() => {
         getResponses();

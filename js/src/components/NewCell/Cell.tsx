@@ -63,7 +63,7 @@ const Cell: React.FC<CellProps> = ({hiveID, cell}) => {
             case "File":
                 return <File {...block.blockData as FileBlock} />;
             case "Question":
-                return <Question preview={false} {...block as IBlock<QuestionBlock>} />
+                return <Question preview={true} {...block as IBlock<QuestionBlock>} />
             default:
                 return null
         }

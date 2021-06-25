@@ -113,6 +113,8 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
         e.preventDefault();
         let data = new FormData();
 
+        console.log("cellDateTime", newCell.cellDate, newCell.cellTime);
+
         data.append("cellID", cell.cellID);
         data.append("cellTitle", newCell.cellTitle);
         data.append("cellSubtitle", newCell.cellSubtitle);
@@ -120,6 +122,7 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
 
         axios.post("/page-api/cell/update", data)
             .then(res => {
+                console.log(res.data);
                 getCell();
                 props.getCells();
             })
