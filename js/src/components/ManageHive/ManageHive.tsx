@@ -53,7 +53,13 @@ const ManageHive: React.FunctionComponent<ManageHiveProps> = ({ organisationSlug
     function getCells() {
         axios.get(`/page-api/manage-hive?hiveID=${hiveID}&action=get-cells`)
             .then(res => {
-                updateCells(res.data as ICell[])
+                let cells = res.data.map((c) => {
+                    return {
+                        ...c,
+                        cellOrder: parseInt(c.cellOrder)
+                    }
+                })
+                updateCells(cells as ICell[]);
             })
     }
 
@@ -154,6 +160,7 @@ const ManageHive: React.FunctionComponent<ManageHiveProps> = ({ organisationSlug
 
     let content = null;
     let link = `/explore/organisations/${organisationSlug}/manage`;
+    console.log(cells);
 
     if (cell) {
         link = window.location.href;
