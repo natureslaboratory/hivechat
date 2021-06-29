@@ -185,6 +185,3683 @@ function _setPrototypeOf(o, p) {
 
 /***/ }),
 
+/***/ "./node_modules/@reduxjs/toolkit/dist/query/index.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/@reduxjs/toolkit/dist/query/index.js ***!
+  \***********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+if (false) {} else {
+  module.exports = __webpack_require__(/*! ./rtk-query.cjs.development.js */ "./node_modules/@reduxjs/toolkit/dist/query/rtk-query.cjs.development.js")
+}
+
+/***/ }),
+
+/***/ "./node_modules/@reduxjs/toolkit/dist/query/react/rtk-query-react.esm.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/@reduxjs/toolkit/dist/query/react/rtk-query-react.esm.js ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "QueryStatus": () => (/* reexport safe */ _reduxjs_toolkit_query__WEBPACK_IMPORTED_MODULE_2__.QueryStatus),
+/* harmony export */   "buildCreateApi": () => (/* reexport safe */ _reduxjs_toolkit_query__WEBPACK_IMPORTED_MODULE_2__.buildCreateApi),
+/* harmony export */   "copyWithStructuralSharing": () => (/* reexport safe */ _reduxjs_toolkit_query__WEBPACK_IMPORTED_MODULE_2__.copyWithStructuralSharing),
+/* harmony export */   "coreModule": () => (/* reexport safe */ _reduxjs_toolkit_query__WEBPACK_IMPORTED_MODULE_2__.coreModule),
+/* harmony export */   "fakeBaseQuery": () => (/* reexport safe */ _reduxjs_toolkit_query__WEBPACK_IMPORTED_MODULE_2__.fakeBaseQuery),
+/* harmony export */   "fetchBaseQuery": () => (/* reexport safe */ _reduxjs_toolkit_query__WEBPACK_IMPORTED_MODULE_2__.fetchBaseQuery),
+/* harmony export */   "retry": () => (/* reexport safe */ _reduxjs_toolkit_query__WEBPACK_IMPORTED_MODULE_2__.retry),
+/* harmony export */   "setupListeners": () => (/* reexport safe */ _reduxjs_toolkit_query__WEBPACK_IMPORTED_MODULE_2__.setupListeners),
+/* harmony export */   "skipSelector": () => (/* reexport safe */ _reduxjs_toolkit_query__WEBPACK_IMPORTED_MODULE_2__.skipSelector),
+/* harmony export */   "skipToken": () => (/* reexport safe */ _reduxjs_toolkit_query__WEBPACK_IMPORTED_MODULE_2__.skipToken),
+/* harmony export */   "ApiProvider": () => (/* binding */ ApiProvider),
+/* harmony export */   "createApi": () => (/* binding */ createApi),
+/* harmony export */   "reactHooksModule": () => (/* binding */ reactHooksModule)
+/* harmony export */ });
+/* harmony import */ var _reduxjs_toolkit_query__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @reduxjs/toolkit/query */ "./node_modules/@reduxjs/toolkit/dist/query/rtk-query.esm.js");
+/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/reselect/es/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
+var __spreadArray = (undefined && undefined.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
+var __defProp = Object.defineProperty;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
+var __defNormalProp = function (obj, key, value) { return key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value: value }) : obj[key] = value; };
+var __objSpread = function (a, b) {
+    for (var prop in b || (b = {}))
+        if (__hasOwnProp.call(b, prop))
+            __defNormalProp(a, prop, b[prop]);
+    if (__getOwnPropSymbols)
+        for (var _i = 0, _c = __getOwnPropSymbols(b); _i < _c.length; _i++) {
+            var prop = _c[_i];
+            if (__propIsEnum.call(b, prop))
+                __defNormalProp(a, prop, b[prop]);
+        }
+    return a;
+};
+// src/query/react/index.ts
+
+// src/query/react/buildHooks.ts
+
+
+
+
+// src/query/react/useShallowStableValue.ts
+
+
+function useShallowStableValue(value) {
+    var cache = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(value);
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+        if (!(0,react_redux__WEBPACK_IMPORTED_MODULE_1__.shallowEqual)(cache.current, value)) {
+            cache.current = value;
+        }
+    }, [value]);
+    return (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.shallowEqual)(cache.current, value) ? cache.current : value;
+}
+// src/query/react/constants.ts
+var UNINITIALIZED_VALUE = Symbol();
+// src/query/react/buildHooks.ts
+var defaultQueryStateSelector = function (x) { return x; };
+var defaultMutationStateSelector = function (x) { return x; };
+var queryStatePreSelector = function (currentState, lastResult) {
+    var _a;
+    var data = (_a = currentState.isSuccess ? currentState.data : lastResult == null ? void 0 : lastResult.data) != null ? _a : currentState.data;
+    var isFetching = currentState.isLoading;
+    var isLoading = !data && isFetching;
+    var isSuccess = currentState.isSuccess || isFetching && !!data;
+    return __objSpread(__objSpread({}, currentState), {
+        data: data,
+        isFetching: isFetching,
+        isLoading: isLoading,
+        isSuccess: isSuccess
+    });
+};
+var noPendingQueryStateSelector = function (selected) {
+    if (selected.isUninitialized) {
+        return __objSpread(__objSpread({}, selected), {
+            isUninitialized: false,
+            isFetching: true,
+            isLoading: true,
+            status: _reduxjs_toolkit_query__WEBPACK_IMPORTED_MODULE_2__.QueryStatus.pending
+        });
+    }
+    return selected;
+};
+function buildHooks(_c) {
+    var api = _c.api, _d = _c.moduleOptions, batch = _d.batch, useDispatch = _d.useDispatch, useSelector = _d.useSelector, useStore = _d.useStore;
+    return { buildQueryHooks: buildQueryHooks, buildMutationHook: buildMutationHook, usePrefetch: usePrefetch };
+    function usePrefetch(endpointName, defaultOptions) {
+        var dispatch = useDispatch();
+        var stableDefaultOptions = useShallowStableValue(defaultOptions);
+        return (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function (arg, options) { return dispatch(api.util.prefetch(endpointName, arg, __objSpread(__objSpread({}, stableDefaultOptions), options))); }, [endpointName, dispatch, stableDefaultOptions]);
+    }
+    function buildQueryHooks(name) {
+        var useQuerySubscription = function (arg, _c) {
+            var _d = _c === void 0 ? {} : _c, refetchOnReconnect = _d.refetchOnReconnect, refetchOnFocus = _d.refetchOnFocus, refetchOnMountOrArgChange = _d.refetchOnMountOrArgChange, _e = _d.skip, skip = _e === void 0 ? false : _e, _f = _d.pollingInterval, pollingInterval = _f === void 0 ? 0 : _f;
+            var initiate = api.endpoints[name].initiate;
+            var dispatch = useDispatch();
+            var stableArg = useShallowStableValue(skip ? _reduxjs_toolkit_query__WEBPACK_IMPORTED_MODULE_2__.skipToken : arg);
+            var stableSubscriptionOptions = useShallowStableValue({
+                refetchOnReconnect: refetchOnReconnect,
+                refetchOnFocus: refetchOnFocus,
+                pollingInterval: pollingInterval
+            });
+            var promiseRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
+            (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+                var _a;
+                var lastPromise = promiseRef.current;
+                if (stableArg === _reduxjs_toolkit_query__WEBPACK_IMPORTED_MODULE_2__.skipToken) {
+                    lastPromise == null ? void 0 : lastPromise.unsubscribe();
+                    promiseRef.current = void 0;
+                    return;
+                }
+                var lastSubscriptionOptions = (_a = promiseRef.current) == null ? void 0 : _a.subscriptionOptions;
+                if (!lastPromise || lastPromise.arg !== stableArg) {
+                    lastPromise == null ? void 0 : lastPromise.unsubscribe();
+                    var promise = dispatch(initiate(stableArg, {
+                        subscriptionOptions: stableSubscriptionOptions,
+                        forceRefetch: refetchOnMountOrArgChange
+                    }));
+                    promiseRef.current = promise;
+                }
+                else if (stableSubscriptionOptions !== lastSubscriptionOptions) {
+                    lastPromise.updateSubscriptionOptions(stableSubscriptionOptions);
+                }
+            }, [
+                dispatch,
+                initiate,
+                refetchOnMountOrArgChange,
+                stableArg,
+                stableSubscriptionOptions
+            ]);
+            (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+                return function () {
+                    var _a;
+                    (_a = promiseRef.current) == null ? void 0 : _a.unsubscribe();
+                    promiseRef.current = void 0;
+                };
+            }, []);
+            return (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () { return ({
+                refetch: function () {
+                    var _a;
+                    return void ((_a = promiseRef.current) == null ? void 0 : _a.refetch());
+                }
+            }); }, []);
+        };
+        var useLazyQuerySubscription = function (_c) {
+            var _d = _c === void 0 ? {} : _c, refetchOnReconnect = _d.refetchOnReconnect, refetchOnFocus = _d.refetchOnFocus, _e = _d.pollingInterval, pollingInterval = _e === void 0 ? 0 : _e;
+            var initiate = api.endpoints[name].initiate;
+            var dispatch = useDispatch();
+            var _f = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(UNINITIALIZED_VALUE), arg = _f[0], setArg = _f[1];
+            var promiseRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
+            var stableSubscriptionOptions = useShallowStableValue({
+                refetchOnReconnect: refetchOnReconnect,
+                refetchOnFocus: refetchOnFocus,
+                pollingInterval: pollingInterval
+            });
+            (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+                var _a, _b;
+                var lastSubscriptionOptions = (_a = promiseRef.current) == null ? void 0 : _a.subscriptionOptions;
+                if (stableSubscriptionOptions !== lastSubscriptionOptions) {
+                    (_b = promiseRef.current) == null ? void 0 : _b.updateSubscriptionOptions(stableSubscriptionOptions);
+                }
+            }, [stableSubscriptionOptions]);
+            var subscriptionOptionsRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(stableSubscriptionOptions);
+            (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+                subscriptionOptionsRef.current = stableSubscriptionOptions;
+            }, [stableSubscriptionOptions]);
+            var trigger = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function (arg2, preferCacheValue) {
+                if (preferCacheValue === void 0) { preferCacheValue = false; }
+                batch(function () {
+                    var _a;
+                    (_a = promiseRef.current) == null ? void 0 : _a.unsubscribe();
+                    promiseRef.current = dispatch(initiate(arg2, {
+                        subscriptionOptions: subscriptionOptionsRef.current,
+                        forceRefetch: !preferCacheValue
+                    }));
+                    setArg(arg2);
+                });
+            }, [dispatch, initiate]);
+            (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+                return function () {
+                    var _a;
+                    (_a = promiseRef == null ? void 0 : promiseRef.current) == null ? void 0 : _a.unsubscribe();
+                };
+            }, []);
+            (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+                if (arg !== UNINITIALIZED_VALUE && !promiseRef.current) {
+                    trigger(arg, true);
+                }
+            }, [arg, trigger]);
+            return (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () { return [trigger, arg]; }, [trigger, arg]);
+        };
+        var useQueryState = function (arg, _c) {
+            var _d = _c === void 0 ? {} : _c, _e = _d.skip, skip = _e === void 0 ? false : _e, _f = _d.selectFromResult, selectFromResult = _f === void 0 ? defaultQueryStateSelector : _f;
+            var select = api.endpoints[name].select;
+            var stableArg = useShallowStableValue(skip ? _reduxjs_toolkit_query__WEBPACK_IMPORTED_MODULE_2__.skipToken : arg);
+            var lastValue = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
+            var selectDefaultResult = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () { return (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_3__.createSelector)([select(stableArg), function (_, lastResult) { return lastResult; }], queryStatePreSelector); }, [select, stableArg]);
+            var querySelector = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () { return (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_3__.createSelector)([selectDefaultResult], selectFromResult); }, [selectDefaultResult, selectFromResult]);
+            var currentState = useSelector(function (state) { return querySelector(state, lastValue.current); }, react_redux__WEBPACK_IMPORTED_MODULE_1__.shallowEqual);
+            var store = useStore();
+            var newLastValue = selectDefaultResult(store.getState(), lastValue.current);
+            (0,react__WEBPACK_IMPORTED_MODULE_0__.useLayoutEffect)(function () {
+                lastValue.current = newLastValue;
+            }, [newLastValue]);
+            return currentState;
+        };
+        return {
+            useQueryState: useQueryState,
+            useQuerySubscription: useQuerySubscription,
+            useLazyQuerySubscription: useLazyQuerySubscription,
+            useLazyQuery: function (options) {
+                var _c = useLazyQuerySubscription(options), trigger = _c[0], arg = _c[1];
+                var queryStateResults = useQueryState(arg, __objSpread(__objSpread({}, options), {
+                    skip: arg === UNINITIALIZED_VALUE
+                }));
+                var info = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () { return ({ lastArg: arg }); }, [arg]);
+                return (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () { return [trigger, queryStateResults, info]; }, [
+                    trigger,
+                    queryStateResults,
+                    info
+                ]);
+            },
+            useQuery: function (arg, options) {
+                var querySubscriptionResults = useQuerySubscription(arg, options);
+                var queryStateResults = useQueryState(arg, __objSpread({
+                    selectFromResult: arg === _reduxjs_toolkit_query__WEBPACK_IMPORTED_MODULE_2__.skipToken || (options == null ? void 0 : options.skip) ? void 0 : noPendingQueryStateSelector
+                }, options));
+                return (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () { return __objSpread(__objSpread({}, queryStateResults), querySubscriptionResults); }, [queryStateResults, querySubscriptionResults]);
+            }
+        };
+    }
+    function buildMutationHook(name) {
+        return function (_c) {
+            var _d = _c === void 0 ? {} : _c, _e = _d.selectFromResult, selectFromResult = _e === void 0 ? defaultMutationStateSelector : _e;
+            var _f = api.endpoints[name], select = _f.select, initiate = _f.initiate;
+            var dispatch = useDispatch();
+            var _g = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(), requestId = _g[0], setRequestId = _g[1];
+            var promiseRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
+            (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+                return function () {
+                    var _a;
+                    (_a = promiseRef.current) == null ? void 0 : _a.unsubscribe();
+                    promiseRef.current = void 0;
+                };
+            }, []);
+            var triggerMutation = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function (arg) {
+                var promise;
+                batch(function () {
+                    var _a;
+                    (_a = promiseRef == null ? void 0 : promiseRef.current) == null ? void 0 : _a.unsubscribe();
+                    promise = dispatch(initiate(arg));
+                    promiseRef.current = promise;
+                    setRequestId(promise.requestId);
+                });
+                return promise;
+            }, [dispatch, initiate]);
+            var mutationSelector = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () { return (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_3__.createSelector)([select(requestId || _reduxjs_toolkit_query__WEBPACK_IMPORTED_MODULE_2__.skipToken)], function (subState) { return selectFromResult(subState); }); }, [select, requestId, selectFromResult]);
+            var currentState = useSelector(mutationSelector, react_redux__WEBPACK_IMPORTED_MODULE_1__.shallowEqual);
+            return (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () { return [triggerMutation, currentState]; }, [
+                triggerMutation,
+                currentState
+            ]);
+        };
+    }
+}
+// src/query/endpointDefinitions.ts
+var DefinitionType;
+(function (DefinitionType2) {
+    DefinitionType2["query"] = "query";
+    DefinitionType2["mutation"] = "mutation";
+})(DefinitionType || (DefinitionType = {}));
+function isQueryDefinition(e) {
+    return e.type === DefinitionType.query;
+}
+function isMutationDefinition(e) {
+    return e.type === DefinitionType.mutation;
+}
+// src/query/utils/capitalize.ts
+function capitalize(str) {
+    return str.replace(str[0], str[0].toUpperCase());
+}
+// src/query/tsHelpers.ts
+function safeAssign(target) {
+    var args = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        args[_i - 1] = arguments[_i];
+    }
+    Object.assign.apply(Object, __spreadArray([target], args));
+}
+// src/query/react/module.ts
+
+var reactHooksModuleName = /* @__PURE__ */ Symbol();
+var reactHooksModule = function (_c) {
+    var _d = _c === void 0 ? {} : _c, _e = _d.batch, batch = _e === void 0 ? react_redux__WEBPACK_IMPORTED_MODULE_1__.batch : _e, _f = _d.useDispatch, useDispatch = _f === void 0 ? react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch : _f, _g = _d.useSelector, useSelector = _g === void 0 ? react_redux__WEBPACK_IMPORTED_MODULE_1__.useSelector : _g, _h = _d.useStore, useStore = _h === void 0 ? react_redux__WEBPACK_IMPORTED_MODULE_1__.useStore : _h;
+    return ({
+        name: reactHooksModuleName,
+        init: function (api, options, context) {
+            var anyApi = api;
+            var _c = buildHooks({
+                api: api,
+                moduleOptions: { batch: batch, useDispatch: useDispatch, useSelector: useSelector, useStore: useStore }
+            }), buildQueryHooks = _c.buildQueryHooks, buildMutationHook = _c.buildMutationHook, usePrefetch = _c.usePrefetch;
+            safeAssign(anyApi, { usePrefetch: usePrefetch });
+            safeAssign(context, { batch: batch });
+            return {
+                injectEndpoint: function (endpointName, definition) {
+                    if (isQueryDefinition(definition)) {
+                        var _c = buildQueryHooks(endpointName), useQuery = _c.useQuery, useLazyQuery = _c.useLazyQuery, useLazyQuerySubscription = _c.useLazyQuerySubscription, useQueryState = _c.useQueryState, useQuerySubscription = _c.useQuerySubscription;
+                        safeAssign(anyApi.endpoints[endpointName], {
+                            useQuery: useQuery,
+                            useLazyQuery: useLazyQuery,
+                            useLazyQuerySubscription: useLazyQuerySubscription,
+                            useQueryState: useQueryState,
+                            useQuerySubscription: useQuerySubscription
+                        });
+                        api["use" + capitalize(endpointName) + "Query"] = useQuery;
+                        api["useLazy" + capitalize(endpointName) + "Query"] = useLazyQuery;
+                    }
+                    else if (isMutationDefinition(definition)) {
+                        var useMutation = buildMutationHook(endpointName);
+                        safeAssign(anyApi.endpoints[endpointName], {
+                            useMutation: useMutation
+                        });
+                        api["use" + capitalize(endpointName) + "Mutation"] = useMutation;
+                    }
+                }
+            };
+        }
+    });
+};
+// src/query/react/index.ts
+
+// src/query/react/ApiProvider.tsx
+
+
+
+
+function ApiProvider(props) {
+    var store = react__WEBPACK_IMPORTED_MODULE_0__.useState(function () {
+        var _c;
+        return (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_4__.configureStore)({
+            reducer: (_c = {},
+                _c[props.api.reducerPath] = props.api.reducer,
+                _c),
+            middleware: function (gDM) { return gDM().concat(props.api.middleware); }
+        });
+    })[0];
+    (0,_reduxjs_toolkit_query__WEBPACK_IMPORTED_MODULE_2__.setupListeners)(store.dispatch, props.setupListeners);
+    return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_redux__WEBPACK_IMPORTED_MODULE_1__.Provider, {
+        store: store,
+        context: props.context
+    }, props.children);
+}
+// src/query/react/index.ts
+var createApi = /* @__PURE__ */ (0,_reduxjs_toolkit_query__WEBPACK_IMPORTED_MODULE_2__.buildCreateApi)((0,_reduxjs_toolkit_query__WEBPACK_IMPORTED_MODULE_2__.coreModule)(), reactHooksModule());
+
+//# sourceMappingURL=module.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@reduxjs/toolkit/dist/query/rtk-query.cjs.development.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/@reduxjs/toolkit/dist/query/rtk-query.cjs.development.js ***!
+  \*******************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
+var __create = Object.create;
+var __defProp = Object.defineProperty;
+var __getProtoOf = Object.getPrototypeOf;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
+var __defNormalProp = function (obj, key, value) { return key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value: value }) : obj[key] = value; };
+var __objSpread = function (a, b) {
+    for (var prop in b || (b = {}))
+        if (__hasOwnProp.call(b, prop))
+            __defNormalProp(a, prop, b[prop]);
+    if (__getOwnPropSymbols)
+        for (var _i = 0, _e = __getOwnPropSymbols(b); _i < _e.length; _i++) {
+            var prop = _e[_i];
+            if (__propIsEnum.call(b, prop))
+                __defNormalProp(a, prop, b[prop]);
+        }
+    return a;
+};
+var __markAsModule = function (target) { return __defProp(target, "__esModule", { value: true }); };
+var __objRest = function (source, exclude) {
+    var target = {};
+    for (var prop in source)
+        if (__hasOwnProp.call(source, prop) && exclude.indexOf(prop) < 0)
+            target[prop] = source[prop];
+    if (source != null && __getOwnPropSymbols)
+        for (var _i = 0, _e = __getOwnPropSymbols(source); _i < _e.length; _i++) {
+            var prop = _e[_i];
+            if (exclude.indexOf(prop) < 0 && __propIsEnum.call(source, prop))
+                target[prop] = source[prop];
+        }
+    return target;
+};
+var __export = function (target, all) {
+    for (var name in all)
+        __defProp(target, name, { get: all[name], enumerable: true });
+};
+var __reExport = function (target, module2, desc) {
+    if (module2 && typeof module2 === "object" || typeof module2 === "function") {
+        var _loop_1 = function (key) {
+            if (!__hasOwnProp.call(target, key) && key !== "default")
+                __defProp(target, key, { get: function () { return module2[key]; }, enumerable: !(desc = __getOwnPropDesc(module2, key)) || desc.enumerable });
+        };
+        for (var _i = 0, _e = __getOwnPropNames(module2); _i < _e.length; _i++) {
+            var key = _e[_i];
+            _loop_1(key);
+        }
+    }
+    return target;
+};
+var __toModule = function (module2) {
+    return __reExport(__markAsModule(__defProp(module2 != null ? __create(__getProtoOf(module2)) : {}, "default", module2 && module2.__esModule && "default" in module2 ? { get: function () { return module2.default; }, enumerable: true } : { value: module2, enumerable: true })), module2);
+};
+var __async = function (__this, __arguments, generator) {
+    return new Promise(function (resolve, reject) {
+        var fulfilled = function (value) {
+            try {
+                step(generator.next(value));
+            }
+            catch (e) {
+                reject(e);
+            }
+        };
+        var rejected = function (value) {
+            try {
+                step(generator.throw(value));
+            }
+            catch (e) {
+                reject(e);
+            }
+        };
+        var step = function (x) { return x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected); };
+        step((generator = generator.apply(__this, __arguments)).next());
+    });
+};
+// src/query/index.ts
+__markAsModule(exports);
+__export(exports, {
+    QueryStatus: function () { return QueryStatus; },
+    buildCreateApi: function () { return buildCreateApi; },
+    copyWithStructuralSharing: function () { return copyWithStructuralSharing; },
+    coreModule: function () { return coreModule; },
+    createApi: function () { return createApi; },
+    fakeBaseQuery: function () { return fakeBaseQuery; },
+    fetchBaseQuery: function () { return fetchBaseQuery; },
+    retry: function () { return retry; },
+    setupListeners: function () { return setupListeners; },
+    skipSelector: function () { return skipSelector; },
+    skipToken: function () { return skipToken; }
+});
+// src/query/core/apiState.ts
+var QueryStatus;
+(function (QueryStatus2) {
+    QueryStatus2["uninitialized"] = "uninitialized";
+    QueryStatus2["pending"] = "pending";
+    QueryStatus2["fulfilled"] = "fulfilled";
+    QueryStatus2["rejected"] = "rejected";
+})(QueryStatus || (QueryStatus = {}));
+function getRequestStatusFlags(status) {
+    return {
+        status: status,
+        isUninitialized: status === QueryStatus.uninitialized,
+        isLoading: status === QueryStatus.pending,
+        isSuccess: status === QueryStatus.fulfilled,
+        isError: status === QueryStatus.rejected
+    };
+}
+// src/query/utils/isAbsoluteUrl.ts
+function isAbsoluteUrl(url) {
+    return new RegExp("(^|:)//").test(url);
+}
+// src/query/utils/joinUrls.ts
+var withoutTrailingSlash = function (url) { return url.replace(/\/$/, ""); };
+var withoutLeadingSlash = function (url) { return url.replace(/^\//, ""); };
+function joinUrls(base, url) {
+    if (!base) {
+        return url;
+    }
+    if (!url) {
+        return base;
+    }
+    if (isAbsoluteUrl(url)) {
+        return url;
+    }
+    base = withoutTrailingSlash(base);
+    url = withoutLeadingSlash(url);
+    return base + "/" + url;
+}
+// src/query/utils/flatten.ts
+var flatten = function (arr) { return [].concat.apply([], arr); };
+// src/query/utils/isOnline.ts
+function isOnline() {
+    return typeof navigator === "undefined" ? true : navigator.onLine === void 0 ? true : navigator.onLine;
+}
+// src/query/utils/isDocumentVisible.ts
+function isDocumentVisible() {
+    if (typeof document === "undefined") {
+        return true;
+    }
+    return document.visibilityState !== "hidden";
+}
+// src/query/utils/copyWithStructuralSharing.ts
+var import_toolkit = __toModule(__webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js"));
+var isPlainObject = import_toolkit.isPlainObject;
+function copyWithStructuralSharing(oldObj, newObj) {
+    if (oldObj === newObj || !(isPlainObject(oldObj) && isPlainObject(newObj) || Array.isArray(oldObj) && Array.isArray(newObj))) {
+        return newObj;
+    }
+    var newKeys = Object.keys(newObj);
+    var oldKeys = Object.keys(oldObj);
+    var isSameObject = newKeys.length === oldKeys.length;
+    var mergeObj = Array.isArray(newObj) ? [] : {};
+    for (var _i = 0, newKeys_1 = newKeys; _i < newKeys_1.length; _i++) {
+        var key = newKeys_1[_i];
+        mergeObj[key] = copyWithStructuralSharing(oldObj[key], newObj[key]);
+        if (isSameObject)
+            isSameObject = oldObj[key] === mergeObj[key];
+    }
+    return isSameObject ? oldObj : mergeObj;
+}
+// src/query/fetchBaseQuery.ts
+var import_toolkit2 = __toModule(__webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js"));
+var defaultValidateStatus = function (response) { return response.status >= 200 && response.status <= 299; };
+var isJsonContentType = function (headers) {
+    var _a, _b;
+    return (_b = (_a = headers.get("content-type")) == null ? void 0 : _a.trim()) == null ? void 0 : _b.startsWith("application/json");
+};
+var handleResponse = function (response, responseHandler) { return __async(void 0, null, function () {
+    var text;
+    return __generator(this, function (_e) {
+        switch (_e.label) {
+            case 0:
+                if (typeof responseHandler === "function") {
+                    return [2 /*return*/, responseHandler(response)];
+                }
+                if (responseHandler === "text") {
+                    return [2 /*return*/, response.text()];
+                }
+                if (!(responseHandler === "json")) return [3 /*break*/, 2];
+                return [4 /*yield*/, response.text()];
+            case 1:
+                text = _e.sent();
+                return [2 /*return*/, text.length ? JSON.parse(text) : void 0];
+            case 2: return [2 /*return*/];
+        }
+    });
+}); };
+function stripUndefined(obj) {
+    if (!(0, import_toolkit2.isPlainObject)(obj)) {
+        return obj;
+    }
+    var copy = __objSpread({}, obj);
+    for (var _i = 0, _e = Object.entries(copy); _i < _e.length; _i++) {
+        var _f = _e[_i], k = _f[0], v = _f[1];
+        if (typeof v === "undefined")
+            delete copy[k];
+    }
+    return copy;
+}
+function fetchBaseQuery(_a) {
+    var _this = this;
+    if (_a === void 0) { _a = {}; }
+    var _b = _a, baseUrl = _b.baseUrl, _e = _b.prepareHeaders, prepareHeaders = _e === void 0 ? function (x) { return x; } : _e, _f = _b.fetchFn, fetchFn = _f === void 0 ? fetch : _f, baseFetchOptions = __objRest(_b, [
+        "baseUrl",
+        "prepareHeaders",
+        "fetchFn"
+    ]);
+    return function (_0, _1) { return __async(_this, [_0, _1], function (arg, _e) {
+        var _a2, url, _f, method, _g, headers, _h, body, _j, params, _k, responseHandler, _l, validateStatus, rest, config, _m, isJsonifiable, divider, query, request, requestClone, response, responseClone, meta, resultData;
+        var signal = _e.signal, getState = _e.getState;
+        return __generator(this, function (_o) {
+            switch (_o.label) {
+                case 0:
+                    _a2 = typeof arg == "string" ? { url: arg } : arg, url = _a2.url, _f = _a2.method, method = _f === void 0 ? "GET" : _f, _g = _a2.headers, headers = _g === void 0 ? new Headers({}) : _g, _h = _a2.body, body = _h === void 0 ? void 0 : _h, _j = _a2.params, params = _j === void 0 ? void 0 : _j, _k = _a2.responseHandler, responseHandler = _k === void 0 ? "json" : _k, _l = _a2.validateStatus, validateStatus = _l === void 0 ? defaultValidateStatus : _l, rest = __objRest(_a2, [
+                        "url",
+                        "method",
+                        "headers",
+                        "body",
+                        "params",
+                        "responseHandler",
+                        "validateStatus"
+                    ]);
+                    config = __objSpread(__objSpread(__objSpread({}, baseFetchOptions), {
+                        method: method,
+                        signal: signal,
+                        body: body
+                    }), rest);
+                    _m = config;
+                    return [4 /*yield*/, prepareHeaders(new Headers(stripUndefined(headers)), { getState: getState })];
+                case 1:
+                    _m.headers = _o.sent();
+                    isJsonifiable = function (body2) { return typeof body2 === "object" && ((0, import_toolkit2.isPlainObject)(body2) || Array.isArray(body2) || typeof body2.toJSON === "function"); };
+                    if (!config.headers.has("content-type") && isJsonifiable(body)) {
+                        config.headers.set("content-type", "application/json");
+                    }
+                    if (body && isJsonContentType(config.headers)) {
+                        config.body = JSON.stringify(body);
+                    }
+                    if (params) {
+                        divider = ~url.indexOf("?") ? "&" : "?";
+                        query = new URLSearchParams(stripUndefined(params));
+                        url += divider + query;
+                    }
+                    url = joinUrls(baseUrl, url);
+                    request = new Request(url, config);
+                    requestClone = request.clone();
+                    return [4 /*yield*/, fetchFn(request)];
+                case 2:
+                    response = _o.sent();
+                    responseClone = response.clone();
+                    meta = { request: requestClone, response: responseClone };
+                    return [4 /*yield*/, handleResponse(response, responseHandler)];
+                case 3:
+                    resultData = _o.sent();
+                    return [2 /*return*/, validateStatus(response, resultData) ? {
+                            data: resultData,
+                            meta: meta
+                        } : {
+                            error: {
+                                status: response.status,
+                                data: resultData
+                            },
+                            meta: meta
+                        }];
+            }
+        });
+    }); };
+}
+// src/query/HandledError.ts
+var HandledError = /** @class */ (function () {
+    function HandledError(value, meta) {
+        if (meta === void 0) { meta = void 0; }
+        this.value = value;
+        this.meta = meta;
+    }
+    return HandledError;
+}());
+// src/query/retry.ts
+function defaultBackoff(attempt, maxRetries) {
+    if (attempt === void 0) { attempt = 0; }
+    if (maxRetries === void 0) { maxRetries = 5; }
+    return __async(this, null, function () {
+        var attempts, timeout;
+        return __generator(this, function (_e) {
+            switch (_e.label) {
+                case 0:
+                    attempts = Math.min(attempt, maxRetries);
+                    timeout = ~~((Math.random() + 0.4) * (300 << attempts));
+                    return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(function (res) { return resolve(res); }, timeout); })];
+                case 1:
+                    _e.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function fail(e) {
+    throw Object.assign(new HandledError({ error: e }), {
+        throwImmediately: true
+    });
+}
+var retryWithBackoff = function (baseQuery, defaultOptions) { return function (args, api, extraOptions) { return __async(void 0, null, function () {
+    var options, retry2, result, e_1;
+    return __generator(this, function (_e) {
+        switch (_e.label) {
+            case 0:
+                options = __objSpread(__objSpread({
+                    maxRetries: 5,
+                    backoff: defaultBackoff
+                }, defaultOptions), extraOptions);
+                retry2 = 0;
+                _e.label = 1;
+            case 1:
+                if (false) {}
+                _e.label = 2;
+            case 2:
+                _e.trys.push([2, 4, , 6]);
+                return [4 /*yield*/, baseQuery(args, api, extraOptions)];
+            case 3:
+                result = _e.sent();
+                if (result.error) {
+                    throw new HandledError(result);
+                }
+                return [2 /*return*/, result];
+            case 4:
+                e_1 = _e.sent();
+                retry2++;
+                if (e_1.throwImmediately || retry2 > options.maxRetries) {
+                    if (e_1 instanceof HandledError) {
+                        return [2 /*return*/, e_1.value];
+                    }
+                    throw e_1;
+                }
+                return [4 /*yield*/, options.backoff(retry2, options.maxRetries)];
+            case 5:
+                _e.sent();
+                return [3 /*break*/, 6];
+            case 6: return [3 /*break*/, 1];
+            case 7: return [2 /*return*/];
+        }
+    });
+}); }; };
+var retry = /* @__PURE__ */ Object.assign(retryWithBackoff, { fail: fail });
+// src/query/core/setupListeners.ts
+var import_toolkit3 = __toModule(__webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js"));
+var onFocus = /* @__PURE__ */ (0, import_toolkit3.createAction)("__rtkq/focused");
+var onFocusLost = /* @__PURE__ */ (0, import_toolkit3.createAction)("__rtkq/unfocused");
+var onOnline = /* @__PURE__ */ (0, import_toolkit3.createAction)("__rtkq/online");
+var onOffline = /* @__PURE__ */ (0, import_toolkit3.createAction)("__rtkq/offline");
+var initialized = false;
+function setupListeners(dispatch, customHandler) {
+    function defaultHandler() {
+        var handleFocus = function () { return dispatch(onFocus()); };
+        var handleFocusLost = function () { return dispatch(onFocusLost()); };
+        var handleOnline = function () { return dispatch(onOnline()); };
+        var handleOffline = function () { return dispatch(onOffline()); };
+        var handleVisibilityChange = function () {
+            if (window.document.visibilityState === "visible") {
+                handleFocus();
+            }
+            else {
+                handleFocusLost();
+            }
+        };
+        if (!initialized) {
+            if (typeof window !== "undefined" && window.addEventListener) {
+                window.addEventListener("visibilitychange", handleVisibilityChange, false);
+                window.addEventListener("focus", handleFocus, false);
+                window.addEventListener("online", handleOnline, false);
+                window.addEventListener("offline", handleOffline, false);
+                initialized = true;
+            }
+        }
+        var unsubscribe = function () {
+            window.removeEventListener("focus", handleFocus);
+            window.removeEventListener("visibilitychange", handleVisibilityChange);
+            window.removeEventListener("online", handleOnline);
+            window.removeEventListener("offline", handleOffline);
+            initialized = false;
+        };
+        return unsubscribe;
+    }
+    return customHandler ? customHandler(dispatch, { onFocus: onFocus, onFocusLost: onFocusLost, onOffline: onOffline, onOnline: onOnline }) : defaultHandler();
+}
+// src/query/core/buildSelectors.ts
+var import_toolkit4 = __toModule(__webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js"));
+var skipToken = /* @__PURE__ */ Symbol("skip selector");
+var skipSelector = skipToken;
+var initialSubState = {
+    status: QueryStatus.uninitialized
+};
+var defaultQuerySubState = /* @__PURE__ */ (0, import_toolkit4.createNextState)(initialSubState, function () {
+});
+var defaultMutationSubState = /* @__PURE__ */ (0, import_toolkit4.createNextState)(initialSubState, function () {
+});
+function buildSelectors(_e) {
+    var serializeQueryArgs = _e.serializeQueryArgs, reducerPath = _e.reducerPath;
+    return { buildQuerySelector: buildQuerySelector, buildMutationSelector: buildMutationSelector };
+    function withRequestFlags(substate) {
+        return __objSpread(__objSpread({}, substate), getRequestStatusFlags(substate.status));
+    }
+    function selectInternalState(rootState) {
+        var state = rootState[reducerPath];
+        if (true) {
+            if (!state) {
+                if (selectInternalState.triggered)
+                    return state;
+                selectInternalState.triggered = true;
+                console.error("Error: No data found at `state." + reducerPath + "`. Did you forget to add the reducer to the store?");
+            }
+        }
+        return state;
+    }
+    function buildQuerySelector(endpointName, endpointDefinition) {
+        return function (queryArgs) {
+            var selectQuerySubState = (0, import_toolkit4.createSelector)(selectInternalState, function (internalState) {
+                var _a, _b;
+                return (_b = queryArgs === skipToken ? void 0 : (_a = internalState == null ? void 0 : internalState.queries) == null ? void 0 : _a[serializeQueryArgs({
+                    queryArgs: queryArgs,
+                    endpointDefinition: endpointDefinition,
+                    endpointName: endpointName
+                })]) != null ? _b : defaultQuerySubState;
+            });
+            return (0, import_toolkit4.createSelector)(selectQuerySubState, withRequestFlags);
+        };
+    }
+    function buildMutationSelector() {
+        return function (mutationId) {
+            var selectMutationSubstate = (0, import_toolkit4.createSelector)(selectInternalState, function (internalState) {
+                var _a, _b;
+                return (_b = mutationId === skipToken ? void 0 : (_a = internalState == null ? void 0 : internalState.mutations) == null ? void 0 : _a[mutationId]) != null ? _b : defaultMutationSubState;
+            });
+            return (0, import_toolkit4.createSelector)(selectMutationSubstate, withRequestFlags);
+        };
+    }
+}
+// src/query/defaultSerializeQueryArgs.ts
+var import_toolkit5 = __toModule(__webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js"));
+var defaultSerializeQueryArgs = function (_e) {
+    var endpointName = _e.endpointName, queryArgs = _e.queryArgs;
+    return endpointName + "(" + JSON.stringify(queryArgs, function (key, value) { return (0, import_toolkit5.isPlainObject)(value) ? Object.keys(value).sort().reduce(function (acc, key2) {
+        acc[key2] = value[key2];
+        return acc;
+    }, {}) : value; }) + ")";
+};
+// src/query/endpointDefinitions.ts
+var DefinitionType;
+(function (DefinitionType2) {
+    DefinitionType2["query"] = "query";
+    DefinitionType2["mutation"] = "mutation";
+})(DefinitionType || (DefinitionType = {}));
+function isQueryDefinition(e) {
+    return e.type === DefinitionType.query;
+}
+function isMutationDefinition(e) {
+    return e.type === DefinitionType.mutation;
+}
+function calculateProvidedBy(description, result, error, queryArg, assertTagTypes) {
+    if (isFunction(description)) {
+        return description(result, error, queryArg).map(expandTagDescription).map(assertTagTypes);
+    }
+    if (Array.isArray(description)) {
+        return description.map(expandTagDescription).map(assertTagTypes);
+    }
+    return [];
+}
+function isFunction(t) {
+    return typeof t === "function";
+}
+function expandTagDescription(description) {
+    return typeof description === "string" ? { type: description } : description;
+}
+// src/query/createApi.ts
+function buildCreateApi() {
+    var modules = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        modules[_i] = arguments[_i];
+    }
+    return function baseCreateApi(options) {
+        var optionsWithDefaults = __objSpread(__objSpread({
+            reducerPath: "api",
+            serializeQueryArgs: defaultSerializeQueryArgs,
+            keepUnusedDataFor: 60,
+            refetchOnMountOrArgChange: false,
+            refetchOnFocus: false,
+            refetchOnReconnect: false
+        }, options), {
+            tagTypes: __spreadArray([], options.tagTypes || [])
+        });
+        var context = {
+            endpointDefinitions: {},
+            batch: function (fn) {
+                fn();
+            }
+        };
+        var api = {
+            injectEndpoints: injectEndpoints,
+            enhanceEndpoints: function (_e) {
+                var addTagTypes = _e.addTagTypes, endpoints = _e.endpoints;
+                if (addTagTypes) {
+                    for (var _i = 0, addTagTypes_1 = addTagTypes; _i < addTagTypes_1.length; _i++) {
+                        var eT = addTagTypes_1[_i];
+                        if (!optionsWithDefaults.tagTypes.includes(eT)) {
+                            optionsWithDefaults.tagTypes.push(eT);
+                        }
+                    }
+                }
+                if (endpoints) {
+                    for (var _f = 0, _g = Object.entries(endpoints); _f < _g.length; _f++) {
+                        var _h = _g[_f], endpointName = _h[0], partialDefinition = _h[1];
+                        if (typeof partialDefinition === "function") {
+                            partialDefinition(context.endpointDefinitions[endpointName]);
+                        }
+                        Object.assign(context.endpointDefinitions[endpointName] || {}, partialDefinition);
+                    }
+                }
+                return api;
+            }
+        };
+        var initializedModules = modules.map(function (m) { return m.init(api, optionsWithDefaults, context); });
+        function injectEndpoints(inject) {
+            var evaluatedEndpoints = inject.endpoints({
+                query: function (x) { return __objSpread(__objSpread({}, x), { type: DefinitionType.query }); },
+                mutation: function (x) { return __objSpread(__objSpread({}, x), { type: DefinitionType.mutation }); }
+            });
+            for (var _i = 0, _e = Object.entries(evaluatedEndpoints); _i < _e.length; _i++) {
+                var _f = _e[_i], endpointName = _f[0], definition = _f[1];
+                if (!inject.overrideExisting && endpointName in context.endpointDefinitions) {
+                    if (typeof process !== "undefined" && true) {
+                        console.error("called `injectEndpoints` to override already-existing endpointName " + endpointName + " without specifying `overrideExisting: true`");
+                    }
+                    continue;
+                }
+                context.endpointDefinitions[endpointName] = definition;
+                for (var _g = 0, initializedModules_1 = initializedModules; _g < initializedModules_1.length; _g++) {
+                    var m = initializedModules_1[_g];
+                    m.injectEndpoint(endpointName, definition);
+                }
+            }
+            return api;
+        }
+        return api.injectEndpoints({ endpoints: options.endpoints });
+    };
+}
+// src/query/fakeBaseQuery.ts
+function fakeBaseQuery() {
+    return function () {
+        throw new Error("When using `fakeBaseQuery`, all queries & mutations must use the `queryFn` definition syntax.");
+    };
+}
+// src/query/core/buildThunks.ts
+var import_toolkit6 = __toModule(__webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js"));
+var import_immer = __toModule(__webpack_require__(/*! immer */ "./node_modules/immer/dist/immer.esm.js"));
+var import_toolkit7 = __toModule(__webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js"));
+function defaultTransformResponse(baseQueryReturnValue) {
+    return baseQueryReturnValue;
+}
+function buildThunks(_e) {
+    var _this = this;
+    var reducerPath = _e.reducerPath, baseQuery = _e.baseQuery, endpointDefinitions = _e.context.endpointDefinitions, serializeQueryArgs = _e.serializeQueryArgs, api = _e.api;
+    var patchQueryData = function (endpointName, args, patches) { return function (dispatch) {
+        var endpointDefinition = endpointDefinitions[endpointName];
+        dispatch(api.internalActions.queryResultPatched({
+            queryCacheKey: serializeQueryArgs({
+                queryArgs: args,
+                endpointDefinition: endpointDefinition,
+                endpointName: endpointName
+            }),
+            patches: patches
+        }));
+    }; };
+    var updateQueryData = function (endpointName, args, updateRecipe) { return function (dispatch, getState) {
+        var _e, _f;
+        var currentState = api.endpoints[endpointName].select(args)(getState());
+        var ret = {
+            patches: [],
+            inversePatches: [],
+            undo: function () { return dispatch(api.util.patchQueryData(endpointName, args, ret.inversePatches)); }
+        };
+        if (currentState.status === QueryStatus.uninitialized) {
+            return ret;
+        }
+        if ("data" in currentState) {
+            if ((0, import_immer.isDraftable)(currentState.data)) {
+                var _g = (0, import_immer.produceWithPatches)(currentState.data, updateRecipe), patches = _g[1], inversePatches = _g[2];
+                (_e = ret.patches).push.apply(_e, patches);
+                (_f = ret.inversePatches).push.apply(_f, inversePatches);
+            }
+            else {
+                var value = updateRecipe(currentState.data);
+                ret.patches.push({ op: "replace", path: [], value: value });
+                ret.inversePatches.push({
+                    op: "replace",
+                    path: [],
+                    value: currentState.data
+                });
+            }
+        }
+        dispatch(api.util.patchQueryData(endpointName, args, ret.patches));
+        return ret;
+    }; };
+    var executeEndpoint = function (_0, _1) { return __async(_this, [_0, _1], function (arg, _e) {
+        var endpointDefinition, transformResponse, result, baseQueryApi_1, _f, error_1;
+        var signal = _e.signal, rejectWithValue = _e.rejectWithValue, fulfillWithValue = _e.fulfillWithValue, dispatch = _e.dispatch, getState = _e.getState;
+        return __generator(this, function (_g) {
+            switch (_g.label) {
+                case 0:
+                    endpointDefinition = endpointDefinitions[arg.endpointName];
+                    _g.label = 1;
+                case 1:
+                    _g.trys.push([1, 7, , 8]);
+                    transformResponse = defaultTransformResponse;
+                    result = void 0;
+                    baseQueryApi_1 = {
+                        signal: signal,
+                        dispatch: dispatch,
+                        getState: getState
+                    };
+                    if (!endpointDefinition.query) return [3 /*break*/, 3];
+                    return [4 /*yield*/, baseQuery(endpointDefinition.query(arg.originalArgs), baseQueryApi_1, endpointDefinition.extraOptions)];
+                case 2:
+                    result = _g.sent();
+                    if (endpointDefinition.transformResponse) {
+                        transformResponse = endpointDefinition.transformResponse;
+                    }
+                    return [3 /*break*/, 5];
+                case 3: return [4 /*yield*/, endpointDefinition.queryFn(arg.originalArgs, baseQueryApi_1, endpointDefinition.extraOptions, function (arg2) { return baseQuery(arg2, baseQueryApi_1, endpointDefinition.extraOptions); })];
+                case 4:
+                    result = _g.sent();
+                    _g.label = 5;
+                case 5:
+                    if (result.error)
+                        throw new HandledError(result.error, result.meta);
+                    _f = fulfillWithValue;
+                    return [4 /*yield*/, transformResponse(result.data, result.meta)];
+                case 6: return [2 /*return*/, _f.apply(void 0, [_g.sent(), {
+                            fulfilledTimeStamp: Date.now(),
+                            baseQueryMeta: result.meta
+                        }])];
+                case 7:
+                    error_1 = _g.sent();
+                    if (error_1 instanceof HandledError) {
+                        return [2 /*return*/, rejectWithValue(error_1.value, { baseQueryMeta: error_1.meta })];
+                    }
+                    throw error_1;
+                case 8: return [2 /*return*/];
+            }
+        });
+    }); };
+    var queryThunk = (0, import_toolkit7.createAsyncThunk)(reducerPath + "/executeQuery", executeEndpoint, {
+        getPendingMeta: function () {
+            return { startedTimeStamp: Date.now() };
+        },
+        condition: function (arg, _e) {
+            var getState = _e.getState;
+            var _a, _b;
+            var state = getState()[reducerPath];
+            var requestState = (_a = state == null ? void 0 : state.queries) == null ? void 0 : _a[arg.queryCacheKey];
+            var baseFetchOnMountOrArgChange = state.config.refetchOnMountOrArgChange;
+            var fulfilledVal = requestState == null ? void 0 : requestState.fulfilledTimeStamp;
+            var refetchVal = (_b = arg.forceRefetch) != null ? _b : arg.subscribe && baseFetchOnMountOrArgChange;
+            if ((requestState == null ? void 0 : requestState.status) === "pending")
+                return false;
+            if (fulfilledVal) {
+                if (refetchVal) {
+                    return refetchVal === true || (Number(new Date()) - Number(fulfilledVal)) / 1e3 >= refetchVal;
+                }
+                return false;
+            }
+            return true;
+        },
+        dispatchConditionRejection: true
+    });
+    var mutationThunk = (0, import_toolkit7.createAsyncThunk)(reducerPath + "/executeMutation", executeEndpoint, {
+        getPendingMeta: function () {
+            return { startedTimeStamp: Date.now() };
+        }
+    });
+    var hasTheForce = function (options) { return "force" in options; };
+    var hasMaxAge = function (options) { return "ifOlderThan" in options; };
+    var prefetch = function (endpointName, arg, options) { return function (dispatch, getState) {
+        var force = hasTheForce(options) && options.force;
+        var maxAge = hasMaxAge(options) && options.ifOlderThan;
+        var queryAction = function (force2) {
+            if (force2 === void 0) { force2 = true; }
+            return api.endpoints[endpointName].initiate(arg, { forceRefetch: force2 });
+        };
+        var latestStateValue = api.endpoints[endpointName].select(arg)(getState());
+        if (force) {
+            dispatch(queryAction());
+        }
+        else if (maxAge) {
+            var lastFulfilledTs = latestStateValue == null ? void 0 : latestStateValue.fulfilledTimeStamp;
+            if (!lastFulfilledTs) {
+                dispatch(queryAction());
+                return;
+            }
+            var shouldRetrigger = (Number(new Date()) - Number(new Date(lastFulfilledTs))) / 1e3 >= maxAge;
+            if (shouldRetrigger) {
+                dispatch(queryAction());
+            }
+        }
+        else {
+            dispatch(queryAction(false));
+        }
+    }; };
+    function matchesEndpoint(endpointName) {
+        return function (action) {
+            var _a, _b;
+            return ((_b = (_a = action == null ? void 0 : action.meta) == null ? void 0 : _a.arg) == null ? void 0 : _b.endpointName) === endpointName;
+        };
+    }
+    function buildMatchThunkActions(thunk, endpointName) {
+        return {
+            matchPending: (0, import_toolkit6.isAllOf)((0, import_toolkit6.isPending)(thunk), matchesEndpoint(endpointName)),
+            matchFulfilled: (0, import_toolkit6.isAllOf)((0, import_toolkit6.isFulfilled)(thunk), matchesEndpoint(endpointName)),
+            matchRejected: (0, import_toolkit6.isAllOf)((0, import_toolkit6.isRejected)(thunk), matchesEndpoint(endpointName))
+        };
+    }
+    return {
+        queryThunk: queryThunk,
+        mutationThunk: mutationThunk,
+        prefetch: prefetch,
+        updateQueryData: updateQueryData,
+        patchQueryData: patchQueryData,
+        buildMatchThunkActions: buildMatchThunkActions
+    };
+}
+function calculateProvidedByThunk(action, type, endpointDefinitions, assertTagType) {
+    return calculateProvidedBy(endpointDefinitions[action.meta.arg.endpointName][type], (0, import_toolkit6.isFulfilled)(action) ? action.payload : void 0, (0, import_toolkit6.isRejectedWithValue)(action) ? action.payload : void 0, action.meta.arg.originalArgs, assertTagType);
+}
+// src/query/core/buildSlice.ts
+var import_toolkit8 = __toModule(__webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js"));
+var import_immer2 = __toModule(__webpack_require__(/*! immer */ "./node_modules/immer/dist/immer.esm.js"));
+function updateQuerySubstateIfExists(state, queryCacheKey, update) {
+    var substate = state[queryCacheKey];
+    if (substate) {
+        update(substate);
+    }
+}
+function updateMutationSubstateIfExists(state, _e, update) {
+    var requestId = _e.requestId;
+    var substate = state[requestId];
+    if (substate) {
+        update(substate);
+    }
+}
+var initialState = {};
+function buildSlice(_e) {
+    var reducerPath = _e.reducerPath, queryThunk = _e.queryThunk, mutationThunk = _e.mutationThunk, definitions = _e.context.endpointDefinitions, assertTagType = _e.assertTagType, config = _e.config;
+    var resetApiState = (0, import_toolkit8.createAction)(reducerPath + "/resetApiState");
+    var querySlice = (0, import_toolkit8.createSlice)({
+        name: reducerPath + "/queries",
+        initialState: initialState,
+        reducers: {
+            removeQueryResult: function (draft, _e) {
+                var queryCacheKey = _e.payload.queryCacheKey;
+                delete draft[queryCacheKey];
+            },
+            queryResultPatched: function (draft, _e) {
+                var _f = _e.payload, queryCacheKey = _f.queryCacheKey, patches = _f.patches;
+                updateQuerySubstateIfExists(draft, queryCacheKey, function (substate) {
+                    substate.data = (0, import_immer2.applyPatches)(substate.data, patches.concat());
+                });
+            }
+        },
+        extraReducers: function (builder) {
+            builder.addCase(queryThunk.pending, function (draft, _e) {
+                var meta = _e.meta, arg = _e.meta.arg;
+                var _a, _b;
+                if (arg.subscribe) {
+                    (_b = draft[_a = arg.queryCacheKey]) != null ? _b : draft[_a] = {
+                        status: QueryStatus.uninitialized,
+                        endpointName: arg.endpointName
+                    };
+                }
+                updateQuerySubstateIfExists(draft, arg.queryCacheKey, function (substate) {
+                    substate.status = QueryStatus.pending;
+                    substate.requestId = meta.requestId;
+                    substate.originalArgs = arg.originalArgs;
+                    substate.startedTimeStamp = meta.startedTimeStamp;
+                });
+            }).addCase(queryThunk.fulfilled, function (draft, _e) {
+                var meta = _e.meta, payload = _e.payload;
+                updateQuerySubstateIfExists(draft, meta.arg.queryCacheKey, function (substate) {
+                    if (substate.requestId !== meta.requestId)
+                        return;
+                    substate.status = QueryStatus.fulfilled;
+                    substate.data = copyWithStructuralSharing(substate.data, payload);
+                    delete substate.error;
+                    substate.fulfilledTimeStamp = meta.fulfilledTimeStamp;
+                });
+            }).addCase(queryThunk.rejected, function (draft, _e) {
+                var _f = _e.meta, condition = _f.condition, arg = _f.arg, requestId = _f.requestId, error = _e.error, payload = _e.payload;
+                updateQuerySubstateIfExists(draft, arg.queryCacheKey, function (substate) {
+                    if (condition) {
+                    }
+                    else {
+                        if (substate.requestId !== requestId)
+                            return;
+                        substate.status = QueryStatus.rejected;
+                        substate.error = payload != null ? payload : error;
+                    }
+                });
+            });
+        }
+    });
+    var mutationSlice = (0, import_toolkit8.createSlice)({
+        name: reducerPath + "/mutations",
+        initialState: initialState,
+        reducers: {
+            unsubscribeMutationResult: function (draft, action) {
+                if (action.payload.requestId in draft) {
+                    delete draft[action.payload.requestId];
+                }
+            }
+        },
+        extraReducers: function (builder) {
+            builder.addCase(mutationThunk.pending, function (draft, _e) {
+                var _f = _e.meta, arg = _f.arg, requestId = _f.requestId, startedTimeStamp = _f.startedTimeStamp;
+                if (!arg.track)
+                    return;
+                draft[requestId] = {
+                    status: QueryStatus.pending,
+                    originalArgs: arg.originalArgs,
+                    endpointName: arg.endpointName,
+                    startedTimeStamp: startedTimeStamp
+                };
+            }).addCase(mutationThunk.fulfilled, function (draft, _e) {
+                var payload = _e.payload, meta = _e.meta, requestId = _e.meta.requestId;
+                if (!meta.arg.track)
+                    return;
+                updateMutationSubstateIfExists(draft, { requestId: requestId }, function (substate) {
+                    substate.status = QueryStatus.fulfilled;
+                    substate.data = payload;
+                    substate.fulfilledTimeStamp = meta.fulfilledTimeStamp;
+                });
+            }).addCase(mutationThunk.rejected, function (draft, _e) {
+                var payload = _e.payload, error = _e.error, _f = _e.meta, requestId = _f.requestId, arg = _f.arg;
+                if (!arg.track)
+                    return;
+                updateMutationSubstateIfExists(draft, { requestId: requestId }, function (substate) {
+                    substate.status = QueryStatus.rejected;
+                    substate.error = payload != null ? payload : error;
+                });
+            });
+        }
+    });
+    var invalidationSlice = (0, import_toolkit8.createSlice)({
+        name: reducerPath + "/invalidation",
+        initialState: initialState,
+        reducers: {},
+        extraReducers: function (builder) {
+            builder.addCase(querySlice.actions.removeQueryResult, function (draft, _e) {
+                var queryCacheKey = _e.payload.queryCacheKey;
+                for (var _i = 0, _f = Object.values(draft); _i < _f.length; _i++) {
+                    var tagTypeSubscriptions = _f[_i];
+                    for (var _g = 0, _h = Object.values(tagTypeSubscriptions); _g < _h.length; _g++) {
+                        var idSubscriptions = _h[_g];
+                        var foundAt = idSubscriptions.indexOf(queryCacheKey);
+                        if (foundAt !== -1) {
+                            idSubscriptions.splice(foundAt, 1);
+                        }
+                    }
+                }
+            }).addMatcher((0, import_toolkit8.isAnyOf)((0, import_toolkit8.isFulfilled)(queryThunk), (0, import_toolkit8.isRejectedWithValue)(queryThunk)), function (draft, action) {
+                var _a, _b, _c, _d;
+                var providedTags = calculateProvidedByThunk(action, "providesTags", definitions, assertTagType);
+                var queryCacheKey = action.meta.arg.queryCacheKey;
+                for (var _i = 0, providedTags_1 = providedTags; _i < providedTags_1.length; _i++) {
+                    var _e = providedTags_1[_i], type = _e.type, id = _e.id;
+                    var subscribedQueries = (_d = (_b = (_a = draft[type]) != null ? _a : draft[type] = {})[_c = id || "__internal_without_id"]) != null ? _d : _b[_c] = [];
+                    var alreadySubscribed = subscribedQueries.includes(queryCacheKey);
+                    if (!alreadySubscribed) {
+                        subscribedQueries.push(queryCacheKey);
+                    }
+                }
+            });
+        }
+    });
+    var subscriptionSlice = (0, import_toolkit8.createSlice)({
+        name: reducerPath + "/subscriptions",
+        initialState: initialState,
+        reducers: {
+            updateSubscriptionOptions: function (draft, _e) {
+                var _f = _e.payload, queryCacheKey = _f.queryCacheKey, requestId = _f.requestId, options = _f.options;
+                var _a;
+                if ((_a = draft == null ? void 0 : draft[queryCacheKey]) == null ? void 0 : _a[requestId]) {
+                    draft[queryCacheKey][requestId] = options;
+                }
+            },
+            unsubscribeQueryResult: function (draft, _e) {
+                var _f = _e.payload, queryCacheKey = _f.queryCacheKey, requestId = _f.requestId;
+                if (draft[queryCacheKey]) {
+                    delete draft[queryCacheKey][requestId];
+                }
+            }
+        },
+        extraReducers: function (builder) {
+            builder.addCase(querySlice.actions.removeQueryResult, function (draft, _e) {
+                var queryCacheKey = _e.payload.queryCacheKey;
+                delete draft[queryCacheKey];
+            }).addCase(queryThunk.pending, function (draft, _e) {
+                var _f = _e.meta, arg = _f.arg, requestId = _f.requestId;
+                var _a, _b, _c, _d;
+                if (arg.subscribe) {
+                    var substate = (_b = draft[_a = arg.queryCacheKey]) != null ? _b : draft[_a] = {};
+                    substate[requestId] = (_d = (_c = arg.subscriptionOptions) != null ? _c : substate[requestId]) != null ? _d : {};
+                }
+            }).addCase(queryThunk.rejected, function (draft, _e) {
+                var _f = _e.meta, condition = _f.condition, arg = _f.arg, requestId = _f.requestId, error = _e.error, payload = _e.payload;
+                var _a, _b;
+                var substate = draft[arg.queryCacheKey];
+                if (condition && arg.subscribe && substate) {
+                    substate[requestId] = (_b = (_a = arg.subscriptionOptions) != null ? _a : substate[requestId]) != null ? _b : {};
+                }
+            });
+        }
+    });
+    var configSlice = (0, import_toolkit8.createSlice)({
+        name: reducerPath + "/config",
+        initialState: __objSpread({
+            online: isOnline(),
+            focused: isDocumentVisible(),
+            middlewareRegistered: false
+        }, config),
+        reducers: {
+            middlewareRegistered: function (state) {
+                state.middlewareRegistered = true;
+            }
+        },
+        extraReducers: function (builder) {
+            builder.addCase(onOnline, function (state) {
+                state.online = true;
+            }).addCase(onOffline, function (state) {
+                state.online = false;
+            }).addCase(onFocus, function (state) {
+                state.focused = true;
+            }).addCase(onFocusLost, function (state) {
+                state.focused = false;
+            });
+        }
+    });
+    var combinedReducer = (0, import_toolkit8.combineReducers)({
+        queries: querySlice.reducer,
+        mutations: mutationSlice.reducer,
+        provided: invalidationSlice.reducer,
+        subscriptions: subscriptionSlice.reducer,
+        config: configSlice.reducer
+    });
+    var reducer = function (state, action) { return combinedReducer(resetApiState.match(action) ? void 0 : state, action); };
+    var actions = __objSpread(__objSpread(__objSpread(__objSpread(__objSpread({}, configSlice.actions), querySlice.actions), subscriptionSlice.actions), mutationSlice.actions), {
+        resetApiState: resetApiState
+    });
+    return { reducer: reducer, actions: actions };
+}
+// src/query/core/buildMiddleware/index.ts
+var import_redux = __toModule(__webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js"));
+var import_toolkit12 = __toModule(__webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js"));
+// src/query/core/buildMiddleware/cacheCollection.ts
+var build = function (_e) {
+    var reducerPath = _e.reducerPath, api = _e.api, context = _e.context;
+    var _f = api.internalActions, removeQueryResult = _f.removeQueryResult, unsubscribeQueryResult = _f.unsubscribeQueryResult;
+    return function (mwApi) {
+        var currentRemovalTimeouts = {};
+        return function (next) { return function (action) {
+            var _a, _b;
+            var result = next(action);
+            if (unsubscribeQueryResult.match(action)) {
+                var state = mwApi.getState()[reducerPath];
+                var queryCacheKey = action.payload.queryCacheKey;
+                var endpointDefinition = context.endpointDefinitions[(_a = state.queries[queryCacheKey]) == null ? void 0 : _a.endpointName];
+                handleUnsubscribe(queryCacheKey, mwApi, (_b = endpointDefinition == null ? void 0 : endpointDefinition.keepUnusedDataFor) != null ? _b : state.config.keepUnusedDataFor);
+            }
+            if (api.util.resetApiState.match(action)) {
+                for (var _i = 0, _e = Object.entries(currentRemovalTimeouts); _i < _e.length; _i++) {
+                    var _f = _e[_i], key = _f[0], timeout = _f[1];
+                    if (timeout)
+                        clearTimeout(timeout);
+                    delete currentRemovalTimeouts[key];
+                }
+            }
+            return result;
+        }; };
+        function handleUnsubscribe(queryCacheKey, api2, keepUnusedDataFor) {
+            var currentTimeout = currentRemovalTimeouts[queryCacheKey];
+            if (currentTimeout) {
+                clearTimeout(currentTimeout);
+            }
+            currentRemovalTimeouts[queryCacheKey] = setTimeout(function () {
+                var subscriptions = api2.getState()[reducerPath].subscriptions[queryCacheKey];
+                if (!subscriptions || Object.keys(subscriptions).length === 0) {
+                    api2.dispatch(removeQueryResult({ queryCacheKey: queryCacheKey }));
+                }
+                delete currentRemovalTimeouts[queryCacheKey];
+            }, keepUnusedDataFor * 1e3);
+        }
+    };
+};
+// src/query/core/buildMiddleware/invalidationByTags.ts
+var import_toolkit9 = __toModule(__webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js"));
+var build2 = function (_e) {
+    var reducerPath = _e.reducerPath, context = _e.context, endpointDefinitions = _e.context.endpointDefinitions, mutationThunk = _e.mutationThunk, api = _e.api, assertTagType = _e.assertTagType, refetchQuery = _e.refetchQuery;
+    var removeQueryResult = api.internalActions.removeQueryResult;
+    return function (mwApi) { return function (next) { return function (action) {
+        var result = next(action);
+        if ((0, import_toolkit9.isAnyOf)((0, import_toolkit9.isFulfilled)(mutationThunk), (0, import_toolkit9.isRejectedWithValue)(mutationThunk))(action)) {
+            invalidateTags(calculateProvidedByThunk(action, "invalidatesTags", endpointDefinitions, assertTagType), mwApi);
+        }
+        if (api.util.invalidateTags.match(action)) {
+            invalidateTags(calculateProvidedBy(action.payload, void 0, void 0, void 0, assertTagType), mwApi);
+        }
+        return result;
+    }; }; };
+    function invalidateTags(tags, api2) {
+        var _a;
+        var state = api2.getState()[reducerPath];
+        var toInvalidate = new Set();
+        for (var _i = 0, tags_1 = tags; _i < tags_1.length; _i++) {
+            var tag = tags_1[_i];
+            var provided = state.provided[tag.type];
+            if (!provided) {
+                continue;
+            }
+            var invalidateSubscriptions = (_a = tag.id !== void 0 ? provided[tag.id] : flatten(Object.values(provided))) != null ? _a : [];
+            for (var _e = 0, invalidateSubscriptions_1 = invalidateSubscriptions; _e < invalidateSubscriptions_1.length; _e++) {
+                var invalidate = invalidateSubscriptions_1[_e];
+                toInvalidate.add(invalidate);
+            }
+        }
+        context.batch(function () {
+            var valuesArray = Array.from(toInvalidate.values());
+            for (var _i = 0, valuesArray_1 = valuesArray; _i < valuesArray_1.length; _i++) {
+                var queryCacheKey = valuesArray_1[_i];
+                var querySubState = state.queries[queryCacheKey];
+                var subscriptionSubState = state.subscriptions[queryCacheKey];
+                if (querySubState && subscriptionSubState) {
+                    if (Object.keys(subscriptionSubState).length === 0) {
+                        api2.dispatch(removeQueryResult({ queryCacheKey: queryCacheKey }));
+                    }
+                    else if (querySubState.status !== QueryStatus.uninitialized) {
+                        api2.dispatch(refetchQuery(querySubState, queryCacheKey));
+                    }
+                    else {
+                    }
+                }
+            }
+        });
+    }
+};
+// src/query/core/buildMiddleware/polling.ts
+var build3 = function (_e) {
+    var reducerPath = _e.reducerPath, queryThunk = _e.queryThunk, api = _e.api, refetchQuery = _e.refetchQuery;
+    return function (mwApi) {
+        var currentPolls = {};
+        return function (next) { return function (action) {
+            var result = next(action);
+            if (api.internalActions.updateSubscriptionOptions.match(action)) {
+                updatePollingInterval(action.payload, mwApi);
+            }
+            if (queryThunk.pending.match(action) || queryThunk.rejected.match(action) && action.meta.condition) {
+                updatePollingInterval(action.meta.arg, mwApi);
+            }
+            if (queryThunk.fulfilled.match(action) || queryThunk.rejected.match(action) && !action.meta.condition) {
+                startNextPoll(action.meta.arg, mwApi);
+            }
+            if (api.util.resetApiState.match(action)) {
+                clearPolls();
+            }
+            return result;
+        }; };
+        function startNextPoll(_e, api2) {
+            var queryCacheKey = _e.queryCacheKey;
+            var state = api2.getState()[reducerPath];
+            var querySubState = state.queries[queryCacheKey];
+            var subscriptions = state.subscriptions[queryCacheKey];
+            if (!querySubState || querySubState.status === QueryStatus.uninitialized)
+                return;
+            var lowestPollingInterval = findLowestPollingInterval(subscriptions);
+            if (!Number.isFinite(lowestPollingInterval))
+                return;
+            var currentPoll = currentPolls[queryCacheKey];
+            if (currentPoll == null ? void 0 : currentPoll.timeout) {
+                clearTimeout(currentPoll.timeout);
+                currentPoll.timeout = void 0;
+            }
+            var nextPollTimestamp = Date.now() + lowestPollingInterval;
+            var currentInterval = currentPolls[queryCacheKey] = {
+                nextPollTimestamp: nextPollTimestamp,
+                pollingInterval: lowestPollingInterval,
+                timeout: setTimeout(function () {
+                    currentInterval.timeout = void 0;
+                    api2.dispatch(refetchQuery(querySubState, queryCacheKey));
+                }, lowestPollingInterval)
+            };
+        }
+        function updatePollingInterval(_e, api2) {
+            var queryCacheKey = _e.queryCacheKey;
+            var state = api2.getState()[reducerPath];
+            var querySubState = state.queries[queryCacheKey];
+            var subscriptions = state.subscriptions[queryCacheKey];
+            if (!querySubState || querySubState.status === QueryStatus.uninitialized) {
+                return;
+            }
+            var lowestPollingInterval = findLowestPollingInterval(subscriptions);
+            var currentPoll = currentPolls[queryCacheKey];
+            if (!Number.isFinite(lowestPollingInterval)) {
+                if (currentPoll == null ? void 0 : currentPoll.timeout) {
+                    clearTimeout(currentPoll.timeout);
+                }
+                delete currentPolls[queryCacheKey];
+                return;
+            }
+            var nextPollTimestamp = Date.now() + lowestPollingInterval;
+            if (!currentPoll || nextPollTimestamp < currentPoll.nextPollTimestamp) {
+                startNextPoll({ queryCacheKey: queryCacheKey }, api2);
+            }
+        }
+        function clearPolls() {
+            for (var _i = 0, _e = Object.entries(currentPolls); _i < _e.length; _i++) {
+                var _f = _e[_i], key = _f[0], poll = _f[1];
+                if (poll == null ? void 0 : poll.timeout)
+                    clearTimeout(poll.timeout);
+                delete currentPolls[key];
+            }
+        }
+    };
+    function findLowestPollingInterval(subscribers) {
+        if (subscribers === void 0) { subscribers = {}; }
+        var lowestPollingInterval = Number.POSITIVE_INFINITY;
+        for (var _i = 0, _e = Object.values(subscribers); _i < _e.length; _i++) {
+            var subscription = _e[_i];
+            if (!!subscription.pollingInterval)
+                lowestPollingInterval = Math.min(subscription.pollingInterval, lowestPollingInterval);
+        }
+        return lowestPollingInterval;
+    }
+};
+// src/query/core/buildMiddleware/windowEventHandling.ts
+var build4 = function (_e) {
+    var reducerPath = _e.reducerPath, context = _e.context, refetchQuery = _e.refetchQuery;
+    return function (mwApi) { return function (next) { return function (action) {
+        var result = next(action);
+        if (onFocus.match(action)) {
+            refetchValidQueries(mwApi, "refetchOnFocus");
+        }
+        if (onOnline.match(action)) {
+            refetchValidQueries(mwApi, "refetchOnReconnect");
+        }
+        return result;
+    }; }; };
+    function refetchValidQueries(api, type) {
+        var state = api.getState()[reducerPath];
+        var queries = state.queries;
+        var subscriptions = state.subscriptions;
+        context.batch(function () {
+            for (var _i = 0, _e = Object.keys(subscriptions); _i < _e.length; _i++) {
+                var queryCacheKey = _e[_i];
+                var querySubState = queries[queryCacheKey];
+                var subscriptionSubState = subscriptions[queryCacheKey];
+                if (!subscriptionSubState || !querySubState || querySubState.status === QueryStatus.uninitialized)
+                    return;
+                var shouldRefetch = Object.values(subscriptionSubState).some(function (sub) { return sub[type] === true; }) || Object.values(subscriptionSubState).every(function (sub) { return sub[type] === void 0; }) && state.config[type];
+                if (shouldRefetch) {
+                    api.dispatch(refetchQuery(querySubState, queryCacheKey));
+                }
+            }
+        });
+    }
+};
+// src/query/core/buildMiddleware/cacheLifecycle.ts
+var import_toolkit10 = __toModule(__webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js"));
+var neverResolvedError = new Error("Promise never resolved before cacheEntryRemoved.");
+var build5 = function (_e) {
+    var api = _e.api, reducerPath = _e.reducerPath, context = _e.context, queryThunk = _e.queryThunk, mutationThunk = _e.mutationThunk;
+    var isQueryThunk = (0, import_toolkit10.isAsyncThunkAction)(queryThunk);
+    var isMutationThunk = (0, import_toolkit10.isAsyncThunkAction)(mutationThunk);
+    var isFullfilledThunk = (0, import_toolkit10.isFulfilled)(queryThunk, mutationThunk);
+    return function (mwApi) {
+        var lifecycleMap = {};
+        return function (next) { return function (action) {
+            var stateBefore = mwApi.getState();
+            var result = next(action);
+            var cacheKey = getCacheKey(action);
+            if (queryThunk.pending.match(action)) {
+                var oldState = stateBefore[reducerPath].queries[cacheKey];
+                var state = mwApi.getState()[reducerPath].queries[cacheKey];
+                if (!oldState && state) {
+                    handleNewKey(action.meta.arg.endpointName, action.meta.arg.originalArgs, cacheKey, mwApi, action.meta.requestId);
+                }
+            }
+            else if (mutationThunk.pending.match(action)) {
+                var state = mwApi.getState()[reducerPath].mutations[cacheKey];
+                if (state) {
+                    handleNewKey(action.meta.arg.endpointName, action.meta.arg.originalArgs, cacheKey, mwApi, action.meta.requestId);
+                }
+            }
+            else if (isFullfilledThunk(action)) {
+                var lifecycle = lifecycleMap[cacheKey];
+                if (lifecycle == null ? void 0 : lifecycle.valueResolved) {
+                    lifecycle.valueResolved({
+                        data: action.payload,
+                        meta: action.meta.baseQueryMeta
+                    });
+                    delete lifecycle.valueResolved;
+                }
+            }
+            else if (api.internalActions.removeQueryResult.match(action) || api.internalActions.unsubscribeMutationResult.match(action)) {
+                var lifecycle = lifecycleMap[cacheKey];
+                if (lifecycle) {
+                    delete lifecycleMap[cacheKey];
+                    lifecycle.cacheEntryRemoved();
+                }
+            }
+            else if (api.util.resetApiState.match(action)) {
+                for (var _i = 0, _e = Object.entries(lifecycleMap); _i < _e.length; _i++) {
+                    var _f = _e[_i], cacheKey2 = _f[0], lifecycle = _f[1];
+                    delete lifecycleMap[cacheKey2];
+                    lifecycle.cacheEntryRemoved();
+                }
+            }
+            return result;
+        }; };
+        function getCacheKey(action) {
+            if (isQueryThunk(action))
+                return action.meta.arg.queryCacheKey;
+            if (isMutationThunk(action))
+                return action.meta.requestId;
+            if (api.internalActions.removeQueryResult.match(action))
+                return action.payload.queryCacheKey;
+            if (api.internalActions.unsubscribeMutationResult.match(action))
+                return action.payload.requestId;
+            return "";
+        }
+        function handleNewKey(endpointName, originalArgs, queryCacheKey, mwApi2, requestId) {
+            var endpointDefinition = context.endpointDefinitions[endpointName];
+            var onCacheEntryAdded = endpointDefinition == null ? void 0 : endpointDefinition.onCacheEntryAdded;
+            if (!onCacheEntryAdded)
+                return;
+            var lifecycle = {};
+            var cacheEntryRemoved = new Promise(function (resolve) {
+                lifecycle.cacheEntryRemoved = resolve;
+            });
+            var cacheDataLoaded = Promise.race([
+                new Promise(function (resolve) {
+                    lifecycle.valueResolved = resolve;
+                }),
+                cacheEntryRemoved.then(function () {
+                    throw neverResolvedError;
+                })
+            ]);
+            cacheDataLoaded.catch(function () {
+            });
+            lifecycleMap[queryCacheKey] = lifecycle;
+            var selector = api.endpoints[endpointName].select(endpointDefinition.type === DefinitionType.query ? originalArgs : queryCacheKey);
+            var extra = mwApi2.dispatch(function (_, __, extra2) { return extra2; });
+            var lifecycleApi = __objSpread(__objSpread({}, mwApi2), {
+                getCacheEntry: function () { return selector(mwApi2.getState()); },
+                requestId: requestId,
+                extra: extra,
+                updateCachedData: endpointDefinition.type === DefinitionType.query ? function (updateRecipe) { return mwApi2.dispatch(api.util.updateQueryData(endpointName, originalArgs, updateRecipe)); } : void 0,
+                cacheDataLoaded: cacheDataLoaded,
+                cacheEntryRemoved: cacheEntryRemoved
+            });
+            var runningHandler = onCacheEntryAdded(originalArgs, lifecycleApi);
+            Promise.resolve(runningHandler).catch(function (e) {
+                if (e === neverResolvedError)
+                    return;
+                throw e;
+            });
+        }
+    };
+};
+// src/query/core/buildMiddleware/queryLifecycle.ts
+var import_toolkit11 = __toModule(__webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js"));
+var build6 = function (_e) {
+    var api = _e.api, context = _e.context, queryThunk = _e.queryThunk, mutationThunk = _e.mutationThunk;
+    var isPendingThunk = (0, import_toolkit11.isPending)(queryThunk, mutationThunk);
+    var isRejectedThunk = (0, import_toolkit11.isRejected)(queryThunk, mutationThunk);
+    var isFullfilledThunk = (0, import_toolkit11.isFulfilled)(queryThunk, mutationThunk);
+    return function (mwApi) {
+        var lifecycleMap = {};
+        return function (next) { return function (action) {
+            var _a, _b, _c;
+            var result = next(action);
+            if (isPendingThunk(action)) {
+                var _e = action.meta, requestId = _e.requestId, _f = _e.arg, endpointName_1 = _f.endpointName, originalArgs_1 = _f.originalArgs;
+                var endpointDefinition = context.endpointDefinitions[endpointName_1];
+                var onQueryStarted = endpointDefinition == null ? void 0 : endpointDefinition.onQueryStarted;
+                if (onQueryStarted) {
+                    var lifecycle_1 = {};
+                    var queryFulfilled = new Promise(function (resolve, reject) {
+                        lifecycle_1.resolve = resolve;
+                        lifecycle_1.reject = reject;
+                    });
+                    queryFulfilled.catch(function () {
+                    });
+                    lifecycleMap[requestId] = lifecycle_1;
+                    var selector_1 = api.endpoints[endpointName_1].select(endpointDefinition.type === DefinitionType.query ? originalArgs_1 : requestId);
+                    var extra = mwApi.dispatch(function (_, __, extra2) { return extra2; });
+                    var lifecycleApi = __objSpread(__objSpread({}, mwApi), {
+                        getCacheEntry: function () { return selector_1(mwApi.getState()); },
+                        requestId: requestId,
+                        extra: extra,
+                        updateCachedData: endpointDefinition.type === DefinitionType.query ? function (updateRecipe) { return mwApi.dispatch(api.util.updateQueryData(endpointName_1, originalArgs_1, updateRecipe)); } : void 0,
+                        queryFulfilled: queryFulfilled
+                    });
+                    onQueryStarted(originalArgs_1, lifecycleApi);
+                }
+            }
+            else if (isFullfilledThunk(action)) {
+                var _g = action.meta, requestId = _g.requestId, baseQueryMeta = _g.baseQueryMeta;
+                (_a = lifecycleMap[requestId]) == null ? void 0 : _a.resolve({
+                    data: action.payload,
+                    meta: baseQueryMeta
+                });
+                delete lifecycleMap[requestId];
+            }
+            else if (isRejectedThunk(action)) {
+                var _h = action.meta, requestId = _h.requestId, rejectedWithValue = _h.rejectedWithValue, baseQueryMeta = _h.baseQueryMeta;
+                (_c = lifecycleMap[requestId]) == null ? void 0 : _c.reject({
+                    error: (_b = action.payload) != null ? _b : action.error,
+                    isUnhandledError: !rejectedWithValue,
+                    meta: baseQueryMeta
+                });
+                delete lifecycleMap[requestId];
+            }
+            return result;
+        }; };
+    };
+};
+// src/query/core/buildMiddleware/devMiddleware.ts
+var build7 = function (_e) {
+    var api = _e.api;
+    return function (mwApi) {
+        var initialized2 = false;
+        return function (next) { return function (action) {
+            if (!initialized2) {
+                initialized2 = true;
+                mwApi.dispatch(api.internalActions.middlewareRegistered());
+            }
+            var result = next(action);
+            if (api.util.resetApiState.match(action)) {
+                mwApi.dispatch(api.internalActions.middlewareRegistered());
+            }
+            return result;
+        }; };
+    };
+};
+// src/query/core/buildMiddleware/index.ts
+function buildMiddleware(input) {
+    var reducerPath = input.reducerPath, queryThunk = input.queryThunk;
+    var actions = {
+        invalidateTags: (0, import_toolkit12.createAction)(reducerPath + "/invalidateTags")
+    };
+    var middlewares = [
+        build7,
+        build,
+        build2,
+        build3,
+        build4,
+        build5,
+        build6
+    ].map(function (build8) { return build8(__objSpread(__objSpread({}, input), {
+        refetchQuery: refetchQuery
+    })); });
+    var middleware = function (mwApi) { return function (next) {
+        var applied = (0, import_redux.compose).apply(void 0, middlewares.map(function (middleware2) { return middleware2(mwApi); }))(next);
+        return function (action) {
+            if (mwApi.getState()[reducerPath]) {
+                return applied(action);
+            }
+            return next(action);
+        };
+    }; };
+    return { middleware: middleware, actions: actions };
+    function refetchQuery(querySubState, queryCacheKey, override) {
+        if (override === void 0) { override = {}; }
+        return queryThunk(__objSpread({
+            endpointName: querySubState.endpointName,
+            originalArgs: querySubState.originalArgs,
+            subscribe: false,
+            forceRefetch: true,
+            queryCacheKey: queryCacheKey
+        }, override));
+    }
+}
+// src/query/core/buildInitiate.ts
+function buildInitiate(_e) {
+    var serializeQueryArgs = _e.serializeQueryArgs, queryThunk = _e.queryThunk, mutationThunk = _e.mutationThunk, api = _e.api;
+    var _f = api.internalActions, unsubscribeQueryResult = _f.unsubscribeQueryResult, unsubscribeMutationResult = _f.unsubscribeMutationResult, updateSubscriptionOptions = _f.updateSubscriptionOptions;
+    return { buildInitiateQuery: buildInitiateQuery, buildInitiateMutation: buildInitiateMutation };
+    function middlewareWarning(getState) {
+        var _a, _b;
+        if (true) {
+            if (middlewareWarning.triggered)
+                return;
+            var registered = (_b = (_a = getState()[api.reducerPath]) == null ? void 0 : _a.config) == null ? void 0 : _b.middlewareRegistered;
+            if (registered !== void 0) {
+                ;
+                middlewareWarning.triggered = true;
+            }
+            if (registered === false) {
+                console.warn("Warning: Middleware for RTK-Query API at reducerPath \"" + api.reducerPath + "\" has not been added to the store.\nFeatures like automatic cache collection, automatic refetching etc. will not be available.");
+            }
+        }
+    }
+    function buildInitiateQuery(endpointName, endpointDefinition) {
+        var queryAction = function (arg, _e) {
+            var _f = _e === void 0 ? {} : _e, _g = _f.subscribe, subscribe = _g === void 0 ? true : _g, forceRefetch = _f.forceRefetch, subscriptionOptions = _f.subscriptionOptions;
+            return function (dispatch, getState) {
+                var queryCacheKey = serializeQueryArgs({
+                    queryArgs: arg,
+                    endpointDefinition: endpointDefinition,
+                    endpointName: endpointName
+                });
+                var thunk = queryThunk({
+                    subscribe: subscribe,
+                    forceRefetch: forceRefetch,
+                    subscriptionOptions: subscriptionOptions,
+                    endpointName: endpointName,
+                    originalArgs: arg,
+                    queryCacheKey: queryCacheKey
+                });
+                var thunkResult = dispatch(thunk);
+                middlewareWarning(getState);
+                var requestId = thunkResult.requestId, abort = thunkResult.abort;
+                var statePromise = Object.assign(thunkResult.then(function () { return api.endpoints[endpointName].select(arg)(getState()); }), {
+                    arg: arg,
+                    requestId: requestId,
+                    subscriptionOptions: subscriptionOptions,
+                    abort: abort,
+                    refetch: function () {
+                        dispatch(queryAction(arg, { subscribe: false, forceRefetch: true }));
+                    },
+                    unsubscribe: function () {
+                        if (subscribe)
+                            dispatch(unsubscribeQueryResult({
+                                queryCacheKey: queryCacheKey,
+                                requestId: requestId
+                            }));
+                    },
+                    updateSubscriptionOptions: function (options) {
+                        statePromise.subscriptionOptions = options;
+                        dispatch(updateSubscriptionOptions({
+                            endpointName: endpointName,
+                            requestId: requestId,
+                            queryCacheKey: queryCacheKey,
+                            options: options
+                        }));
+                    }
+                });
+                return statePromise;
+            };
+        };
+        return queryAction;
+    }
+    function buildInitiateMutation(endpointName, definition) {
+        return function (arg, _e) {
+            var _f = _e === void 0 ? {} : _e, _g = _f.track, track = _g === void 0 ? true : _g;
+            return function (dispatch, getState) {
+                var thunk = mutationThunk({
+                    endpointName: endpointName,
+                    originalArgs: arg,
+                    track: track
+                });
+                var thunkResult = dispatch(thunk);
+                middlewareWarning(getState);
+                var requestId = thunkResult.requestId, abort = thunkResult.abort;
+                var returnValuePromise = thunkResult.unwrap().then(function (data) { return ({ data: data }); }).catch(function (error) { return ({ error: error }); });
+                return Object.assign(returnValuePromise, {
+                    arg: thunkResult.arg,
+                    requestId: requestId,
+                    abort: abort,
+                    unwrap: thunkResult.unwrap,
+                    unsubscribe: function () {
+                        if (track)
+                            dispatch(unsubscribeMutationResult({ requestId: requestId }));
+                    }
+                });
+            };
+        };
+    }
+}
+// src/query/tsHelpers.ts
+function assertCast(v) {
+}
+function safeAssign(target) {
+    var args = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        args[_i - 1] = arguments[_i];
+    }
+    Object.assign.apply(Object, __spreadArray([target], args));
+}
+// src/query/core/module.ts
+var import_immer3 = __toModule(__webpack_require__(/*! immer */ "./node_modules/immer/dist/immer.esm.js"));
+var coreModuleName = /* @__PURE__ */ Symbol();
+var coreModule = function () { return ({
+    name: coreModuleName,
+    init: function (api, _e, context) {
+        var baseQuery = _e.baseQuery, tagTypes = _e.tagTypes, reducerPath = _e.reducerPath, serializeQueryArgs = _e.serializeQueryArgs, keepUnusedDataFor = _e.keepUnusedDataFor, refetchOnMountOrArgChange = _e.refetchOnMountOrArgChange, refetchOnFocus = _e.refetchOnFocus, refetchOnReconnect = _e.refetchOnReconnect;
+        (0, import_immer3.enablePatches)();
+        assertCast(serializeQueryArgs);
+        var assertTagType = function (tag) {
+            if (typeof process !== "undefined" && true) {
+                if (!tagTypes.includes(tag.type)) {
+                    console.error("Tag type '" + tag.type + "' was used, but not specified in `tagTypes`!");
+                }
+            }
+            return tag;
+        };
+        Object.assign(api, {
+            reducerPath: reducerPath,
+            endpoints: {},
+            internalActions: {
+                onOnline: onOnline,
+                onOffline: onOffline,
+                onFocus: onFocus,
+                onFocusLost: onFocusLost
+            },
+            util: {}
+        });
+        var _f = buildThunks({
+            baseQuery: baseQuery,
+            reducerPath: reducerPath,
+            context: context,
+            api: api,
+            serializeQueryArgs: serializeQueryArgs
+        }), queryThunk = _f.queryThunk, mutationThunk = _f.mutationThunk, patchQueryData = _f.patchQueryData, updateQueryData = _f.updateQueryData, prefetch = _f.prefetch, buildMatchThunkActions = _f.buildMatchThunkActions;
+        var _g = buildSlice({
+            context: context,
+            queryThunk: queryThunk,
+            mutationThunk: mutationThunk,
+            reducerPath: reducerPath,
+            assertTagType: assertTagType,
+            config: {
+                refetchOnFocus: refetchOnFocus,
+                refetchOnReconnect: refetchOnReconnect,
+                refetchOnMountOrArgChange: refetchOnMountOrArgChange,
+                keepUnusedDataFor: keepUnusedDataFor,
+                reducerPath: reducerPath
+            }
+        }), reducer = _g.reducer, sliceActions = _g.actions;
+        safeAssign(api.util, {
+            patchQueryData: patchQueryData,
+            updateQueryData: updateQueryData,
+            prefetch: prefetch,
+            resetApiState: sliceActions.resetApiState
+        });
+        safeAssign(api.internalActions, sliceActions);
+        Object.defineProperty(api.util, "updateQueryResult", {
+            get: function () {
+                if (typeof process !== "undefined" && true) {
+                    console.warn("`api.util.updateQueryResult` has been renamed to `api.util.updateQueryData`, please change your code accordingly");
+                }
+                return api.util.updateQueryData;
+            }
+        });
+        Object.defineProperty(api.util, "patchQueryResult", {
+            get: function () {
+                if (typeof process !== "undefined" && true) {
+                    console.warn("`api.util.patchQueryResult` has been renamed to `api.util.patchQueryData`, please change your code accordingly");
+                }
+                return api.util.patchQueryData;
+            }
+        });
+        var _h = buildMiddleware({
+            reducerPath: reducerPath,
+            context: context,
+            queryThunk: queryThunk,
+            mutationThunk: mutationThunk,
+            api: api,
+            assertTagType: assertTagType
+        }), middleware = _h.middleware, middlewareActions = _h.actions;
+        safeAssign(api.util, middlewareActions);
+        safeAssign(api, { reducer: reducer, middleware: middleware });
+        var _j = buildSelectors({
+            serializeQueryArgs: serializeQueryArgs,
+            reducerPath: reducerPath
+        }), buildQuerySelector = _j.buildQuerySelector, buildMutationSelector = _j.buildMutationSelector;
+        var _k = buildInitiate({
+            queryThunk: queryThunk,
+            mutationThunk: mutationThunk,
+            api: api,
+            serializeQueryArgs: serializeQueryArgs
+        }), buildInitiateQuery = _k.buildInitiateQuery, buildInitiateMutation = _k.buildInitiateMutation;
+        return {
+            name: coreModuleName,
+            injectEndpoint: function (endpointName, definition) {
+                var _a, _b;
+                var anyApi = api;
+                (_b = (_a = anyApi.endpoints)[endpointName]) != null ? _b : _a[endpointName] = {};
+                if (isQueryDefinition(definition)) {
+                    safeAssign(anyApi.endpoints[endpointName], {
+                        select: buildQuerySelector(endpointName, definition),
+                        initiate: buildInitiateQuery(endpointName, definition)
+                    }, buildMatchThunkActions(queryThunk, endpointName));
+                }
+                else if (isMutationDefinition(definition)) {
+                    safeAssign(anyApi.endpoints[endpointName], {
+                        select: buildMutationSelector(),
+                        initiate: buildInitiateMutation(endpointName, definition)
+                    }, buildMatchThunkActions(mutationThunk, endpointName));
+                }
+            }
+        };
+    }
+}); };
+// src/query/core/index.ts
+var createApi = /* @__PURE__ */ buildCreateApi(coreModule());
+//# sourceMappingURL=module.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@reduxjs/toolkit/dist/query/rtk-query.esm.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@reduxjs/toolkit/dist/query/rtk-query.esm.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "QueryStatus": () => (/* binding */ QueryStatus),
+/* harmony export */   "buildCreateApi": () => (/* binding */ buildCreateApi),
+/* harmony export */   "copyWithStructuralSharing": () => (/* binding */ copyWithStructuralSharing),
+/* harmony export */   "coreModule": () => (/* binding */ coreModule),
+/* harmony export */   "createApi": () => (/* binding */ createApi),
+/* harmony export */   "fakeBaseQuery": () => (/* binding */ fakeBaseQuery),
+/* harmony export */   "fetchBaseQuery": () => (/* binding */ fetchBaseQuery),
+/* harmony export */   "retry": () => (/* binding */ retry),
+/* harmony export */   "setupListeners": () => (/* binding */ setupListeners),
+/* harmony export */   "skipSelector": () => (/* binding */ skipSelector),
+/* harmony export */   "skipToken": () => (/* binding */ skipToken)
+/* harmony export */ });
+/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
+/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! immer */ "./node_modules/immer/dist/immer.esm.js");
+/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/reselect/es/index.js");
+/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var __spreadArray = (undefined && undefined.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
+var __defProp = Object.defineProperty;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
+var __defNormalProp = function (obj, key, value) { return key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value: value }) : obj[key] = value; };
+var __objSpread = function (a, b) {
+    for (var prop in b || (b = {}))
+        if (__hasOwnProp.call(b, prop))
+            __defNormalProp(a, prop, b[prop]);
+    if (__getOwnPropSymbols)
+        for (var _i = 0, _e = __getOwnPropSymbols(b); _i < _e.length; _i++) {
+            var prop = _e[_i];
+            if (__propIsEnum.call(b, prop))
+                __defNormalProp(a, prop, b[prop]);
+        }
+    return a;
+};
+var __objRest = function (source, exclude) {
+    var target = {};
+    for (var prop in source)
+        if (__hasOwnProp.call(source, prop) && exclude.indexOf(prop) < 0)
+            target[prop] = source[prop];
+    if (source != null && __getOwnPropSymbols)
+        for (var _i = 0, _e = __getOwnPropSymbols(source); _i < _e.length; _i++) {
+            var prop = _e[_i];
+            if (exclude.indexOf(prop) < 0 && __propIsEnum.call(source, prop))
+                target[prop] = source[prop];
+        }
+    return target;
+};
+var __async = function (__this, __arguments, generator) {
+    return new Promise(function (resolve, reject) {
+        var fulfilled = function (value) {
+            try {
+                step(generator.next(value));
+            }
+            catch (e) {
+                reject(e);
+            }
+        };
+        var rejected = function (value) {
+            try {
+                step(generator.throw(value));
+            }
+            catch (e) {
+                reject(e);
+            }
+        };
+        var step = function (x) { return x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected); };
+        step((generator = generator.apply(__this, __arguments)).next());
+    });
+};
+// src/query/core/apiState.ts
+var QueryStatus;
+(function (QueryStatus2) {
+    QueryStatus2["uninitialized"] = "uninitialized";
+    QueryStatus2["pending"] = "pending";
+    QueryStatus2["fulfilled"] = "fulfilled";
+    QueryStatus2["rejected"] = "rejected";
+})(QueryStatus || (QueryStatus = {}));
+function getRequestStatusFlags(status) {
+    return {
+        status: status,
+        isUninitialized: status === QueryStatus.uninitialized,
+        isLoading: status === QueryStatus.pending,
+        isSuccess: status === QueryStatus.fulfilled,
+        isError: status === QueryStatus.rejected
+    };
+}
+// src/query/utils/isAbsoluteUrl.ts
+function isAbsoluteUrl(url) {
+    return new RegExp("(^|:)//").test(url);
+}
+// src/query/utils/joinUrls.ts
+var withoutTrailingSlash = function (url) { return url.replace(/\/$/, ""); };
+var withoutLeadingSlash = function (url) { return url.replace(/^\//, ""); };
+function joinUrls(base, url) {
+    if (!base) {
+        return url;
+    }
+    if (!url) {
+        return base;
+    }
+    if (isAbsoluteUrl(url)) {
+        return url;
+    }
+    base = withoutTrailingSlash(base);
+    url = withoutLeadingSlash(url);
+    return base + "/" + url;
+}
+// src/query/utils/flatten.ts
+var flatten = function (arr) { return [].concat.apply([], arr); };
+// src/query/utils/isOnline.ts
+function isOnline() {
+    return typeof navigator === "undefined" ? true : navigator.onLine === void 0 ? true : navigator.onLine;
+}
+// src/query/utils/isDocumentVisible.ts
+function isDocumentVisible() {
+    if (typeof document === "undefined") {
+        return true;
+    }
+    return document.visibilityState !== "hidden";
+}
+// src/query/utils/copyWithStructuralSharing.ts
+
+var isPlainObject = _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.isPlainObject;
+function copyWithStructuralSharing(oldObj, newObj) {
+    if (oldObj === newObj || !(isPlainObject(oldObj) && isPlainObject(newObj) || Array.isArray(oldObj) && Array.isArray(newObj))) {
+        return newObj;
+    }
+    var newKeys = Object.keys(newObj);
+    var oldKeys = Object.keys(oldObj);
+    var isSameObject = newKeys.length === oldKeys.length;
+    var mergeObj = Array.isArray(newObj) ? [] : {};
+    for (var _i = 0, newKeys_1 = newKeys; _i < newKeys_1.length; _i++) {
+        var key = newKeys_1[_i];
+        mergeObj[key] = copyWithStructuralSharing(oldObj[key], newObj[key]);
+        if (isSameObject)
+            isSameObject = oldObj[key] === mergeObj[key];
+    }
+    return isSameObject ? oldObj : mergeObj;
+}
+// src/query/fetchBaseQuery.ts
+
+var defaultValidateStatus = function (response) { return response.status >= 200 && response.status <= 299; };
+var isJsonContentType = function (headers) {
+    var _a, _b;
+    return (_b = (_a = headers.get("content-type")) == null ? void 0 : _a.trim()) == null ? void 0 : _b.startsWith("application/json");
+};
+var handleResponse = function (response, responseHandler) { return __async(void 0, null, function () {
+    var text;
+    return __generator(this, function (_e) {
+        switch (_e.label) {
+            case 0:
+                if (typeof responseHandler === "function") {
+                    return [2 /*return*/, responseHandler(response)];
+                }
+                if (responseHandler === "text") {
+                    return [2 /*return*/, response.text()];
+                }
+                if (!(responseHandler === "json")) return [3 /*break*/, 2];
+                return [4 /*yield*/, response.text()];
+            case 1:
+                text = _e.sent();
+                return [2 /*return*/, text.length ? JSON.parse(text) : void 0];
+            case 2: return [2 /*return*/];
+        }
+    });
+}); };
+function stripUndefined(obj) {
+    if (!(0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(obj)) {
+        return obj;
+    }
+    var copy = __objSpread({}, obj);
+    for (var _i = 0, _e = Object.entries(copy); _i < _e.length; _i++) {
+        var _f = _e[_i], k = _f[0], v = _f[1];
+        if (typeof v === "undefined")
+            delete copy[k];
+    }
+    return copy;
+}
+function fetchBaseQuery(_a) {
+    var _this = this;
+    if (_a === void 0) { _a = {}; }
+    var _b = _a, baseUrl = _b.baseUrl, _e = _b.prepareHeaders, prepareHeaders = _e === void 0 ? function (x) { return x; } : _e, _f = _b.fetchFn, fetchFn = _f === void 0 ? fetch : _f, baseFetchOptions = __objRest(_b, [
+        "baseUrl",
+        "prepareHeaders",
+        "fetchFn"
+    ]);
+    return function (_0, _1) { return __async(_this, [_0, _1], function (arg, _e) {
+        var _a2, url, _f, method, _g, headers, _h, body, _j, params, _k, responseHandler, _l, validateStatus, rest, config, _m, isJsonifiable, divider, query, request, requestClone, response, responseClone, meta, resultData;
+        var signal = _e.signal, getState = _e.getState;
+        return __generator(this, function (_o) {
+            switch (_o.label) {
+                case 0:
+                    _a2 = typeof arg == "string" ? { url: arg } : arg, url = _a2.url, _f = _a2.method, method = _f === void 0 ? "GET" : _f, _g = _a2.headers, headers = _g === void 0 ? new Headers({}) : _g, _h = _a2.body, body = _h === void 0 ? void 0 : _h, _j = _a2.params, params = _j === void 0 ? void 0 : _j, _k = _a2.responseHandler, responseHandler = _k === void 0 ? "json" : _k, _l = _a2.validateStatus, validateStatus = _l === void 0 ? defaultValidateStatus : _l, rest = __objRest(_a2, [
+                        "url",
+                        "method",
+                        "headers",
+                        "body",
+                        "params",
+                        "responseHandler",
+                        "validateStatus"
+                    ]);
+                    config = __objSpread(__objSpread(__objSpread({}, baseFetchOptions), {
+                        method: method,
+                        signal: signal,
+                        body: body
+                    }), rest);
+                    _m = config;
+                    return [4 /*yield*/, prepareHeaders(new Headers(stripUndefined(headers)), { getState: getState })];
+                case 1:
+                    _m.headers = _o.sent();
+                    isJsonifiable = function (body2) { return typeof body2 === "object" && ((0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(body2) || Array.isArray(body2) || typeof body2.toJSON === "function"); };
+                    if (!config.headers.has("content-type") && isJsonifiable(body)) {
+                        config.headers.set("content-type", "application/json");
+                    }
+                    if (body && isJsonContentType(config.headers)) {
+                        config.body = JSON.stringify(body);
+                    }
+                    if (params) {
+                        divider = ~url.indexOf("?") ? "&" : "?";
+                        query = new URLSearchParams(stripUndefined(params));
+                        url += divider + query;
+                    }
+                    url = joinUrls(baseUrl, url);
+                    request = new Request(url, config);
+                    requestClone = request.clone();
+                    return [4 /*yield*/, fetchFn(request)];
+                case 2:
+                    response = _o.sent();
+                    responseClone = response.clone();
+                    meta = { request: requestClone, response: responseClone };
+                    return [4 /*yield*/, handleResponse(response, responseHandler)];
+                case 3:
+                    resultData = _o.sent();
+                    return [2 /*return*/, validateStatus(response, resultData) ? {
+                            data: resultData,
+                            meta: meta
+                        } : {
+                            error: {
+                                status: response.status,
+                                data: resultData
+                            },
+                            meta: meta
+                        }];
+            }
+        });
+    }); };
+}
+// src/query/HandledError.ts
+var HandledError = /** @class */ (function () {
+    function HandledError(value, meta) {
+        if (meta === void 0) { meta = void 0; }
+        this.value = value;
+        this.meta = meta;
+    }
+    return HandledError;
+}());
+// src/query/retry.ts
+function defaultBackoff(attempt, maxRetries) {
+    if (attempt === void 0) { attempt = 0; }
+    if (maxRetries === void 0) { maxRetries = 5; }
+    return __async(this, null, function () {
+        var attempts, timeout;
+        return __generator(this, function (_e) {
+            switch (_e.label) {
+                case 0:
+                    attempts = Math.min(attempt, maxRetries);
+                    timeout = ~~((Math.random() + 0.4) * (300 << attempts));
+                    return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(function (res) { return resolve(res); }, timeout); })];
+                case 1:
+                    _e.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function fail(e) {
+    throw Object.assign(new HandledError({ error: e }), {
+        throwImmediately: true
+    });
+}
+var retryWithBackoff = function (baseQuery, defaultOptions) { return function (args, api, extraOptions) { return __async(void 0, null, function () {
+    var options, retry2, result, e_1;
+    return __generator(this, function (_e) {
+        switch (_e.label) {
+            case 0:
+                options = __objSpread(__objSpread({
+                    maxRetries: 5,
+                    backoff: defaultBackoff
+                }, defaultOptions), extraOptions);
+                retry2 = 0;
+                _e.label = 1;
+            case 1:
+                if (false) {}
+                _e.label = 2;
+            case 2:
+                _e.trys.push([2, 4, , 6]);
+                return [4 /*yield*/, baseQuery(args, api, extraOptions)];
+            case 3:
+                result = _e.sent();
+                if (result.error) {
+                    throw new HandledError(result);
+                }
+                return [2 /*return*/, result];
+            case 4:
+                e_1 = _e.sent();
+                retry2++;
+                if (e_1.throwImmediately || retry2 > options.maxRetries) {
+                    if (e_1 instanceof HandledError) {
+                        return [2 /*return*/, e_1.value];
+                    }
+                    throw e_1;
+                }
+                return [4 /*yield*/, options.backoff(retry2, options.maxRetries)];
+            case 5:
+                _e.sent();
+                return [3 /*break*/, 6];
+            case 6: return [3 /*break*/, 1];
+            case 7: return [2 /*return*/];
+        }
+    });
+}); }; };
+var retry = /* @__PURE__ */ Object.assign(retryWithBackoff, { fail: fail });
+// src/query/core/setupListeners.ts
+
+var onFocus = /* @__PURE__ */ (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAction)("__rtkq/focused");
+var onFocusLost = /* @__PURE__ */ (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAction)("__rtkq/unfocused");
+var onOnline = /* @__PURE__ */ (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAction)("__rtkq/online");
+var onOffline = /* @__PURE__ */ (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAction)("__rtkq/offline");
+var initialized = false;
+function setupListeners(dispatch, customHandler) {
+    function defaultHandler() {
+        var handleFocus = function () { return dispatch(onFocus()); };
+        var handleFocusLost = function () { return dispatch(onFocusLost()); };
+        var handleOnline = function () { return dispatch(onOnline()); };
+        var handleOffline = function () { return dispatch(onOffline()); };
+        var handleVisibilityChange = function () {
+            if (window.document.visibilityState === "visible") {
+                handleFocus();
+            }
+            else {
+                handleFocusLost();
+            }
+        };
+        if (!initialized) {
+            if (typeof window !== "undefined" && window.addEventListener) {
+                window.addEventListener("visibilitychange", handleVisibilityChange, false);
+                window.addEventListener("focus", handleFocus, false);
+                window.addEventListener("online", handleOnline, false);
+                window.addEventListener("offline", handleOffline, false);
+                initialized = true;
+            }
+        }
+        var unsubscribe = function () {
+            window.removeEventListener("focus", handleFocus);
+            window.removeEventListener("visibilitychange", handleVisibilityChange);
+            window.removeEventListener("online", handleOnline);
+            window.removeEventListener("offline", handleOffline);
+            initialized = false;
+        };
+        return unsubscribe;
+    }
+    return customHandler ? customHandler(dispatch, { onFocus: onFocus, onFocusLost: onFocusLost, onOffline: onOffline, onOnline: onOnline }) : defaultHandler();
+}
+// src/query/core/buildSelectors.ts
+
+var skipToken = /* @__PURE__ */ Symbol("skip selector");
+var skipSelector = skipToken;
+var initialSubState = {
+    status: QueryStatus.uninitialized
+};
+var defaultQuerySubState = /* @__PURE__ */ (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.default)(initialSubState, function () {
+});
+var defaultMutationSubState = /* @__PURE__ */ (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.default)(initialSubState, function () {
+});
+function buildSelectors(_e) {
+    var serializeQueryArgs = _e.serializeQueryArgs, reducerPath = _e.reducerPath;
+    return { buildQuerySelector: buildQuerySelector, buildMutationSelector: buildMutationSelector };
+    function withRequestFlags(substate) {
+        return __objSpread(__objSpread({}, substate), getRequestStatusFlags(substate.status));
+    }
+    function selectInternalState(rootState) {
+        var state = rootState[reducerPath];
+        if (true) {
+            if (!state) {
+                if (selectInternalState.triggered)
+                    return state;
+                selectInternalState.triggered = true;
+                console.error("Error: No data found at `state." + reducerPath + "`. Did you forget to add the reducer to the store?");
+            }
+        }
+        return state;
+    }
+    function buildQuerySelector(endpointName, endpointDefinition) {
+        return function (queryArgs) {
+            var selectQuerySubState = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_2__.createSelector)(selectInternalState, function (internalState) {
+                var _a, _b;
+                return (_b = queryArgs === skipToken ? void 0 : (_a = internalState == null ? void 0 : internalState.queries) == null ? void 0 : _a[serializeQueryArgs({
+                    queryArgs: queryArgs,
+                    endpointDefinition: endpointDefinition,
+                    endpointName: endpointName
+                })]) != null ? _b : defaultQuerySubState;
+            });
+            return (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_2__.createSelector)(selectQuerySubState, withRequestFlags);
+        };
+    }
+    function buildMutationSelector() {
+        return function (mutationId) {
+            var selectMutationSubstate = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_2__.createSelector)(selectInternalState, function (internalState) {
+                var _a, _b;
+                return (_b = mutationId === skipToken ? void 0 : (_a = internalState == null ? void 0 : internalState.mutations) == null ? void 0 : _a[mutationId]) != null ? _b : defaultMutationSubState;
+            });
+            return (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_2__.createSelector)(selectMutationSubstate, withRequestFlags);
+        };
+    }
+}
+// src/query/defaultSerializeQueryArgs.ts
+
+var defaultSerializeQueryArgs = function (_e) {
+    var endpointName = _e.endpointName, queryArgs = _e.queryArgs;
+    return endpointName + "(" + JSON.stringify(queryArgs, function (key, value) { return (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.isPlainObject)(value) ? Object.keys(value).sort().reduce(function (acc, key2) {
+        acc[key2] = value[key2];
+        return acc;
+    }, {}) : value; }) + ")";
+};
+// src/query/endpointDefinitions.ts
+var DefinitionType;
+(function (DefinitionType2) {
+    DefinitionType2["query"] = "query";
+    DefinitionType2["mutation"] = "mutation";
+})(DefinitionType || (DefinitionType = {}));
+function isQueryDefinition(e) {
+    return e.type === DefinitionType.query;
+}
+function isMutationDefinition(e) {
+    return e.type === DefinitionType.mutation;
+}
+function calculateProvidedBy(description, result, error, queryArg, assertTagTypes) {
+    if (isFunction(description)) {
+        return description(result, error, queryArg).map(expandTagDescription).map(assertTagTypes);
+    }
+    if (Array.isArray(description)) {
+        return description.map(expandTagDescription).map(assertTagTypes);
+    }
+    return [];
+}
+function isFunction(t) {
+    return typeof t === "function";
+}
+function expandTagDescription(description) {
+    return typeof description === "string" ? { type: description } : description;
+}
+// src/query/createApi.ts
+function buildCreateApi() {
+    var modules = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        modules[_i] = arguments[_i];
+    }
+    return function baseCreateApi(options) {
+        var optionsWithDefaults = __objSpread(__objSpread({
+            reducerPath: "api",
+            serializeQueryArgs: defaultSerializeQueryArgs,
+            keepUnusedDataFor: 60,
+            refetchOnMountOrArgChange: false,
+            refetchOnFocus: false,
+            refetchOnReconnect: false
+        }, options), {
+            tagTypes: __spreadArray([], options.tagTypes || [])
+        });
+        var context = {
+            endpointDefinitions: {},
+            batch: function (fn) {
+                fn();
+            }
+        };
+        var api = {
+            injectEndpoints: injectEndpoints,
+            enhanceEndpoints: function (_e) {
+                var addTagTypes = _e.addTagTypes, endpoints = _e.endpoints;
+                if (addTagTypes) {
+                    for (var _i = 0, addTagTypes_1 = addTagTypes; _i < addTagTypes_1.length; _i++) {
+                        var eT = addTagTypes_1[_i];
+                        if (!optionsWithDefaults.tagTypes.includes(eT)) {
+                            optionsWithDefaults.tagTypes.push(eT);
+                        }
+                    }
+                }
+                if (endpoints) {
+                    for (var _f = 0, _g = Object.entries(endpoints); _f < _g.length; _f++) {
+                        var _h = _g[_f], endpointName = _h[0], partialDefinition = _h[1];
+                        if (typeof partialDefinition === "function") {
+                            partialDefinition(context.endpointDefinitions[endpointName]);
+                        }
+                        Object.assign(context.endpointDefinitions[endpointName] || {}, partialDefinition);
+                    }
+                }
+                return api;
+            }
+        };
+        var initializedModules = modules.map(function (m) { return m.init(api, optionsWithDefaults, context); });
+        function injectEndpoints(inject) {
+            var evaluatedEndpoints = inject.endpoints({
+                query: function (x) { return __objSpread(__objSpread({}, x), { type: DefinitionType.query }); },
+                mutation: function (x) { return __objSpread(__objSpread({}, x), { type: DefinitionType.mutation }); }
+            });
+            for (var _i = 0, _e = Object.entries(evaluatedEndpoints); _i < _e.length; _i++) {
+                var _f = _e[_i], endpointName = _f[0], definition = _f[1];
+                if (!inject.overrideExisting && endpointName in context.endpointDefinitions) {
+                    if (typeof process !== "undefined" && "development" === "development") {
+                        console.error("called `injectEndpoints` to override already-existing endpointName " + endpointName + " without specifying `overrideExisting: true`");
+                    }
+                    continue;
+                }
+                context.endpointDefinitions[endpointName] = definition;
+                for (var _g = 0, initializedModules_1 = initializedModules; _g < initializedModules_1.length; _g++) {
+                    var m = initializedModules_1[_g];
+                    m.injectEndpoint(endpointName, definition);
+                }
+            }
+            return api;
+        }
+        return api.injectEndpoints({ endpoints: options.endpoints });
+    };
+}
+// src/query/fakeBaseQuery.ts
+function fakeBaseQuery() {
+    return function () {
+        throw new Error("When using `fakeBaseQuery`, all queries & mutations must use the `queryFn` definition syntax.");
+    };
+}
+// src/query/core/buildThunks.ts
+
+
+
+function defaultTransformResponse(baseQueryReturnValue) {
+    return baseQueryReturnValue;
+}
+function buildThunks(_e) {
+    var _this = this;
+    var reducerPath = _e.reducerPath, baseQuery = _e.baseQuery, endpointDefinitions = _e.context.endpointDefinitions, serializeQueryArgs = _e.serializeQueryArgs, api = _e.api;
+    var patchQueryData = function (endpointName, args, patches) { return function (dispatch) {
+        var endpointDefinition = endpointDefinitions[endpointName];
+        dispatch(api.internalActions.queryResultPatched({
+            queryCacheKey: serializeQueryArgs({
+                queryArgs: args,
+                endpointDefinition: endpointDefinition,
+                endpointName: endpointName
+            }),
+            patches: patches
+        }));
+    }; };
+    var updateQueryData = function (endpointName, args, updateRecipe) { return function (dispatch, getState) {
+        var _e, _f;
+        var currentState = api.endpoints[endpointName].select(args)(getState());
+        var ret = {
+            patches: [],
+            inversePatches: [],
+            undo: function () { return dispatch(api.util.patchQueryData(endpointName, args, ret.inversePatches)); }
+        };
+        if (currentState.status === QueryStatus.uninitialized) {
+            return ret;
+        }
+        if ("data" in currentState) {
+            if ((0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.isDraftable)(currentState.data)) {
+                var _g = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.produceWithPatches)(currentState.data, updateRecipe), patches = _g[1], inversePatches = _g[2];
+                (_e = ret.patches).push.apply(_e, patches);
+                (_f = ret.inversePatches).push.apply(_f, inversePatches);
+            }
+            else {
+                var value = updateRecipe(currentState.data);
+                ret.patches.push({ op: "replace", path: [], value: value });
+                ret.inversePatches.push({
+                    op: "replace",
+                    path: [],
+                    value: currentState.data
+                });
+            }
+        }
+        dispatch(api.util.patchQueryData(endpointName, args, ret.patches));
+        return ret;
+    }; };
+    var executeEndpoint = function (_0, _1) { return __async(_this, [_0, _1], function (arg, _e) {
+        var endpointDefinition, transformResponse, result, baseQueryApi_1, _f, error_1;
+        var signal = _e.signal, rejectWithValue = _e.rejectWithValue, fulfillWithValue = _e.fulfillWithValue, dispatch = _e.dispatch, getState = _e.getState;
+        return __generator(this, function (_g) {
+            switch (_g.label) {
+                case 0:
+                    endpointDefinition = endpointDefinitions[arg.endpointName];
+                    _g.label = 1;
+                case 1:
+                    _g.trys.push([1, 7, , 8]);
+                    transformResponse = defaultTransformResponse;
+                    result = void 0;
+                    baseQueryApi_1 = {
+                        signal: signal,
+                        dispatch: dispatch,
+                        getState: getState
+                    };
+                    if (!endpointDefinition.query) return [3 /*break*/, 3];
+                    return [4 /*yield*/, baseQuery(endpointDefinition.query(arg.originalArgs), baseQueryApi_1, endpointDefinition.extraOptions)];
+                case 2:
+                    result = _g.sent();
+                    if (endpointDefinition.transformResponse) {
+                        transformResponse = endpointDefinition.transformResponse;
+                    }
+                    return [3 /*break*/, 5];
+                case 3: return [4 /*yield*/, endpointDefinition.queryFn(arg.originalArgs, baseQueryApi_1, endpointDefinition.extraOptions, function (arg2) { return baseQuery(arg2, baseQueryApi_1, endpointDefinition.extraOptions); })];
+                case 4:
+                    result = _g.sent();
+                    _g.label = 5;
+                case 5:
+                    if (result.error)
+                        throw new HandledError(result.error, result.meta);
+                    _f = fulfillWithValue;
+                    return [4 /*yield*/, transformResponse(result.data, result.meta)];
+                case 6: return [2 /*return*/, _f.apply(void 0, [_g.sent(), {
+                            fulfilledTimeStamp: Date.now(),
+                            baseQueryMeta: result.meta
+                        }])];
+                case 7:
+                    error_1 = _g.sent();
+                    if (error_1 instanceof HandledError) {
+                        return [2 /*return*/, rejectWithValue(error_1.value, { baseQueryMeta: error_1.meta })];
+                    }
+                    throw error_1;
+                case 8: return [2 /*return*/];
+            }
+        });
+    }); };
+    var queryThunk = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)(reducerPath + "/executeQuery", executeEndpoint, {
+        getPendingMeta: function () {
+            return { startedTimeStamp: Date.now() };
+        },
+        condition: function (arg, _e) {
+            var getState = _e.getState;
+            var _a, _b;
+            var state = getState()[reducerPath];
+            var requestState = (_a = state == null ? void 0 : state.queries) == null ? void 0 : _a[arg.queryCacheKey];
+            var baseFetchOnMountOrArgChange = state.config.refetchOnMountOrArgChange;
+            var fulfilledVal = requestState == null ? void 0 : requestState.fulfilledTimeStamp;
+            var refetchVal = (_b = arg.forceRefetch) != null ? _b : arg.subscribe && baseFetchOnMountOrArgChange;
+            if ((requestState == null ? void 0 : requestState.status) === "pending")
+                return false;
+            if (fulfilledVal) {
+                if (refetchVal) {
+                    return refetchVal === true || (Number(new Date()) - Number(fulfilledVal)) / 1e3 >= refetchVal;
+                }
+                return false;
+            }
+            return true;
+        },
+        dispatchConditionRejection: true
+    });
+    var mutationThunk = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)(reducerPath + "/executeMutation", executeEndpoint, {
+        getPendingMeta: function () {
+            return { startedTimeStamp: Date.now() };
+        }
+    });
+    var hasTheForce = function (options) { return "force" in options; };
+    var hasMaxAge = function (options) { return "ifOlderThan" in options; };
+    var prefetch = function (endpointName, arg, options) { return function (dispatch, getState) {
+        var force = hasTheForce(options) && options.force;
+        var maxAge = hasMaxAge(options) && options.ifOlderThan;
+        var queryAction = function (force2) {
+            if (force2 === void 0) { force2 = true; }
+            return api.endpoints[endpointName].initiate(arg, { forceRefetch: force2 });
+        };
+        var latestStateValue = api.endpoints[endpointName].select(arg)(getState());
+        if (force) {
+            dispatch(queryAction());
+        }
+        else if (maxAge) {
+            var lastFulfilledTs = latestStateValue == null ? void 0 : latestStateValue.fulfilledTimeStamp;
+            if (!lastFulfilledTs) {
+                dispatch(queryAction());
+                return;
+            }
+            var shouldRetrigger = (Number(new Date()) - Number(new Date(lastFulfilledTs))) / 1e3 >= maxAge;
+            if (shouldRetrigger) {
+                dispatch(queryAction());
+            }
+        }
+        else {
+            dispatch(queryAction(false));
+        }
+    }; };
+    function matchesEndpoint(endpointName) {
+        return function (action) {
+            var _a, _b;
+            return ((_b = (_a = action == null ? void 0 : action.meta) == null ? void 0 : _a.arg) == null ? void 0 : _b.endpointName) === endpointName;
+        };
+    }
+    function buildMatchThunkActions(thunk, endpointName) {
+        return {
+            matchPending: (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.isAllOf)((0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.isPending)(thunk), matchesEndpoint(endpointName)),
+            matchFulfilled: (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.isAllOf)((0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.isFulfilled)(thunk), matchesEndpoint(endpointName)),
+            matchRejected: (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.isAllOf)((0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.isRejected)(thunk), matchesEndpoint(endpointName))
+        };
+    }
+    return {
+        queryThunk: queryThunk,
+        mutationThunk: mutationThunk,
+        prefetch: prefetch,
+        updateQueryData: updateQueryData,
+        patchQueryData: patchQueryData,
+        buildMatchThunkActions: buildMatchThunkActions
+    };
+}
+function calculateProvidedByThunk(action, type, endpointDefinitions, assertTagType) {
+    return calculateProvidedBy(endpointDefinitions[action.meta.arg.endpointName][type], (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.isFulfilled)(action) ? action.payload : void 0, (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.isRejectedWithValue)(action) ? action.payload : void 0, action.meta.arg.originalArgs, assertTagType);
+}
+// src/query/core/buildSlice.ts
+
+
+function updateQuerySubstateIfExists(state, queryCacheKey, update) {
+    var substate = state[queryCacheKey];
+    if (substate) {
+        update(substate);
+    }
+}
+function updateMutationSubstateIfExists(state, _e, update) {
+    var requestId = _e.requestId;
+    var substate = state[requestId];
+    if (substate) {
+        update(substate);
+    }
+}
+var initialState = {};
+function buildSlice(_e) {
+    var reducerPath = _e.reducerPath, queryThunk = _e.queryThunk, mutationThunk = _e.mutationThunk, definitions = _e.context.endpointDefinitions, assertTagType = _e.assertTagType, config = _e.config;
+    var resetApiState = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAction)(reducerPath + "/resetApiState");
+    var querySlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)({
+        name: reducerPath + "/queries",
+        initialState: initialState,
+        reducers: {
+            removeQueryResult: function (draft, _e) {
+                var queryCacheKey = _e.payload.queryCacheKey;
+                delete draft[queryCacheKey];
+            },
+            queryResultPatched: function (draft, _e) {
+                var _f = _e.payload, queryCacheKey = _f.queryCacheKey, patches = _f.patches;
+                updateQuerySubstateIfExists(draft, queryCacheKey, function (substate) {
+                    substate.data = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.applyPatches)(substate.data, patches.concat());
+                });
+            }
+        },
+        extraReducers: function (builder) {
+            builder.addCase(queryThunk.pending, function (draft, _e) {
+                var meta = _e.meta, arg = _e.meta.arg;
+                var _a, _b;
+                if (arg.subscribe) {
+                    (_b = draft[_a = arg.queryCacheKey]) != null ? _b : draft[_a] = {
+                        status: QueryStatus.uninitialized,
+                        endpointName: arg.endpointName
+                    };
+                }
+                updateQuerySubstateIfExists(draft, arg.queryCacheKey, function (substate) {
+                    substate.status = QueryStatus.pending;
+                    substate.requestId = meta.requestId;
+                    substate.originalArgs = arg.originalArgs;
+                    substate.startedTimeStamp = meta.startedTimeStamp;
+                });
+            }).addCase(queryThunk.fulfilled, function (draft, _e) {
+                var meta = _e.meta, payload = _e.payload;
+                updateQuerySubstateIfExists(draft, meta.arg.queryCacheKey, function (substate) {
+                    if (substate.requestId !== meta.requestId)
+                        return;
+                    substate.status = QueryStatus.fulfilled;
+                    substate.data = copyWithStructuralSharing(substate.data, payload);
+                    delete substate.error;
+                    substate.fulfilledTimeStamp = meta.fulfilledTimeStamp;
+                });
+            }).addCase(queryThunk.rejected, function (draft, _e) {
+                var _f = _e.meta, condition = _f.condition, arg = _f.arg, requestId = _f.requestId, error = _e.error, payload = _e.payload;
+                updateQuerySubstateIfExists(draft, arg.queryCacheKey, function (substate) {
+                    if (condition) {
+                    }
+                    else {
+                        if (substate.requestId !== requestId)
+                            return;
+                        substate.status = QueryStatus.rejected;
+                        substate.error = payload != null ? payload : error;
+                    }
+                });
+            });
+        }
+    });
+    var mutationSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)({
+        name: reducerPath + "/mutations",
+        initialState: initialState,
+        reducers: {
+            unsubscribeMutationResult: function (draft, action) {
+                if (action.payload.requestId in draft) {
+                    delete draft[action.payload.requestId];
+                }
+            }
+        },
+        extraReducers: function (builder) {
+            builder.addCase(mutationThunk.pending, function (draft, _e) {
+                var _f = _e.meta, arg = _f.arg, requestId = _f.requestId, startedTimeStamp = _f.startedTimeStamp;
+                if (!arg.track)
+                    return;
+                draft[requestId] = {
+                    status: QueryStatus.pending,
+                    originalArgs: arg.originalArgs,
+                    endpointName: arg.endpointName,
+                    startedTimeStamp: startedTimeStamp
+                };
+            }).addCase(mutationThunk.fulfilled, function (draft, _e) {
+                var payload = _e.payload, meta = _e.meta, requestId = _e.meta.requestId;
+                if (!meta.arg.track)
+                    return;
+                updateMutationSubstateIfExists(draft, { requestId: requestId }, function (substate) {
+                    substate.status = QueryStatus.fulfilled;
+                    substate.data = payload;
+                    substate.fulfilledTimeStamp = meta.fulfilledTimeStamp;
+                });
+            }).addCase(mutationThunk.rejected, function (draft, _e) {
+                var payload = _e.payload, error = _e.error, _f = _e.meta, requestId = _f.requestId, arg = _f.arg;
+                if (!arg.track)
+                    return;
+                updateMutationSubstateIfExists(draft, { requestId: requestId }, function (substate) {
+                    substate.status = QueryStatus.rejected;
+                    substate.error = payload != null ? payload : error;
+                });
+            });
+        }
+    });
+    var invalidationSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)({
+        name: reducerPath + "/invalidation",
+        initialState: initialState,
+        reducers: {},
+        extraReducers: function (builder) {
+            builder.addCase(querySlice.actions.removeQueryResult, function (draft, _e) {
+                var queryCacheKey = _e.payload.queryCacheKey;
+                for (var _i = 0, _f = Object.values(draft); _i < _f.length; _i++) {
+                    var tagTypeSubscriptions = _f[_i];
+                    for (var _g = 0, _h = Object.values(tagTypeSubscriptions); _g < _h.length; _g++) {
+                        var idSubscriptions = _h[_g];
+                        var foundAt = idSubscriptions.indexOf(queryCacheKey);
+                        if (foundAt !== -1) {
+                            idSubscriptions.splice(foundAt, 1);
+                        }
+                    }
+                }
+            }).addMatcher((0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.isAnyOf)((0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.isFulfilled)(queryThunk), (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.isRejectedWithValue)(queryThunk)), function (draft, action) {
+                var _a, _b, _c, _d;
+                var providedTags = calculateProvidedByThunk(action, "providesTags", definitions, assertTagType);
+                var queryCacheKey = action.meta.arg.queryCacheKey;
+                for (var _i = 0, providedTags_1 = providedTags; _i < providedTags_1.length; _i++) {
+                    var _e = providedTags_1[_i], type = _e.type, id = _e.id;
+                    var subscribedQueries = (_d = (_b = (_a = draft[type]) != null ? _a : draft[type] = {})[_c = id || "__internal_without_id"]) != null ? _d : _b[_c] = [];
+                    var alreadySubscribed = subscribedQueries.includes(queryCacheKey);
+                    if (!alreadySubscribed) {
+                        subscribedQueries.push(queryCacheKey);
+                    }
+                }
+            });
+        }
+    });
+    var subscriptionSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)({
+        name: reducerPath + "/subscriptions",
+        initialState: initialState,
+        reducers: {
+            updateSubscriptionOptions: function (draft, _e) {
+                var _f = _e.payload, queryCacheKey = _f.queryCacheKey, requestId = _f.requestId, options = _f.options;
+                var _a;
+                if ((_a = draft == null ? void 0 : draft[queryCacheKey]) == null ? void 0 : _a[requestId]) {
+                    draft[queryCacheKey][requestId] = options;
+                }
+            },
+            unsubscribeQueryResult: function (draft, _e) {
+                var _f = _e.payload, queryCacheKey = _f.queryCacheKey, requestId = _f.requestId;
+                if (draft[queryCacheKey]) {
+                    delete draft[queryCacheKey][requestId];
+                }
+            }
+        },
+        extraReducers: function (builder) {
+            builder.addCase(querySlice.actions.removeQueryResult, function (draft, _e) {
+                var queryCacheKey = _e.payload.queryCacheKey;
+                delete draft[queryCacheKey];
+            }).addCase(queryThunk.pending, function (draft, _e) {
+                var _f = _e.meta, arg = _f.arg, requestId = _f.requestId;
+                var _a, _b, _c, _d;
+                if (arg.subscribe) {
+                    var substate = (_b = draft[_a = arg.queryCacheKey]) != null ? _b : draft[_a] = {};
+                    substate[requestId] = (_d = (_c = arg.subscriptionOptions) != null ? _c : substate[requestId]) != null ? _d : {};
+                }
+            }).addCase(queryThunk.rejected, function (draft, _e) {
+                var _f = _e.meta, condition = _f.condition, arg = _f.arg, requestId = _f.requestId, error = _e.error, payload = _e.payload;
+                var _a, _b;
+                var substate = draft[arg.queryCacheKey];
+                if (condition && arg.subscribe && substate) {
+                    substate[requestId] = (_b = (_a = arg.subscriptionOptions) != null ? _a : substate[requestId]) != null ? _b : {};
+                }
+            });
+        }
+    });
+    var configSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)({
+        name: reducerPath + "/config",
+        initialState: __objSpread({
+            online: isOnline(),
+            focused: isDocumentVisible(),
+            middlewareRegistered: false
+        }, config),
+        reducers: {
+            middlewareRegistered: function (state) {
+                state.middlewareRegistered = true;
+            }
+        },
+        extraReducers: function (builder) {
+            builder.addCase(onOnline, function (state) {
+                state.online = true;
+            }).addCase(onOffline, function (state) {
+                state.online = false;
+            }).addCase(onFocus, function (state) {
+                state.focused = true;
+            }).addCase(onFocusLost, function (state) {
+                state.focused = false;
+            });
+        }
+    });
+    var combinedReducer = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_3__.combineReducers)({
+        queries: querySlice.reducer,
+        mutations: mutationSlice.reducer,
+        provided: invalidationSlice.reducer,
+        subscriptions: subscriptionSlice.reducer,
+        config: configSlice.reducer
+    });
+    var reducer = function (state, action) { return combinedReducer(resetApiState.match(action) ? void 0 : state, action); };
+    var actions = __objSpread(__objSpread(__objSpread(__objSpread(__objSpread({}, configSlice.actions), querySlice.actions), subscriptionSlice.actions), mutationSlice.actions), {
+        resetApiState: resetApiState
+    });
+    return { reducer: reducer, actions: actions };
+}
+// src/query/core/buildMiddleware/index.ts
+
+
+// src/query/core/buildMiddleware/cacheCollection.ts
+var build = function (_e) {
+    var reducerPath = _e.reducerPath, api = _e.api, context = _e.context;
+    var _f = api.internalActions, removeQueryResult = _f.removeQueryResult, unsubscribeQueryResult = _f.unsubscribeQueryResult;
+    return function (mwApi) {
+        var currentRemovalTimeouts = {};
+        return function (next) { return function (action) {
+            var _a, _b;
+            var result = next(action);
+            if (unsubscribeQueryResult.match(action)) {
+                var state = mwApi.getState()[reducerPath];
+                var queryCacheKey = action.payload.queryCacheKey;
+                var endpointDefinition = context.endpointDefinitions[(_a = state.queries[queryCacheKey]) == null ? void 0 : _a.endpointName];
+                handleUnsubscribe(queryCacheKey, mwApi, (_b = endpointDefinition == null ? void 0 : endpointDefinition.keepUnusedDataFor) != null ? _b : state.config.keepUnusedDataFor);
+            }
+            if (api.util.resetApiState.match(action)) {
+                for (var _i = 0, _e = Object.entries(currentRemovalTimeouts); _i < _e.length; _i++) {
+                    var _f = _e[_i], key = _f[0], timeout = _f[1];
+                    if (timeout)
+                        clearTimeout(timeout);
+                    delete currentRemovalTimeouts[key];
+                }
+            }
+            return result;
+        }; };
+        function handleUnsubscribe(queryCacheKey, api2, keepUnusedDataFor) {
+            var currentTimeout = currentRemovalTimeouts[queryCacheKey];
+            if (currentTimeout) {
+                clearTimeout(currentTimeout);
+            }
+            currentRemovalTimeouts[queryCacheKey] = setTimeout(function () {
+                var subscriptions = api2.getState()[reducerPath].subscriptions[queryCacheKey];
+                if (!subscriptions || Object.keys(subscriptions).length === 0) {
+                    api2.dispatch(removeQueryResult({ queryCacheKey: queryCacheKey }));
+                }
+                delete currentRemovalTimeouts[queryCacheKey];
+            }, keepUnusedDataFor * 1e3);
+        }
+    };
+};
+// src/query/core/buildMiddleware/invalidationByTags.ts
+
+var build2 = function (_e) {
+    var reducerPath = _e.reducerPath, context = _e.context, endpointDefinitions = _e.context.endpointDefinitions, mutationThunk = _e.mutationThunk, api = _e.api, assertTagType = _e.assertTagType, refetchQuery = _e.refetchQuery;
+    var removeQueryResult = api.internalActions.removeQueryResult;
+    return function (mwApi) { return function (next) { return function (action) {
+        var result = next(action);
+        if ((0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.isAnyOf)((0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.isFulfilled)(mutationThunk), (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.isRejectedWithValue)(mutationThunk))(action)) {
+            invalidateTags(calculateProvidedByThunk(action, "invalidatesTags", endpointDefinitions, assertTagType), mwApi);
+        }
+        if (api.util.invalidateTags.match(action)) {
+            invalidateTags(calculateProvidedBy(action.payload, void 0, void 0, void 0, assertTagType), mwApi);
+        }
+        return result;
+    }; }; };
+    function invalidateTags(tags, api2) {
+        var _a;
+        var state = api2.getState()[reducerPath];
+        var toInvalidate = new Set();
+        for (var _i = 0, tags_1 = tags; _i < tags_1.length; _i++) {
+            var tag = tags_1[_i];
+            var provided = state.provided[tag.type];
+            if (!provided) {
+                continue;
+            }
+            var invalidateSubscriptions = (_a = tag.id !== void 0 ? provided[tag.id] : flatten(Object.values(provided))) != null ? _a : [];
+            for (var _e = 0, invalidateSubscriptions_1 = invalidateSubscriptions; _e < invalidateSubscriptions_1.length; _e++) {
+                var invalidate = invalidateSubscriptions_1[_e];
+                toInvalidate.add(invalidate);
+            }
+        }
+        context.batch(function () {
+            var valuesArray = Array.from(toInvalidate.values());
+            for (var _i = 0, valuesArray_1 = valuesArray; _i < valuesArray_1.length; _i++) {
+                var queryCacheKey = valuesArray_1[_i];
+                var querySubState = state.queries[queryCacheKey];
+                var subscriptionSubState = state.subscriptions[queryCacheKey];
+                if (querySubState && subscriptionSubState) {
+                    if (Object.keys(subscriptionSubState).length === 0) {
+                        api2.dispatch(removeQueryResult({ queryCacheKey: queryCacheKey }));
+                    }
+                    else if (querySubState.status !== QueryStatus.uninitialized) {
+                        api2.dispatch(refetchQuery(querySubState, queryCacheKey));
+                    }
+                    else {
+                    }
+                }
+            }
+        });
+    }
+};
+// src/query/core/buildMiddleware/polling.ts
+var build3 = function (_e) {
+    var reducerPath = _e.reducerPath, queryThunk = _e.queryThunk, api = _e.api, refetchQuery = _e.refetchQuery;
+    return function (mwApi) {
+        var currentPolls = {};
+        return function (next) { return function (action) {
+            var result = next(action);
+            if (api.internalActions.updateSubscriptionOptions.match(action)) {
+                updatePollingInterval(action.payload, mwApi);
+            }
+            if (queryThunk.pending.match(action) || queryThunk.rejected.match(action) && action.meta.condition) {
+                updatePollingInterval(action.meta.arg, mwApi);
+            }
+            if (queryThunk.fulfilled.match(action) || queryThunk.rejected.match(action) && !action.meta.condition) {
+                startNextPoll(action.meta.arg, mwApi);
+            }
+            if (api.util.resetApiState.match(action)) {
+                clearPolls();
+            }
+            return result;
+        }; };
+        function startNextPoll(_e, api2) {
+            var queryCacheKey = _e.queryCacheKey;
+            var state = api2.getState()[reducerPath];
+            var querySubState = state.queries[queryCacheKey];
+            var subscriptions = state.subscriptions[queryCacheKey];
+            if (!querySubState || querySubState.status === QueryStatus.uninitialized)
+                return;
+            var lowestPollingInterval = findLowestPollingInterval(subscriptions);
+            if (!Number.isFinite(lowestPollingInterval))
+                return;
+            var currentPoll = currentPolls[queryCacheKey];
+            if (currentPoll == null ? void 0 : currentPoll.timeout) {
+                clearTimeout(currentPoll.timeout);
+                currentPoll.timeout = void 0;
+            }
+            var nextPollTimestamp = Date.now() + lowestPollingInterval;
+            var currentInterval = currentPolls[queryCacheKey] = {
+                nextPollTimestamp: nextPollTimestamp,
+                pollingInterval: lowestPollingInterval,
+                timeout: setTimeout(function () {
+                    currentInterval.timeout = void 0;
+                    api2.dispatch(refetchQuery(querySubState, queryCacheKey));
+                }, lowestPollingInterval)
+            };
+        }
+        function updatePollingInterval(_e, api2) {
+            var queryCacheKey = _e.queryCacheKey;
+            var state = api2.getState()[reducerPath];
+            var querySubState = state.queries[queryCacheKey];
+            var subscriptions = state.subscriptions[queryCacheKey];
+            if (!querySubState || querySubState.status === QueryStatus.uninitialized) {
+                return;
+            }
+            var lowestPollingInterval = findLowestPollingInterval(subscriptions);
+            var currentPoll = currentPolls[queryCacheKey];
+            if (!Number.isFinite(lowestPollingInterval)) {
+                if (currentPoll == null ? void 0 : currentPoll.timeout) {
+                    clearTimeout(currentPoll.timeout);
+                }
+                delete currentPolls[queryCacheKey];
+                return;
+            }
+            var nextPollTimestamp = Date.now() + lowestPollingInterval;
+            if (!currentPoll || nextPollTimestamp < currentPoll.nextPollTimestamp) {
+                startNextPoll({ queryCacheKey: queryCacheKey }, api2);
+            }
+        }
+        function clearPolls() {
+            for (var _i = 0, _e = Object.entries(currentPolls); _i < _e.length; _i++) {
+                var _f = _e[_i], key = _f[0], poll = _f[1];
+                if (poll == null ? void 0 : poll.timeout)
+                    clearTimeout(poll.timeout);
+                delete currentPolls[key];
+            }
+        }
+    };
+    function findLowestPollingInterval(subscribers) {
+        if (subscribers === void 0) { subscribers = {}; }
+        var lowestPollingInterval = Number.POSITIVE_INFINITY;
+        for (var _i = 0, _e = Object.values(subscribers); _i < _e.length; _i++) {
+            var subscription = _e[_i];
+            if (!!subscription.pollingInterval)
+                lowestPollingInterval = Math.min(subscription.pollingInterval, lowestPollingInterval);
+        }
+        return lowestPollingInterval;
+    }
+};
+// src/query/core/buildMiddleware/windowEventHandling.ts
+var build4 = function (_e) {
+    var reducerPath = _e.reducerPath, context = _e.context, refetchQuery = _e.refetchQuery;
+    return function (mwApi) { return function (next) { return function (action) {
+        var result = next(action);
+        if (onFocus.match(action)) {
+            refetchValidQueries(mwApi, "refetchOnFocus");
+        }
+        if (onOnline.match(action)) {
+            refetchValidQueries(mwApi, "refetchOnReconnect");
+        }
+        return result;
+    }; }; };
+    function refetchValidQueries(api, type) {
+        var state = api.getState()[reducerPath];
+        var queries = state.queries;
+        var subscriptions = state.subscriptions;
+        context.batch(function () {
+            for (var _i = 0, _e = Object.keys(subscriptions); _i < _e.length; _i++) {
+                var queryCacheKey = _e[_i];
+                var querySubState = queries[queryCacheKey];
+                var subscriptionSubState = subscriptions[queryCacheKey];
+                if (!subscriptionSubState || !querySubState || querySubState.status === QueryStatus.uninitialized)
+                    return;
+                var shouldRefetch = Object.values(subscriptionSubState).some(function (sub) { return sub[type] === true; }) || Object.values(subscriptionSubState).every(function (sub) { return sub[type] === void 0; }) && state.config[type];
+                if (shouldRefetch) {
+                    api.dispatch(refetchQuery(querySubState, queryCacheKey));
+                }
+            }
+        });
+    }
+};
+// src/query/core/buildMiddleware/cacheLifecycle.ts
+
+var neverResolvedError = new Error("Promise never resolved before cacheEntryRemoved.");
+var build5 = function (_e) {
+    var api = _e.api, reducerPath = _e.reducerPath, context = _e.context, queryThunk = _e.queryThunk, mutationThunk = _e.mutationThunk;
+    var isQueryThunk = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.isAsyncThunkAction)(queryThunk);
+    var isMutationThunk = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.isAsyncThunkAction)(mutationThunk);
+    var isFullfilledThunk = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.isFulfilled)(queryThunk, mutationThunk);
+    return function (mwApi) {
+        var lifecycleMap = {};
+        return function (next) { return function (action) {
+            var stateBefore = mwApi.getState();
+            var result = next(action);
+            var cacheKey = getCacheKey(action);
+            if (queryThunk.pending.match(action)) {
+                var oldState = stateBefore[reducerPath].queries[cacheKey];
+                var state = mwApi.getState()[reducerPath].queries[cacheKey];
+                if (!oldState && state) {
+                    handleNewKey(action.meta.arg.endpointName, action.meta.arg.originalArgs, cacheKey, mwApi, action.meta.requestId);
+                }
+            }
+            else if (mutationThunk.pending.match(action)) {
+                var state = mwApi.getState()[reducerPath].mutations[cacheKey];
+                if (state) {
+                    handleNewKey(action.meta.arg.endpointName, action.meta.arg.originalArgs, cacheKey, mwApi, action.meta.requestId);
+                }
+            }
+            else if (isFullfilledThunk(action)) {
+                var lifecycle = lifecycleMap[cacheKey];
+                if (lifecycle == null ? void 0 : lifecycle.valueResolved) {
+                    lifecycle.valueResolved({
+                        data: action.payload,
+                        meta: action.meta.baseQueryMeta
+                    });
+                    delete lifecycle.valueResolved;
+                }
+            }
+            else if (api.internalActions.removeQueryResult.match(action) || api.internalActions.unsubscribeMutationResult.match(action)) {
+                var lifecycle = lifecycleMap[cacheKey];
+                if (lifecycle) {
+                    delete lifecycleMap[cacheKey];
+                    lifecycle.cacheEntryRemoved();
+                }
+            }
+            else if (api.util.resetApiState.match(action)) {
+                for (var _i = 0, _e = Object.entries(lifecycleMap); _i < _e.length; _i++) {
+                    var _f = _e[_i], cacheKey2 = _f[0], lifecycle = _f[1];
+                    delete lifecycleMap[cacheKey2];
+                    lifecycle.cacheEntryRemoved();
+                }
+            }
+            return result;
+        }; };
+        function getCacheKey(action) {
+            if (isQueryThunk(action))
+                return action.meta.arg.queryCacheKey;
+            if (isMutationThunk(action))
+                return action.meta.requestId;
+            if (api.internalActions.removeQueryResult.match(action))
+                return action.payload.queryCacheKey;
+            if (api.internalActions.unsubscribeMutationResult.match(action))
+                return action.payload.requestId;
+            return "";
+        }
+        function handleNewKey(endpointName, originalArgs, queryCacheKey, mwApi2, requestId) {
+            var endpointDefinition = context.endpointDefinitions[endpointName];
+            var onCacheEntryAdded = endpointDefinition == null ? void 0 : endpointDefinition.onCacheEntryAdded;
+            if (!onCacheEntryAdded)
+                return;
+            var lifecycle = {};
+            var cacheEntryRemoved = new Promise(function (resolve) {
+                lifecycle.cacheEntryRemoved = resolve;
+            });
+            var cacheDataLoaded = Promise.race([
+                new Promise(function (resolve) {
+                    lifecycle.valueResolved = resolve;
+                }),
+                cacheEntryRemoved.then(function () {
+                    throw neverResolvedError;
+                })
+            ]);
+            cacheDataLoaded.catch(function () {
+            });
+            lifecycleMap[queryCacheKey] = lifecycle;
+            var selector = api.endpoints[endpointName].select(endpointDefinition.type === DefinitionType.query ? originalArgs : queryCacheKey);
+            var extra = mwApi2.dispatch(function (_, __, extra2) { return extra2; });
+            var lifecycleApi = __objSpread(__objSpread({}, mwApi2), {
+                getCacheEntry: function () { return selector(mwApi2.getState()); },
+                requestId: requestId,
+                extra: extra,
+                updateCachedData: endpointDefinition.type === DefinitionType.query ? function (updateRecipe) { return mwApi2.dispatch(api.util.updateQueryData(endpointName, originalArgs, updateRecipe)); } : void 0,
+                cacheDataLoaded: cacheDataLoaded,
+                cacheEntryRemoved: cacheEntryRemoved
+            });
+            var runningHandler = onCacheEntryAdded(originalArgs, lifecycleApi);
+            Promise.resolve(runningHandler).catch(function (e) {
+                if (e === neverResolvedError)
+                    return;
+                throw e;
+            });
+        }
+    };
+};
+// src/query/core/buildMiddleware/queryLifecycle.ts
+
+var build6 = function (_e) {
+    var api = _e.api, context = _e.context, queryThunk = _e.queryThunk, mutationThunk = _e.mutationThunk;
+    var isPendingThunk = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.isPending)(queryThunk, mutationThunk);
+    var isRejectedThunk = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.isRejected)(queryThunk, mutationThunk);
+    var isFullfilledThunk = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.isFulfilled)(queryThunk, mutationThunk);
+    return function (mwApi) {
+        var lifecycleMap = {};
+        return function (next) { return function (action) {
+            var _a, _b, _c;
+            var result = next(action);
+            if (isPendingThunk(action)) {
+                var _e = action.meta, requestId = _e.requestId, _f = _e.arg, endpointName_1 = _f.endpointName, originalArgs_1 = _f.originalArgs;
+                var endpointDefinition = context.endpointDefinitions[endpointName_1];
+                var onQueryStarted = endpointDefinition == null ? void 0 : endpointDefinition.onQueryStarted;
+                if (onQueryStarted) {
+                    var lifecycle_1 = {};
+                    var queryFulfilled = new Promise(function (resolve, reject) {
+                        lifecycle_1.resolve = resolve;
+                        lifecycle_1.reject = reject;
+                    });
+                    queryFulfilled.catch(function () {
+                    });
+                    lifecycleMap[requestId] = lifecycle_1;
+                    var selector_1 = api.endpoints[endpointName_1].select(endpointDefinition.type === DefinitionType.query ? originalArgs_1 : requestId);
+                    var extra = mwApi.dispatch(function (_, __, extra2) { return extra2; });
+                    var lifecycleApi = __objSpread(__objSpread({}, mwApi), {
+                        getCacheEntry: function () { return selector_1(mwApi.getState()); },
+                        requestId: requestId,
+                        extra: extra,
+                        updateCachedData: endpointDefinition.type === DefinitionType.query ? function (updateRecipe) { return mwApi.dispatch(api.util.updateQueryData(endpointName_1, originalArgs_1, updateRecipe)); } : void 0,
+                        queryFulfilled: queryFulfilled
+                    });
+                    onQueryStarted(originalArgs_1, lifecycleApi);
+                }
+            }
+            else if (isFullfilledThunk(action)) {
+                var _g = action.meta, requestId = _g.requestId, baseQueryMeta = _g.baseQueryMeta;
+                (_a = lifecycleMap[requestId]) == null ? void 0 : _a.resolve({
+                    data: action.payload,
+                    meta: baseQueryMeta
+                });
+                delete lifecycleMap[requestId];
+            }
+            else if (isRejectedThunk(action)) {
+                var _h = action.meta, requestId = _h.requestId, rejectedWithValue = _h.rejectedWithValue, baseQueryMeta = _h.baseQueryMeta;
+                (_c = lifecycleMap[requestId]) == null ? void 0 : _c.reject({
+                    error: (_b = action.payload) != null ? _b : action.error,
+                    isUnhandledError: !rejectedWithValue,
+                    meta: baseQueryMeta
+                });
+                delete lifecycleMap[requestId];
+            }
+            return result;
+        }; };
+    };
+};
+// src/query/core/buildMiddleware/devMiddleware.ts
+var build7 = function (_e) {
+    var api = _e.api;
+    return function (mwApi) {
+        var initialized2 = false;
+        return function (next) { return function (action) {
+            if (!initialized2) {
+                initialized2 = true;
+                mwApi.dispatch(api.internalActions.middlewareRegistered());
+            }
+            var result = next(action);
+            if (api.util.resetApiState.match(action)) {
+                mwApi.dispatch(api.internalActions.middlewareRegistered());
+            }
+            return result;
+        }; };
+    };
+};
+// src/query/core/buildMiddleware/index.ts
+function buildMiddleware(input) {
+    var reducerPath = input.reducerPath, queryThunk = input.queryThunk;
+    var actions = {
+        invalidateTags: (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAction)(reducerPath + "/invalidateTags")
+    };
+    var middlewares = [
+        build7,
+        build,
+        build2,
+        build3,
+        build4,
+        build5,
+        build6
+    ].map(function (build8) { return build8(__objSpread(__objSpread({}, input), {
+        refetchQuery: refetchQuery
+    })); });
+    var middleware = function (mwApi) { return function (next) {
+        var applied = _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_3__.compose.apply(void 0, middlewares.map(function (middleware2) { return middleware2(mwApi); }))(next);
+        return function (action) {
+            if (mwApi.getState()[reducerPath]) {
+                return applied(action);
+            }
+            return next(action);
+        };
+    }; };
+    return { middleware: middleware, actions: actions };
+    function refetchQuery(querySubState, queryCacheKey, override) {
+        if (override === void 0) { override = {}; }
+        return queryThunk(__objSpread({
+            endpointName: querySubState.endpointName,
+            originalArgs: querySubState.originalArgs,
+            subscribe: false,
+            forceRefetch: true,
+            queryCacheKey: queryCacheKey
+        }, override));
+    }
+}
+// src/query/core/buildInitiate.ts
+function buildInitiate(_e) {
+    var serializeQueryArgs = _e.serializeQueryArgs, queryThunk = _e.queryThunk, mutationThunk = _e.mutationThunk, api = _e.api;
+    var _f = api.internalActions, unsubscribeQueryResult = _f.unsubscribeQueryResult, unsubscribeMutationResult = _f.unsubscribeMutationResult, updateSubscriptionOptions = _f.updateSubscriptionOptions;
+    return { buildInitiateQuery: buildInitiateQuery, buildInitiateMutation: buildInitiateMutation };
+    function middlewareWarning(getState) {
+        var _a, _b;
+        if (true) {
+            if (middlewareWarning.triggered)
+                return;
+            var registered = (_b = (_a = getState()[api.reducerPath]) == null ? void 0 : _a.config) == null ? void 0 : _b.middlewareRegistered;
+            if (registered !== void 0) {
+                ;
+                middlewareWarning.triggered = true;
+            }
+            if (registered === false) {
+                console.warn("Warning: Middleware for RTK-Query API at reducerPath \"" + api.reducerPath + "\" has not been added to the store.\nFeatures like automatic cache collection, automatic refetching etc. will not be available.");
+            }
+        }
+    }
+    function buildInitiateQuery(endpointName, endpointDefinition) {
+        var queryAction = function (arg, _e) {
+            var _f = _e === void 0 ? {} : _e, _g = _f.subscribe, subscribe = _g === void 0 ? true : _g, forceRefetch = _f.forceRefetch, subscriptionOptions = _f.subscriptionOptions;
+            return function (dispatch, getState) {
+                var queryCacheKey = serializeQueryArgs({
+                    queryArgs: arg,
+                    endpointDefinition: endpointDefinition,
+                    endpointName: endpointName
+                });
+                var thunk = queryThunk({
+                    subscribe: subscribe,
+                    forceRefetch: forceRefetch,
+                    subscriptionOptions: subscriptionOptions,
+                    endpointName: endpointName,
+                    originalArgs: arg,
+                    queryCacheKey: queryCacheKey
+                });
+                var thunkResult = dispatch(thunk);
+                middlewareWarning(getState);
+                var requestId = thunkResult.requestId, abort = thunkResult.abort;
+                var statePromise = Object.assign(thunkResult.then(function () { return api.endpoints[endpointName].select(arg)(getState()); }), {
+                    arg: arg,
+                    requestId: requestId,
+                    subscriptionOptions: subscriptionOptions,
+                    abort: abort,
+                    refetch: function () {
+                        dispatch(queryAction(arg, { subscribe: false, forceRefetch: true }));
+                    },
+                    unsubscribe: function () {
+                        if (subscribe)
+                            dispatch(unsubscribeQueryResult({
+                                queryCacheKey: queryCacheKey,
+                                requestId: requestId
+                            }));
+                    },
+                    updateSubscriptionOptions: function (options) {
+                        statePromise.subscriptionOptions = options;
+                        dispatch(updateSubscriptionOptions({
+                            endpointName: endpointName,
+                            requestId: requestId,
+                            queryCacheKey: queryCacheKey,
+                            options: options
+                        }));
+                    }
+                });
+                return statePromise;
+            };
+        };
+        return queryAction;
+    }
+    function buildInitiateMutation(endpointName, definition) {
+        return function (arg, _e) {
+            var _f = _e === void 0 ? {} : _e, _g = _f.track, track = _g === void 0 ? true : _g;
+            return function (dispatch, getState) {
+                var thunk = mutationThunk({
+                    endpointName: endpointName,
+                    originalArgs: arg,
+                    track: track
+                });
+                var thunkResult = dispatch(thunk);
+                middlewareWarning(getState);
+                var requestId = thunkResult.requestId, abort = thunkResult.abort;
+                var returnValuePromise = thunkResult.unwrap().then(function (data) { return ({ data: data }); }).catch(function (error) { return ({ error: error }); });
+                return Object.assign(returnValuePromise, {
+                    arg: thunkResult.arg,
+                    requestId: requestId,
+                    abort: abort,
+                    unwrap: thunkResult.unwrap,
+                    unsubscribe: function () {
+                        if (track)
+                            dispatch(unsubscribeMutationResult({ requestId: requestId }));
+                    }
+                });
+            };
+        };
+    }
+}
+// src/query/tsHelpers.ts
+function assertCast(v) {
+}
+function safeAssign(target) {
+    var args = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        args[_i - 1] = arguments[_i];
+    }
+    Object.assign.apply(Object, __spreadArray([target], args));
+}
+// src/query/core/module.ts
+
+var coreModuleName = /* @__PURE__ */ Symbol();
+var coreModule = function () { return ({
+    name: coreModuleName,
+    init: function (api, _e, context) {
+        var baseQuery = _e.baseQuery, tagTypes = _e.tagTypes, reducerPath = _e.reducerPath, serializeQueryArgs = _e.serializeQueryArgs, keepUnusedDataFor = _e.keepUnusedDataFor, refetchOnMountOrArgChange = _e.refetchOnMountOrArgChange, refetchOnFocus = _e.refetchOnFocus, refetchOnReconnect = _e.refetchOnReconnect;
+        (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.enablePatches)();
+        assertCast(serializeQueryArgs);
+        var assertTagType = function (tag) {
+            if (typeof process !== "undefined" && "development" === "development") {
+                if (!tagTypes.includes(tag.type)) {
+                    console.error("Tag type '" + tag.type + "' was used, but not specified in `tagTypes`!");
+                }
+            }
+            return tag;
+        };
+        Object.assign(api, {
+            reducerPath: reducerPath,
+            endpoints: {},
+            internalActions: {
+                onOnline: onOnline,
+                onOffline: onOffline,
+                onFocus: onFocus,
+                onFocusLost: onFocusLost
+            },
+            util: {}
+        });
+        var _f = buildThunks({
+            baseQuery: baseQuery,
+            reducerPath: reducerPath,
+            context: context,
+            api: api,
+            serializeQueryArgs: serializeQueryArgs
+        }), queryThunk = _f.queryThunk, mutationThunk = _f.mutationThunk, patchQueryData = _f.patchQueryData, updateQueryData = _f.updateQueryData, prefetch = _f.prefetch, buildMatchThunkActions = _f.buildMatchThunkActions;
+        var _g = buildSlice({
+            context: context,
+            queryThunk: queryThunk,
+            mutationThunk: mutationThunk,
+            reducerPath: reducerPath,
+            assertTagType: assertTagType,
+            config: {
+                refetchOnFocus: refetchOnFocus,
+                refetchOnReconnect: refetchOnReconnect,
+                refetchOnMountOrArgChange: refetchOnMountOrArgChange,
+                keepUnusedDataFor: keepUnusedDataFor,
+                reducerPath: reducerPath
+            }
+        }), reducer = _g.reducer, sliceActions = _g.actions;
+        safeAssign(api.util, {
+            patchQueryData: patchQueryData,
+            updateQueryData: updateQueryData,
+            prefetch: prefetch,
+            resetApiState: sliceActions.resetApiState
+        });
+        safeAssign(api.internalActions, sliceActions);
+        Object.defineProperty(api.util, "updateQueryResult", {
+            get: function () {
+                if (typeof process !== "undefined" && "development" === "development") {
+                    console.warn("`api.util.updateQueryResult` has been renamed to `api.util.updateQueryData`, please change your code accordingly");
+                }
+                return api.util.updateQueryData;
+            }
+        });
+        Object.defineProperty(api.util, "patchQueryResult", {
+            get: function () {
+                if (typeof process !== "undefined" && "development" === "development") {
+                    console.warn("`api.util.patchQueryResult` has been renamed to `api.util.patchQueryData`, please change your code accordingly");
+                }
+                return api.util.patchQueryData;
+            }
+        });
+        var _h = buildMiddleware({
+            reducerPath: reducerPath,
+            context: context,
+            queryThunk: queryThunk,
+            mutationThunk: mutationThunk,
+            api: api,
+            assertTagType: assertTagType
+        }), middleware = _h.middleware, middlewareActions = _h.actions;
+        safeAssign(api.util, middlewareActions);
+        safeAssign(api, { reducer: reducer, middleware: middleware });
+        var _j = buildSelectors({
+            serializeQueryArgs: serializeQueryArgs,
+            reducerPath: reducerPath
+        }), buildQuerySelector = _j.buildQuerySelector, buildMutationSelector = _j.buildMutationSelector;
+        var _k = buildInitiate({
+            queryThunk: queryThunk,
+            mutationThunk: mutationThunk,
+            api: api,
+            serializeQueryArgs: serializeQueryArgs
+        }), buildInitiateQuery = _k.buildInitiateQuery, buildInitiateMutation = _k.buildInitiateMutation;
+        return {
+            name: coreModuleName,
+            injectEndpoint: function (endpointName, definition) {
+                var _a, _b;
+                var anyApi = api;
+                (_b = (_a = anyApi.endpoints)[endpointName]) != null ? _b : _a[endpointName] = {};
+                if (isQueryDefinition(definition)) {
+                    safeAssign(anyApi.endpoints[endpointName], {
+                        select: buildQuerySelector(endpointName, definition),
+                        initiate: buildInitiateQuery(endpointName, definition)
+                    }, buildMatchThunkActions(queryThunk, endpointName));
+                }
+                else if (isMutationDefinition(definition)) {
+                    safeAssign(anyApi.endpoints[endpointName], {
+                        select: buildMutationSelector(),
+                        initiate: buildInitiateMutation(endpointName, definition)
+                    }, buildMatchThunkActions(mutationThunk, endpointName));
+                }
+            }
+        };
+    }
+}); };
+// src/query/core/index.ts
+var createApi = /* @__PURE__ */ buildCreateApi(coreModule());
+
+//# sourceMappingURL=module.js.map
+
+/***/ }),
+
 /***/ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js":
 /*!*****************************************************************!*\
   !*** ./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js ***!
@@ -48297,7 +51974,10 @@ var Hive = function (props) {
         console.log(history);
     }, [history]);
     if (hiveData) {
-        return (jsx_runtime_1.jsxs(react_1.default.Fragment, { children: [jsx_runtime_1.jsx("div", __assign({ className: "app-page-title" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "page-title-wrapper" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "page-title-heading" }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "page-title-icon" }, { children: jsx_runtime_1.jsx("i", { className: "pe-7s-users icon-gradient bg-mean-fruit" }, void 0) }), void 0),
+        return (jsx_runtime_1.jsxs(react_1.default.Fragment, { children: [jsx_runtime_1.jsx("div", __assign({ className: "app-page-title" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "page-title-wrapper" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "page-title-heading" }, { children: [props.organisationLogo ?
+                                    jsx_runtime_1.jsx("img", { className: "page-title-logo", src: props.organisationLogo, alt: "Logo" }, void 0)
+                                    :
+                                        jsx_runtime_1.jsx("div", __assign({ className: "page-title-icon" }, { children: jsx_runtime_1.jsx("i", { className: "pe-7s-users icon-gradient bg-mean-fruit" }, void 0) }), void 0),
                                 jsx_runtime_1.jsxs("div", { children: [" ", hiveData.hiveTitle, jsx_runtime_1.jsx("div", { className: "page-title-subheading", dangerouslySetInnerHTML: { __html: hiveData.introduction } }, void 0)] }, void 0)] }), void 0) }), void 0) }), void 0),
                 jsx_runtime_1.jsx("button", __assign({ onClick: function () { return window.location.href = referrer; }, className: "btn btn-outline-primary mb-4" }, { children: "Back" }), void 0), hiveContent] }, void 0));
     }
@@ -49173,7 +52853,7 @@ var ManageHive = function (_a) {
     }
     var content = null;
     var link = "/explore/organisations/" + organisationSlug + "/manage";
-    console.log(cells);
+    // console.log(cells);
     if (cell) {
         link = window.location.href;
         content = (jsx_runtime_1.jsx(jsx_runtime_1.Fragment, { children: jsx_runtime_1.jsx(NewCellEditor_1.default, __assign({ getCells: getCells }, cell), void 0) }, void 0));
@@ -49311,44 +52991,24 @@ var __read = (this && this.__read) || function (o, n) {
     }
     return ar;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-var axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var QuestionAdminModal_1 = __importDefault(__webpack_require__(/*! ./QuestionAdminModal */ "./js/src/components/NewCell/Admin/QuestionAdminModal.tsx"));
 var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 var questionSlice_1 = __webpack_require__(/*! ../../../slices/questionSlice */ "./js/src/slices/questionSlice.tsx");
+var queryApi_1 = __webpack_require__(/*! ../../../services/queryApi */ "./js/src/services/queryApi.ts");
 var QuestionAdmin = function (props) {
     var _a = __read(react_1.useState(false), 2), showManage = _a[0], setShowManage = _a[1];
     var _b = __read(react_1.useState(null), 2), selectedQuestion = _b[0], setSelectedQuestion = _b[1];
     var dispatch = react_redux_1.useDispatch();
     var question = react_redux_1.useSelector(function (state) { return state.question; });
-    function submitAnswer(answerText, questionID, answerPrivacy) {
-        if (answerPrivacy === void 0) { answerPrivacy = "Private"; }
-        var data = new FormData();
-        data.append("questionID", questionID.toString());
-        data.append("answerText", answerText);
-        data.append("answerPrivacy", answerPrivacy);
-        return axios_1.default.post("/page-api/q-and-a/create-answer", data)
-            .then(function (res) {
-            console.log(res);
-            console.log(res.data);
-            props.getResponses();
-        });
-    }
+    var _c = queryApi_1.useGetQuestionsQuery(props.blockID), responses = _c.data, error = _c.error, isLoading = _c.isLoading;
     return (jsx_runtime_1.jsxs("div", { children: [jsx_runtime_1.jsx("h5", __assign({ className: "card-title" }, { children: props.blockData.title }), void 0),
-            jsx_runtime_1.jsxs("p", { children: ["Responses: ", props.responses.length] }, void 0),
+            jsx_runtime_1.jsxs("p", { children: ["Responses: ", responses ? responses.length : jsx_runtime_1.jsx("span", { children: "loading..." }, void 0)] }, void 0),
             jsx_runtime_1.jsx("div", __assign({ className: "btn-container" }, { children: jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", onClick: function (e) {
                         e.preventDefault();
-                        // setShowManage(true);
-                        // dispatch(set())
-                        dispatch(questionSlice_1.set(props));
-                    } }, { children: "Manage" }), void 0) }), void 0),
-            showManage &&
-                jsx_runtime_1.jsx(QuestionAdminModal_1.default, { selectedQuestion: selectedQuestion, setSelectedQuestion: setSelectedQuestion, responses: props.responses, setShowManage: setShowManage, submitAnswer: submitAnswer }, void 0)] }, void 0));
+                        dispatch(questionSlice_1.setBlockID(props.blockID));
+                    } }, { children: "Manage" }), void 0) }), void 0)] }, void 0));
 };
 exports.default = QuestionAdmin;
 
@@ -49395,54 +53055,90 @@ var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 var questionSlice_1 = __webpack_require__(/*! ../../../slices/questionSlice */ "./js/src/slices/questionSlice.tsx");
+var queryApi_1 = __webpack_require__(/*! ../../../services/queryApi */ "./js/src/services/queryApi.ts");
 var QuestionAdminModal = function (props) {
     var _a = __read(react_1.useState(""), 2), answer = _a[0], setAnswer = _a[1];
     var _b = __read(react_1.useState("Private"), 2), privacy = _b[0], setPrivacy = _b[1];
+    var _c = __read(react_1.useState(null), 2), selectedQuestion = _c[0], setSelectedQuestion = _c[1];
     var dispatch = react_redux_1.useDispatch();
+    var _d = __read(queryApi_1.useSubmitAnswerMutation(), 2), submitAnswer = _d[0], isLoading = _d[1].isLoading;
+    var _e = queryApi_1.useGetQuestionsQuery(props.blockID), responses = _e.data, error = _e.error, responsesLoading = _e.isLoading;
+    // function submitAnswer(answerText: string, questionID: number, answerPrivacy = "Private") {
+    //     let data = new FormData();
+    //     data.append("questionID", questionID.toString());
+    //     data.append("answerText", answerText);
+    //     data.append("answerPrivacy", answerPrivacy);
+    //     return axios.post("/page-api/q-and-a/create-answer", data)
+    //         .then(res => {
+    //             console.log(res);
+    //             console.log(res.data);
+    //             // props.getResponses()
+    //         })
+    // }
     var content = (jsx_runtime_1.jsxs("table", __assign({ className: "mb-0 table" }, { children: [jsx_runtime_1.jsx("thead", { children: jsx_runtime_1.jsxs("tr", { children: [jsx_runtime_1.jsx("th", { children: "Name" }, void 0),
                         jsx_runtime_1.jsx("th", { children: "Question" }, void 0),
                         jsx_runtime_1.jsx("th", {}, void 0)] }, void 0) }, void 0),
-            jsx_runtime_1.jsx("tbody", { children: props.responses && props.responses.map(function (r, i) {
+            jsx_runtime_1.jsx("tbody", { children: responses && responses.map(function (r, i) {
                     return (jsx_runtime_1.jsxs("tr", { children: [jsx_runtime_1.jsx("td", { children: r.memberName }, void 0),
                             jsx_runtime_1.jsx("td", { children: r.questionText }, void 0),
                             jsx_runtime_1.jsxs("td", __assign({ className: "btn-container", style: { margin: 0 } }, { children: [jsx_runtime_1.jsx("button", __assign({ className: "btn btn-outline-primary", onClick: function () {
-                                            props.setSelectedQuestion(r);
+                                            setSelectedQuestion(r.questionID);
                                         } }, { children: "View" }), void 0),
-                                    jsx_runtime_1.jsx("button", __assign({ className: "btn btn-outline-danger" }, { children: "Delete" }), void 0)] }), void 0)] }, void 0));
+                                    jsx_runtime_1.jsx("button", __assign({ className: "btn btn-outline-danger" }, { children: "Delete" }), void 0)] }), void 0)] }, i));
                 }) }, void 0)] }), void 0));
     var back = null;
-    if (props.selectedQuestion) {
-        content = (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("h5", { children: props.selectedQuestion.questionText }, void 0),
-                jsx_runtime_1.jsxs("p", { children: ["from ", props.selectedQuestion.memberName] }, void 0),
-                jsx_runtime_1.jsx("h6", { children: "Current Answers" }, void 0),
-                jsx_runtime_1.jsx("div", __assign({ className: "c-answers" }, { children: props.selectedQuestion.answers ? props.selectedQuestion.answers.map(function (a, i) {
-                        return (jsx_runtime_1.jsxs("div", __assign({ className: "c-answer" }, { children: [jsx_runtime_1.jsx("p", { children: a.answerText }, void 0),
-                                jsx_runtime_1.jsx("div", __assign({ className: "c-answer__details" }, { children: jsx_runtime_1.jsx("p", { children: a.answererName }, void 0) }), void 0)] }), void 0));
-                    }) : jsx_runtime_1.jsx("em", { children: "No answers" }, void 0) }), void 0),
-                jsx_runtime_1.jsxs("form", { children: [jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Answer" }, void 0),
-                                jsx_runtime_1.jsx("textarea", { style: { minHeight: "120px" }, className: "form-control", onChange: function (e) { return setAnswer(e.target.value); }, value: answer }, void 0)] }), void 0),
-                        jsx_runtime_1.jsxs("div", __assign({ className: "form-group c-form-check" }, { children: [jsx_runtime_1.jsx("label", __assign({ className: "c-form-check__label" }, { children: "Would you like this answer to be listed on the question block?" }), void 0),
-                                jsx_runtime_1.jsx("input", { type: "checkbox", className: "c-form-check__input", id: "contactList", value: "1", onChange: function () {
-                                        if (privacy == "Private") {
-                                            setPrivacy("Public");
-                                        }
-                                        else {
-                                            setPrivacy("Private");
-                                        }
-                                    }, checked: privacy == "Private" ? false : true }, void 0)] }), void 0)] }, void 0)] }, void 0));
-        back = (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("button", __assign({ className: "btn btn-secondary", onClick: function (e) {
-                        e.preventDefault();
-                        props.submitAnswer(answer, props.selectedQuestion.questionID, privacy);
-                    } }, { children: "Submit" }), void 0),
-                jsx_runtime_1.jsx("button", __assign({ className: "btn btn-secondary", onClick: function (e) {
-                        e.preventDefault();
-                        dispatch(questionSlice_1.unset());
-                    } }, { children: "Back" }), void 0)] }, void 0));
+    if (selectedQuestion) {
+        var currentQuestion_1 = responses.filter(function (d, i) { return d.questionID == selectedQuestion; })[0];
+        if (currentQuestion_1) {
+            content = (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("h5", { children: currentQuestion_1.questionText }, void 0),
+                    jsx_runtime_1.jsxs("p", { children: ["from ", currentQuestion_1.memberName] }, void 0),
+                    jsx_runtime_1.jsx(AnswerList, { selectedQuestion: currentQuestion_1 }, void 0),
+                    jsx_runtime_1.jsx(AnswerForm, __assign({}, { privacy: privacy, answer: answer, setAnswer: setAnswer, setPrivacy: setPrivacy }), void 0)] }, void 0));
+            back = (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("button", __assign({ className: "btn btn-secondary", onClick: function (e) {
+                            e.preventDefault();
+                            console.log("submit");
+                            var newAnswer = {
+                                answerText: answer,
+                                questionID: currentQuestion_1.questionID,
+                                answerPrivacy: privacy
+                            };
+                            submitAnswer(newAnswer);
+                        } }, { children: "Submit" }), void 0),
+                    jsx_runtime_1.jsx("button", __assign({ className: "btn btn-secondary", onClick: function (e) {
+                            e.preventDefault();
+                            setSelectedQuestion(null);
+                        } }, { children: "Back" }), void 0)] }, void 0));
+        }
+        else {
+            setSelectedQuestion(null);
+        }
     }
     return (jsx_runtime_1.jsx("div", __assign({ className: "c-question__manage-wrapper" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "card c-question__manage" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [content, jsx_runtime_1.jsxs("div", __assign({ className: "btn-container" }, { children: [back, jsx_runtime_1.jsx("button", __assign({ className: "btn btn-secondary", onClick: function (e) {
                                     e.preventDefault();
-                                    props.setShowManage(false);
+                                    dispatch(questionSlice_1.unsetBlockID());
                                 } }, { children: "Close" }), void 0)] }), void 0)] }), void 0) }), void 0) }), void 0));
+};
+var AnswerList = function (_a) {
+    var selectedQuestion = _a.selectedQuestion;
+    return (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("h6", { children: "Current Answers" }, void 0),
+            jsx_runtime_1.jsx("div", __assign({ className: "c-answers" }, { children: selectedQuestion.answers ? selectedQuestion.answers.map(function (a, i) {
+                    return (jsx_runtime_1.jsxs("div", __assign({ className: "c-answer" }, { children: [jsx_runtime_1.jsx("p", { children: a.answerText }, void 0),
+                            jsx_runtime_1.jsx("div", __assign({ className: "c-answer__details" }, { children: jsx_runtime_1.jsx("p", { children: a.answererName }, void 0) }), void 0)] }), a.answerID));
+                }) : jsx_runtime_1.jsx("em", { children: "No answers" }, void 0) }), void 0)] }, void 0));
+};
+var AnswerForm = function (_a) {
+    var setAnswer = _a.setAnswer, setPrivacy = _a.setPrivacy, privacy = _a.privacy, answer = _a.answer;
+    return (jsx_runtime_1.jsxs("form", { children: [jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: "Answer" }, void 0),
+                    jsx_runtime_1.jsx("textarea", { style: { minHeight: "120px" }, className: "form-control", onChange: function (e) { return setAnswer(e.target.value); }, value: answer }, void 0)] }), void 0),
+            jsx_runtime_1.jsxs("div", __assign({ className: "form-group c-form-check" }, { children: [jsx_runtime_1.jsx("label", __assign({ className: "c-form-check__label" }, { children: "Would you like this answer to be listed on the question block?" }), void 0),
+                    jsx_runtime_1.jsx("input", { type: "checkbox", className: "c-form-check__input", id: "contactList", value: "1", onChange: function () {
+                            if (privacy == "Private") {
+                                setPrivacy("Public");
+                            }
+                            else {
+                                setPrivacy("Private");
+                            }
+                        }, checked: privacy == "Private" ? false : true }, void 0)] }), void 0)] }, void 0));
 };
 exports.default = QuestionAdminModal;
 
@@ -49594,7 +53290,7 @@ var Question = function (props) {
     function getResponses() {
         axios_1.default.get("/page-api/q-and-a/get-questions?blockID=" + props.blockID)
             .then(function (res) {
-            console.log(res.data);
+            // console.log(res.data);
             setResponses(res.data.map(function (r) {
                 return __assign(__assign({}, r), { questionID: parseInt(r.questionID) });
             }));
@@ -49618,7 +53314,7 @@ var Question = function (props) {
     }, []);
     if (props.blockData.title && props.blockData.label) {
         if (!props.preview) {
-            return (jsx_runtime_1.jsx(QuestionAdmin_1.default, __assign({ getResponses: getResponses }, props, { responses: responses }), void 0));
+            return (jsx_runtime_1.jsx(QuestionAdmin_1.default, __assign({ blockID: props.blockID, getResponses: getResponses }, props, { responses: responses }), void 0));
         }
         return (jsx_runtime_1.jsxs("div", { children: [jsx_runtime_1.jsx("h5", __assign({ className: "card-title" }, { children: props.blockData.title }), void 0),
                 jsx_runtime_1.jsxs("form", { children: [jsx_runtime_1.jsxs("div", __assign({ className: "form-group" }, { children: [jsx_runtime_1.jsx("label", { children: props.blockData.label }, void 0),
@@ -50584,6 +54280,8 @@ var axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/a
 var EditCellDetails_1 = __importDefault(__webpack_require__(/*! ./EditCellDetails */ "./js/src/components/NewCell/Editor/EditCellDetails.tsx"));
 var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 var QuestionAdminModal_1 = __importDefault(__webpack_require__(/*! ../Admin/QuestionAdminModal */ "./js/src/components/NewCell/Admin/QuestionAdminModal.tsx"));
+var queryApi_1 = __webpack_require__(/*! ../../../services/queryApi */ "./js/src/services/queryApi.ts");
+var questionSlice_1 = __webpack_require__(/*! ../../../slices/questionSlice */ "./js/src/slices/questionSlice.tsx");
 var CellEditor = function (props) {
     var _a = __read(react_2.useState([]), 2), blocks = _a[0], setBlocks = _a[1];
     var _b = __read(react_2.useState({
@@ -50592,8 +54290,15 @@ var CellEditor = function (props) {
         cellDate: "",
         cellTime: ""
     }), 2), cell = _b[0], setCell = _b[1];
+    var selectedQuestion = react_redux_1.useSelector(function (state) { return state.question; });
+    react_redux_1.useSelector(function (state) {
+        console.log(state);
+    });
+    var _c = queryApi_1.useGetQuestionsQuery(selectedQuestion.blockID), responses = _c.data, error = _c.error, isLoading = _c.isLoading;
+    var dispatch = react_redux_1.useDispatch();
     react_2.useEffect(function () {
         getCell();
+        questionSlice_1.unsetBlockID();
     }, []);
     function getCell() {
         var url = "/page-api/cell/get?cellID=" + props.cellID;
@@ -50752,12 +54457,8 @@ var CellEditor = function (props) {
             getCell();
         });
     }
-    var selectedQuestion = react_redux_1.useSelector(function (state) {
-        console.log(state);
-        return state.question;
-    });
-    if (selectedQuestion.blockID > 0) {
-        return (jsx_runtime_1.jsx(QuestionAdminModal_1.default, { selectedQuestion: null, responses: selectedQuestion.responses, setShowManage: null, submitAnswer: null, setSelectedQuestion: null }, void 0));
+    if (selectedQuestion.blockID) {
+        return responses ? (jsx_runtime_1.jsx(QuestionAdminModal_1.default, { blockID: selectedQuestion.blockID }, void 0)) : jsx_runtime_1.jsx(jsx_runtime_1.Fragment, { children: "Loading..." }, void 0);
     }
     return (jsx_runtime_1.jsxs("div", __assign({ className: "row" }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "col-md-6" }, { children: cell && jsx_runtime_1.jsx(EditCellDetails_1.default, { cell: cell, updateCell: updateCell }, void 0) }), void 0),
             jsx_runtime_1.jsx(react_beautiful_dnd_1.DragDropContext, __assign({ onDragEnd: handleDrop }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "col-md-6" }, { children: [jsx_runtime_1.jsx(react_beautiful_dnd_1.Droppable, __assign({ droppableId: "id" }, { children: function (provided) { return (react_1.createElement("ul", __assign({ className: "c-block-container", style: { marginBottom: 0 } }, provided.droppableProps, { ref: provided.innerRef, key: "id" }),
@@ -51895,6 +55596,7 @@ var __assign = (this && this.__assign) || function () {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
@@ -51902,11 +55604,19 @@ var ManageHive_1 = __importDefault(__webpack_require__(/*! ../components/ManageH
 var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 var toolkit_1 = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 var questionSlice_1 = __importDefault(__webpack_require__(/*! ../slices/questionSlice */ "./js/src/slices/questionSlice.tsx"));
+var queryApi_1 = __webpack_require__(/*! ../services/queryApi */ "./js/src/services/queryApi.ts");
+var query_1 = __webpack_require__(/*! @reduxjs/toolkit/dist/query */ "./node_modules/@reduxjs/toolkit/dist/query/index.js");
 var store = toolkit_1.configureStore({
-    reducer: {
-        question: questionSlice_1.default
+    reducer: (_a = {
+            question: questionSlice_1.default
+        },
+        _a[queryApi_1.queryApi.reducerPath] = queryApi_1.queryApi.reducer,
+        _a),
+    middleware: function (getDefaultMiddleware) {
+        return getDefaultMiddleware().concat(queryApi_1.queryApi.middleware);
     }
 });
+query_1.setupListeners(store.dispatch);
 var App = function (props) {
     return (jsx_runtime_1.jsx(react_redux_1.Provider, __assign({ store: store }, { children: props.children }), void 0));
 };
@@ -51964,8 +55674,43 @@ var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/in
 var Hive_1 = __importDefault(__webpack_require__(/*! ../components/Hive */ "./js/src/components/Hive.tsx"));
 var hive = document.getElementById("hive");
 if (hive) {
-    ReactDOM.render(jsx_runtime_1.jsx(Hive_1.default, { hiveID: parseInt(hive.dataset.hiveid) }, void 0), hive);
+    ReactDOM.render(jsx_runtime_1.jsx(Hive_1.default, { hiveID: parseInt(hive.dataset.hiveid), organisationLogo: hive.dataset.orglogo }, void 0), hive);
 }
+
+
+/***/ }),
+
+/***/ "./js/src/services/queryApi.ts":
+/*!*************************************!*\
+  !*** ./js/src/services/queryApi.ts ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.useSubmitAnswerMutation = exports.useGetQuestionsQuery = exports.queryApi = void 0;
+var react_1 = __webpack_require__(/*! @reduxjs/toolkit/query/react */ "./node_modules/@reduxjs/toolkit/dist/query/react/rtk-query-react.esm.js");
+exports.queryApi = react_1.createApi({
+    reducerPath: 'questionApi',
+    baseQuery: react_1.fetchBaseQuery({ baseUrl: "/page-api/" }),
+    tagTypes: ["Questions"],
+    endpoints: function (builder) { return ({
+        getQuestions: builder.query({
+            query: function (blockID) { return "q-and-a/get-questions?blockID=" + blockID; },
+            providesTags: ["Questions"]
+        }),
+        submitAnswer: builder.mutation({
+            query: function (answer) { return ({
+                url: "q-and-a/create-answer",
+                method: "POST",
+                body: answer
+            }); },
+            invalidatesTags: ["Questions"]
+        }),
+    }); }
+});
+exports.useGetQuestionsQuery = exports.queryApi.useGetQuestionsQuery, exports.useSubmitAnswerMutation = exports.queryApi.useSubmitAnswerMutation;
 
 
 /***/ }),
@@ -51974,49 +55719,28 @@ if (hive) {
 /*!*****************************************!*\
   !*** ./js/src/slices/questionSlice.tsx ***!
   \*****************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.unset = exports.set = exports.questionSlice = exports.questionInitialState = void 0;
+exports.unsetBlockID = exports.setBlockID = exports.questionSlice = exports.questionInitialState = void 0;
 var toolkit_1 = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 exports.questionInitialState = {
-    responses: [],
-    blockData: {
-        title: "",
-        label: ""
-    },
-    blockType: "Question",
-    blockOrder: -1,
-    blockID: -1
+    blockID: null
 };
 exports.questionSlice = toolkit_1.createSlice({
     name: "question",
-    initialState: exports.questionInitialState,
+    initialState: {
+        blockID: null
+    },
     reducers: {
-        set: function (state, action) {
-            console.log(action);
-            state = __assign(__assign({}, state), action.payload);
-        },
-        unset: function (state) {
-            state = exports.questionInitialState;
-        }
+        setBlockID: function (state, action) { return ({ blockID: action.payload }); },
+        unsetBlockID: function (state) { return ({ blockID: null }); }
     }
 });
-exports.set = (_a = exports.questionSlice.actions, _a.set), exports.unset = _a.unset;
+exports.setBlockID = (_a = exports.questionSlice.actions, _a.setBlockID), exports.unsetBlockID = _a.unsetBlockID;
 exports.default = exports.questionSlice.reducer;
 
 

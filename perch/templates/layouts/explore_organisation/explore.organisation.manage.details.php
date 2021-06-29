@@ -5,8 +5,9 @@ $organisation = get_organisation_by_slug($organisationSlug, ["skip-template" => 
 
 ?>
 
-<?php perch_layout("admin.title", ["title" => "Manage your organisation details"]);
+<?php
 
+perch_layout("admin.title", ["title" => "Manage your organisation details", "logo" => $organisation["organisationLogo"]]);
 perch_layout("admin.back", [
     "href" => "/explore/organisations/$organisationSlug/manage",
     "label" => "Back to $organisation[organisationName]"

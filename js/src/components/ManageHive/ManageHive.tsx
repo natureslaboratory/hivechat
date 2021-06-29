@@ -160,7 +160,7 @@ const ManageHive: React.FunctionComponent<ManageHiveProps> = ({ organisationSlug
 
     let content = null;
     let link = `/explore/organisations/${organisationSlug}/manage`;
-    console.log(cells);
+    // console.log(cells);
 
     if (cell) {
         link = window.location.href;

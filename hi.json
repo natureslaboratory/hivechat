@@ -1,19 +1,86 @@
-{
-    "blockID": "26",
-    "cellID": "3",
-    "blockOrder": "0",
-    "blockType": "File",
-    "blockData": {
-        "title": "Files",
-        "description": "<p>Files?<\/p>",
-        "currentFiles": [
+[
+    {
+        "questionID": "1",
+        "questionText": "Hello!",
+        "dateCreated": "2021-06-24 17:35:05",
+        "memberName": "Caleb Wilson",
+        "answers": [
             {
-                "fileID": "32",
-                "blockID": "26",
-                "fileName": "File",
-                "fileLocation": "\/file_uploads\/10iofficerow (13 of 19).jpg",
-                "dateUploaded": "2021-06-24 11:48:58"
+                "answerID": "1",
+                "questionID": "1",
+                "answerPrivacy": "Public",
+                "answererID": "4",
+                "answerText": "An Answer.",
+                "dateCreated": "2021-06-25 14:41:43",
+                "answererName": "Caleb Wilson"
+            },
+            {
+                "answerID": "2",
+                "questionID": "1",
+                "answerPrivacy": "Public",
+                "answererID": "4",
+                "answerText": "Another answer",
+                "dateCreated": "2021-06-25 14:56:03",
+                "answererName": "Caleb Wilson"
+            },
+            {
+                "answerID": "3",
+                "questionID": "1",
+                "answerPrivacy": "Public",
+                "answererID": "4",
+                "answerText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                "dateCreated": "2021-06-25 15:00:18",
+                "answererName": "Caleb Wilson"
             }
         ]
+    },
+    {
+        "questionID": "2",
+        "questionText": "Hello again!",
+        "dateCreated": "2021-06-24 17:39:00",
+        "memberName": "Caleb Wilson",
+        "answers": []
+    },
+    {
+        "questionID": "3",
+        "questionText": "There",
+        "dateCreated": "2021-06-24 17:40:00",
+        "memberName": "Caleb Wilson",
+        "answers": []
+    },
+    {
+        "questionID": "4",
+        "questionText": "Hi",
+        "dateCreated": "2021-06-24 17:41:53",
+        "memberName": "Caleb Wilson",
+        "answers": []
+    },
+    {
+        "questionID": "5",
+        "questionText": "Hi again",
+        "dateCreated": "2021-06-24 17:44:25",
+        "memberName": "Caleb Wilson",
+        "answers": []
+    },
+    {
+        "questionID": "6",
+        "questionText": "Hi again",
+        "dateCreated": "2021-06-24 17:44:35",
+        "memberName": "Caleb Wilson",
+        "answers": []
+    },
+    {
+        "questionID": "7",
+        "questionText": "Hello there",
+        "dateCreated": "2021-06-25 09:59:45",
+        "memberName": "Caleb Wilson",
+        "answers": []
+    },
+    {
+        "questionID": "8",
+        "questionText": "This is a question?",
+        "dateCreated": "2021-06-25 10:46:58",
+        "memberName": "Caleb Wilson",
+        "answers": []
     }
-}
+]

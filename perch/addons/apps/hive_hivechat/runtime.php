@@ -2200,7 +2200,11 @@ function create_answer($data) {
   $filteredData = HiveApi::filter($data, $answers->static_fields);
   $filteredData["answerText"] = addslashes($filteredData["answerText"]);
   $filteredData["answererID"] = perch_member_get("id");
-  return $answers->create_answer($filteredData);
+  $answerID = $answers->create_answer($filteredData);
+  // return [
+  //   "answerID" => $answerID,
+  //   "questionID" => $data["questionID"]
+  // ];
 }
 
 function get_answers_by_question($questionID) {

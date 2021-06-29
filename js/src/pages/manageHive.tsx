@@ -2,14 +2,22 @@ import React = require('react');
 import ReactDOM = require('react-dom');
 import ManageHive from '../components/ManageHive/ManageHive';
 import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import questionReducer from '../slices/questionSlice'
+import { queryApi } from '../services/queryApi';
+import { setupListeners } from '@reduxjs/toolkit/dist/query';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 const store = configureStore({
     reducer: {
-        question: questionReducer
-    }
+        question: questionReducer,
+        [queryApi.reducerPath]: queryApi.reducer
+    },
+    middleware: (getDefaultMiddleware) => 
+        getDefaultMiddleware().concat(queryApi.middleware)
 })
+
+setupListeners(store.dispatch);
 
 const App: React.FC = (props) => {
     return (

@@ -7,7 +7,8 @@
             $hiveID = intval(perch_get("manage"));
         }
         if ($hiveID) { 
-            echo "<div id='hive' data-hiveid='$hiveID' ></div>";
+            $orgLogo = get_organisation_by_slug(perch_get("organisationSlug"), ["skip-template" => true], true)["organisationLogo"];
+            echo "<div id='hive' data-hiveid='$hiveID' data-orglogo='$orgLogo' ></div>";
         } else if (perch_get("organisationSlug")) { 
             $opts = [
                 "organisationSlug" => perch_get("organisationSlug"),

@@ -65,7 +65,7 @@ class Hivechat_Answers extends PerchAPI_Factory
         }
 
         $sql .= ");";
-        echo $sql;
+        // echo $sql;
         return $this->db->execute($sql);
     }
 

@@ -39,18 +39,7 @@ switch (perch_layout_var("type", true)) {
             </script>
         <?php } else { ?>
 
-            <div class="app-page-title">
-                <div class="page-title-wrapper">
-                    <div class="page-title-heading">
-                        <div class="page-title-icon">
-                            <i class="pe-7s-user icon-gradient bg-mean-fruit"></i>
-                        </div>
-                        <div>Manage Your Organisation
-                            <div class="page-title-subheading">Use the options below to manage your <strong>organisation</strong></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php perch_layout("admin.title", ["title" => "Manage your organisation", "logo" => $organisation["organisationLogo"]]); ?>
 
             <a href="/explore/organisations/<?= $organisationSlug ?>">
                 <button class="btn btn-outline-primary mb-4">Back to <?= $organisation["organisationName"] ?></button>

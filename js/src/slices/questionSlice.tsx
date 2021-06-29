@@ -1,5 +1,5 @@
 import { QuestionBlock, QuestionResponse } from "../components/NewCell/Blocks/Question"
-import { IBlock } from "../components/NewCell/Cell"
+import { Blocks, IBlock } from "../components/NewCell/Cell"
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { QuestionAdminProps } from "../components/NewCell/Admin/QuestionAdminModal";
 
@@ -8,32 +8,24 @@ export interface QuestionModalProps {
     responses: QuestionResponse[]
 }
 
+type BlockID = Pick<IBlock<Blocks>, "blockID">
 
-export const questionInitialState: (QuestionModalProps & IBlock<QuestionBlock>) = {
-    responses: [],
-    blockData: {
-        title: "",
-        label: ""
-    },
-    blockType: "Question",
-    blockOrder: -1,
-    blockID: -1
+
+export const questionInitialState: BlockID = {
+    blockID: null
 };
 
 export const questionSlice = createSlice({
     name: "question",
-    initialState: questionInitialState,
+    initialState: {
+        blockID: null
+    } as BlockID,
     reducers: {
-        set: (state, action: PayloadAction<(QuestionModalProps & IBlock<QuestionBlock>)>) => {
-            console.log(action)
-            state = {...state, ...action.payload}
-        },
-        unset: (state) => {
-            state = questionInitialState;
-        }
+        setBlockID: (state, action: PayloadAction<number>) => ({ blockID: action.payload }),
+        unsetBlockID: (state) => ({ blockID: null })
     }
 })
 
-export const { set, unset } = questionSlice.actions;
+export const { setBlockID, unsetBlockID } = questionSlice.actions;
 
 export default questionSlice.reducer;

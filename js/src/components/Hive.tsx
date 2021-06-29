@@ -5,20 +5,21 @@ import HiveNav from './HiveNav';
 import { CellSmall } from './HiveNavItem';
 
 interface HiveData {
-    hiveID : number,
-    memberID : number,
-    hiveTitle : string,
-    hiveCategory : string,
-    hivePrivacy : "Public" | "Private" | "Draft",
-    introduction : string,
-    cells : ICell[]
+    hiveID: number,
+    memberID: number,
+    hiveTitle: string,
+    hiveCategory: string,
+    hivePrivacy: "Public" | "Private" | "Draft",
+    introduction: string,
+    cells: ICell[]
 }
 
 interface HiveProps {
     hiveID?: number
+    organisationLogo?: string
 }
 
-const Hive : React.FunctionComponent<HiveProps> = (props) => {
+const Hive: React.FunctionComponent<HiveProps> = (props) => {
     const [hiveData, setHiveData] = useState<HiveData>();
     const [currentCell, setCurrentCell] = useState<ICell>();
     const [cells, setCells] = useState<ICell[]>([]);
@@ -46,7 +47,7 @@ const Hive : React.FunctionComponent<HiveProps> = (props) => {
             })
     }
 
-    function selectCell(cellID : number) {
+    function selectCell(cellID: number) {
         let cell = cells.find(c => c.cellID == cellID);
         setCurrentCell(cell);
     }
@@ -57,7 +58,7 @@ const Hive : React.FunctionComponent<HiveProps> = (props) => {
         for (let i = 0; i < urlSplit.length; i++) {
             const element = urlSplit[i];
             if (element == "organisations") {
-                urlSlug = urlSplit[i+1];
+                urlSlug = urlSplit[i + 1];
                 setOrgSlug(urlSlug);
             }
         }
@@ -78,14 +79,14 @@ const Hive : React.FunctionComponent<HiveProps> = (props) => {
             </div>
         )
     }
-    
+
     useEffect(() => {
         if (document.referrer) {
             setReferrer(document.referrer);
         } else {
             if (window.location.href.includes("organisations")) {
                 let urlSplit = window.location.href.split("/");
-                for (let i = urlSplit.length-1; i >= 0; i--) {
+                for (let i = urlSplit.length - 1; i >= 0; i--) {
                     const element = urlSplit[i];
                     if (element == props.hiveID.toString()) {
                         setReferrer(urlSplit.slice(0, i).join("/"));
@@ -108,16 +109,21 @@ const Hive : React.FunctionComponent<HiveProps> = (props) => {
                 <div className="app-page-title">
                     <div className="page-title-wrapper">
                         <div className="page-title-heading">
-                            <div className="page-title-icon">
-                                <i className="pe-7s-users icon-gradient bg-mean-fruit"></i>
-                            </div>
+                            {
+                                props.organisationLogo ?
+                                    <img className="page-title-logo" src={props.organisationLogo} alt="Logo" />
+                                    :
+                                    <div className="page-title-icon">
+                                        <i className="pe-7s-users icon-gradient bg-mean-fruit"></i>
+                                    </div>
+                            }
                             <div> {hiveData.hiveTitle}
-                                <div className="page-title-subheading" dangerouslySetInnerHTML={{__html: hiveData.introduction}}></div>
+                                <div className="page-title-subheading" dangerouslySetInnerHTML={{ __html: hiveData.introduction }}></div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <button onClick={() => window.location.href = referrer} className="btn btn-outline-primary mb-4">Back</button> 
+                <button onClick={() => window.location.href = referrer} className="btn btn-outline-primary mb-4">Back</button>
                 {hiveContent}
             </React.Fragment>
         )

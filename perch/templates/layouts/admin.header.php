@@ -71,7 +71,7 @@ function get_gravatar($email, $s = 80, $d = 'mp', $r = 'g', $img = true, $atts =
             <div class="app-header__logo">
                 <?php
                 $logo = "/design/images/hivechat_2.svg";
-                if (perch_get("organisationSlug")) {
+                if (perch_get("organisationSlug") && false) {
                     $organisation = get_organisation_by_slug(perch_get("organisationSlug"), ["skip-template" => true], true);
                     if ($organisation["organisationLogo"]) {
                         $logo = $organisation["organisationLogo"];

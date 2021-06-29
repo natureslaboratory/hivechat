@@ -7,15 +7,13 @@ import axios from 'axios';
 import { CellDetails } from './CreateCell';
 import EditCellDetails from './EditCellDetails';
 import { FileBlock } from '../Forms/FileForm';
-import { configureStore, createSlice } from '@reduxjs/toolkit';
-import { Provider } from 'react-redux';
-import { QuestionBlock } from '../Blocks/Question';
-import questionReducer from '../../../slices/questionSlice';
 
 import { useSelector, useDispatch } from 'react-redux'
-import { set, unset } from '../../../slices/questionSlice'
 import QuestionAdminModal, { QuestionAdminProps } from '../Admin/QuestionAdminModal';
-import { RootState } from '../../../pages/manageHive';
+import { AppDispatch, RootState } from '../../../pages/manageHive';
+import { QuestionBlock } from '../Blocks/Question';
+import { useGetQuestionsQuery } from '../../../services/queryApi';
+import { unsetBlockID } from '../../../slices/questionSlice'
 
 export interface CellEditorProps {
     cellID: number
@@ -34,9 +32,16 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
         cellDate: "",
         cellTime: ""
     });
+    const selectedQuestion = useSelector((state: RootState) => state.question);
+    useSelector((state: RootState) => {
+        console.log(state);
+    })
+    const { data: responses, error, isLoading } = useGetQuestionsQuery(selectedQuestion.blockID);
+    const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
         getCell();
+        unsetBlockID();
     }, []);
 
     function getCell() {
@@ -213,22 +218,10 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
             });
     }
 
-    
-    const selectedQuestion = useSelector((state: RootState) => {
-        console.log(state);
-        return state.question;
-    });
-
-    if (selectedQuestion.blockID > 0) {
-        return (
-            <QuestionAdminModal
-                selectedQuestion={null}
-                responses={selectedQuestion.responses}
-                setShowManage={null}
-                submitAnswer={null}
-                setSelectedQuestion={null}
-            />
-        )
+    if (selectedQuestion.blockID) {
+        return responses ? (
+            <QuestionAdminModal blockID={selectedQuestion.blockID} />
+        ) : <>Loading...</>
     }
 
     return (

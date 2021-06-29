@@ -6,7 +6,7 @@ $organisation = get_organisation_by_slug($organisationSlug, ["skip-template" => 
 ?>
 
             
-<?php //perch_layout("admin.title", ["title" => "Manage your organisation hives"]);
+<?php perch_layout("admin.title", ["title" => "Manage your organisation hives", "logo" => $organisation["organisationLogo"]]);
 
 
 
