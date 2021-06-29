@@ -100,7 +100,7 @@ if(!perch_member_logged_in()){
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <!-- <div class="col-md-4">
                     <div class="card mb-3">
                         <div class="card-header">
                             Your Organisations
@@ -116,7 +116,7 @@ if(!perch_member_logged_in()){
                             </a>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="col-md-4">
                     <div class="card mb-3">
                         <div class="card-header">
