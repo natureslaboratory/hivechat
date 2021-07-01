@@ -51258,6 +51258,7 @@ var Member_1 = __importDefault(__webpack_require__(/*! ./Member */ "./js/src/com
 var Members = function (props) {
     var _a = __read(react_1.useState(0), 2), page = _a[0], setPage = _a[1];
     var _b = __read(react_1.useState([]), 2), emailsSliced = _b[0], setEmailsSliced = _b[1];
+    var _c = __read(react_1.useState(false), 2), sendEmails = _c[0], setSendEmails = _c[1];
     var limit = 5;
     react_1.useEffect(function () {
         sliceEmails();
@@ -51269,20 +51270,31 @@ var Members = function (props) {
         setEmailsSliced(newEmails);
     }
     var emailsRendered = emailsSliced.map(function (d, i) { return jsx_runtime_1.jsx(Member_1.default, { email: d, index: i, removeEmail: props.removeEmail }, i); });
-    var pagination = (jsx_runtime_1.jsxs("div", __assign({ style: { display: "flex", gap: "0.5rem", alignItems: "center" } }, { children: [jsx_runtime_1.jsx("button", __assign({ onClick: function (e) {
+    var pagination = (jsx_runtime_1.jsxs("div", __assign({ style: {
+            display: "flex",
+            gap: "0.5rem",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            marginBottom: "1.5rem",
+            marginTop: "1rem"
+        } }, { children: [jsx_runtime_1.jsx("button", __assign({ className: "btn btn-outline-alternate", onClick: function (e) {
                     e.preventDefault();
                     if (page > 0) {
                         setPage(page - 1);
                     }
-                } }, { children: "Prev" }), void 0), page + 1, jsx_runtime_1.jsx("button", __assign({ onClick: function (e) {
+                } }, { children: "Prev" }), void 0), page + 1, jsx_runtime_1.jsx("button", __assign({ className: "btn btn-outline-alternate", onClick: function (e) {
                     e.preventDefault();
                     var isNextPage = props.emails.length - (limit * (page + 1)) > 0;
                     if (isNextPage) {
                         setPage(page + 1);
                     }
                 } }, { children: "Next" }), void 0)] }), void 0));
-    return (jsx_runtime_1.jsxs("form", { children: [jsx_runtime_1.jsxs("div", __assign({ className: "form-group", style: { display: "flex", justifyContent: "space-between" } }, { children: [jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", type: "submit", onClick: props.addMembers }, { children: "Add Members" }), void 0), props.emails.length > limit ? pagination : null] }), void 0),
-            jsx_runtime_1.jsx("div", { children: jsx_runtime_1.jsx("div", __assign({ style: { display: "flex", flexDirection: "column", gap: "0.5rem" } }, { children: emailsRendered }), void 0) }, void 0)] }, void 0));
+    return (jsx_runtime_1.jsxs("form", { children: [jsx_runtime_1.jsx("div", { children: jsx_runtime_1.jsx("div", __assign({ style: { display: "flex", flexDirection: "column", gap: "0.5rem" } }, { children: emailsRendered }), void 0) }, void 0), props.emails.length > limit ? pagination : null, jsx_runtime_1.jsxs("div", __assign({ style: {
+                    justifyContent: "flex-start",
+                    marginBottom: "0.2rem"
+                }, className: "form-group c-form-check" }, { children: [jsx_runtime_1.jsx("label", __assign({ className: "c-form-check__label" }, { children: "Send invite emails?" }), void 0),
+                    jsx_runtime_1.jsx("input", { type: "checkbox", id: "send_email", className: "c-form-check__input", onChange: function () { return setSendEmails(!sendEmails); }, checked: sendEmails }, void 0)] }), void 0),
+            jsx_runtime_1.jsx("div", __assign({ className: "form-group", style: { display: "flex", justifyContent: "flex-end" } }, { children: jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", type: "submit", onClick: function (e) { return props.addMembers(e, sendEmails); } }, { children: "Add Members" }), void 0) }), void 0)] }, void 0));
 };
 exports.default = Members;
 
@@ -51383,7 +51395,8 @@ var AddMembersWrapper = function (props) {
         var emailsEnd = emailAddresses.slice(index + 1, emailAddresses.length);
         setEmailAddresses(__spreadArray(__spreadArray([], __read(emailsStart)), __read(emailsEnd)));
     }
-    function addMembers(e) {
+    function addMembers(e, sendEmails) {
+        if (sendEmails === void 0) { sendEmails = false; }
         e.preventDefault();
         var data = new FormData();
         data.append("emails", JSON.stringify(emailAddresses));
@@ -51396,6 +51409,9 @@ var AddMembersWrapper = function (props) {
             }
         }
         data.append("organisationSlug", urlSlug);
+        if (sendEmails) {
+            data.append("sendEmails", "true");
+        }
         if (!emailAddresses) {
             return;
         }
@@ -52407,6 +52423,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
 var react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var Invite_1 = __importDefault(__webpack_require__(/*! ./Invite */ "./js/src/components/Invite.tsx"));
 var Invites = function (props) {
@@ -52423,18 +52440,17 @@ var Invites = function (props) {
         }
     }
     function getInvites() {
-        fetch("/page-api/get-organisation-invites?urlSlug=" + urlSlug)
-            .then(function (res) { return res.json(); })
-            .then(function (data) {
-            if (data) {
-                setInvites(data);
+        axios_1.default.get("/page-api/get-organisation-invites?urlSlug=" + urlSlug)
+            .then(function (res) {
+            if (res.data) {
+                setInvites(res.data);
             }
         });
     }
     function deleteInvite(inviteID) {
-        fetch("/page-api/delete-organisation-invite?inviteID=" + inviteID)
-            .then(function (res) { return res.json(); })
-            .then(function (data) {
+        axios_1.default.post("/page-api/delete-organisation-invite?inviteID=" + inviteID)
+            .then(function (res) {
+            console.log(res.data);
             getInvites();
         });
     }

@@ -52,7 +52,7 @@ class Hivechat_Invites extends PerchAPI_Factory
         return $this->db->execute($sql);
     }
 
-    function create_invites_bulk($emails, $senderID, $organisationID) {
+    function create_invites_bulk($emails, $senderID, $organisationID, $sendEmails) {
         $sql = "INSERT INTO perch3_invites
                 (memberEmail, senderID, organisationID) 
                 VALUES ";
@@ -91,19 +91,21 @@ class Hivechat_Invites extends PerchAPI_Factory
               $link = "/admin/invites";
               $notifications->create_notification($member["memberID"], $senderID, $message, $link);
             }
-    
-            $email->set_bulk([
-              "email_message" => $message,
-              "email_subject" => $message,
-              "isMember" => $member ? true : false,
-              "protocol" => $_SERVER["HTTPS"] ? "https://" : "http://",
-              "email_link" => $link
-            ]);
-    
-            $email->senderName("Hivechat");
-            $email->senderEmail("caleb@natureslaboratory.co.uk");
-            $email->recipientEmail($memberEmail);
-            $email->send();
+
+            if ($sendEmails) {
+                $email->set_bulk([
+                  "email_message" => $message,
+                  "email_subject" => $message,
+                  "isMember" => $member ? true : false,
+                  "protocol" => $_SERVER["HTTPS"] ? "https://" : "http://",
+                  "email_link" => $link
+                ]);
+        
+                $email->senderName("Hivechat");
+                $email->senderEmail("caleb@natureslaboratory.co.uk");
+                $email->recipientEmail($memberEmail);
+                $email->send();
+            }
         }
 
         return true;

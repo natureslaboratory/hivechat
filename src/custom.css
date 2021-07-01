@@ -244,6 +244,7 @@ p:last-child {
     gap: 
     0.6rem;
     flex-direction: row-reverse;
+    justify-content: flex-end;
 }
 
 

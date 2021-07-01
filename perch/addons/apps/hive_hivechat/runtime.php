@@ -269,6 +269,10 @@ function hive_hivechat_form_handler($SubmittedForm)
           create_notification($member["memberID"], $data["senderID"], $message, $link);
         }
 
+        if (!$data["send_email"]) {
+          break;
+        }
+
         $email->set_bulk([
           "email_message" => $message,
           "email_subject" => $message,
@@ -1523,7 +1527,7 @@ function is_hive_owner($memberID, $hiveID)
   return false;
 }
 
-function create_invites_bulk($emails, $senderID, $organisationID)
+function create_invites_bulk($emails, $senderID, $organisationID, $opts)
 {
   try {
     $API  = new PerchAPI(1.0, 'hivechat');
@@ -1572,7 +1576,7 @@ function create_invites_bulk($emails, $senderID, $organisationID)
       }
     }
   
-    return $invites->create_invites_bulk($filteredEmails, $senderID, $organisationID);
+    return $invites->create_invites_bulk($filteredEmails, $senderID, $organisationID, $opts["sendEmails"] ? true : false);
   } catch (Error $err) {
     return [
       "error" => $err->getMessage(),

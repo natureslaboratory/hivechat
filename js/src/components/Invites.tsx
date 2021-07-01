@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import Invite, { InviteProps } from './Invite';
 
@@ -24,19 +25,18 @@ const Invites: React.FunctionComponent<InvitesProps> = (props) => {
 
 
     function getInvites() {
-        fetch(`/page-api/get-organisation-invites?urlSlug=${urlSlug}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data) {
-                    setInvites(data as Array<InviteProps>)
+        axios.get(`/page-api/get-organisation-invites?urlSlug=${urlSlug}`)
+            .then(res => {
+                if (res.data) {
+                    setInvites(res.data as Array<InviteProps>)
                 }
             })
     }
 
     function deleteInvite(inviteID: number) {
-        fetch(`/page-api/delete-organisation-invite?inviteID=${inviteID}`)
-            .then(res => res.json())
-            .then(data => {
+        axios.post(`/page-api/delete-organisation-invite?inviteID=${inviteID}`)
+            .then(res => {
+                console.log(res.data);
                 getInvites();
             })
     }

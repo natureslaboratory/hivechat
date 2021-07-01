@@ -65,7 +65,7 @@ const AddMembersWrapper : React.FunctionComponent<AddMembersWrapperProps> = (pro
         setEmailAddresses([...emailsStart, ...emailsEnd]);
     }
 
-    function addMembers(e) {
+    function addMembers(e, sendEmails = false) {
         e.preventDefault();
 
         let data = new FormData();
@@ -79,6 +79,9 @@ const AddMembersWrapper : React.FunctionComponent<AddMembersWrapperProps> = (pro
             }
         }
         data.append("organisationSlug", urlSlug);
+        if (sendEmails) {
+            data.append("sendEmails", "true");
+        }
 
         if (!emailAddresses) {
             return;
