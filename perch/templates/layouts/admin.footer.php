@@ -25,6 +25,12 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
+                                        <a class="nav-link" href="/terms-and-conditions">Terms and Conditions</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/privacy-policy">Privacy Policy</a>
+                                    </li>   
+                                    <li class="nav-item">
                                         <a href="https://natureslaboratory.co.uk" target="_blank" class="nav-link">
                                             Built by Nature&rsquo;s Laboratory
                                         </a>
