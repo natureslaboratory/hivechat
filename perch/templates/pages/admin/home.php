@@ -70,7 +70,10 @@ if(!perch_member_logged_in()){
 		const queryString = window.location.search;
 		const urlParams = new URLSearchParams(queryString);
 		const email = urlParams.get('email');
-		$('#form1_email').val(email);
+		console.log(email);
+		$(document).ready(function(){
+			$('#form1_email').val(email);
+		});
 	</script>       
 <?php
 }else{
