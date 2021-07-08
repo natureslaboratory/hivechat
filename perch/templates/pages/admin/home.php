@@ -99,6 +99,7 @@ if(!perch_member_logged_in()){
             </div>
         </div>
         <div class="row">
+<!--
                 <div class="col-md-4">
                     <div class="card mb-3">
                         <div class="card-header">
@@ -116,6 +117,7 @@ if(!perch_member_logged_in()){
                         </div>
                     </div>
                 </div>
+-->
                 <!-- <div class="col-md-4">
                     <div class="card mb-3">
                         <div class="card-header">
