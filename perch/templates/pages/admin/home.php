@@ -1,6 +1,6 @@
 <?php perch_layout('admin.header'); ?>   
 <?php PerchSystem::set_var('url_redirect', perch_get('r')); ?>
-<?php PerchSystem::set_var('email', perch_get('email')); ?>
+<?php PerchSystem::set_var('an_email', perch_get('anEmail')); ?>
 <?php
 if (true) {
     // PerchSystem::redirect("/admin");
