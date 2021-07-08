@@ -67,13 +67,15 @@ if(!perch_member_logged_in()){
         ?>
     </div>    
     <script>
-		const queryString = window.location.search;
-		const urlParams = new URLSearchParams(queryString);
-		const email = urlParams.get('email');
-		console.log(email);
-		$(document).ready(function(){
-			$('#form1_email').val(email);
-		});
+		const url = window.location.search;
+		const email = url.split("/").pop();
+		const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		if(re.test(String(email).toLowerCase())){
+			console.log(email);
+			$(document).ready(function(){
+				$('#form1_email').val(email);
+			});
+		}
 	</script>       
 <?php
 }else{
