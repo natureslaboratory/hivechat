@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <?php 
                         try {
                             get_member_organisations(perch_member_get('id'));
@@ -26,9 +26,9 @@
                             echo $e;
                         }  ?>
                 </div>
-                <div class="col-md-6">
-                    <?php create_organisation(); ?>
-                </div>
+                <!-- <div class="col-md-6">
+                    <?php //create_organisation(); ?>
+                </div> -->
             </div>
         <?php
         
