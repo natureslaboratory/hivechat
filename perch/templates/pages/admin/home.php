@@ -68,7 +68,8 @@ if(!perch_member_logged_in()){
     </div>    
     <script>
 		const url = window.location.href;
-		const email = url.split("/").pop();
+		const url2 = url.split("?")[0];
+		const email = url2.split("/").pop();
 		function validateEmail(email){
 			const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 			return re.test(String(email).toLowerCase());
