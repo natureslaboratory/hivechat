@@ -138,6 +138,11 @@ if(!perch_member_logged_in()){
             </div>
         </div>           
    
+		<script>
+			const queryString = window.location.search;
+			const email = urlParams.get('email');
+			$('#form1_email').val(email);
+		</script>
 <?php    
 }
 ?>
