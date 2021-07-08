@@ -68,6 +68,7 @@ if(!perch_member_logged_in()){
     </div>    
     <script>
 		const url = window.location.search;
+		console.log(url);
 		const email = url.split("/").pop();
 		console.log(email);
 		function validateEmail(email){
