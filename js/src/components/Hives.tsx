@@ -124,10 +124,15 @@ const Hives: React.FunctionComponent<HivesProps> = (props) => {
         )
     }
     if (hives.length > 0) {
+        let label = props.type as string;
+        if (label == "Private") {
+            label = "Member Only"
+        }
+
         return (
             <div className="c-hives">
                 <div className="c-hives__header">
-                    <h2 className="c-hives__title">{props.type} Hives</h2>
+                    <h2 className="c-hives__title">{label} Hives</h2>
                     <div className="c-hives__controls">
                         <input
                             type="search"

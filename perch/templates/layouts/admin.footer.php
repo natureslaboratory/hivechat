@@ -41,6 +41,7 @@
                     </div>
                 </div>    </div>
             <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
+            <?php PerchUtil::output_debug(); ?>
         </div>
     </div>
 <script type="text/javascript" src="/src/assets/scripts/main.js"></script>
