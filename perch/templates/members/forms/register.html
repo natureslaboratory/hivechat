@@ -21,7 +21,7 @@
 
 	<div class="position-relative form-group">
 		<perch:label for="email">Email</perch:label>
-		<perch:input type="email" id="email" required="true" placeholder="you@company.com" helper="PerchMembers_Members::check_email" class="form-control" <perch:if exists="url_email">value="<perch:members id="url_email" />"</perch:if> />
+		<perch:input type="email" id="email" required="true" placeholder="you@company.com" helper="PerchMembers_Members::check_email" class="form-control" <perch:if exists="url_email">value="<perch:forms id="url_email" />"</perch:if> />
 		<perch:error for="email" type="required"><div class="alert alert-danger fade show" role="alert">Please add your email address</div></perch:error>
 		<perch:error for="email" type="helper"><div class="alert alert-danger fade show" role="alert">That email address is already in use</div></perch:error>
 	</div>
