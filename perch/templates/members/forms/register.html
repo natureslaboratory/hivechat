@@ -2,11 +2,23 @@
 	<perch:if exists="url_redirect">
 		<perch:if id="url_redirect" value="invite">
 			action="/admin/invites"
+		<perch:else>
+			action="<perch:forms id="url_redirect" />"
 		</perch:if>
 	<perch:else>
 		action="/admin"
 	</perch:if>
->
+	>
+	<perch:showall>
+		<perch:if exists="url_redirect">
+		<perch:if id="url_redirect" value="invite">
+			Hello
+		<perch:else>
+			There
+		</perch:if>
+	<perch:else>
+		Mate
+	</perch:if>
 	<div class="position-relative form-group">
 		<perch:label for="first_name">First name</perch:label>
 		<perch:input type="text" id="first_name" required="true" label="First name" class="form-control" />

@@ -119,6 +119,13 @@ if (perch_layout_var("manage", true) == "manage" && $isAdmin) {
                 "href" => "/explore/organisations/$organisation[organisationSlug]/",
                 "label" => "Back to $organisation[organisationName]"
             ]);
+            if (!perch_member_logged_in()) {
+                ?> 
+                    <script>
+                        window.location.href = `/admin/register/?r=${window.location.href}`;
+                    </script>
+                <?php
+            }
             create_request($organisation["organisationID"]);
         } else if ($manage == "leave") {
             perch_layout("admin.back", [
