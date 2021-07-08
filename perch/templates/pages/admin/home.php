@@ -2,6 +2,10 @@
 <?php PerchSystem::set_var('url_redirect', perch_get('r')); ?>
 <?php PerchSystem::set_var('email', perch_get('email')); ?>
 <?php
+	echo perch_get('r');
+	echo perch_get('email');	
+?>
+<?php
 if (true) {
     // PerchSystem::redirect("/admin");
 }
