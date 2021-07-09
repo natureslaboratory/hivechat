@@ -14,6 +14,13 @@
                 </thead>
                 <tbody>
 </perch:before>
+                <perch:if exists="message">
+                    <tr>
+                        <td colspan="3">
+                            <perch:hc id="message" />
+                        </td>
+                    </tr>
+                <perch:else>
                     <tr>
                         <td>
                             <div class="widget-content p-0">
@@ -42,6 +49,7 @@
                             </div>
                         </td>
                     </tr>
+                </perch:if>
 <perch:after>
                 </tbody>
             </table>

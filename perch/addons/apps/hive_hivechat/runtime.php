@@ -1295,6 +1295,10 @@ function get_invites($memberEmail)
     ]);
     $list[] = array_merge($memberInvite, $org, $sender);
   }
+  
+  if (count($list) == 0) {
+    $list[] = ["message" => "You have no pending invites"];
+  }
 
 
   $Template = $API->get('Template');

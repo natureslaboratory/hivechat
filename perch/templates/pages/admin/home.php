@@ -93,65 +93,39 @@ if(!perch_member_logged_in()){
                         <i class="pe-7s-user icon-gradient bg-mean-fruit"></i>
                     </div>
                     <div>Welcome, <?= perch_member_get("first_name") ?>
-                        <div class="page-title-subheading">Manage your <strong>hivechat</strong> account and create your conferences</div>
+                        <div class="page-title-subheading">Manage your <strong>hivechat</strong> account</div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
-                <div class="col-md-4">
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            Your Hives
-                        </div>
-                        <div class="card-body">
-                            <p>
-                                Keep track of all your hives.
-                            </p>
-                            <a href="/admin/your-hives">
-                                <button class="btn btn-primary">
-                                    View
-                                </button>
-                            </a>
-                        </div>
+            <div class="col-md-6">
+                <?php get_member_organisations(perch_member_get('id')); ?>
+            </div>
+            <div class="col-md-6">
+                <?php get_invites(perch_member_get("email")); ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        Your Account
                     </div>
-                </div>
-                <!-- <div class="col-md-4">
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            Your Organisations
-                        </div>
-                        <div class="card-body">
-                            <p>
-                                View and manage all your organisations.
-                            </p>
-                            <a href="/admin/organisations">
-                                <button class="btn btn-primary">
-                                    View
-                                </button>
-                            </a>
-                        </div>
-                    </div>
-                </div> -->
-                <div class="col-md-4">
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            Your Account
-                        </div>
-                        <div class="card-body">
-                            <p>
-                                Manage your account details.
-                            </p>
-                            <a href="/admin/account">
-                                <button class="btn btn-primary">
-                                    Manage
-                                </button>
-                            </a>
-                        </div>
+                    <div class="card-body">
+                        <p>
+                            Manage your account details.
+                        </p>
+                        <a href="/admin/account">
+                            <button class="btn btn-primary">
+                                Manage
+                            </button>
+                        </a>
                     </div>
                 </div>
             </div>
-        </div>           
+        </div>
+    </div>           
    
 <?php    
 }
