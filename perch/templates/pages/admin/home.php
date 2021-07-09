@@ -110,7 +110,7 @@ if(!perch_member_logged_in()){
             <div class="col-md-6">
                 <div class="card mb-3">
                     <div class="card-header">
-                        Your Account
+                        Account
                     </div>
                     <div class="card-body">
                         <p>
@@ -119,7 +119,7 @@ if(!perch_member_logged_in()){
                         <a href="/admin/account">
                             <button class="btn btn-primary">
                                 Manage
-                            </button>
+                            </button> 
                         </a>
                     </div>
                 </div>
