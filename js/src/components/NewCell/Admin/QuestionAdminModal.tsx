@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { QuestionResponse } from '../Blocks/Question';
 import { useSelector, useDispatch } from 'react-redux'
 import { setBlockID, unsetBlockID } from '../../../slices/questionSlice'
 import { AppDispatch, RootState } from '../../../pages/manageHive';
 import axios from 'axios';
-import { AnswerFormProps, AnswerListProps, PostAnswer, Question } from '../../../services/types';
-import { useGetQuestionsQuery, useSubmitAnswerMutation } from '../../../services/queryApi';
+import { Answer, AnswerFormProps, AnswerListProps, PostAnswer, Question } from '../../../services/types';
+import { useGetQuestionsQuery, useSubmitAnswerMutation, useUpdateAnswerMutation } from '../../../services/queryApi';
+import AnswerForm from './AnswerForm';
+import AnswerList from './AnswerList';
 
 export interface QuestionAdminProps {
     blockID: number
@@ -16,27 +18,17 @@ interface QuestionAdminFuncs {
 }
 
 const QuestionAdminModal: React.FC<QuestionAdminProps & QuestionAdminFuncs> = (props) => {
-    const [answer, setAnswer] = useState("");
     const [privacy, setPrivacy] = useState<"Public" | "Private">("Private");
     const [selectedQuestion, setSelectedQuestion] = useState<number>(null)
+    const [answer, setAnswer] = useState<PostAnswer>(null);
+
+    const [addAnswer, showAddAnswer] = useState(false);
     const dispatch = useDispatch<AppDispatch>();
-    const [submitAnswer, { isLoading }] = useSubmitAnswerMutation();
-    const { data: responses, error, isLoading: responsesLoading } = useGetQuestionsQuery(props.blockID);
+    const [submitAnswer, { isLoading: isSubmitting }] = useSubmitAnswerMutation();
+    const [updateAnswer, { isLoading: isUpdating }] = useUpdateAnswerMutation();
+    const { data: responses, error, isLoading: responsesLoading, isFetching } = useGetQuestionsQuery(props.blockID);
 
 
-    // function submitAnswer(answerText: string, questionID: number, answerPrivacy = "Private") {
-    //     let data = new FormData();
-    //     data.append("questionID", questionID.toString());
-    //     data.append("answerText", answerText);
-    //     data.append("answerPrivacy", answerPrivacy);
-
-    //     return axios.post("/page-api/q-and-a/create-answer", data)
-    //         .then(res => {
-    //             console.log(res);
-    //             console.log(res.data);
-    //             // props.getResponses()
-    //         })
-    // }
 
     let content = (
         <table className="mb-0 table">
@@ -55,7 +47,17 @@ const QuestionAdminModal: React.FC<QuestionAdminProps & QuestionAdminFuncs> = (p
                             <td>{r.questionText}</td>
                             <td className="btn-container" style={{ margin: 0 }}>
                                 <button className="btn btn-outline-primary" onClick={() => {
-                                    setSelectedQuestion(r.questionID);
+                                    if (r.answers.length > 0) {
+                                        // select the first answer, implement multiple answers later
+                                        setAnswer(r.answers[0]);
+                                    } else {
+                                        // create new answer
+                                        setAnswer({
+                                            questionID: r.questionID,
+                                            answerText: "",
+                                            answerPrivacy: "Private"
+                                        })
+                                    }
                                 }}>
                                     View
                                 </button>
@@ -72,38 +74,81 @@ const QuestionAdminModal: React.FC<QuestionAdminProps & QuestionAdminFuncs> = (p
 
     let back = null;
 
-    if (selectedQuestion) {
-        const currentQuestion = responses.filter((d, i) => d.questionID == selectedQuestion)[0];
+    useEffect(() => {
+        console.log(isFetching);
+        if (!isFetching) {
+            showAddAnswer(false);
+        }
+    }, [isFetching])
+
+    if (answer) {
+        const currentQuestion = responses.filter((d, i) => d.questionID == answer.questionID)[0];
         if (currentQuestion) {
+
+            let component = null;
+
+            if (addAnswer) {
+                let submitButton = (
+                    <button className="btn btn-secondary" onClick={(e) => {
+                        e.preventDefault();
+                        if (answer.answerID) {
+                            updateAnswer(answer);
+                        } else {
+                            submitAnswer(answer);
+                        }
+                    }}>Submit</button>
+                )
+
+                if (isSubmitting || isUpdating || isFetching) {
+                    submitButton = (
+                        <button className="btn btn-secondary disabled" disabled>Submitting...</button>
+                    )
+                }
+
+                back = (
+                    <>
+                        {submitButton}
+                        <button className="btn btn-secondary" onClick={(e) => {
+                            e.preventDefault();
+                            showAddAnswer(false);
+                        }}>Back</button>
+                    </>
+                )
+
+                component = <AnswerForm answer={answer} setAnswer={setAnswer} />;
+            } else {
+                back = (
+                    <>
+                        {
+                            answer.answerText ?
+                                <button className="btn btn-secondary" onClick={(e) => {
+                                    e.preventDefault();
+                                    showAddAnswer(true);
+                                }}>Edit Answer</button>
+                                :
+                                <button className="btn btn-secondary" onClick={(e) => {
+                                    e.preventDefault();
+                                    showAddAnswer(true);
+                                }}>Add Answer</button>
+                        }
+                        <button className="btn btn-secondary" onClick={(e) => {
+                            e.preventDefault();
+                            setAnswer(null);
+                        }}>Back</button>
+                    </>
+                )
+                component = <AnswerList selectedQuestion={currentQuestion} />;
+            }
+
             content = (
                 <>
                     <h5>{currentQuestion.questionText}</h5>
                     <p>from {currentQuestion.memberName}</p>
-                    <AnswerList selectedQuestion={currentQuestion} />
-                    <AnswerForm {...{privacy, answer, setAnswer, setPrivacy}}  />
-                </>
-            )
-    
-            back = (
-                <>
-                    <button className="btn btn-secondary" onClick={(e) => {
-                        e.preventDefault();
-                        console.log("submit");
-                        let newAnswer: PostAnswer = {
-                            answerText: answer,
-                            questionID: currentQuestion.questionID,
-                            answerPrivacy: privacy
-                        }
-                        submitAnswer(newAnswer);
-                    }}>Submit</button>
-                    <button className="btn btn-secondary" onClick={(e) => {
-                        e.preventDefault();
-                        setSelectedQuestion(null);
-                    }}>Back</button>
+                    {component}
                 </>
             )
         } else {
-            setSelectedQuestion(null);
+            setAnswer(null);
         }
     }
 
@@ -112,6 +157,12 @@ const QuestionAdminModal: React.FC<QuestionAdminProps & QuestionAdminFuncs> = (p
             <div className="card c-question__manage">
                 <div className="card-body">
                     {content}
+                    <div className="form-group c-form-check">
+                        <label>Public?</label>
+                        <input type="checkbox" className="c-form-check__input" onChange={() => {
+                            /* Need to POST to update-question */
+                        }} checked={answer.answerPrivacy == "Private" ? false : true} />
+                    </div>
                     <div className="btn-container">
                         {back}
                         <button className="btn btn-secondary" onClick={(e) => {
@@ -122,51 +173,6 @@ const QuestionAdminModal: React.FC<QuestionAdminProps & QuestionAdminFuncs> = (p
                 </div>
             </div>
         </div>
-    )
-}
-
-
-
-const AnswerList: React.FC<AnswerListProps> = ({ selectedQuestion }) => {
-    return (
-        <>
-            <h6>Current Answers</h6>
-            <div className="c-answers">
-                {selectedQuestion.answers ? selectedQuestion.answers.map((a, i) => {
-                    return (
-                        <div className="c-answer" key={a.answerID}>
-                            <p>{a.answerText}</p>
-                            <div className="c-answer__details">
-                                <p>{a.answererName}</p>
-                            </div>
-                        </div>
-                    )
-                }) : <em>No answers</em>}
-            </div>
-        </>
-    )
-}
-
-const AnswerForm: React.FC<AnswerFormProps> = ({ setAnswer, setPrivacy, privacy, answer }) => {
-    return (
-        <form>
-            <div className="form-group">
-                <label>Answer</label>
-                <textarea style={{ minHeight: "120px" }} className="form-control" onChange={(e) => setAnswer(e.target.value)} value={answer} />
-            </div>
-            <div className="form-group c-form-check">
-                <label className="c-form-check__label">
-                    Would you like this answer to be listed on the question block?
-                </label>
-                <input type="checkbox" className="c-form-check__input" id="contactList" value="1" onChange={() => {
-                    if (privacy == "Private") {
-                        setPrivacy("Public");
-                    } else {
-                        setPrivacy("Private");
-                    }
-                }} checked={privacy == "Private" ? false : true} />
-            </div>
-        </form>
     )
 }
 

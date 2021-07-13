@@ -33,9 +33,6 @@ const CellEditor: React.FC<CellEditorProps & CellEditorFuncs> = (props) => {
         cellTime: ""
     });
     const selectedQuestion = useSelector((state: RootState) => state.question);
-    useSelector((state: RootState) => {
-        console.log(state);
-    })
     const { data: responses, error, isLoading } = useGetQuestionsQuery(selectedQuestion.blockID);
     const dispatch = useDispatch<AppDispatch>();
 

@@ -2,4 +2,6 @@
 
 // Requires blockID, questionText
 
-create_question($_POST);
+$input = json_decode(file_get_contents('php://input'), true);
+
+create_question($input);

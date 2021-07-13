@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useCreateQuestionMutation, useGetQuestionsQuery } from '../../../services/queryApi';
 import QuestionAdmin from '../Admin/QuestionAdmin';
 import { IBlock } from '../Cell';
 
@@ -31,35 +32,17 @@ export interface QuestionAnswer {
 
 const Question: React.FC<IBlock<QuestionBlock> & BlockProps> = (props) => {
     const [question, setQuestion] = useState("");
-    const [responses, setResponses] = useState<QuestionResponse[]>([]);
+    // const [responses, setResponses] = useState<QuestionResponse[]>([]);
     const [message, setMessage] = useState("");
     const [messageTimeout, setMessageTimeout] = useState(null)
+    const [createQuestion, { isLoading }] = useCreateQuestionMutation();
+    const { isFetching } = useGetQuestionsQuery(props.blockID);
 
     function submitQuestion() {
-        let data = new FormData();
-
-        data.append("blockID", props.blockID.toString());
-        data.append("questionText", question);
-
-        axios.post("/page-api/q-and-a/create-question", data)
-            .then(res => {
-                console.log(res);
-                setQuestion("");
-                setMessage("Your question has been sent!");
-            })
-    }
-
-    function getResponses() {
-        axios.get(`/page-api/q-and-a/get-questions?blockID=${props.blockID}`)
-            .then(res => {
-                // console.log(res.data);
-                setResponses(res.data.map(r => {
-                    return {
-                        ...r,
-                        questionID: parseInt(r.questionID)
-                    }
-                }));
-            })
+        createQuestion({
+            questionText: question,
+            blockID: props.blockID
+        })
     }
 
     useEffect(() => {
@@ -78,13 +61,16 @@ const Question: React.FC<IBlock<QuestionBlock> & BlockProps> = (props) => {
     }, [props]);
 
     useEffect(() => {
-        getResponses();
-    }, [])
+        if (!isFetching) {
+            setQuestion("");
+            setMessage("Your question has been sent!");
+        }
+    }, [isFetching])
 
     if (props.blockData.title && props.blockData.label) {
         if (!props.preview) {
             return (
-                <QuestionAdmin blockID={props.blockID} getResponses={getResponses} {...props} responses={responses} />
+                <QuestionAdmin blockID={props.blockID} {...props} />
             )
         }
         return (

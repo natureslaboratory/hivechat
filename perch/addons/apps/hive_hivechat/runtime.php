@@ -2215,6 +2215,13 @@ function create_answer($data) {
   // ];
 }
 
+function update_answer($data) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $answers = new Hivechat_Answers($API);
+
+  return $answers->update_answer($data);
+}
+
 function get_answers_by_question($questionID) {
   $API  = new PerchAPI(1.0, 'hivechat');
   $answers = new Hivechat_Answers($API);

@@ -1,8 +1,10 @@
-export type PostAnswer = Pick<Answer, "questionID" | "answerText" | "answerPrivacy">;
+export type PostAnswer = (Pick<Answer, "questionID" | "answerText" | "answerPrivacy"> & { answerID?: number });
+export type PostQuestion = (Pick<Question, "questionText"> & { blockID: number });
 
 export interface Question {
     questionID: number
-    questionText: number
+    questionText: string
+    questionPrivacy: "Private" | "Public"
     dateCreated: string
     memberName: string
     answers: Answer[]
@@ -23,8 +25,6 @@ export interface AnswerListProps {
 }
 
 export interface AnswerFormProps {
-    setAnswer(answer: string) : void
-    setPrivacy(answerPrivacy: "Private" | "Public") : void
-    privacy: "Private" | "Public"
-    answer: string
+    setAnswer(answer: PostAnswer): void
+    answer?: PostAnswer
 }

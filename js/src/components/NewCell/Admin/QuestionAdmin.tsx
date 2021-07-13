@@ -10,8 +10,6 @@ import { useGetQuestionsQuery } from '../../../services/queryApi';
 
 interface QuestionAdminWrapperProps {
     blockID: number
-    responses: QuestionResponse[]
-    getResponses(): void;
 }
 
 

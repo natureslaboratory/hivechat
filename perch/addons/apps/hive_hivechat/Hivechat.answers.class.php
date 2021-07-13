@@ -27,7 +27,7 @@ class Hivechat_Answers extends PerchAPI_Factory
             questionID INT(11) NOT NULL,
             answerPrivacy VARCHAR(255) NOT NULL default 'Private',
             answererID INT(11) NOT NULL,
-            answerText text NOT NULL,
+            answerText text NOT NULL, 
 			dateCreated datetime default NOW()
 		);";
 
