@@ -15,7 +15,8 @@ class Hivechat_Questions extends PerchAPI_Factory
 	public $static_fields   = [
         'blockID',
         'questionerID',
-        'questionText'
+        'questionText',
+        'questionPrivacy'
     ];
 
     function __construct($API)
@@ -101,6 +102,11 @@ class Hivechat_Questions extends PerchAPI_Factory
 
     function get_block_questions($blockID) {
         $sql = "SELECT * FROM $this->table WHERE blockID='$blockID'";
+        return $this->db->get_rows($sql);
+    }
+
+    function get_public_block_questions($blockID) {
+        $sql = "SELECT * FROM $this->table WHERE blockID='$blockID' AND questionPrivacy='Public'";
         return $this->db->get_rows($sql);
     }
 

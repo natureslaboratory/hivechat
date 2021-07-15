@@ -3,6 +3,7 @@
         "questionID": "1",
         "questionText": "Hello!",
         "dateCreated": "2021-06-24 17:35:05",
+        "questionPrivacy": "Public",
         "memberName": "Caleb Wilson",
         "answers": [
             {
@@ -10,7 +11,7 @@
                 "questionID": "1",
                 "answerPrivacy": "Public",
                 "answererID": "4",
-                "answerText": "An Answer.",
+                "answerText": "This is a new answer! Again! Woopdedoo! Heyoooo",
                 "dateCreated": "2021-06-25 14:41:43",
                 "answererName": "Caleb Wilson"
             },
@@ -33,54 +34,5 @@
                 "answererName": "Caleb Wilson"
             }
         ]
-    },
-    {
-        "questionID": "2",
-        "questionText": "Hello again!",
-        "dateCreated": "2021-06-24 17:39:00",
-        "memberName": "Caleb Wilson",
-        "answers": []
-    },
-    {
-        "questionID": "3",
-        "questionText": "There",
-        "dateCreated": "2021-06-24 17:40:00",
-        "memberName": "Caleb Wilson",
-        "answers": []
-    },
-    {
-        "questionID": "4",
-        "questionText": "Hi",
-        "dateCreated": "2021-06-24 17:41:53",
-        "memberName": "Caleb Wilson",
-        "answers": []
-    },
-    {
-        "questionID": "5",
-        "questionText": "Hi again",
-        "dateCreated": "2021-06-24 17:44:25",
-        "memberName": "Caleb Wilson",
-        "answers": []
-    },
-    {
-        "questionID": "6",
-        "questionText": "Hi again",
-        "dateCreated": "2021-06-24 17:44:35",
-        "memberName": "Caleb Wilson",
-        "answers": []
-    },
-    {
-        "questionID": "7",
-        "questionText": "Hello there",
-        "dateCreated": "2021-06-25 09:59:45",
-        "memberName": "Caleb Wilson",
-        "answers": []
-    },
-    {
-        "questionID": "8",
-        "questionText": "This is a question?",
-        "dateCreated": "2021-06-25 10:46:58",
-        "memberName": "Caleb Wilson",
-        "answers": []
     }
 ]

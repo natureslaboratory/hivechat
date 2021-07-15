@@ -5,7 +5,7 @@ import { IBlock } from '../Cell';
 import QuestionAdminModal, { QuestionAdminProps } from './QuestionAdminModal';
 import { useSelector, useDispatch } from 'react-redux'
 import { QuestionModalProps, setBlockID, unsetBlockID } from '../../../slices/questionSlice'
-import { AppDispatch, RootState } from '../../../pages/manageHive';
+import { AppDispatch, RootState } from '../../../pages/AppWrapper';
 import { useGetQuestionsQuery } from '../../../services/queryApi';
 
 interface QuestionAdminWrapperProps {

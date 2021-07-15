@@ -2092,7 +2092,8 @@ function create_question($data) {
 
   $fields = [
     "blockID",
-    "questionText"
+    "questionText",
+    "questionPrivacy"
   ];
 
   $newData = HiveApi::filter($data, $fields);
@@ -2156,13 +2157,35 @@ function create_question($data) {
 
 }
 
-function get_questions($blockID, $adminAccess = false) {
+
+function update_question($data) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $questions = new Hivechat_Questions($API);
+
+  $fields = [
+    "questionText",
+    "questionID",
+    "questionPrivacy"
+  ];
+
+  $newData = HiveApi::filter($data, $fields);
+
+  $result = $questions->update_question($newData);
+
+  // echo json_encode($data);
+}
+
+function get_questions($blockID, $adminAccess = false, $opts = []) {
   $API  = new PerchAPI(1.0, 'hivechat');
   $questions = new Hivechat_Questions($API);
   $answers = new Hivechat_Answers($API);
   $organisations = new Hivechat_Organisations($API);
 
-  $responses = $questions->get_block_questions($blockID);
+  if ($opts["scope"] == "Public") {
+    $responses = $questions->get_public_block_questions($blockID);
+  } else {
+    $responses = $questions->get_block_questions($blockID);
+  }
 
   $data = [];
   foreach ($responses as $response) {
@@ -2171,13 +2194,11 @@ function get_questions($blockID, $adminAccess = false) {
 
     $filteredAnswers = [];
     foreach ($questionAnswers as $answer) {
-      if ($answer["answerPrivacy"] == "Public" || $adminAccess) {
-        $answerer = $organisations->get_member($answer["answererID"]);
-        $answererProps = json_decode($answerer["memberProperties"], true);
-        $filteredAnswers[] = array_merge($answer, [
-          "answererName" => "$answererProps[first_name] $answererProps[last_name]"
-        ]);
-      }
+      $answerer = $organisations->get_member($answer["answererID"]);
+      $answererProps = json_decode($answerer["memberProperties"], true);
+      $filteredAnswers[] = array_merge($answer, [
+        "answererName" => "$answererProps[first_name] $answererProps[last_name]"
+      ]);
     }
 
     $memberProps = json_decode($member["memberProperties"], true);
@@ -2185,6 +2206,7 @@ function get_questions($blockID, $adminAccess = false) {
       "questionID" => $response["questionID"],
       "questionText" => $response["questionText"],
       "dateCreated" => $response["dateCreated"],
+      "questionPrivacy" => $response["questionPrivacy"],
       "memberName" => "$memberProps[first_name] $memberProps[last_name]",
       "answers" => $filteredAnswers
     ];
@@ -2192,6 +2214,7 @@ function get_questions($blockID, $adminAccess = false) {
 
   return $data;
 }
+
 
 function get_question($questionID) {
   $API  = new PerchAPI(1.0, 'hivechat');

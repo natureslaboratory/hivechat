@@ -10,7 +10,7 @@ import { FileBlock } from '../Forms/FileForm';
 
 import { useSelector, useDispatch } from 'react-redux'
 import QuestionAdminModal, { QuestionAdminProps } from '../Admin/QuestionAdminModal';
-import { AppDispatch, RootState } from '../../../pages/manageHive';
+import { AppDispatch, RootState } from '../../../pages/AppWrapper';
 import { QuestionBlock } from '../Blocks/Question';
 import { useGetQuestionsQuery } from '../../../services/queryApi';
 import { unsetBlockID } from '../../../slices/questionSlice'

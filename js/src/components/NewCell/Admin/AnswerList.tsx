@@ -5,16 +5,6 @@ const AnswerList: React.FC<AnswerListProps> = ({ selectedQuestion }) => {
     return (
         <>
             <div className="c-answers">
-                {/* {selectedQuestion.answers ? selectedQuestion.answers.map((a, i) => {
-                    return (
-                        <div className="c-answer" key={a.answerID}>
-                            <p>{a.answerText}</p>
-                            <div className="c-answer__details">
-                                <p>{a.answererName}</p>
-                            </div>
-                        </div>
-                    )
-                }) : <em>No answers</em>} */}
                 {selectedQuestion.answers.length > 0 ?
                     <div className="c-answer">
                         <p>{selectedQuestion.answers[0].answerText}</p>

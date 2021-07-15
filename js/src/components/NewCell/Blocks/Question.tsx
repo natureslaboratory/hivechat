@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useCreateQuestionMutation, useGetQuestionsQuery } from '../../../services/queryApi';
+import { useCreateQuestionMutation, useGetPublicQuestionsQuery, useGetQuestionsQuery } from '../../../services/queryApi';
 import QuestionAdmin from '../Admin/QuestionAdmin';
 import { IBlock } from '../Cell';
 
@@ -35,8 +35,9 @@ const Question: React.FC<IBlock<QuestionBlock> & BlockProps> = (props) => {
     // const [responses, setResponses] = useState<QuestionResponse[]>([]);
     const [message, setMessage] = useState("");
     const [messageTimeout, setMessageTimeout] = useState(null)
-    const [createQuestion, { isLoading }] = useCreateQuestionMutation();
-    const { isFetching } = useGetQuestionsQuery(props.blockID);
+    const [createQuestion, { isLoading, isSuccess }] = useCreateQuestionMutation();
+    const { isLoading: areQuestionsLoading, isFetching } = useGetQuestionsQuery(props.blockID);
+    const { data: publicQuestions, isFetching: isFetchingPublicQuestions } = useGetPublicQuestionsQuery(props.blockID);
 
     function submitQuestion() {
         createQuestion({
@@ -61,11 +62,13 @@ const Question: React.FC<IBlock<QuestionBlock> & BlockProps> = (props) => {
     }, [props]);
 
     useEffect(() => {
-        if (!isFetching) {
+        if (isSuccess) {
             setQuestion("");
             setMessage("Your question has been sent!");
         }
-    }, [isFetching])
+    }, [isSuccess])
+
+    console.log(publicQuestions);
 
     if (props.blockData.title && props.blockData.label) {
         if (!props.preview) {
@@ -87,6 +90,21 @@ const Question: React.FC<IBlock<QuestionBlock> & BlockProps> = (props) => {
                     }} className="btn btn-primary">Send</button>
                 </form>
                 {message && <p>{message}</p>}
+                <h5 style={{marginTop: "1rem"}} className="card-title">Featured Questions</h5>
+                <div style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "1rem"
+                }}>
+                    {publicQuestions && publicQuestions.map(q => {
+                        return (
+                            <div key={q.questionID}>
+                                <h5 style={{}}>{q.questionText}</h5>
+                                <p>{q.answers && q.answers[0]?.answerText}</p>
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
         )
     } else {

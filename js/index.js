@@ -53163,7 +53163,8 @@ var QuestionAdminModal = function (props) {
     var dispatch = react_redux_1.useDispatch();
     var _e = __read(queryApi_1.useSubmitAnswerMutation(), 2), submitAnswer = _e[0], isSubmitting = _e[1].isLoading;
     var _f = __read(queryApi_1.useUpdateAnswerMutation(), 2), updateAnswer = _f[0], isUpdating = _f[1].isLoading;
-    var _g = queryApi_1.useGetQuestionsQuery(props.blockID), responses = _g.data, error = _g.error, responsesLoading = _g.isLoading, isFetching = _g.isFetching;
+    var _g = __read(queryApi_1.useUpdateQuestionMutation(), 2), updateQuestion = _g[0], isQuestionUpdating = _g[1].isLoading;
+    var _h = queryApi_1.useGetQuestionsQuery(props.blockID), responses = _h.data, error = _h.error, responsesLoading = _h.isLoading, isFetching = _h.isFetching;
     var content = (jsx_runtime_1.jsxs("table", __assign({ className: "mb-0 table" }, { children: [jsx_runtime_1.jsx("thead", { children: jsx_runtime_1.jsxs("tr", { children: [jsx_runtime_1.jsx("th", { children: "Name" }, void 0),
                         jsx_runtime_1.jsx("th", { children: "Question" }, void 0),
                         jsx_runtime_1.jsx("th", {}, void 0)] }, void 0) }, void 0),
@@ -53194,8 +53195,8 @@ var QuestionAdminModal = function (props) {
         }
     }, [isFetching]);
     if (answer) {
-        var currentQuestion = responses.filter(function (d, i) { return d.questionID == answer.questionID; })[0];
-        if (currentQuestion) {
+        var currentQuestion_1 = responses.filter(function (d, i) { return d.questionID == answer.questionID; })[0];
+        if (currentQuestion_1) {
             var component = null;
             if (addAnswer) {
                 var submitButton = (jsx_runtime_1.jsx("button", __assign({ className: "btn btn-secondary", onClick: function (e) {
@@ -53231,20 +53232,20 @@ var QuestionAdminModal = function (props) {
                                 e.preventDefault();
                                 setAnswer(null);
                             } }, { children: "Back" }), void 0)] }, void 0));
-                component = jsx_runtime_1.jsx(AnswerList_1.default, { selectedQuestion: currentQuestion }, void 0);
+                component = jsx_runtime_1.jsx(AnswerList_1.default, { selectedQuestion: currentQuestion_1 }, void 0);
             }
-            content = (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("h5", { children: currentQuestion.questionText }, void 0),
-                    jsx_runtime_1.jsxs("p", { children: ["from ", currentQuestion.memberName] }, void 0), component] }, void 0));
+            content = (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("h5", { children: currentQuestion_1.questionText }, void 0),
+                    jsx_runtime_1.jsxs("p", { children: ["from ", currentQuestion_1.memberName] }, void 0), component, jsx_runtime_1.jsxs("div", __assign({ className: "form-group c-form-check" }, { children: [jsx_runtime_1.jsx("label", { children: "Public?" }, void 0),
+                            jsx_runtime_1.jsx("input", { disabled: isQuestionUpdating, type: "checkbox", className: "c-form-check__input", onChange: function () {
+                                    /* Need to POST to update-question */
+                                    updateQuestion(__assign(__assign({}, currentQuestion_1), { questionPrivacy: currentQuestion_1.questionPrivacy == "Public" ? "Private" : "Public" }));
+                                }, checked: currentQuestion_1.questionPrivacy == "Public" ? true : false }, void 0)] }), void 0)] }, void 0));
         }
         else {
             setAnswer(null);
         }
     }
-    return (jsx_runtime_1.jsx("div", __assign({ className: "c-question__manage-wrapper" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "card c-question__manage" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [content, jsx_runtime_1.jsxs("div", __assign({ className: "form-group c-form-check" }, { children: [jsx_runtime_1.jsx("label", { children: "Public?" }, void 0),
-                            jsx_runtime_1.jsx("input", { type: "checkbox", className: "c-form-check__input", onChange: function () {
-                                    /* Need to POST to update-question */
-                                }, checked: answer.answerPrivacy == "Private" ? false : true }, void 0)] }), void 0),
-                    jsx_runtime_1.jsxs("div", __assign({ className: "btn-container" }, { children: [back, jsx_runtime_1.jsx("button", __assign({ className: "btn btn-secondary", onClick: function (e) {
+    return (jsx_runtime_1.jsx("div", __assign({ className: "c-question__manage-wrapper" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "card c-question__manage" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [content, jsx_runtime_1.jsxs("div", __assign({ className: "btn-container" }, { children: [back, jsx_runtime_1.jsx("button", __assign({ className: "btn btn-secondary", onClick: function (e) {
                                     e.preventDefault();
                                     dispatch(questionSlice_1.unsetBlockID());
                                 } }, { children: "Close" }), void 0)] }), void 0)] }), void 0) }), void 0) }), void 0));
@@ -53385,8 +53386,9 @@ var Question = function (props) {
     // const [responses, setResponses] = useState<QuestionResponse[]>([]);
     var _b = __read(react_1.useState(""), 2), message = _b[0], setMessage = _b[1];
     var _c = __read(react_1.useState(null), 2), messageTimeout = _c[0], setMessageTimeout = _c[1];
-    var _d = __read(queryApi_1.useCreateQuestionMutation(), 2), createQuestion = _d[0], isLoading = _d[1].isLoading;
-    var isFetching = queryApi_1.useGetQuestionsQuery(props.blockID).isFetching;
+    var _d = __read(queryApi_1.useCreateQuestionMutation(), 2), createQuestion = _d[0], _e = _d[1], isLoading = _e.isLoading, isSuccess = _e.isSuccess;
+    var _f = queryApi_1.useGetQuestionsQuery(props.blockID), areQuestionsLoading = _f.isLoading, isFetching = _f.isFetching;
+    var _g = queryApi_1.useGetPublicQuestionsQuery(props.blockID), publicQuestions = _g.data, isFetchingPublicQuestions = _g.isFetching;
     function submitQuestion() {
         createQuestion({
             questionText: question,
@@ -53407,11 +53409,12 @@ var Question = function (props) {
         setMessage("");
     }, [props]);
     react_1.useEffect(function () {
-        if (!isFetching) {
+        if (isSuccess) {
             setQuestion("");
             setMessage("Your question has been sent!");
         }
-    }, [isFetching]);
+    }, [isSuccess]);
+    console.log(publicQuestions);
     if (props.blockData.title && props.blockData.label) {
         if (!props.preview) {
             return (jsx_runtime_1.jsx(QuestionAdmin_1.default, __assign({ blockID: props.blockID }, props), void 0));
@@ -53423,7 +53426,17 @@ var Question = function (props) {
                                 e.preventDefault();
                                 submitQuestion();
                             }, className: "btn btn-primary" }, { children: "Send" }), void 0)] }, void 0),
-                message && jsx_runtime_1.jsx("p", { children: message }, void 0)] }, void 0));
+                message && jsx_runtime_1.jsx("p", { children: message }, void 0),
+                jsx_runtime_1.jsx("h5", __assign({ style: { marginTop: "1rem" }, className: "card-title" }, { children: "Featured Questions" }), void 0),
+                jsx_runtime_1.jsx("div", __assign({ style: {
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "1rem"
+                    } }, { children: publicQuestions && publicQuestions.map(function (q) {
+                        var _a;
+                        return (jsx_runtime_1.jsxs("div", { children: [jsx_runtime_1.jsx("h5", __assign({ style: {} }, { children: q.questionText }), void 0),
+                                jsx_runtime_1.jsx("p", { children: q.answers && ((_a = q.answers[0]) === null || _a === void 0 ? void 0 : _a.answerText) }, void 0)] }, q.questionID));
+                    }) }), void 0)] }, void 0));
     }
     else {
         return null;
@@ -55517,6 +55530,55 @@ preventDefaulters.forEach(function (b) {
 
 /***/ }),
 
+/***/ "./js/src/pages/AppWrapper.tsx":
+/*!*************************************!*\
+  !*** ./js/src/pages/AppWrapper.tsx ***!
+  \*************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+var toolkit_1 = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
+var questionSlice_1 = __importDefault(__webpack_require__(/*! ../slices/questionSlice */ "./js/src/slices/questionSlice.tsx"));
+var queryApi_1 = __webpack_require__(/*! ../services/queryApi */ "./js/src/services/queryApi.ts");
+var query_1 = __webpack_require__(/*! @reduxjs/toolkit/dist/query */ "./node_modules/@reduxjs/toolkit/dist/query/index.js");
+var store = toolkit_1.configureStore({
+    reducer: (_a = {
+            question: questionSlice_1.default
+        },
+        _a[queryApi_1.queryApi.reducerPath] = queryApi_1.queryApi.reducer,
+        _a),
+    middleware: function (getDefaultMiddleware) {
+        return getDefaultMiddleware().concat(queryApi_1.queryApi.middleware);
+    }
+});
+query_1.setupListeners(store.dispatch);
+var App = function (props) {
+    return (jsx_runtime_1.jsx(react_redux_1.Provider, __assign({ store: store }, { children: props.children }), void 0));
+};
+exports.default = App;
+
+
+/***/ }),
+
 /***/ "./js/src/pages/admin.notifications.tsx":
 /*!**********************************************!*\
   !*** ./js/src/pages/admin.notifications.tsx ***!
@@ -55679,47 +55741,17 @@ if (addFile) {
 
 "use strict";
 
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 var ManageHive_1 = __importDefault(__webpack_require__(/*! ../components/ManageHive/ManageHive */ "./js/src/components/ManageHive/ManageHive.tsx"));
-var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-var toolkit_1 = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
-var questionSlice_1 = __importDefault(__webpack_require__(/*! ../slices/questionSlice */ "./js/src/slices/questionSlice.tsx"));
-var queryApi_1 = __webpack_require__(/*! ../services/queryApi */ "./js/src/services/queryApi.ts");
-var query_1 = __webpack_require__(/*! @reduxjs/toolkit/dist/query */ "./node_modules/@reduxjs/toolkit/dist/query/index.js");
-var store = toolkit_1.configureStore({
-    reducer: (_a = {
-            question: questionSlice_1.default
-        },
-        _a[queryApi_1.queryApi.reducerPath] = queryApi_1.queryApi.reducer,
-        _a),
-    middleware: function (getDefaultMiddleware) {
-        return getDefaultMiddleware().concat(queryApi_1.queryApi.middleware);
-    }
-});
-query_1.setupListeners(store.dispatch);
-var App = function (props) {
-    return (jsx_runtime_1.jsx(react_redux_1.Provider, __assign({ store: store }, { children: props.children }), void 0));
-};
+var AppWrapper_1 = __importDefault(__webpack_require__(/*! ./AppWrapper */ "./js/src/pages/AppWrapper.tsx"));
 var manageHive = document.getElementById("manage-hive");
 if (manageHive) {
-    ReactDOM.render(jsx_runtime_1.jsx(App, { children: jsx_runtime_1.jsx(ManageHive_1.default, { organisationSlug: manageHive.dataset.organisationslug, hiveID: parseInt(manageHive.dataset.hiveid), organisationID: parseInt(manageHive.dataset.organisationid), organisationName: manageHive.dataset.organisationname, backURL: manageHive.dataset.backurl }, void 0) }, void 0), manageHive);
+    ReactDOM.render(jsx_runtime_1.jsx(AppWrapper_1.default, { children: jsx_runtime_1.jsx(ManageHive_1.default, { organisationSlug: manageHive.dataset.organisationslug, hiveID: parseInt(manageHive.dataset.hiveid), organisationID: parseInt(manageHive.dataset.organisationid), organisationName: manageHive.dataset.organisationname, backURL: manageHive.dataset.backurl }, void 0) }, void 0), manageHive);
 }
 
 
@@ -55769,9 +55801,10 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 var Hive_1 = __importDefault(__webpack_require__(/*! ../components/Hive */ "./js/src/components/Hive.tsx"));
+var AppWrapper_1 = __importDefault(__webpack_require__(/*! ./AppWrapper */ "./js/src/pages/AppWrapper.tsx"));
 var hive = document.getElementById("hive");
 if (hive) {
-    ReactDOM.render(jsx_runtime_1.jsx(Hive_1.default, { hiveID: parseInt(hive.dataset.hiveid), organisationLogo: hive.dataset.orglogo }, void 0), hive);
+    ReactDOM.render(jsx_runtime_1.jsx(AppWrapper_1.default, { children: jsx_runtime_1.jsx(Hive_1.default, { hiveID: parseInt(hive.dataset.hiveid), organisationLogo: hive.dataset.orglogo }, void 0) }, void 0), hive);
 }
 
 
@@ -55786,7 +55819,7 @@ if (hive) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.useCreateQuestionMutation = exports.useUpdateAnswerMutation = exports.useSubmitAnswerMutation = exports.useGetQuestionsQuery = exports.queryApi = void 0;
+exports.useGetPublicQuestionsQuery = exports.useUpdateQuestionMutation = exports.useCreateQuestionMutation = exports.useUpdateAnswerMutation = exports.useSubmitAnswerMutation = exports.useGetQuestionsQuery = exports.queryApi = void 0;
 var react_1 = __webpack_require__(/*! @reduxjs/toolkit/query/react */ "./node_modules/@reduxjs/toolkit/dist/query/react/rtk-query-react.esm.js");
 exports.queryApi = react_1.createApi({
     reducerPath: 'questionApi',
@@ -55795,6 +55828,10 @@ exports.queryApi = react_1.createApi({
     endpoints: function (builder) { return ({
         getQuestions: builder.query({
             query: function (blockID) { return "q-and-a/get-questions?blockID=" + blockID; },
+            providesTags: ["Questions"]
+        }),
+        getPublicQuestions: builder.query({
+            query: function (blockID) { return "q-and-a/get-public-questions?blockID=" + blockID; },
             providesTags: ["Questions"]
         }),
         submitAnswer: builder.mutation({
@@ -55821,9 +55858,17 @@ exports.queryApi = react_1.createApi({
             }); },
             invalidatesTags: ["Questions"]
         }),
+        updateQuestion: builder.mutation({
+            query: function (question) { return ({
+                url: "q-and-a/update-question",
+                method: "POST",
+                body: question
+            }); },
+            invalidatesTags: ["Questions"]
+        }),
     }); }
 });
-exports.useGetQuestionsQuery = exports.queryApi.useGetQuestionsQuery, exports.useSubmitAnswerMutation = exports.queryApi.useSubmitAnswerMutation, exports.useUpdateAnswerMutation = exports.queryApi.useUpdateAnswerMutation, exports.useCreateQuestionMutation = exports.queryApi.useCreateQuestionMutation;
+exports.useGetQuestionsQuery = exports.queryApi.useGetQuestionsQuery, exports.useSubmitAnswerMutation = exports.queryApi.useSubmitAnswerMutation, exports.useUpdateAnswerMutation = exports.queryApi.useUpdateAnswerMutation, exports.useCreateQuestionMutation = exports.queryApi.useCreateQuestionMutation, exports.useUpdateQuestionMutation = exports.queryApi.useUpdateQuestionMutation, exports.useGetPublicQuestionsQuery = exports.queryApi.useGetPublicQuestionsQuery;
 
 
 /***/ }),

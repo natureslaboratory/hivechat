@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Answer, PostAnswer, PostQuestion, Question } from "./types";
+import { Answer, PostAnswer, PostQuestion, Question, UpdateQuestion } from "./types";
 
 export const queryApi = createApi({
     reducerPath: 'questionApi',
@@ -8,6 +8,10 @@ export const queryApi = createApi({
     endpoints: (builder) => ({
         getQuestions: builder.query<Question[], number>({
             query: (blockID) => `q-and-a/get-questions?blockID=${blockID}`,
+            providesTags: ["Questions"]
+        }),
+        getPublicQuestions: builder.query<Question[], number>({
+            query: (blockID) => `q-and-a/get-public-questions?blockID=${blockID}`,
             providesTags: ["Questions"]
         }),
         submitAnswer: builder.mutation<any, PostAnswer>({
@@ -34,7 +38,22 @@ export const queryApi = createApi({
             }),
             invalidatesTags: ["Questions"]
         }),
+        updateQuestion: builder.mutation<any, UpdateQuestion>({
+            query: (question) => ({
+                url: "q-and-a/update-question",
+                method: "POST",
+                body: question
+            }),
+            invalidatesTags: ["Questions"]
+        }),
     })
 })
 
-export const { useGetQuestionsQuery, useSubmitAnswerMutation, useUpdateAnswerMutation, useCreateQuestionMutation } = queryApi;
+export const { 
+    useGetQuestionsQuery, 
+    useSubmitAnswerMutation,
+    useUpdateAnswerMutation, 
+    useCreateQuestionMutation, 
+    useUpdateQuestionMutation, 
+    useGetPublicQuestionsQuery
+} = queryApi;

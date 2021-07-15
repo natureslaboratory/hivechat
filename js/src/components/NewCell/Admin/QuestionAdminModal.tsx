@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { QuestionResponse } from '../Blocks/Question';
 import { useSelector, useDispatch } from 'react-redux'
 import { setBlockID, unsetBlockID } from '../../../slices/questionSlice'
-import { AppDispatch, RootState } from '../../../pages/manageHive';
+import { AppDispatch, RootState } from '../../../pages/AppWrapper';
 import axios from 'axios';
 import { Answer, AnswerFormProps, AnswerListProps, PostAnswer, Question } from '../../../services/types';
-import { useGetQuestionsQuery, useSubmitAnswerMutation, useUpdateAnswerMutation } from '../../../services/queryApi';
+import { useGetQuestionsQuery, useSubmitAnswerMutation, useUpdateAnswerMutation, useUpdateQuestionMutation } from '../../../services/queryApi';
 import AnswerForm from './AnswerForm';
 import AnswerList from './AnswerList';
 
@@ -26,6 +26,7 @@ const QuestionAdminModal: React.FC<QuestionAdminProps & QuestionAdminFuncs> = (p
     const dispatch = useDispatch<AppDispatch>();
     const [submitAnswer, { isLoading: isSubmitting }] = useSubmitAnswerMutation();
     const [updateAnswer, { isLoading: isUpdating }] = useUpdateAnswerMutation();
+    const [updateQuestion, { isLoading: isQuestionUpdating }] = useUpdateQuestionMutation();
     const { data: responses, error, isLoading: responsesLoading, isFetching } = useGetQuestionsQuery(props.blockID);
 
 
@@ -115,7 +116,7 @@ const QuestionAdminModal: React.FC<QuestionAdminProps & QuestionAdminFuncs> = (p
                     </>
                 )
 
-                component = <AnswerForm answer={answer} setAnswer={setAnswer} />;
+                component = <AnswerForm answer={answer} setAnswer={setAnswer} />
             } else {
                 back = (
                     <>
@@ -145,6 +146,16 @@ const QuestionAdminModal: React.FC<QuestionAdminProps & QuestionAdminFuncs> = (p
                     <h5>{currentQuestion.questionText}</h5>
                     <p>from {currentQuestion.memberName}</p>
                     {component}
+                    <div className="form-group c-form-check">
+                        <label>Public?</label>
+                        <input disabled={isQuestionUpdating} type="checkbox" className="c-form-check__input" onChange={() => {
+                            /* Need to POST to update-question */
+                            updateQuestion({
+                                ...currentQuestion,
+                                questionPrivacy: currentQuestion.questionPrivacy == "Public" ? "Private" : "Public"
+                            });
+                        }} checked={currentQuestion.questionPrivacy == "Public" ? true : false} />
+                    </div>
                 </>
             )
         } else {
@@ -157,12 +168,6 @@ const QuestionAdminModal: React.FC<QuestionAdminProps & QuestionAdminFuncs> = (p
             <div className="card c-question__manage">
                 <div className="card-body">
                     {content}
-                    <div className="form-group c-form-check">
-                        <label>Public?</label>
-                        <input type="checkbox" className="c-form-check__input" onChange={() => {
-                            /* Need to POST to update-question */
-                        }} checked={answer.answerPrivacy == "Private" ? false : true} />
-                    </div>
                     <div className="btn-container">
                         {back}
                         <button className="btn btn-secondary" onClick={(e) => {

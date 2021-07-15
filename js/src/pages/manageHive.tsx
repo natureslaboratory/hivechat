@@ -7,28 +7,7 @@ import questionReducer from '../slices/questionSlice'
 import { queryApi } from '../services/queryApi';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import { composeWithDevTools } from 'redux-devtools-extension';
-
-const store = configureStore({
-    reducer: {
-        question: questionReducer,
-        [queryApi.reducerPath]: queryApi.reducer
-    },
-    middleware: (getDefaultMiddleware) => 
-        getDefaultMiddleware().concat(queryApi.middleware)
-})
-
-setupListeners(store.dispatch);
-
-const App: React.FC = (props) => {
-    return (
-        <Provider store={store}> 
-            {props.children}
-        </Provider>
-    )
-}
-
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+import App from './AppWrapper';
 
 const manageHive = document.getElementById("manage-hive");
 if (manageHive) {

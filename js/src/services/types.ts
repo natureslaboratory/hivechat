@@ -1,5 +1,6 @@
 export type PostAnswer = (Pick<Answer, "questionID" | "answerText" | "answerPrivacy"> & { answerID?: number });
 export type PostQuestion = (Pick<Question, "questionText"> & { blockID: number });
+export type UpdateQuestion = Pick<Question, "questionText" | "questionPrivacy" | "questionID">;
 
 export interface Question {
     questionID: number
