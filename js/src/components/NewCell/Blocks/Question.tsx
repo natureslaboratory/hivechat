@@ -89,6 +89,7 @@ const Question: React.FC<IBlock<QuestionBlock> & BlockProps> = (props) => {
                         submitQuestion();
                     }} className="btn btn-primary">Send</button>
                 </form>
+                <hr />
                 {message && <p>{message}</p>}
                 <h5 style={{marginTop: "1rem"}} className="card-title">Featured Questions</h5>
                 <div style={{
@@ -99,7 +100,7 @@ const Question: React.FC<IBlock<QuestionBlock> & BlockProps> = (props) => {
                     {publicQuestions && publicQuestions.map(q => {
                         return (
                             <div key={q.questionID}>
-                                <h5 style={{}}>{q.questionText}</h5>
+                                <h6 style={{}}>{q.questionText}</h6>
                                 <p>{q.answers && q.answers[0]?.answerText}</p>
                             </div>
                         )

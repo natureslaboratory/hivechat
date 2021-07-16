@@ -53426,6 +53426,7 @@ var Question = function (props) {
                                 e.preventDefault();
                                 submitQuestion();
                             }, className: "btn btn-primary" }, { children: "Send" }), void 0)] }, void 0),
+                jsx_runtime_1.jsx("hr", {}, void 0),
                 message && jsx_runtime_1.jsx("p", { children: message }, void 0),
                 jsx_runtime_1.jsx("h5", __assign({ style: { marginTop: "1rem" }, className: "card-title" }, { children: "Featured Questions" }), void 0),
                 jsx_runtime_1.jsx("div", __assign({ style: {
@@ -53434,7 +53435,7 @@ var Question = function (props) {
                         gap: "1rem"
                     } }, { children: publicQuestions && publicQuestions.map(function (q) {
                         var _a;
-                        return (jsx_runtime_1.jsxs("div", { children: [jsx_runtime_1.jsx("h5", __assign({ style: {} }, { children: q.questionText }), void 0),
+                        return (jsx_runtime_1.jsxs("div", { children: [jsx_runtime_1.jsx("h6", __assign({ style: {} }, { children: q.questionText }), void 0),
                                 jsx_runtime_1.jsx("p", { children: q.answers && ((_a = q.answers[0]) === null || _a === void 0 ? void 0 : _a.answerText) }, void 0)] }, q.questionID));
                     }) }), void 0)] }, void 0));
     }
