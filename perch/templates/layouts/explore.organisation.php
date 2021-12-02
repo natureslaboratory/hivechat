@@ -180,7 +180,7 @@ if (perch_layout_var("manage", true) == "manage" && $isAdmin) {
                     </div>
                 </div>
                 <div class="card-body">
-                    <?= $organisation["organisationDesc"] ?>
+                    <?= nl2br($organisation["organisationDesc"]) ?>
                 </div>
             </div>
         </div>
