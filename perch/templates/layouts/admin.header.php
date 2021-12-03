@@ -67,7 +67,7 @@ function get_gravatar($email, $s = 80, $d = 'mp', $r = 'g', $img = true, $atts =
 
 <body onload="setInterval('chat.update()', 1000)">
     <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
-        <div class="app-header header-shadow">
+        <div class="app-header header-shadow iframe-hide">
             <div class="app-header__logo">
                 <?php
                 $logo = "/design/images/hivechat_2.svg";
@@ -179,6 +179,7 @@ function get_gravatar($email, $s = 80, $d = 'mp', $r = 'g', $img = true, $atts =
             }
 
             console.log(inIframe());
+
         </script>
 
         <div class="app-main">

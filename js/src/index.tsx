@@ -2,6 +2,7 @@ import DeleteForm from "./classes/DeleteForm";
 import Organisation from "./classes/Organisation";
 import OrganisationMember from "./classes/OrganisationMember";
 import Utils from "./classes/Utils";
+import { inIframe } from "./helpers";
 import "./pages/explore.organisations";
 import "./pages/explore.organisations.manage.hives";
 import "./pages/admin.notifications";
@@ -40,6 +41,34 @@ preventDefaulters.forEach(b => {
         e.preventDefault();
     })
 })
+
+console.log(inIframe());
+
+if (inIframe()) {
+    let adminHeader = document.getElementsByClassName("app-header")[0] as HTMLElement;
+    adminHeader.style.display = "none";
+
+    let adminSidebar = document.getElementsByClassName("app-sidebar")[0] as HTMLElement;
+    adminSidebar.style.display = "none";
+
+    let appMainOuter = document.getElementsByClassName("app-main__outer")[0] as HTMLElement;
+    appMainOuter.style.paddingLeft = "0px";
+
+    let appMain = document.getElementsByClassName("app-main")[0] as HTMLElement;
+    appMain.style.paddingTop = "0px";
+
+    let appPageTitle = document.getElementsByClassName("app-page-title")[0] as HTMLElement;
+    let appPageTitleButtons = Array.from(appPageTitle.getElementsByTagName("button") as HTMLCollectionOf<HTMLButtonElement>);
+    appPageTitleButtons.forEach(b => {
+        b.style.display = "none";
+    })
+
+    let iframeHideElements =Array.from(document.getElementsByClassName("iframe-hide") as HTMLCollectionOf<HTMLElement>);
+    iframeHideElements.forEach(e => {
+        e.style.display = "none";
+    })
+    
+}
 
 
 
