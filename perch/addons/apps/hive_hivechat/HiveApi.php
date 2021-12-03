@@ -97,4 +97,24 @@ class HiveApi
         }
         return implode('', $pieces);
     }
+
+    public static function parse_member($member) {
+        $requiredFields = [
+            "memberEmail",
+            "memberID",
+            "memberProperties"
+        ];
+
+        $filteredMember = [];
+        foreach ($requiredFields as $field) {
+            if ($field == "memberProperties") {
+                $properties = json_decode($member["memberProperties"], true);
+                $filteredMember[$field] = $properties;
+                continue;
+            }
+            $filteredMember[$field] = $member[$field];
+        }
+
+        return $filteredMember;        
+    }
 }

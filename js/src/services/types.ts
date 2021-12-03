@@ -1,5 +1,33 @@
 export type PostAnswer = Pick<Answer, "questionID" | "answerText" | "answerPrivacy">;
 
+// Need member name, member message, date created, requestID
+export type MemberRequestType = {
+    requestID: number,
+    requestText: string,
+    dateCreated: string,
+    member: MemberType
+}
+
+export type MemberType = {
+    memberEmail: string,
+    memberID: number,
+    memberProperties: MemberPropertiesType
+}
+
+export type MemberPropertiesType = {
+    first_name?: string,
+    last_name?: string,
+    gdpr_check?: number,
+    job_title?: string,
+    organisation?: string,
+    phone?: string,
+    website?: string
+}
+
+export type Organisation = {
+    organisationID: number
+}
+
 export interface Question {
     questionID: number
     questionText: number

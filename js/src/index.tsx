@@ -11,6 +11,7 @@ import "./pages/explore.organisations.manage.details";
 import "./pages/viewHive";
 import "./pages/manageHive";
 import "./pages/test";
+import "./pages/organisationMemberRequests";
 
 
 
@@ -63,7 +64,7 @@ if (inIframe()) {
         b.style.display = "none";
     })
 
-    let iframeHideElements =Array.from(document.getElementsByClassName("iframe-hide") as HTMLCollectionOf<HTMLElement>);
+    let iframeHideElements = Array.from(document.getElementsByClassName("iframe-hide") as HTMLCollectionOf<HTMLElement>);
     iframeHideElements.forEach(e => {
         e.style.display = "none";
     })

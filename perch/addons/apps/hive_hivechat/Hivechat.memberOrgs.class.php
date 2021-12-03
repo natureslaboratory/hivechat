@@ -89,6 +89,7 @@ class Hivechat_MemberOrgs extends PerchAPI_Factory
         }
 
         $sql .= ");";
+		echo json_encode(["sql" => $sql]);
         return $this->db->execute($sql);
 	}
 
