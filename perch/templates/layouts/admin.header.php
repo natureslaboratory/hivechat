@@ -57,12 +57,12 @@ function get_gravatar($email, $s = 80, $d = 'mp', $r = 'g', $img = true, $atts =
         });
     </script>
     <link href="/src/main.css?v=<?php echo rand(); ?>" rel="stylesheet">
-	<link href="/src/custom.css?v=<?php echo rand(); ?>" rel="stylesheet">
-	<?php
-		if(has_invites()>0){
-			echo '<script>$(document).ready(function(){$("#Invites a,#button-invites").append("<span class=\'invites\'>'.has_invites().'</span>")});</script>';
-		}	
-	?>
+    <link href="/src/custom.css?v=<?php echo rand(); ?>" rel="stylesheet">
+    <?php
+    if (has_invites() > 0) {
+        echo '<script>$(document).ready(function(){$("#Invites a,#button-invites").append("<span class=\'invites\'>' . has_invites() . '</span>")});</script>';
+    }
+    ?>
 </head>
 
 <body onload="setInterval('chat.update()', 1000)">
@@ -169,6 +169,17 @@ function get_gravatar($email, $s = 80, $d = 'mp', $r = 'g', $img = true, $atts =
                 <?php } ?>
             </div>
         </div>
+        <script>
+            function inIframe() {
+                try {
+                    return window.self !== window.top;
+                } catch (e) {
+                    return true;
+                }
+            }
+
+            console.log(inIframe());
+        </script>
 
         <div class="app-main">
             <div class="app-sidebar sidebar-shadow">
