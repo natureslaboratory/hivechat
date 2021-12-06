@@ -52960,6 +52960,122 @@ exports.default = Member;
 
 /***/ }),
 
+/***/ "./js/src/components/MemberRequest.tsx":
+/*!*********************************************!*\
+  !*** ./js/src/components/MemberRequest.tsx ***!
+  \*********************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var MemberRequest = function (props) {
+    var name = props.member.memberProperties.first_name + " " + props.member.memberProperties.last_name;
+    return (jsx_runtime_1.jsxs("tr", { children: [jsx_runtime_1.jsx("td", { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content p-0" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content-wrapper" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content-left flex2" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-heading" }, { children: name }), void 0) }), void 0) }), void 0) }), void 0) }, void 0),
+            jsx_runtime_1.jsx("td", { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content p-0" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content-wrapper" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content-left flex2" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-heading" }, { children: props.requestText }), void 0) }), void 0) }), void 0) }), void 0) }, void 0),
+            jsx_runtime_1.jsx("td", { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content p-0" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content-wrapper" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-content-left flex2" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "widget-heading" }, { children: props.dateCreated }), void 0) }), void 0) }), void 0) }), void 0) }, void 0),
+            jsx_runtime_1.jsx("td", { children: jsx_runtime_1.jsxs("div", __assign({ className: "widget-heading table-action" }, { children: [jsx_runtime_1.jsx("button", __assign({ className: "btn btn-primary", onClick: function (e) {
+                                e.preventDefault();
+                                props.handleAccept();
+                            } }, { children: "Accept" }), void 0),
+                        jsx_runtime_1.jsx("button", __assign({ className: "btn btn-danger", onClick: function (e) {
+                                e.preventDefault();
+                                props.handleDelete();
+                            } }, { children: "Delete" }), void 0)] }), void 0) }, void 0)] }, void 0));
+};
+exports.default = MemberRequest;
+
+
+/***/ }),
+
+/***/ "./js/src/components/MemberRequests.tsx":
+/*!**********************************************!*\
+  !*** ./js/src/components/MemberRequests.tsx ***!
+  \**********************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var queryApi_1 = __webpack_require__(/*! ../services/queryApi */ "./js/src/services/queryApi.ts");
+var MemberRequest_1 = __importDefault(__webpack_require__(/*! ./MemberRequest */ "./js/src/components/MemberRequest.tsx"));
+var MemberRequests = function (props) {
+    var _a = queryApi_1.useGetMemberRequestsQuery(props.orgID), responses = _a.data, error = _a.error, isLoading = _a.isLoading, isFetching = _a.isFetching;
+    var _b = __read(queryApi_1.useAcceptMemberRequestMutation(), 2), acceptRequest = _b[0], data = _b[1].data;
+    var _c = __read(queryApi_1.useDeleteMemberRequestMutation(), 1), deleteRequest = _c[0];
+    if (isLoading) {
+        console.log("loading");
+    }
+    if (isFetching) {
+        console.log("fetching");
+    }
+    if (responses) {
+        console.log(responses);
+    }
+    var message = responses ? "No requests" : "Loading...";
+    if (error) {
+        message = "Error";
+    }
+    var placeholder = (jsx_runtime_1.jsx("tr", { children: jsx_runtime_1.jsx("td", __assign({ colSpan: 4 }, { children: message }), void 0) }, void 0));
+    var requests = responses && responses.length
+        ? responses.map(function (r) { return react_1.createElement(MemberRequest_1.default, __assign({}, r, { key: r.member.memberID, handleAccept: function () { return acceptRequest(r); }, handleDelete: function () { return deleteRequest(r); } })); })
+        : placeholder;
+    return (jsx_runtime_1.jsxs("div", __assign({ className: "card mb-3" }, { children: [jsx_runtime_1.jsx("div", __assign({ style: { justifyContent: "space-between" }, className: "card-header" }, { children: jsx_runtime_1.jsx("h5", __assign({ className: "card-title m-b-0" }, { children: "Member Requests" }), void 0) }), void 0),
+            jsx_runtime_1.jsx("div", __assign({ className: "table-responsive" }, { children: jsx_runtime_1.jsxs("table", __assign({ className: "align-middle mb-0 table table-borderless table-striped table-hover" }, { children: [jsx_runtime_1.jsx("thead", { children: jsx_runtime_1.jsxs("tr", { children: [jsx_runtime_1.jsx("th", { children: "Name" }, void 0),
+                                    jsx_runtime_1.jsx("th", { children: "Message" }, void 0),
+                                    jsx_runtime_1.jsx("th", { children: "Date" }, void 0),
+                                    jsx_runtime_1.jsx("th", { children: "Actions" }, void 0)] }, void 0) }, void 0),
+                        jsx_runtime_1.jsx("tbody", { children: requests }, void 0)] }), void 0) }), void 0)] }), void 0));
+};
+exports.default = MemberRequests;
+
+
+/***/ }),
+
 /***/ "./js/src/components/Message.tsx":
 /*!***************************************!*\
   !*** ./js/src/components/Message.tsx ***!
@@ -55514,7 +55630,7 @@ exports.default = Video;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.formatDate = void 0;
+exports.inIframe = exports.formatDate = void 0;
 function getDayOfMonth(date) {
     var day = date.getDate().toString();
     var suffix = "th";
@@ -55573,6 +55689,15 @@ function formatDate(date) {
     return addZeroes(date.getHours()) + ":" + addZeroes(date.getMinutes()) + ", " + getMonth(date) + " " + getDayOfMonth(date) + " " + date.getFullYear();
 }
 exports.formatDate = formatDate;
+function inIframe() {
+    try {
+        return window.self !== window.top;
+    }
+    catch (e) {
+        return true;
+    }
+}
+exports.inIframe = inIframe;
 
 
 /***/ }),
@@ -55593,6 +55718,7 @@ var DeleteForm_1 = __importDefault(__webpack_require__(/*! ./classes/DeleteForm 
 var Organisation_1 = __importDefault(__webpack_require__(/*! ./classes/Organisation */ "./js/src/classes/Organisation.ts"));
 var OrganisationMember_1 = __importDefault(__webpack_require__(/*! ./classes/OrganisationMember */ "./js/src/classes/OrganisationMember.ts"));
 var Utils_1 = __importDefault(__webpack_require__(/*! ./classes/Utils */ "./js/src/classes/Utils.ts"));
+var helpers_1 = __webpack_require__(/*! ./helpers */ "./js/src/helpers.ts");
 __webpack_require__(/*! ./pages/explore.organisations */ "./js/src/pages/explore.organisations.tsx");
 __webpack_require__(/*! ./pages/explore.organisations.manage.hives */ "./js/src/pages/explore.organisations.manage.hives.tsx");
 __webpack_require__(/*! ./pages/admin.notifications */ "./js/src/pages/admin.notifications.tsx");
@@ -55601,6 +55727,7 @@ __webpack_require__(/*! ./pages/explore.organisations.manage.details */ "./js/sr
 __webpack_require__(/*! ./pages/viewHive */ "./js/src/pages/viewHive.tsx");
 __webpack_require__(/*! ./pages/manageHive */ "./js/src/pages/manageHive.tsx");
 __webpack_require__(/*! ./pages/test */ "./js/src/pages/test.tsx");
+__webpack_require__(/*! ./pages/organisationMemberRequests */ "./js/src/pages/organisationMemberRequests.tsx");
 var organisationForms = Array.from(document.getElementsByClassName("org-form"));
 organisationForms.forEach(function (form) {
     try {
@@ -55624,6 +55751,26 @@ preventDefaulters.forEach(function (b) {
         e.preventDefault();
     });
 });
+console.log(helpers_1.inIframe());
+if (helpers_1.inIframe()) {
+    var adminHeader = document.getElementsByClassName("app-header")[0];
+    adminHeader.style.display = "none";
+    var adminSidebar = document.getElementsByClassName("app-sidebar")[0];
+    adminSidebar.style.display = "none";
+    var appMainOuter = document.getElementsByClassName("app-main__outer")[0];
+    appMainOuter.style.paddingLeft = "0px";
+    var appMain = document.getElementsByClassName("app-main")[0];
+    appMain.style.paddingTop = "0px";
+    var appPageTitle = document.getElementsByClassName("app-page-title")[0];
+    var appPageTitleButtons = Array.from(appPageTitle.getElementsByTagName("button"));
+    appPageTitleButtons.forEach(function (b) {
+        b.style.display = "none";
+    });
+    var iframeHideElements = Array.from(document.getElementsByClassName("iframe-hide"));
+    iframeHideElements.forEach(function (e) {
+        e.style.display = "none";
+    });
+}
 
 
 /***/ }),
@@ -55855,6 +56002,61 @@ if (manageHive) {
 
 /***/ }),
 
+/***/ "./js/src/pages/organisationMemberRequests.tsx":
+/*!*****************************************************!*\
+  !*** ./js/src/pages/organisationMemberRequests.tsx ***!
+  \*****************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+var MemberRequests_1 = __importDefault(__webpack_require__(/*! ../components/MemberRequests */ "./js/src/components/MemberRequests.tsx"));
+var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+var toolkit_1 = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
+var questionSlice_1 = __importDefault(__webpack_require__(/*! ../slices/questionSlice */ "./js/src/slices/questionSlice.tsx"));
+var queryApi_1 = __webpack_require__(/*! ../services/queryApi */ "./js/src/services/queryApi.ts");
+var query_1 = __webpack_require__(/*! @reduxjs/toolkit/dist/query */ "./node_modules/@reduxjs/toolkit/dist/query/index.js");
+var store = toolkit_1.configureStore({
+    reducer: (_a = {
+            question: questionSlice_1.default
+        },
+        _a[queryApi_1.queryApi.reducerPath] = queryApi_1.queryApi.reducer,
+        _a),
+    middleware: function (getDefaultMiddleware) {
+        return getDefaultMiddleware().concat(queryApi_1.queryApi.middleware);
+    }
+});
+query_1.setupListeners(store.dispatch);
+var App = function (props) {
+    return (jsx_runtime_1.jsx(react_redux_1.Provider, __assign({ store: store }, { children: props.children }), void 0));
+};
+var memberRequests = document.getElementById("memberRequests");
+if (memberRequests) {
+    console.log(memberRequests.dataset.orgid);
+    ReactDOM.render(jsx_runtime_1.jsx(App, { children: jsx_runtime_1.jsx(MemberRequests_1.default, { orgID: parseInt(memberRequests.dataset.orgid) }, void 0) }, void 0), memberRequests);
+}
+
+
+/***/ }),
+
 /***/ "./js/src/pages/test.tsx":
 /*!*******************************!*\
   !*** ./js/src/pages/test.tsx ***!
@@ -55917,12 +56119,12 @@ if (hive) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.useGetPublicQuestionsQuery = exports.useUpdateQuestionMutation = exports.useCreateQuestionMutation = exports.useUpdateAnswerMutation = exports.useSubmitAnswerMutation = exports.useGetQuestionsQuery = exports.queryApi = void 0;
+exports.useDeleteMemberRequestMutation = exports.useAcceptMemberRequestMutation = exports.useGetMemberRequestsQuery = exports.useGetPublicQuestionsQuery = exports.useUpdateQuestionMutation = exports.useCreateQuestionMutation = exports.useUpdateAnswerMutation = exports.useSubmitAnswerMutation = exports.useGetQuestionsQuery = exports.queryApi = void 0;
 var react_1 = __webpack_require__(/*! @reduxjs/toolkit/query/react */ "./node_modules/@reduxjs/toolkit/dist/query/react/rtk-query-react.esm.js");
 exports.queryApi = react_1.createApi({
     reducerPath: 'questionApi',
     baseQuery: react_1.fetchBaseQuery({ baseUrl: "/page-api/" }),
-    tagTypes: ["Questions"],
+    tagTypes: ["Questions", "Requests"],
     endpoints: function (builder) { return ({
         getQuestions: builder.query({
             query: function (blockID) { return "q-and-a/get-questions?blockID=" + blockID; },
@@ -55964,9 +56166,29 @@ exports.queryApi = react_1.createApi({
             }); },
             invalidatesTags: ["Questions"]
         }),
+        getMemberRequests: builder.query({
+            query: function (orgID) { return "member-requests/get?orgID=" + orgID; },
+            providesTags: ["Requests"],
+        }),
+        acceptMemberRequest: builder.mutation({
+            query: function (request) { return ({
+                url: "member-requests/accept",
+                method: "POST",
+                body: request,
+            }); },
+            invalidatesTags: ["Requests"],
+        }),
+        deleteMemberRequest: builder.mutation({
+            query: function (request) { return ({
+                url: "member-requests/delete",
+                method: "POST",
+                body: request,
+            }); },
+            invalidatesTags: ["Requests"],
+        }),
     }); }
 });
-exports.useGetQuestionsQuery = exports.queryApi.useGetQuestionsQuery, exports.useSubmitAnswerMutation = exports.queryApi.useSubmitAnswerMutation, exports.useUpdateAnswerMutation = exports.queryApi.useUpdateAnswerMutation, exports.useCreateQuestionMutation = exports.queryApi.useCreateQuestionMutation, exports.useUpdateQuestionMutation = exports.queryApi.useUpdateQuestionMutation, exports.useGetPublicQuestionsQuery = exports.queryApi.useGetPublicQuestionsQuery;
+exports.useGetQuestionsQuery = exports.queryApi.useGetQuestionsQuery, exports.useSubmitAnswerMutation = exports.queryApi.useSubmitAnswerMutation, exports.useUpdateAnswerMutation = exports.queryApi.useUpdateAnswerMutation, exports.useCreateQuestionMutation = exports.queryApi.useCreateQuestionMutation, exports.useUpdateQuestionMutation = exports.queryApi.useUpdateQuestionMutation, exports.useGetPublicQuestionsQuery = exports.queryApi.useGetPublicQuestionsQuery, exports.useGetMemberRequestsQuery = exports.queryApi.useGetMemberRequestsQuery, exports.useAcceptMemberRequestMutation = exports.queryApi.useAcceptMemberRequestMutation, exports.useDeleteMemberRequestMutation = exports.queryApi.useDeleteMemberRequestMutation;
 
 
 /***/ }),

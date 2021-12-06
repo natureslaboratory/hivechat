@@ -59,3 +59,11 @@ function addZeroes(time : number) {
 export function formatDate(date) {
     return `${addZeroes(date.getHours())}:${addZeroes(date.getMinutes())}, ${getMonth(date)} ${getDayOfMonth(date)} ${date.getFullYear()}`;
 }
+
+export function inIframe() {
+    try {
+        return window.self !== window.top;
+    } catch (e) {
+        return true;
+    }
+}

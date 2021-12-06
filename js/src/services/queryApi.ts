@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Answer, PostAnswer, PostQuestion, Question, UpdateQuestion } from "./types";
+import { Answer, MemberRequestType, PostAnswer, PostQuestion, Question, UpdateQuestion } from "./types";
 
 export const queryApi = createApi({
     reducerPath: 'questionApi',
     baseQuery: fetchBaseQuery({ baseUrl: "/page-api/" }),
-    tagTypes: ["Questions"],
+    tagTypes: ["Questions", "Requests"],
     endpoints: (builder) => ({
         getQuestions: builder.query<Question[], number>({
             query: (blockID) => `q-and-a/get-questions?blockID=${blockID}`,
@@ -46,6 +46,26 @@ export const queryApi = createApi({
             }),
             invalidatesTags: ["Questions"]
         }),
+        getMemberRequests: builder.query<MemberRequestType[], number>({
+          query: (orgID) => `member-requests/get?orgID=${orgID}`,
+          providesTags: ["Requests"],
+        }),
+        acceptMemberRequest: builder.mutation<any, MemberRequestType>({
+          query: (request) => ({
+            url: "member-requests/accept",
+            method: "POST",
+            body: request,
+          }),
+          invalidatesTags: ["Requests"],
+        }),
+        deleteMemberRequest: builder.mutation<any, MemberRequestType>({
+          query: (request) => ({
+            url: "member-requests/delete",
+            method: "POST",
+            body: request,
+          }),
+          invalidatesTags: ["Requests"],
+        }),
     })
 })
 
@@ -55,5 +75,8 @@ export const {
     useUpdateAnswerMutation, 
     useCreateQuestionMutation, 
     useUpdateQuestionMutation, 
-    useGetPublicQuestionsQuery
+    useGetPublicQuestionsQuery,
+    useGetMemberRequestsQuery,
+    useAcceptMemberRequestMutation,
+    useDeleteMemberRequestMutation
 } = queryApi;

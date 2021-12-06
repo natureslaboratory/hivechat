@@ -110,7 +110,9 @@ class Hivechat_Requests extends PerchAPI_Factory
 
     function get_organisation_requests($organisationID) {
         $sql = "SELECT * FROM $this->table WHERE organisationID='$organisationID'";
-        return $this->db->get_rows($sql);
+        $result = $this->db->get_rows($sql);
+        // echo "<pre>" . print_r($result, true) . "</pre>";
+        return $result;
     }
 
     function get_member_requests($memberID) {

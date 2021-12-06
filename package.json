@@ -1,10 +1,11 @@
 {
   "name": "@natureslaboratory/hivechat",
   "version": "1.0.0",
-  "description": "Hivehcat is an online communication tool which we're building as an in-house project at Natures Laboratory, but making available via the website hivechat.co.uk.",
+  "description": "Hivechat is an online communication tool which we're building as an in-house project at Natures Laboratory, but making available via the website hivechat.co.uk.",
   "main": "webpack.config.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.config.js"
   },
   "repository": {
     "type": "git",

@@ -162,7 +162,7 @@ if (perch_layout_var("manage", true) == "manage" && $isAdmin) {
     ?>
     <div style="display: flex; justify-content: space-between">
         <a href="/explore/organisations/">
-            <button class="btn btn-outline-primary mb-4">Back to Organisations</button>
+            <button class="c-button--back iframe-hide btn btn-outline-primary mb-4">Back to Organisations</button>
         </a>
         <?php if ($isAdmin) { ?>
             <a href="/explore/organisations/<?= $organisation["organisationSlug"] ?>/manage">
@@ -180,7 +180,7 @@ if (perch_layout_var("manage", true) == "manage" && $isAdmin) {
                     </div>
                 </div>
                 <div class="card-body">
-                    <?= $organisation["organisationDesc"] ?>
+                    <?= nl2br($organisation["organisationDesc"]) ?>
                 </div>
             </div>
         </div>

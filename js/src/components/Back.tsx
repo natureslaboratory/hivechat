@@ -10,7 +10,7 @@ const Back : React.FunctionComponent<BackProps> = (props) => {
     if (props.link) {
         return (
             <a href={props.link}>
-                <button className="btn btn-outline-primary mb-4">{props.label}</button>
+                <button className="c-button--back btn btn-outline-primary mb-4">{props.label}</button>
             </a>
         )
     } else {
