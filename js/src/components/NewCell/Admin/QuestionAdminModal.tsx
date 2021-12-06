@@ -8,6 +8,7 @@ import { Answer, AnswerFormProps, AnswerListProps, PostAnswer, Question } from '
 import { useGetQuestionsQuery, useSubmitAnswerMutation, useUpdateAnswerMutation, useUpdateQuestionMutation } from '../../../services/queryApi';
 import AnswerForm from './AnswerForm';
 import AnswerList from './AnswerList';
+import QuestionTable from './QuestionTable';
 
 export interface QuestionAdminProps {
     blockID: number
@@ -18,11 +19,9 @@ interface QuestionAdminFuncs {
 }
 
 const QuestionAdminModal: React.FC<QuestionAdminProps & QuestionAdminFuncs> = (props) => {
-    const [privacy, setPrivacy] = useState<"Public" | "Private">("Private");
-    const [selectedQuestion, setSelectedQuestion] = useState<number>(null)
     const [answer, setAnswer] = useState<PostAnswer>(null);
-
     const [addAnswer, showAddAnswer] = useState(false);
+
     const dispatch = useDispatch<AppDispatch>();
     const [submitAnswer, { isLoading: isSubmitting }] = useSubmitAnswerMutation();
     const [updateAnswer, { isLoading: isUpdating }] = useUpdateAnswerMutation();
@@ -31,47 +30,7 @@ const QuestionAdminModal: React.FC<QuestionAdminProps & QuestionAdminFuncs> = (p
 
 
 
-    let content = (
-        <table className="mb-0 table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Question</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {responses && responses.map((r, i) => {
-                    return (
-                        <tr key={i}>
-                            <td>{r.memberName}</td>
-                            <td>{r.questionText}</td>
-                            <td className="btn-container" style={{ margin: 0 }}>
-                                <button className="btn btn-outline-primary" onClick={() => {
-                                    if (r.answers.length > 0) {
-                                        // select the first answer, implement multiple answers later
-                                        setAnswer(r.answers[0]);
-                                    } else {
-                                        // create new answer
-                                        setAnswer({
-                                            questionID: r.questionID,
-                                            answerText: "",
-                                            answerPrivacy: "Private"
-                                        })
-                                    }
-                                }}>
-                                    View
-                                </button>
-                                <button className="btn btn-outline-danger">
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                    )
-                })}
-            </tbody>
-        </table>
-    )
+    let content = <QuestionTable questions={responses} setAnswer={setAnswer} />
 
     let back = null;
 

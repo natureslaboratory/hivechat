@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useCreateQuestionMutation, useGetPublicQuestionsQuery, useGetQuestionsQuery } from '../../../services/queryApi';
+import { PublicQuestionProps } from '../../../services/types';
+import PublicQuestions from '../Admin/PublicQuestions';
 import QuestionAdmin from '../Admin/QuestionAdmin';
 import { IBlock } from '../Cell';
 
@@ -89,23 +91,9 @@ const Question: React.FC<IBlock<QuestionBlock> & BlockProps> = (props) => {
                         submitQuestion();
                     }} className="btn btn-primary">Send</button>
                 </form>
-                <hr />
                 {message && <p>{message}</p>}
-                <h5 style={{marginTop: "1rem"}} className="card-title">Featured Questions</h5>
-                <div style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "1rem"
-                }}>
-                    {publicQuestions && publicQuestions.map(q => {
-                        return (
-                            <div key={q.questionID}>
-                                <h6 style={{}}>{q.questionText}</h6>
-                                <p>{q.answers && q.answers[0]?.answerText}</p>
-                            </div>
-                        )
-                    })}
-                </div>
+                {publicQuestions && publicQuestions.length > 0 && <hr />}
+                <PublicQuestions questions={publicQuestions} />
             </div>
         )
     } else {

@@ -51601,6 +51601,36 @@ exports.default = AddSocial;
 
 /***/ }),
 
+/***/ "./js/src/components/CardTitle.tsx":
+/*!*****************************************!*\
+  !*** ./js/src/components/CardTitle.tsx ***!
+  \*****************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var CardTitle = function (_a) {
+    var title = _a.title, titleStyle = _a.titleStyle;
+    return jsx_runtime_1.jsx("h5", __assign({ style: titleStyle, className: "card-title" }, { children: title }), void 0);
+};
+exports.default = CardTitle;
+
+
+/***/ }),
+
 /***/ "./js/src/components/Cell.tsx":
 /*!************************************!*\
   !*** ./js/src/components/Cell.tsx ***!
@@ -53050,6 +53080,52 @@ exports.default = AnswerList;
 
 /***/ }),
 
+/***/ "./js/src/components/NewCell/Admin/PublicQuestions.tsx":
+/*!*************************************************************!*\
+  !*** ./js/src/components/NewCell/Admin/PublicQuestions.tsx ***!
+  \*************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var CardTitle_1 = __importDefault(__webpack_require__(/*! ../../CardTitle */ "./js/src/components/CardTitle.tsx"));
+var PublicQuestions = function (_a) {
+    var publicQuestions = _a.questions;
+    if (!publicQuestions || publicQuestions.length == 0) {
+        return null;
+    }
+    return (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx(CardTitle_1.default, { titleStyle: { marginTop: "1rem" }, title: "Featured Questions" }, void 0),
+            jsx_runtime_1.jsx("div", __assign({ style: {
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "1rem"
+                } }, { children: publicQuestions.map(function (q) {
+                    var _a;
+                    return (jsx_runtime_1.jsxs("div", { children: [jsx_runtime_1.jsx("h6", __assign({ style: {} }, { children: q.questionText }), void 0),
+                            jsx_runtime_1.jsx("p", { children: q.answers && ((_a = q.answers[0]) === null || _a === void 0 ? void 0 : _a.answerText) }, void 0)] }, q.questionID));
+                }) }), void 0)] }, void 0));
+};
+exports.default = PublicQuestions;
+
+
+/***/ }),
+
 /***/ "./js/src/components/NewCell/Admin/QuestionAdmin.tsx":
 /*!***********************************************************!*\
   !*** ./js/src/components/NewCell/Admin/QuestionAdmin.tsx ***!
@@ -53155,38 +53231,16 @@ var questionSlice_1 = __webpack_require__(/*! ../../../slices/questionSlice */ "
 var queryApi_1 = __webpack_require__(/*! ../../../services/queryApi */ "./js/src/services/queryApi.ts");
 var AnswerForm_1 = __importDefault(__webpack_require__(/*! ./AnswerForm */ "./js/src/components/NewCell/Admin/AnswerForm.tsx"));
 var AnswerList_1 = __importDefault(__webpack_require__(/*! ./AnswerList */ "./js/src/components/NewCell/Admin/AnswerList.tsx"));
+var QuestionTable_1 = __importDefault(__webpack_require__(/*! ./QuestionTable */ "./js/src/components/NewCell/Admin/QuestionTable.tsx"));
 var QuestionAdminModal = function (props) {
-    var _a = __read(react_1.useState("Private"), 2), privacy = _a[0], setPrivacy = _a[1];
-    var _b = __read(react_1.useState(null), 2), selectedQuestion = _b[0], setSelectedQuestion = _b[1];
-    var _c = __read(react_1.useState(null), 2), answer = _c[0], setAnswer = _c[1];
-    var _d = __read(react_1.useState(false), 2), addAnswer = _d[0], showAddAnswer = _d[1];
+    var _a = __read(react_1.useState(null), 2), answer = _a[0], setAnswer = _a[1];
+    var _b = __read(react_1.useState(false), 2), addAnswer = _b[0], showAddAnswer = _b[1];
     var dispatch = react_redux_1.useDispatch();
-    var _e = __read(queryApi_1.useSubmitAnswerMutation(), 2), submitAnswer = _e[0], isSubmitting = _e[1].isLoading;
-    var _f = __read(queryApi_1.useUpdateAnswerMutation(), 2), updateAnswer = _f[0], isUpdating = _f[1].isLoading;
-    var _g = __read(queryApi_1.useUpdateQuestionMutation(), 2), updateQuestion = _g[0], isQuestionUpdating = _g[1].isLoading;
-    var _h = queryApi_1.useGetQuestionsQuery(props.blockID), responses = _h.data, error = _h.error, responsesLoading = _h.isLoading, isFetching = _h.isFetching;
-    var content = (jsx_runtime_1.jsxs("table", __assign({ className: "mb-0 table" }, { children: [jsx_runtime_1.jsx("thead", { children: jsx_runtime_1.jsxs("tr", { children: [jsx_runtime_1.jsx("th", { children: "Name" }, void 0),
-                        jsx_runtime_1.jsx("th", { children: "Question" }, void 0),
-                        jsx_runtime_1.jsx("th", {}, void 0)] }, void 0) }, void 0),
-            jsx_runtime_1.jsx("tbody", { children: responses && responses.map(function (r, i) {
-                    return (jsx_runtime_1.jsxs("tr", { children: [jsx_runtime_1.jsx("td", { children: r.memberName }, void 0),
-                            jsx_runtime_1.jsx("td", { children: r.questionText }, void 0),
-                            jsx_runtime_1.jsxs("td", __assign({ className: "btn-container", style: { margin: 0 } }, { children: [jsx_runtime_1.jsx("button", __assign({ className: "btn btn-outline-primary", onClick: function () {
-                                            if (r.answers.length > 0) {
-                                                // select the first answer, implement multiple answers later
-                                                setAnswer(r.answers[0]);
-                                            }
-                                            else {
-                                                // create new answer
-                                                setAnswer({
-                                                    questionID: r.questionID,
-                                                    answerText: "",
-                                                    answerPrivacy: "Private"
-                                                });
-                                            }
-                                        } }, { children: "View" }), void 0),
-                                    jsx_runtime_1.jsx("button", __assign({ className: "btn btn-outline-danger" }, { children: "Delete" }), void 0)] }), void 0)] }, i));
-                }) }, void 0)] }), void 0));
+    var _c = __read(queryApi_1.useSubmitAnswerMutation(), 2), submitAnswer = _c[0], isSubmitting = _c[1].isLoading;
+    var _d = __read(queryApi_1.useUpdateAnswerMutation(), 2), updateAnswer = _d[0], isUpdating = _d[1].isLoading;
+    var _e = __read(queryApi_1.useUpdateQuestionMutation(), 2), updateQuestion = _e[0], isQuestionUpdating = _e[1].isLoading;
+    var _f = queryApi_1.useGetQuestionsQuery(props.blockID), responses = _f.data, error = _f.error, responsesLoading = _f.isLoading, isFetching = _f.isFetching;
+    var content = jsx_runtime_1.jsx(QuestionTable_1.default, { questions: responses, setAnswer: setAnswer }, void 0);
     var back = null;
     react_1.useEffect(function () {
         console.log(isFetching);
@@ -53251,6 +53305,57 @@ var QuestionAdminModal = function (props) {
                                 } }, { children: "Close" }), void 0)] }), void 0)] }), void 0) }), void 0) }), void 0));
 };
 exports.default = QuestionAdminModal;
+
+
+/***/ }),
+
+/***/ "./js/src/components/NewCell/Admin/QuestionTable.tsx":
+/*!***********************************************************!*\
+  !*** ./js/src/components/NewCell/Admin/QuestionTable.tsx ***!
+  \***********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var QuestionTable = function (_a) {
+    var questions = _a.questions, setAnswer = _a.setAnswer;
+    return (jsx_runtime_1.jsxs("table", __assign({ className: "mb-0 table" }, { children: [jsx_runtime_1.jsx("thead", { children: jsx_runtime_1.jsxs("tr", { children: [jsx_runtime_1.jsx("th", { children: "Name" }, void 0),
+                        jsx_runtime_1.jsx("th", { children: "Question" }, void 0),
+                        jsx_runtime_1.jsx("th", {}, void 0)] }, void 0) }, void 0),
+            jsx_runtime_1.jsx("tbody", { children: questions && questions.map(function (r, i) {
+                    return (jsx_runtime_1.jsxs("tr", { children: [jsx_runtime_1.jsx("td", { children: r.memberName }, void 0),
+                            jsx_runtime_1.jsx("td", { children: r.questionText }, void 0),
+                            jsx_runtime_1.jsxs("td", __assign({ className: "btn-container", style: { margin: 0 } }, { children: [jsx_runtime_1.jsx("button", __assign({ className: "btn btn-outline-primary", onClick: function () {
+                                            if (r.answers.length > 0) {
+                                                // select the first answer, implement multiple answers later
+                                                setAnswer(r.answers[0]);
+                                            }
+                                            else {
+                                                // create new answer
+                                                setAnswer({
+                                                    questionID: r.questionID,
+                                                    answerText: "",
+                                                    answerPrivacy: "Private"
+                                                });
+                                            }
+                                        } }, { children: "View" }), void 0),
+                                    jsx_runtime_1.jsx("button", __assign({ className: "btn btn-outline-danger" }, { children: "Delete" }), void 0)] }), void 0)] }, i));
+                }) }, void 0)] }), void 0));
+};
+exports.default = QuestionTable;
 
 
 /***/ }),
@@ -53380,6 +53485,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var queryApi_1 = __webpack_require__(/*! ../../../services/queryApi */ "./js/src/services/queryApi.ts");
+var PublicQuestions_1 = __importDefault(__webpack_require__(/*! ../Admin/PublicQuestions */ "./js/src/components/NewCell/Admin/PublicQuestions.tsx"));
 var QuestionAdmin_1 = __importDefault(__webpack_require__(/*! ../Admin/QuestionAdmin */ "./js/src/components/NewCell/Admin/QuestionAdmin.tsx"));
 var Question = function (props) {
     var _a = __read(react_1.useState(""), 2), question = _a[0], setQuestion = _a[1];
@@ -53426,18 +53532,9 @@ var Question = function (props) {
                                 e.preventDefault();
                                 submitQuestion();
                             }, className: "btn btn-primary" }, { children: "Send" }), void 0)] }, void 0),
-                jsx_runtime_1.jsx("hr", {}, void 0),
                 message && jsx_runtime_1.jsx("p", { children: message }, void 0),
-                jsx_runtime_1.jsx("h5", __assign({ style: { marginTop: "1rem" }, className: "card-title" }, { children: "Featured Questions" }), void 0),
-                jsx_runtime_1.jsx("div", __assign({ style: {
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "1rem"
-                    } }, { children: publicQuestions && publicQuestions.map(function (q) {
-                        var _a;
-                        return (jsx_runtime_1.jsxs("div", { children: [jsx_runtime_1.jsx("h6", __assign({ style: {} }, { children: q.questionText }), void 0),
-                                jsx_runtime_1.jsx("p", { children: q.answers && ((_a = q.answers[0]) === null || _a === void 0 ? void 0 : _a.answerText) }, void 0)] }, q.questionID));
-                    }) }), void 0)] }, void 0));
+                publicQuestions && publicQuestions.length > 0 && jsx_runtime_1.jsx("hr", {}, void 0),
+                jsx_runtime_1.jsx(PublicQuestions_1.default, { questions: publicQuestions }, void 0)] }, void 0));
     }
     else {
         return null;

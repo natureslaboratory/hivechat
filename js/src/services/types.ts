@@ -29,3 +29,12 @@ export interface AnswerFormProps {
     setAnswer(answer: PostAnswer): void
     answer?: PostAnswer
 }
+
+export interface PublicQuestionProps {
+    questions: Question[]
+}
+
+export interface QuestionTableProps {
+    questions: Question[]
+    setAnswer(answer: PostAnswer): void
+}
