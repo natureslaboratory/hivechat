@@ -53359,7 +53359,6 @@ var QuestionAdminModal = function (props) {
     var content = jsx_runtime_1.jsx(QuestionTable_1.default, { questions: responses, setAnswer: setAnswer }, void 0);
     var back = null;
     react_1.useEffect(function () {
-        console.log(isFetching);
         if (!isFetching) {
             showAddAnswer(false);
         }
@@ -53404,6 +53403,7 @@ var QuestionAdminModal = function (props) {
                             } }, { children: "Back" }), void 0)] }, void 0));
                 component = jsx_runtime_1.jsx(AnswerList_1.default, { selectedQuestion: currentQuestion_1 }, void 0);
             }
+            console.log(currentQuestion_1.questionPrivacy);
             content = (jsx_runtime_1.jsxs(jsx_runtime_1.Fragment, { children: [jsx_runtime_1.jsx("h5", { children: currentQuestion_1.questionText }, void 0),
                     jsx_runtime_1.jsxs("p", { children: ["from ", currentQuestion_1.memberName] }, void 0), component, jsx_runtime_1.jsxs("div", __assign({ className: "form-group c-form-check" }, { children: [jsx_runtime_1.jsx("label", { children: "Public?" }, void 0),
                             jsx_runtime_1.jsx("input", { disabled: isQuestionUpdating, type: "checkbox", className: "c-form-check__input", onChange: function () {

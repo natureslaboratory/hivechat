@@ -2222,8 +2222,6 @@ function update_question($data) {
   $newData = HiveApi::filter($data, $fields);
 
   $result = $questions->update_question($newData);
-
-  // echo json_encode($data);
 }
 
 function get_questions($blockID, $adminAccess = false, $opts = []) {

@@ -28,14 +28,11 @@ const QuestionAdminModal: React.FC<QuestionAdminProps & QuestionAdminFuncs> = (p
     const [updateQuestion, { isLoading: isQuestionUpdating }] = useUpdateQuestionMutation();
     const { data: responses, error, isLoading: responsesLoading, isFetching } = useGetQuestionsQuery(props.blockID);
 
-
-
     let content = <QuestionTable questions={responses} setAnswer={setAnswer} />
 
     let back = null;
 
     useEffect(() => {
-        console.log(isFetching);
         if (!isFetching) {
             showAddAnswer(false);
         }
@@ -99,6 +96,8 @@ const QuestionAdminModal: React.FC<QuestionAdminProps & QuestionAdminFuncs> = (p
                 )
                 component = <AnswerList selectedQuestion={currentQuestion} />;
             }
+
+            console.log(currentQuestion.questionPrivacy);
 
             content = (
                 <>
