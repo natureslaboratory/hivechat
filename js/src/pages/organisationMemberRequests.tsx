@@ -1,5 +1,5 @@
-import React = require('react');
-import ReactDOM = require('react-dom');
+import React from 'react';
+import ReactDOM from 'react-dom';
 import MemberRequests from '../components/MemberRequests';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit'

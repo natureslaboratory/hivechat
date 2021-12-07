@@ -6,10 +6,12 @@ type BackButtonProps = {
     label: string
 }
 
-export const BackButton: React.FC<BackButtonProps> = (props) => {
+const BackButton: React.FC<BackButtonProps> = (props) => {
     return (
         <Link to={props.link}>
             <button className="c-button--back btn btn-outline-primary mb-4">{props.label}</button>
         </Link>
     )
 }
+
+export default BackButton;

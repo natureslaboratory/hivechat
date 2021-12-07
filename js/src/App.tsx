@@ -1,5 +1,6 @@
-import React from 'react';
-import ReactDOM = require('react-dom');
+import React, { Suspense } from 'react';
+import lazy from "react-lazy-with-preload"
+import ReactDOM from 'react-dom';
 import {
     BrowserRouter as Router,
     Switch,
@@ -13,10 +14,11 @@ import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import { newApi } from './services/newApi';
 import Header from './components/Header';
 import { AppContainer, AppMain, AppMainInner, AppMainOuter } from './components/Layout';
-import Home from './pages/Home';
-import OrganisationHub from './components/OrganisationHub';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
+
+const Home = lazy(() => import("./pages/Home"));
+const OrganisationHub = lazy(() => import("./pages/OrganisationHub"));
 
 /** Configure Store */
 
@@ -44,12 +46,14 @@ const App: React.FC = (props) => {
                         <Sidebar />
                         <AppMainOuter>
                             <AppMainInner>
-                                <Switch>
-                                    <Route path="/organisations" component={OrganisationHub} />
-                                    <Route path="/">
-                                        <Home />
-                                    </Route>
-                                </Switch>
+                                <Suspense fallback={<p>Loading page...</p>}>
+                                    <Switch>
+                                        <Route path="/organisations" component={OrganisationHub} />
+                                        <Route path="/">
+                                            <Home />
+                                        </Route>
+                                    </Switch>
+                                </Suspense>
                             </AppMainInner>
                             <Footer />
                         </AppMainOuter>

@@ -1,10 +1,10 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { useGetOrganisationQuery } from '../services/newApi';
-import { BackButton } from './BackButton';
-import Card, { CardBody } from './Card';
-import { Row, Col } from './Layout';
-import PageTitle from './PageTitle';
+import BackButton from '../components/BackButton';
+import Card, { CardBody } from '../components/Card';
+import { Row, Col } from '../components/Layout';
+import PageTitle from '../components/PageTitle';
 
 type OrganisationProps = RouteComponentProps<{ slug: string }>
 
@@ -12,7 +12,7 @@ const Organisation: React.FC<OrganisationProps> = (props) => {
     const { data: organisation, isLoading } = useGetOrganisationQuery(props.match.params.slug);
 
     if (isLoading) {
-        return <p>Loading...</p>
+        return <p>Fetching organisation...</p>
     }
 
     return (

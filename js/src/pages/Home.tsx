@@ -1,4 +1,5 @@
 import React from 'react';
+import { render } from 'react-dom';
 import Card, { CardBody } from '../components/Card';
 import { Col, Row } from '../components/Layout';
 import { MemberInvite, MemberInvites } from '../components/MemberInvites';

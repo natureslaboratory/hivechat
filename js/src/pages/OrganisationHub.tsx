@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, RouteComponentProps, Switch, useRouteMatch } from 'react-router-dom';
+import PageTitle from '../components/PageTitle';
 import Organisation from './Organisation';
-import PageTitle from './PageTitle';
 
 const OrganisationHub: React.FC<RouteComponentProps> = (props) => {
 

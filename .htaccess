@@ -18,5 +18,6 @@ RewriteRule ^(.*)/?$ /$1.php  [L]
 
 RewriteCond %{REQUEST_URI} !^/perch 
 RewriteCond %{REQUEST_URI} !^/api
+RewriteCond %{REQUEST_URI} !^/app
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule .* /perch/core/runway/start.php [L] 

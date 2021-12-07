@@ -1,5 +1,5 @@
-// import React = require('react');
-// import ReactDOM = require('react-dom');
+// import React from 'react';
+// import ReactDOM from 'react-dom';
 // import Cell from '../components/NewCell/Cell';
 // import CreateCell from '../components/NewCell/Editor/CreateCell';
 // import UpdateCell from '../components/NewCell/Editor/EditCellDetails';
