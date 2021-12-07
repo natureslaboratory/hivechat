@@ -55,6 +55,7 @@ const path = require('path');
 const Html = require('html-webpack-plugin');
 
 const resolvePath = x => path.resolve(__dirname, ...x.split(path.sep));
+const CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -103,6 +104,7 @@ module.exports = {
         new Html({
             template: resolvePath('js/src/index.ejs'),
         }),
-        new BundleAnalyzerPlugin()
+        new BundleAnalyzerPlugin(),
+        new CompressionPlugin()
     ],
 };
