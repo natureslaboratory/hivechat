@@ -26,8 +26,13 @@ export type MemberPropertiesType = {
     website?: string
 }
 
-export type Organisation = {
+export type OrganisationType = {
     organisationID: number
+    organisationSlug: string
+    organisationDesc: string
+    organisationName: string
+    organisationLogo: string
+    organisationScope: string
 }
 
 export interface Question {
@@ -65,4 +70,10 @@ export interface PublicQuestionProps {
 export interface QuestionTableProps {
     questions: Question[]
     setAnswer(answer: PostAnswer): void
+}
+
+export type MemberOrganisation = {
+    organisationName: string
+    memberRole: string
+    organisationSlug: string
 }

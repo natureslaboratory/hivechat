@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Answer, MemberRequestType, PostAnswer, PostQuestion, Question, UpdateQuestion } from "./types";
+import { Answer, MemberRequestType, MemberType, PostAnswer, PostQuestion, Question, UpdateQuestion } from "./types";
 
 export const queryApi = createApi({
     reducerPath: 'questionApi',
@@ -65,6 +65,10 @@ export const queryApi = createApi({
             body: request,
           }),
           invalidatesTags: ["Requests"],
+        }),
+        getMemberDetails: builder.query<MemberType, any>({
+          query: () => `member-requests/`,
+          providesTags: ["Requests"],
         }),
     })
 })

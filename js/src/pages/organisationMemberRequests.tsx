@@ -2,7 +2,7 @@ import React = require('react');
 import ReactDOM = require('react-dom');
 import MemberRequests from '../components/MemberRequests';
 import { Provider } from 'react-redux';
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit'
 import questionReducer from '../slices/questionSlice'
 import { queryApi } from '../services/queryApi';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';

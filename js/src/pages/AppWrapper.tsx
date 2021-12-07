@@ -1,6 +1,6 @@
 import React = require('react');
 import { Provider } from 'react-redux';
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit'
 import questionReducer from '../slices/questionSlice'
 import { queryApi } from '../services/queryApi';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';

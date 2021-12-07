@@ -1,8 +1,22 @@
 RewriteEngine On
 
-# Perch Runway
+RewriteEngine On
+RewriteRule ^index\.html$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-l
+RewriteRule ^.*app/.* /app/index.html [L]
+
+
+RewriteCond %{REQUEST_URI} ^/api
+RewriteCond %{THE_REQUEST} \s/([^.]+)\.php [NC]
+RewriteRule ^ /%1 [NE,L,R]
+
+RewriteCond %{REQUEST_URI} ^/api
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*)/?$ /$1.php  [L]
+
 RewriteCond %{REQUEST_URI} !^/perch 
+RewriteCond %{REQUEST_URI} !^/api
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule .* /perch/core/runway/start.php [L] 
-
-LimitRequestBody 20971520

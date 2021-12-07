@@ -13,6 +13,8 @@ import "./pages/manageHive";
 import "./pages/test";
 import "./pages/organisationMemberRequests";
 
+import "./App";
+
 
 
 

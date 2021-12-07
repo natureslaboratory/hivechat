@@ -2302,3 +2302,11 @@ function get_answers_by_question($questionID)
 
   return $answers->get_answers_by_question($questionID);
 }
+
+function get_member($memberID) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $organisations = new Hivechat_Organisations($API);
+  $member = $organisations->get_member($memberID);
+
+  return HiveApi::parse_member($member);
+}
