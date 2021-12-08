@@ -65,6 +65,7 @@ module.exports = {
     output: {
         path: resolvePath('app'),
         uniqueName: 'main',
+        publicPath: "/app/",
         clean: true
     },
 
