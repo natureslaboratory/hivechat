@@ -77,3 +77,8 @@ export type MemberOrganisation = {
     memberRole: string
     organisationSlug: string
 }
+
+export type LoginType = {
+    email: string
+    password: string
+}

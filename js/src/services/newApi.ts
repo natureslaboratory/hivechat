@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Answer, MemberRequestType, MemberType, OrganisationType, PostAnswer, PostQuestion, Question, UpdateQuestion } from "./types";
+import { Answer, LoginType, MemberRequestType, MemberType, OrganisationType, PostAnswer, PostQuestion, Question, UpdateQuestion } from "./types";
 
 export const newApi = createApi({
     reducerPath: 'newApi',
@@ -14,10 +14,29 @@ export const newApi = createApi({
             query: (organisationSlug) => `organisations/get?slug=${organisationSlug}`,
             providesTags: (result, error, arg) => [{type: "Organisation", id: arg}],
         }),
+        login: builder.mutation<any, LoginType>({
+            query: (details) => ({
+                url: `auth/login`,
+                method: "POST",
+                body: details,
+                responseHandler: "text"
+            }),
+            invalidatesTags: ["User"]
+        }),
+        logout: builder.mutation<any, any>({
+            query: () => ({
+                url: `auth/logout`,
+                method: "POST",
+                responseHandler: "text"
+            }),
+            invalidatesTags: ["User"]
+        }),
     })
 })
 
 export const {
     useGetMemberDetailsQuery,
-    useGetOrganisationQuery
+    useGetOrganisationQuery,
+    useLoginMutation,
+    useLogoutMutation
 } = newApi;

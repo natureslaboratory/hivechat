@@ -17,6 +17,7 @@ import Header from './components/Header';
 import { AppContainer, AppMain, AppMainInner, AppMainOuter } from './components/Layout';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
+import Login from './components/Login';
 
 const Home = lazy(() => import("./pages/Home"));
 const OrganisationHub = lazy(() => import("./pages/OrganisationHub"));
@@ -51,6 +52,7 @@ const App: React.FC = (props) => {
                                 <Suspense fallback={<p>Loading page...</p>}>
                                     <Switch>
                                         <Route path="/organisations" component={OrganisationHub} />
+                                        <Route path="/login" component={Login} />
                                         <Route path="/">
                                             <Home />
                                         </Route>

@@ -1959,7 +1959,7 @@ function organisation_member_requests($organisationID, $opts = [])
     $member = $organisations->get_member($request["memberID"]);
 
     $requestData["member"] = HiveApi::parse_member($member);
-  
+
     $data[] = $requestData;
   }
 
@@ -2209,7 +2209,8 @@ function create_question($data)
 }
 
 
-function update_question($data) {
+function update_question($data)
+{
   $API  = new PerchAPI(1.0, 'hivechat');
   $questions = new Hivechat_Questions($API);
 
@@ -2224,7 +2225,8 @@ function update_question($data) {
   $result = $questions->update_question($newData);
 }
 
-function get_questions($blockID, $adminAccess = false, $opts = []) {
+function get_questions($blockID, $adminAccess = false, $opts = [])
+{
   $API  = new PerchAPI(1.0, 'hivechat');
   $questions = new Hivechat_Questions($API);
   $answers = new Hivechat_Answers($API);
@@ -2288,7 +2290,8 @@ function create_answer($data)
   // ];
 }
 
-function update_answer($data) {
+function update_answer($data)
+{
   $API  = new PerchAPI(1.0, 'hivechat');
   $answers = new Hivechat_Answers($API);
 
@@ -2303,10 +2306,18 @@ function get_answers_by_question($questionID)
   return $answers->get_answers_by_question($questionID);
 }
 
-function get_member($memberID) {
+function get_member($memberID)
+{
   $API  = new PerchAPI(1.0, 'hivechat');
   $organisations = new Hivechat_Organisations($API);
   $member = $organisations->get_member($memberID);
-
   return HiveApi::parse_member($member);
+}
+
+function login($data)
+{
+  $key = base64_encode('login:perch_members:login/login_form.html');
+  $files = array();
+  $Perch = Perch::fetch();
+  return $Perch->dispatch_form($key, $data, $files);
 }

@@ -4,6 +4,7 @@ import { MemberType } from '../services/types';
 import { AppDispatch, RootState } from '../App';
 import { useSelector, useDispatch } from 'react-redux'
 import { toggle, open, close } from '../slices/sidebarSlice';
+import { Link } from 'react-router-dom';
 
 export const HeaderLogo: React.FC = (props) => (
     <div className="app-header__logo">
@@ -107,9 +108,15 @@ export const HeaderUser: React.FC<MemberType> = ({ memberEmail, memberID, member
 
 const Header: React.FC = (props) => {
 
-    const { data: member, isLoading } = useGetMemberDetailsQuery(null);
+    const { data: member, isLoading, error } = useGetMemberDetailsQuery(null);
 
-    console.log(member);
+    if (error) {
+        console.log(error);
+    }
+
+    if (member) {
+        console.log(member);
+    }
 
     return (
         <div className="app-header header-shadow iframe-hide">
@@ -122,7 +129,7 @@ const Header: React.FC = (props) => {
                 </HeaderSide>
                 <HeaderSide side="right">
                     <HeaderWidget>
-                        {member && <HeaderUser {...member} />}
+                        {member && member.memberEmail ? <HeaderUser {...member} /> : <Link to="/login">Login</Link>}
                     </HeaderWidget>
                 </HeaderSide>
             </HeaderContent>
