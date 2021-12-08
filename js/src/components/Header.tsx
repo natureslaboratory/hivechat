@@ -24,7 +24,10 @@ export const HeaderMobileMenu: React.FC = (props) => {
     const dispatch = useDispatch<AppDispatch>();
 
     return (
-        <div className="app-header__mobile-menu" style={{ display: "flex" }} onClick={() => dispatch(toggle())}>
+        <div className="app-header__mobile-menu" style={{ display: "flex" }} onClick={() => {
+            console.log("click!");
+            dispatch(toggle())
+        }}>
             <div>
                 <button type="button" className="hamburger hamburger--elastic mobile-toggle-nav">
                     <span className="hamburger-box">
