@@ -9,6 +9,7 @@ import {
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit'
 import questionReducer from './slices/questionSlice'
+import sidebarReducer from './slices/sidebarSlice'
 import { queryApi } from './services/queryApi';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import { newApi } from './services/newApi';
@@ -25,6 +26,7 @@ const OrganisationHub = lazy(() => import("./pages/OrganisationHub"));
 const store = configureStore({
     reducer: {
         question: questionReducer,
+        sidebar: sidebarReducer,
         [queryApi.reducerPath]: queryApi.reducer,
         [newApi.reducerPath]: newApi.reducer
     },

@@ -68,9 +68,9 @@ module.exports = {
         clean: true
     },
 
-    mode: 'production',
+    mode: 'development',
 
-    bail: true,
+    watch: true,
 
     optimization: {
         minimize: true,
@@ -104,7 +104,6 @@ module.exports = {
         new Html({
             template: resolvePath('js/src/index.ejs'),
         }),
-        new BundleAnalyzerPlugin(),
-        new CompressionPlugin()
+        // new CompressionPlugin()
     ],
 };

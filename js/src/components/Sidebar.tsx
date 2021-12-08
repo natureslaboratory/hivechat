@@ -1,21 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { AppDispatch, RootState } from '../App';
+import { useSelector, useDispatch } from 'react-redux'
+import { toggle, open, close } from '../slices/sidebarSlice';
 
 const Sidebar: React.FC = (props) => {
+    const sidebarCommonStyles: React.CSSProperties = {
+        padding: "1rem",
+        backgroundColor: "white",
+        width: "280px",
+        transition: "150ms",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        height: "100vh",
+        zIndex: 100,
+        paddingTop: "60px"
+    }
+
+    const sidebarOpenStyle: React.CSSProperties = {
+        ...sidebarCommonStyles,
+        transform: "translateX(0%)"
+    }
+
+    const sidebarClosedStyle: React.CSSProperties = {
+        ...sidebarCommonStyles,
+        transform: "translateX(-100%)"
+    }
+
+    const dispatch = useDispatch<AppDispatch>();
+    const sidebarOpen = useSelector((state: RootState) => state.sidebar);
+
+    useEffect(() => {
+        window.addEventListener("resize", () => {
+            if (window.innerWidth > 1400) {
+                dispatch(open())
+            }
+        })
+
+        if (window.innerWidth > 1400) {
+            dispatch(open())
+        }
+    }, [])
+
     return (
-        <div className="app-sidebar sidebar-shadow">
-            <div className="app-header__logo">
-                <div className="logo-src"></div>
-                <div className="header__pane ml-auto">
-                    <div>
-                        <button type="button" className="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
-                            <span className="hamburger-box">
-                                <span className="hamburger-inner"></span>
-                            </span>
-                        </button>
-                    </div>
-                </div>
-            </div>
+        <div className="sidebar-shadow" style={sidebarOpen ? sidebarOpenStyle : sidebarClosedStyle}>
             <div className="app-header__mobile-menu">
                 <div>
                     <button type="button" className="hamburger hamburger--elastic mobile-toggle-nav">

@@ -1,6 +1,9 @@
 import React from 'react';
 import { useGetMemberDetailsQuery } from '../services/newApi';
 import { MemberType } from '../services/types';
+import { AppDispatch, RootState } from '../App';
+import { useSelector, useDispatch } from 'react-redux'
+import { toggle, open, close } from '../slices/sidebarSlice';
 
 export const HeaderLogo: React.FC = (props) => (
     <div className="app-header__logo">
@@ -17,17 +20,21 @@ export const HeaderLogo: React.FC = (props) => (
     </div>
 )
 
-export const HeaderMobileMenu: React.FC = (props) => (
-    <div className="app-header__mobile-menu">
-        <div>
-            <button type="button" className="hamburger hamburger--elastic mobile-toggle-nav">
-                <span className="hamburger-box">
-                    <span className="hamburger-inner"></span>
-                </span>
-            </button>
+export const HeaderMobileMenu: React.FC = (props) => {
+    const dispatch = useDispatch<AppDispatch>();
+
+    return (
+        <div className="app-header__mobile-menu" style={{ display: "flex" }} onClick={() => dispatch(toggle())}>
+            <div>
+                <button type="button" className="hamburger hamburger--elastic mobile-toggle-nav">
+                    <span className="hamburger-box">
+                        <span className="hamburger-inner"></span>
+                    </span>
+                </button>
+            </div>
         </div>
-    </div>
-)
+    )
+}
 
 export const HeaderMenu: React.FC = (props) => (
     <div className="app-header__menu">
