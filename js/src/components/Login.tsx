@@ -18,7 +18,7 @@ const Login: React.FC = (props) => {
     }
 
     if (!isLoading && member.memberEmail) {
-        return <Redirect to="/" />
+        return <Redirect to="/account" />
     }
 
     return (

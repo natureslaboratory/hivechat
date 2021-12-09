@@ -4,7 +4,9 @@ import ReactDOM from 'react-dom';
 import {
     BrowserRouter as Router,
     Switch,
-    Route
+    Route,
+    Redirect,
+    useLocation
 } from "react-router-dom";
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit'
@@ -19,8 +21,8 @@ import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
 import Login from './components/Login';
 
-const Home = lazy(() => import("./pages/Home"));
-const OrganisationHub = lazy(() => import("./pages/OrganisationHub"));
+const Account = lazy(() => import("./pages/Account"));
+const OrganisationsHub = lazy(() => import("./pages/OrganisationsHub"));
 
 /** Configure Store */
 
@@ -51,10 +53,14 @@ const App: React.FC = (props) => {
                             <AppMainInner>
                                 <Suspense fallback={<p>Loading page...</p>}>
                                     <Switch>
-                                        <Route path="/organisations" component={OrganisationHub} />
+                                        <Route exact strict path="/:url*" render={props => <Redirect to={`${props.location.pathname}/`}/>} />
+                                        <Route path="/organisations" component={OrganisationsHub} />
                                         <Route path="/login" component={Login} />
+                                        <Route path="/account">
+                                            <Account />
+                                        </Route>
                                         <Route path="/">
-                                            <Home />
+                                            <p>Home</p>
                                         </Route>
                                     </Switch>
                                 </Suspense>

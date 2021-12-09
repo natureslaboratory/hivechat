@@ -33,6 +33,7 @@ export type OrganisationType = {
     organisationName: string
     organisationLogo: string
     organisationScope: string
+    isAdmin: boolean
 }
 
 export interface Question {
@@ -74,11 +75,28 @@ export interface QuestionTableProps {
 
 export type MemberOrganisation = {
     organisationName: string
-    memberRole: string
+    isAdmin: boolean
     organisationSlug: string
 }
 
 export type LoginType = {
     email: string
     password: string
+}
+
+export type MemberInvite = {
+    inviteID: number
+    organisationName: string
+    senderName: string
+}
+
+export type OrganisationMemberType = MemberType & { isAdmin: boolean };
+
+export type ManageOrganisationParams = {
+    slug: string
+}
+
+export type OrganisationMembersType = {
+    pages: number
+    members: OrganisationMemberType[]
 }

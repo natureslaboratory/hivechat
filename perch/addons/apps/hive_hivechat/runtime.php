@@ -877,28 +877,68 @@ function get_organisation_members($organisationID)
 
   $organisations = new Hivechat_Organisations($API);
 
+  $memberIDs = $organisations->get_organisation_members($organisationID);
+  $members = [];
+  foreach ($memberIDs as $memberID) {
+    $members[] = get_member($memberID["memberID"]);
+  }
 
-  return $organisations->get_organisation_members($organisationID);
+
+  return $members;
+}
+
+function get_organisation_members_new($organisationID, $opts = []) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+
+  $organisations = new Hivechat_Organisations($API);
+
+  $response = [];
+
+  $page = $opts["page"] ?: 0;
+  $perPage = $opts["perPage"] ?: 20;
+  $searchTerm = $opts["searchTerm"] ?: "";
+
+  $members = $organisations->get_organisation_members($organisationID, $page, $perPage, $searchTerm);
+  foreach ($members as $member) {
+    $response["members"][] = HiveApi::parse_member($member);
+  }
+  
+  $count = $organisations->get_organisation_members_count($organisationID, $searchTerm)["memberCount"];
+  // $response["hasMoreData"] = $count > ($page * $perPage);
+  $response["pages"] = ceil($count / $perPage);
+
+  // $response["count"] = $count;
+  // $response["alreadyShown"] = ($page * $perPage);
+  return $response;
+  
 }
 
 
-function get_member_organisations($memberID)
+function get_member_organisations($memberID, $opts = [])
 {
   $API  = new PerchAPI(1.0, 'hivechat');
   $organisations = new Hivechat_Organisations($API);
 
-  $list = $organisations->get_member_organisations($memberID);
-  $newList = [];
-  foreach ($list as $org) {
+  $organisationList = $organisations->get_member_organisations($memberID);
+  $roleOrganisationList = [];
+  foreach ($organisationList as $org) {
     $newOrg = $org;
-    $newOrg["isAdmin"] = $organisations->is_admin($org["organisationID"], $memberID) ? true : false;
-    $newList[] = $newOrg;
+    if ($opts["show-role"]) {
+      $newOrg["memberRole"] = $organisations->is_admin($org["organisationID"], $memberID) ? "Admin" : "Member";
+    } else {
+      $newOrg["isAdmin"] = $organisations->is_admin($org["organisationID"], $memberID) ? true : false;
+    }
+    $roleOrganisationList[] = $newOrg;
+  }
+
+  if ($opts["skip-template"]) {
+    return $roleOrganisationList;
   }
 
   $Template = $API->get('Template');
   $Template->set('hivechat/organisation_list.html', 'hc');
 
-  $html = $Template->render_group($newList, true);
+  $html = $Template->render_group($roleOrganisationList, true);
 
   echo $html;
 }
@@ -987,13 +1027,17 @@ function get_organisation_by_slug($organisationSlug, array $opts = [], $return =
 {
   $API  = new PerchAPI(1.0, 'hivechat');
   $organisations = new Hivechat_Organisations($API);
-  $data = $organisations->get_organisation_by_slug($organisationSlug);
+  $org = $organisations->get_organisation_by_slug($organisationSlug);
+
+  if ($opts["show-admin"]) {
+    $org["isAdmin"] = $organisations->is_admin($org["organisationID"], perch_member_get("id"));
+  }
 
   if ($opts["skip-template"]) {
     if ($return) {
-      return $data;
+      return $org;
     } else {
-      echo $data;
+      echo $org;
       return;
     }
   }
@@ -1001,7 +1045,7 @@ function get_organisation_by_slug($organisationSlug, array $opts = [], $return =
   $Template = $API->get('Template');
   $Template->set('hivechat/organisation.html', 'hc');
 
-  $html = $Template->render($data);
+  $html = $Template->render($org);
   if ($return) {
     return $html;
   }
@@ -1009,7 +1053,7 @@ function get_organisation_by_slug($organisationSlug, array $opts = [], $return =
   echo $html;
 }
 
-function get_public_organisations()
+function get_public_organisations($opts = [])
 {
   $API  = new PerchAPI(1.0, 'hivechat');
   $organisations = new Hivechat_Organisations($API);
@@ -1018,6 +1062,10 @@ function get_public_organisations()
 
   $list = $organisations->get_public_organisations();
 
+  if ($opts["skip-template"]) {
+    return $list;
+  }
+  
   $Template = $API->get('Template');
   $Template->set('hivechat/public_org_list.html', 'hc');
 
@@ -1279,7 +1327,32 @@ function delete_notification($notificationID, $memberID)
   echo json_encode($details);
 }
 
-function get_invites($memberEmail)
+function get_member_invites_list($memberEmail) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $Invites = new Hivechat_Invites($API);
+  $Organisations = new Hivechat_Organisations($API);
+
+  $invites = $Invites->get_member_invites($memberEmail);
+  $parsedInvites = [];
+
+  foreach ($invites as $i) {
+    $parsedInvite["inviteID"] = $i["inviteID"];
+
+    $organisation = $Organisations->get_organisation($i["organisationID"]);
+    $parsedInvite["organisationName"] = $organisation["organisationName"];
+
+    $sender = get_member($i["senderID"]);
+
+    $parsedInvite["senderName"] = $sender["memberProperties"]["first_name"] . " " . $sender["memberProperties"]["last_name"];
+
+    $parsedInvites[] = $parsedInvite;
+  }
+
+  return $parsedInvites;
+}
+
+
+function get_invites($memberEmail, $opts = [])
 {
   $API  = new PerchAPI(1.0, 'hivechat');
   $Invites = new Hivechat_Invites($API);
@@ -1298,6 +1371,10 @@ function get_invites($memberEmail)
       ]
     ]);
     $list[] = array_merge($memberInvite, $org, $sender);
+  }
+
+  if ($opts["skip-template"]) {
+    return $list;
   }
 
   if (count($list) == 0) {

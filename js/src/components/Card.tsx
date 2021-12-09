@@ -1,15 +1,17 @@
 import React from 'react';
 
-export type CardProps = {
-    title: string
-}
-
-const Card: React.FC<CardProps> = (props) => {
+const Card: React.FC = (props) => {
     return (
         <div className="card mb-3">
-            <div className="card-header">
-                <h5 style={{ margin: 0 }} className="card-title m-b-0">{props.title}</h5>
-            </div>
+            {props.children}
+        </div>
+    )
+}
+
+export const CardHeader: React.FC<{ title: string }> = (props) => {
+    return (
+        <div className="card-header" style={{display: "flex", justifyContent: "space-between"}}>
+            <h5 style={{ margin: 0 }} className="card-title m-b-0">{props.title}</h5>
             {props.children}
         </div>
     )

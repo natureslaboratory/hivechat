@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { AppDispatch, RootState } from '../App';
 import { useSelector, useDispatch } from 'react-redux'
 import { toggle, open, close } from '../slices/sidebarSlice';
@@ -68,10 +68,10 @@ const Sidebar: React.FC = (props) => {
                     <ul className="vertical-nav-menu metismenu">
                         <li className="app-sidebar__heading">Menu</li>
                         <li>
-                            <Link to="/">Home</Link>
+                            <NavLink  activeStyle={{fontWeight: "bold"}} exact to="/">Home</NavLink>
                         </li>
                         <li id="Account">
-                            <a href="/admin/account">Account</a>
+                            <NavLink activeStyle={{fontWeight: "bold"}} to="/account">Account</NavLink>
                         </li>
                         <li id="Your Organisations">
                             <a href="/admin/organisations">Your Organisations</a>
@@ -92,7 +92,7 @@ const Sidebar: React.FC = (props) => {
                             <a href="/explore/browse">Browse</a>
                         </li>
                         <li id="Organisations">
-                            <a href="/explore/organisations">Organisations</a>
+                            <NavLink activeStyle={{fontWeight: "bold"}} to="/organisations">Organisations</NavLink>
                         </li>
                     </ul>
                 </div>

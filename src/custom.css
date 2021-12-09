@@ -298,3 +298,7 @@ span.invites{
 .c-answer__details p {
     opacity: 0.8;
 }
+
+.btn {
+    vertical-align: unset;
+}

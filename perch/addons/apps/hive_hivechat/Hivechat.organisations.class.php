@@ -99,10 +99,27 @@ class Hivechat_Organisations extends PerchAPI_Factory
 		return $this->db->get_row($sql);
 	}
 
-	public function get_organisation_members($organisationID)
+	public function get_organisation_members($organisationID, Int $page = 0, $perPage = 20, $searchTerm = "")
 	{
-		$sql = "SELECT memberID FROM perch3_memberorg WHERE organisationID='$organisationID'";
-		return $this->db->get_rows($sql);
+		$limit = "";
+
+		if ($page) {
+			$offsetAmount = ($page - 1) * $perPage;
+			$limit = " LIMIT $offsetAmount, $perPage";
+		}
+
+		$sql = "SELECT memberID FROM perch3_memberorg WHERE organisationID='$organisationID'" . $limit;
+
+		$newSql = "SELECT mb.memberEmail, mb.memberID, mb.memberProperties FROM perch3_memberorg AS mo INNER JOIN perch3_members AS mb ON mo.memberID=mb.memberID WHERE organisationID='$organisationID' AND (mb.memberProperties LIKE '%$searchTerm%' OR mb.memberEmail LIKE '%$searchTerm%')" . $limit;
+
+
+		return $this->db->get_rows($newSql);
+		// return $sql;
+	}
+
+	public function get_organisation_members_count($organisationID, $searchTerm = "") {
+		$sql = "SELECT COUNT(mo.memberOrgID) AS memberCount FROM perch3_memberorg AS mo INNER JOIN perch3_members AS mb ON mo.memberID=mb.memberID WHERE organisationID='$organisationID' AND (mb.memberProperties LIKE '%$searchTerm%' OR mb.memberEmail LIKE '%$searchTerm%')";
+		return $this->db->get_row($sql);
 	}
 
 	public function get_organisation_names()
@@ -297,7 +314,7 @@ class Hivechat_Organisations extends PerchAPI_Factory
 	{
 		$sql = "SELECT * FROM perch3_memberorg WHERE organisationID='$organisationID' AND memberID='$memberID' AND memberRole=0 LIMIT 1";
 		$result = $this->db->get_row($sql);
-		return $result;
+		return $result ? true : false;
 	}
 
 	public function get_organisation_contacts($organisationID) {

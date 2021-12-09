@@ -3,15 +3,15 @@ import Organisation from "./classes/Organisation";
 import OrganisationMember from "./classes/OrganisationMember";
 import Utils from "./classes/Utils";
 import { inIframe } from "./helpers";
-import "./pages/explore.organisations";
-import "./pages/explore.organisations.manage.hives";
-import "./pages/admin.notifications";
-import "./pages/explore.organsations.manage.members.add";
-import "./pages/explore.organisations.manage.details";
-import "./pages/viewHive";
-import "./pages/manageHive";
-import "./pages/test";
-import "./pages/organisationMemberRequests";
+// import "./pages/explore.organisations";
+// import "./pages/explore.organisations.manage.hives";
+// import "./pages/admin.notifications";
+// import "./pages/explore.organsations.manage.members.add";
+// import "./pages/explore.organisations.manage.details";
+// import "./pages/viewHive";
+// import "./pages/manageHive";
+// import "./pages/test";
+// import "./pages/organisationMemberRequests";
 
 import "./App";
 

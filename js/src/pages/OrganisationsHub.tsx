@@ -3,11 +3,10 @@ import { Route, RouteComponentProps, Switch, useRouteMatch } from 'react-router-
 import PageTitle from '../components/PageTitle';
 import Organisation from './Organisation';
 
-const OrganisationHub: React.FC<RouteComponentProps> = (props) => {
+const OrganisationsHub: React.FC<RouteComponentProps> = (props) => {
 
     let { path, url } = useRouteMatch();
 
-    console.log(`${path}/:slug`);
     return (
         <Switch>
             <Route exact path={path}>
@@ -18,4 +17,4 @@ const OrganisationHub: React.FC<RouteComponentProps> = (props) => {
     )
 }
 
-export default OrganisationHub;
+export default OrganisationsHub;

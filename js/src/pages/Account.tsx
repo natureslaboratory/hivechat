@@ -1,50 +1,49 @@
 import React from 'react';
 import { render } from 'react-dom';
-import Card, { CardBody } from '../components/Card';
+import { Redirect } from 'react-router';
+import Card, { CardBody, CardHeader } from '../components/Card';
 import { Col, Row } from '../components/Layout';
-import { MemberInvite, MemberInvites } from '../components/MemberInvites';
+import { MemberInvites } from '../components/MemberInvites';
 import MemberOrganisations from '../components/MemberOrganisations';
 import PageTitle from '../components/PageTitle';
-import { MemberOrganisation } from '../services/types';
+import { useGetMemberDetailsQuery } from '../services/newApi';
+import { MemberInvite, MemberOrganisation } from '../services/types';
 
-const Home: React.FC = (props) => {
-    const dummyMemberOrganisations: MemberOrganisation[] = [
-        {
-            organisationName: "International Propolis Research Group",
-            memberRole: "Admin",
-            organisationSlug: "international-propolis-research-group"
-        },
-        {
-            organisationName: "Test Organisation",
-            memberRole: "Admin",
-            organisationSlug: "test-organisation"
-        },
-    ]
-
+const Account: React.FC = (props) => {
     const dummyInvites: MemberInvite[] = [
         {
             inviteID: 1,
             organisationName: "Google",
-            invitedBy: "Sergei"
+            senderName: "Sergei"
         },
         {
             inviteID: 2,
             organisationName: "Microsoft",
-            invitedBy: "Bill Gates"
+            senderName: "Bill Gates"
         },
         {
             inviteID: 3,
             organisationName: "Nature's Laboratory",
-            invitedBy: "James Fearnley"
+            senderName: "James Fearnley"
         }
     ]
 
+    const { data: member, isLoading } = useGetMemberDetailsQuery("");
+
+    if (isLoading) {
+        return <p>Loading...</p>
+    }
+
+    if (member && !member.memberEmail) {
+        return <Redirect to="/login" />
+    }
+
     return (
         <>
-            <PageTitle title="Welcome, Caleb" subtitle={<>Manage your <strong>Hivechat</strong> account</>} />
+            <PageTitle title={`Welcome, ${member.memberProperties.first_name}`} subtitle={<>Manage your <strong>Hivechat</strong> account</>} />
             <Row>
                 <Col columns={6}>
-                    <MemberOrganisations orgs={dummyMemberOrganisations} />
+                    <MemberOrganisations />
                 </Col>
                 <Col columns={6}>
                     <MemberInvites invites={dummyInvites} />
@@ -52,7 +51,8 @@ const Home: React.FC = (props) => {
             </Row>
             <Row>
                 <Col columns={6}>
-                    <Card title="Account">
+                    <Card>
+                        <CardHeader title="Account" />
                         <CardBody>
                             <p>
                                 Manage your account details.
@@ -70,4 +70,4 @@ const Home: React.FC = (props) => {
     )
 }
 
-export default Home;
+export default Account;
