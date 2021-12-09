@@ -1,5 +1,5 @@
 import React from 'react';
-import { ITableControls } from '../hooks/useGetPaginatedOrganisationMembers';
+import { ITableControls } from '../hooks/usePagination';
 import Button from './Button';
 
 const TableControls: React.FC<ITableControls> = (props) => {
@@ -14,6 +14,7 @@ const TableControls: React.FC<ITableControls> = (props) => {
         isFetching,
         hasMoreData
     } = props;
+
     return (
         <div style={{ display: "flex", gap: "1rem" }}>
             <div>
@@ -22,6 +23,7 @@ const TableControls: React.FC<ITableControls> = (props) => {
                     value={search}
                     onChange={(e) =>
                         setSearch(e.target.value)}
+                    onKeyDown={(e) => {e.key == "Enter" && executeSearch()}}
                     style={
                         {
                             height: "100%",

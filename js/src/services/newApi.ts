@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Answer, LoginType, MemberInvite, MemberOrganisation, MemberRequestType, MemberType, OrganisationMembersType, OrganisationType, PostAnswer, PostQuestion, Question, UpdateQuestion } from "./types";
+import { Answer, IPaginatedNewResponse, IPaginatedResponse, LoginType, MemberInvite, MemberOrganisation, MemberRequestType, MemberType, OrganisationMembersType, OrganisationMemberType, OrganisationType, PostAnswer, PostQuestion, Question, UpdateQuestion } from "./types";
 
 export const newApi = createApi({
     reducerPath: 'newApi',
     baseQuery: fetchBaseQuery({ baseUrl: "/api/" }),
-    tagTypes: ["User", "Organisation", "Member Organisations", "Member Invites", "OrgMembers"],
+    tagTypes: ["User", "Organisation", "Member Organisations", "Member Invites", "OrgMembers", "Organisations"],
     endpoints: (builder) => ({
         getMemberDetails: builder.query<MemberType, any>({
             query: () => `auth/get-logged-in`,
@@ -22,9 +22,13 @@ export const newApi = createApi({
             query: () => 'organisations/invites/get-member-invites',
             providesTags: ["Member Invites"]
         }),
-        getOrganisationMembers: builder.query<OrganisationMembersType, { slug: string, page: number, search?: string }>({
+        getOrganisationMembers: builder.query<IPaginatedNewResponse<OrganisationMemberType>, { slug: string, page: number, search?: string }>({
             query: ({ slug, page, search = "" }) => `organisations/get-members?slug=${slug}&page=${page}&s=${search}`,
             providesTags: (result, error, args) => [{ type: "OrgMembers", id: `${args.slug}_${args.page}` }]
+        }),
+        getOrganisations: builder.query<IPaginatedNewResponse<OrganisationType>, { page: number, search: string}>({
+            query: ({ page = 1, search = "" }) => `organisations/get-organisations?page=${page}&s=${search}`,
+            providesTags: (result, error, { search, page }) => search ? [{type: "Organisations", id: `${search}_${page}`}] : [{type: "Organisations", id: `${page}`}]
         }),
         login: builder.mutation<any, LoginType>({
             query: (details) => ({
@@ -52,6 +56,7 @@ export const {
     useGetMemberOrganisationsQuery,
     useGetMemberInvitesQuery,
     useGetOrganisationMembersQuery,
+    useGetOrganisationsQuery,
     useLoginMutation,
     useLogoutMutation,
 } = newApi;

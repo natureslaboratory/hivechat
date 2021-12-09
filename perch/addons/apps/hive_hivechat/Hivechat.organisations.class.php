@@ -169,10 +169,34 @@ class Hivechat_Organisations extends PerchAPI_Factory
 		}
 	}
 
-	public function get_public_organisations()
+	public function get_public_organisations($page = 1, $perPage = 20, $searchTerm = "")
 	{
-		$sql = "SELECT * FROM perch3_organisations WHERE organisationScope='Public'";
-		return $this->db->get_rows($sql);
+		$limit = "";
+
+		if ($page) {
+			$offsetAmount = ($page - 1) * $perPage;
+			$limit = " LIMIT $offsetAmount, $perPage";
+		}
+
+		$sql = "SELECT * FROM perch3_organisations
+		WHERE organisationScope='Public'
+		AND organisationName LIKE '%$searchTerm%'" . $limit;
+
+		$orgs = $this->db->get_rows($sql);
+
+		$sql = "SELECT COUNT(organisationID) AS organisationCount FROM perch3_organisations WHERE organisationName LIKE '%$searchTerm%' AND organisationScope='Public'";
+		$count = $this->db->get_row($sql)["organisationCount"];
+		
+		return [
+			"organisations" => $orgs,
+			"pages" => ceil($count / $perPage)
+		];
+	}
+
+	public function get_public_organisations_count($searchTerm = "")
+	{
+		$sql = "SELECT COUNT(organisationID) AS organisationCount FROM perch3_organisations WHERE ";
+		return $this->db->get_row($sql)["organisationCount"];
 	}
 
 	public function get_members($organisationID)

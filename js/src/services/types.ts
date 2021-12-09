@@ -100,3 +100,13 @@ export type OrganisationMembersType = {
     pages: number
     members: OrganisationMemberType[]
 }
+
+export interface IPaginatedResponse {
+    pages: number
+}
+
+export interface IPaginatedNewResponse<DataType> {
+    pages: number
+    result: DataType[]
+}
+

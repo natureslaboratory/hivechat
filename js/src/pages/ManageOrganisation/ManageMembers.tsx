@@ -7,7 +7,8 @@ import { Col, Row } from '../../components/Layout';
 import PageTitle from '../../components/PageTitle';
 import Table, { TableBody, TableCell, TableHead, TableRow, TableWidget } from '../../components/Table';
 import TableControls from '../../components/TableControls';
-import useGetPaginatedOrganisationMembers from '../../hooks/useGetPaginatedOrganisationMembers';
+import usePagination from '../../hooks/usePagination';
+import { useGetOrganisationMembersQuery } from '../../services/newApi';
 import { ManageOrganisationParams, OrganisationMemberType } from '../../services/types';
 import AddMember from './AddMember';
 
@@ -32,10 +33,18 @@ const ManageMembers: React.FC = (props) => {
 }
 
 const MemberList: React.FC<{ slug: string }> = (props) => {
-    const data = useGetPaginatedOrganisationMembers({ slug: props.slug });
+    const data = usePagination<{ slug: string }, OrganisationMemberType>({
+        args: {
+            slug: props.slug,
+        },
+        callable: useGetOrganisationMembersQuery
+    });
+
+    console.log(data);
+
     const {
         isLoading,
-        members
+        data: members
     } = data;
 
     if (!isLoading) {
