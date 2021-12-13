@@ -1,13 +1,14 @@
 import React from 'react';
 import { useParams, useRouteMatch } from 'react-router';
 import { Route, Switch } from 'react-router-dom';
-import ButtonLink, { ButtonPageNavContainer } from '../components/ButtonLink';
-import Card, { CardBody, CardHeader } from '../components/shared/Card/Card';
-import { Col, Row } from '../components/Layout';
-import PageTitle from '../components/shared/PageTitle';
-import { useGetOrganisationQuery } from '../services/newApi';
-import { ManageOrganisationParams } from '../services/types';
-import ManageMembers from './ManageOrganisation/ManageMembers';
+import ButtonLink, { ButtonPageNavContainer } from '../../components/ButtonLink';
+import Card, { CardBody, CardHeader } from '../../components/shared/Card/Card';
+import { Col, Row } from '../../components/Layout';
+import PageTitle from '../../components/shared/PageTitle/PageTitle';
+import { useGetOrganisationQuery } from '../../services/newApi';
+import { ManageOrganisationParams } from '../../services/types';
+import ManageMembers from './ManageMembers';
+import ManageDetails from './ManageDetails';
 
 type ManageCard = {
     title: string
@@ -78,6 +79,9 @@ const ManageOrganisationRoutes: React.FC = (props) => {
         <Switch>
             <Route path={`${path}/members`}>
                 <ManageMembers />
+            </Route>
+            <Route path={`${path}/details`}>
+                <ManageDetails />
             </Route>
             <Route path={path}>
                 <ManageOrganisation />

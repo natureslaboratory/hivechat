@@ -12,7 +12,6 @@ import { useGetOrganisationMembersQuery } from '../../services/newApi';
 import { ManageOrganisationParams, OrganisationMemberType } from '../../services/types';
 import AddMember from './AddMember';
 import usePaginationWithSearch from '../../hooks/usePaginationWithSearch/usePaginationWithSearch';
-import useSearch from '../../hooks/useSearch';
 
 const ManageMembers: React.FC = (props) => {
     const { url } = useRouteMatch();

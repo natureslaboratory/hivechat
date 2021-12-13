@@ -30,6 +30,15 @@ export const newApi = createApi({
             query: ({ page = 1, search = "" }) => `organisations/get-organisations?page=${page}&s=${search}`,
             providesTags: (result, error, { search, page }) => search ? [{type: "Organisations", id: `${search}_${page}`}] : [{type: "Organisations", id: `${page}`}]
         }),
+        updateOrganisation: builder.mutation<any, OrganisationType>({
+            query: (organisation) => ({
+                url: `organisations/update-organisation`,
+                method: "POST",
+                body: organisation,
+                responseHandler: "text"
+            }),
+            invalidatesTags: (result, error, { organisationSlug }) => [{ type: "Organisation", id: organisationSlug }]
+        }),
         login: builder.mutation<any, LoginType>({
             query: (details) => ({
                 url: `auth/login`,
@@ -57,6 +66,7 @@ export const {
     useGetMemberInvitesQuery,
     useGetOrganisationMembersQuery,
     useGetOrganisationsQuery,
+    useUpdateOrganisationMutation,
     useLoginMutation,
     useLogoutMutation,
 } = newApi;

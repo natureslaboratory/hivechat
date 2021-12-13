@@ -199,7 +199,7 @@ p:last-child {
     gap: 0.5rem;
 }
 
-.public-DraftStyleDefault-block {
+.DraftEditor-editorContainer {
     min-height: 200px;
 }
 

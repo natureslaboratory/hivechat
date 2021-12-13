@@ -70,14 +70,16 @@ class Hivechat_Organisations extends PerchAPI_Factory
 	{
 		$title = addslashes($data['organisationName']);
 		$sql = "UPDATE perch3_organisations SET organisationName='$title'";
-		foreach ($data as $key => $value) {
+		foreach ($this->static_fields as $key) {
 			if ($key == "organisationName") {
 				continue;
+			} else if ($data[$key]) {
+				$sql .= ", $key='$data[$key]'";
 			}
-			$sql .= ", $key='$value'";
 		}
 		$sql .= " WHERE organisationID=$data[organisationID]";
 		$this->db->execute($sql);
+		return $sql;
 	}
 
 	public function get_organisation($organisationID)
