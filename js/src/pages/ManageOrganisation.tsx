@@ -2,9 +2,9 @@ import React from 'react';
 import { useParams, useRouteMatch } from 'react-router';
 import { Route, Switch } from 'react-router-dom';
 import ButtonLink, { ButtonPageNavContainer } from '../components/ButtonLink';
-import Card, { CardBody, CardHeader } from '../components/Card';
+import Card, { CardBody, CardHeader } from '../components/shared/Card/Card';
 import { Col, Row } from '../components/Layout';
-import PageTitle from '../components/PageTitle';
+import PageTitle from '../components/shared/PageTitle';
 import { useGetOrganisationQuery } from '../services/newApi';
 import { ManageOrganisationParams } from '../services/types';
 import ManageMembers from './ManageOrganisation/ManageMembers';
@@ -74,8 +74,6 @@ const ManageOrganisationCard: React.FC<ManageCard> = (props) => {
 
 const ManageOrganisationRoutes: React.FC = (props) => {
     let { path } = useRouteMatch();
-
-    console.log(path);
     return (
         <Switch>
             <Route path={`${path}/members`}>

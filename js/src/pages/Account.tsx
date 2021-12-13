@@ -1,11 +1,11 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Redirect } from 'react-router';
-import Card, { CardBody, CardHeader } from '../components/Card';
+import Card, { CardBody, CardHeader } from '../components/shared/Card/Card';
 import { Col, Row } from '../components/Layout';
 import { MemberInvites } from '../components/MemberInvites';
 import MemberOrganisations from '../components/MemberOrganisations';
-import PageTitle from '../components/PageTitle';
+import PageTitle from '../components/shared/PageTitle';
 import { useGetMemberDetailsQuery } from '../services/newApi';
 import { MemberInvite, MemberOrganisation } from '../services/types';
 

@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch, useParams, useRouteMatch } from 'react-router';
-import Button from '../../components/Button';
+import Button from '../../components/shared/Button';
 import ButtonLink, { ButtonPageNavContainer } from '../../components/ButtonLink';
-import Card, { CardHeader } from '../../components/Card';
+import Card, { CardHeader } from '../../components/shared/Card/Card';
 import { Col, Row } from '../../components/Layout';
-import PageTitle from '../../components/PageTitle';
+import PageTitle from '../../components/shared/PageTitle';
 import Table, { TableBody, TableCell, TableHead, TableRow, TableWidget } from '../../components/Table';
-import TableControls from '../../components/TableControls';
-import usePagination from '../../hooks/usePagination';
+import TableControls from '../../components/shared/TableControls/TableControls';
+import usePagination, { ITableControls } from '../../hooks/usePaginationDeprecated/usePaginationWithSearch';
 import { useGetOrganisationMembersQuery } from '../../services/newApi';
 import { ManageOrganisationParams, OrganisationMemberType } from '../../services/types';
 import AddMember from './AddMember';
+import usePaginationWithSearch from '../../hooks/usePaginationWithSearch/usePaginationWithSearch';
+import useSearch from '../../hooks/useSearch';
 
 const ManageMembers: React.FC = (props) => {
     const { url } = useRouteMatch();
@@ -32,32 +34,61 @@ const ManageMembers: React.FC = (props) => {
     )
 }
 
+function useMemberList(slug: string) {
+    const pagination = usePaginationWithSearch();
+    const { 
+        page, 
+        skip,
+        setTotalPages,
+        search
+    } = pagination;
+
+    const query = useGetOrganisationMembersQuery({
+        slug,
+        page,
+        search
+    }, { skip });
+
+    const totalPages = query.data?.pages || 0;
+
+    useEffect(() => {
+        if (totalPages) {
+            setTotalPages(totalPages);
+        }
+    }, [totalPages])
+
+    return {
+        ...query,
+        ...pagination,
+        hasMoreData: page < (query.data?.pages || 0),
+    }
+}
+
 const MemberList: React.FC<{ slug: string }> = (props) => {
-    const data = usePagination<{ slug: string }, OrganisationMemberType>({
-        args: {
-            slug: props.slug,
-        },
-        callable: useGetOrganisationMembersQuery
-    });
 
-    console.log(data);
-
+    const handles = useMemberList(props.slug);
     const {
         isLoading,
-        data: members
-    } = data;
+        data
+    } = handles;
+
+    const members = data.result;
 
     if (!isLoading) {
         return (
             <>
                 <Card>
                     <CardHeader title="Members">
-                        <TableControls {...data} />
+                        <TableControls {...handles} />
                     </CardHeader>
                     <Table>
                         <TableHead labels={["Name", "Email", "Role", "Actions"]} />
                         <TableBody>
-                            {members ? members.map(m => m.memberEmail && <MemberRow {...m} key={m.memberEmail} />) : <p>No Members</p>}
+                            {
+                                members && members.length > 0 ? 
+                                members.map(m => m.memberEmail && <MemberRow {...m} key={m.memberEmail} />) : 
+                                <TableRow><TableCell colSpan={4}>No Members...</TableCell></TableRow>
+                            }
                         </TableBody>
                     </Table>
                 </Card>

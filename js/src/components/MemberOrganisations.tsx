@@ -2,7 +2,7 @@ import React from 'react';
 import { useGetMemberOrganisationsQuery } from '../services/newApi';
 import { MemberOrganisation } from '../services/types';
 import ButtonLink from './ButtonLink';
-import Card, { CardHeader } from './Card';
+import Card, { CardHeader } from './shared/Card';
 import Table, { TableBody, TableCell, TableHead, TableRow, TableWidget } from './Table';
 
 const MemberOrganisations: React.FC = (props) => {

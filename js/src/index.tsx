@@ -45,8 +45,6 @@ preventDefaulters.forEach(b => {
     })
 })
 
-console.log(inIframe());
-
 if (inIframe()) {
     let adminHeader = document.getElementsByClassName("app-header")[0] as HTMLElement;
     adminHeader.style.display = "none";

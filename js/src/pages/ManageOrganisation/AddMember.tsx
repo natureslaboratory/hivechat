@@ -1,6 +1,6 @@
 import React from 'react';
 import ButtonLink, { ButtonPageNavContainer } from '../../components/ButtonLink';
-import PageTitle from '../../components/PageTitle';
+import PageTitle from '../../components/shared/PageTitle';
 
 const AddMember: React.FC = (props) => {
     return (

@@ -15,7 +15,7 @@ import sidebarReducer from './slices/sidebarSlice'
 import { queryApi } from './services/queryApi';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import { newApi } from './services/newApi';
-import Header from './components/Header';
+import Header from './components/shared/Header/Header';
 import { AppContainer, AppMain, AppMainInner, AppMainOuter } from './components/Layout';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';

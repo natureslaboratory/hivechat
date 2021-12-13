@@ -2,9 +2,9 @@ import React from 'react';
 import { Route, RouteComponentProps, Switch, useRouteMatch } from 'react-router-dom';
 import { useGetOrganisationQuery } from '../services/newApi';
 import ButtonLink, { ButtonPageNavContainer } from '../components/ButtonLink';
-import Card, { CardBody, CardHeader } from '../components/Card';
+import Card, { CardBody, CardHeader } from '../components/shared/Card/Card';
 import { Row, Col } from '../components/Layout';
-import PageTitle from '../components/PageTitle';
+import PageTitle from '../components/shared/PageTitle';
 import ManageOrganisation from './ManageOrganisation';
 
 type OrganisationProps = RouteComponentProps<{ slug: string }>

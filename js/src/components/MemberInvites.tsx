@@ -2,7 +2,7 @@ import React from 'react';
 import { useGetMemberInvitesQuery } from '../services/newApi';
 import { MemberInvite } from '../services/types';
 import ButtonLink from './ButtonLink';
-import Card, { CardHeader } from './Card';
+import Card, { CardHeader } from './shared/Card/Card';
 import Table, { TableBody, TableCell, TableHead, TableRow, TableWidget } from './Table';
 
 type MemberInvitesProps = {

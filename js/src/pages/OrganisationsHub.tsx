@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link, Route, RouteComponentProps, Switch, useRouteMatch } from 'react-router-dom';
-import Button from '../components/Button';
-import Card, { CardHeader } from '../components/Card';
-import PageTitle from '../components/PageTitle';
+import Button from '../components/shared/Button';
+import Card, { CardHeader } from '../components/shared/Card/Card';
+import PageTitle from '../components/shared/PageTitle';
 import Table, { TableBody, TableCell, TableHead, TableRow, TableWidget } from '../components/Table';
-import TableControls from '../components/TableControls';
-import usePagination from '../hooks/usePagination';
+import TableControls from '../components/shared/TableControls/TableControls';
+import usePagination from '../hooks/usePaginationWithSearch/usePaginationWithSearch';
 import { useGetOrganisationsQuery } from '../services/newApi';
 import { OrganisationType } from '../services/types';
 import Organisation from './Organisation';
@@ -26,17 +26,14 @@ const OrganisationsHub: React.FC<RouteComponentProps> = (props) => {
 }
 
 const OrganisationTable: React.FC = (props) => {
-    // const data = useGetPaginatedOrganisations();
+    const pagination = usePagination();
+    const query = useGetOrganisationsQuery({
+        page: pagination.page,
+        search: pagination.search
+    }, { skip: pagination.skip });
 
-    const data = usePagination<any, OrganisationType>({
-        args: {},
-        callable: useGetOrganisationsQuery
-    });
-
-    const {
-        isLoading,
-        data: orgs
-    } = data;
+    const totalPages = query.data?.pages || 0;
+    const orgs = query.data?.result || [];
 
     let content = null;
     if (orgs) {
@@ -49,12 +46,12 @@ const OrganisationTable: React.FC = (props) => {
         )
     }
 
-    console.log(isLoading);
+    console.log(query.isLoading);
 
     return (
         <Card>
             <CardHeader title="Public Organisations">
-                    {orgs && <TableControls {...data} />}
+                    {orgs && <TableControls {...pagination} {...query} hasMoreData={pagination.page < totalPages} />}
             </CardHeader>
             <Table>
                 <TableHead labels={["Name"]} />

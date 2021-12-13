@@ -1,6 +1,6 @@
 import React from 'react';
-import { ITableControls } from '../hooks/usePagination';
-import Button from './Button';
+import { ITableControls } from '../../../hooks/usePaginationDeprecated/usePaginationWithSearch';
+import Button from '../Button';
 
 const TableControls: React.FC<ITableControls> = (props) => {
     const {

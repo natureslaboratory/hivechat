@@ -110,3 +110,15 @@ export interface IPaginatedNewResponse<DataType> {
     result: DataType[]
 }
 
+export interface ITableControls {
+    page: number;
+    decrementPage: () => void;
+    incrementPage: () => void;
+    isLoading: boolean;
+    isFetching: boolean;
+    hasMoreData: boolean;
+    search: string;
+    setSearch: (s: string) => void;
+    executeSearch: () => void;
+}
+

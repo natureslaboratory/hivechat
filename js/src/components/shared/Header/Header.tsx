@@ -1,9 +1,9 @@
 import React from 'react';
-import { useGetMemberDetailsQuery } from '../services/newApi';
-import { MemberType } from '../services/types';
-import { AppDispatch, RootState } from '../App';
+import { useGetMemberDetailsQuery } from '../../../services/newApi';
+import { MemberType } from '../../../services/types';
+import { AppDispatch, RootState } from '../../../App';
 import { useSelector, useDispatch } from 'react-redux'
-import { toggle, open, close } from '../slices/sidebarSlice';
+import { toggle, open, close } from '../../../slices/sidebarSlice';
 import { Link } from 'react-router-dom';
 
 export const HeaderLogo: React.FC = (props) => (
@@ -109,14 +109,6 @@ export const HeaderUser: React.FC<MemberType> = ({ memberEmail, memberID, member
 const Header: React.FC = (props) => {
 
     const { data: member, isLoading, error } = useGetMemberDetailsQuery(null);
-
-    if (error) {
-        console.log(error);
-    }
-
-    if (member) {
-        console.log(member);
-    }
 
     return (
         <div className="app-header header-shadow iframe-hide">
