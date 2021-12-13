@@ -71,7 +71,9 @@ const MemberList: React.FC<{ slug: string }> = (props) => {
         data
     } = handles;
 
-    const members = data.result;
+    console.log(data);
+
+    const members = data?.result || [];
 
     if (!isLoading) {
         return (
@@ -94,7 +96,6 @@ const MemberList: React.FC<{ slug: string }> = (props) => {
             </>
         )
     }
-
 
     return (
         <>

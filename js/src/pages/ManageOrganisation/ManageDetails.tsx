@@ -40,8 +40,6 @@ const UpdateOrganisationDetails: React.FC<OrganisationType> = (props) => {
     const { message, updateMessage, resetMessage } = useMessage();
     const [ updateOrg, { isLoading, data, isSuccess }] = useUpdateOrganisationMutation();
 
-    console.log(data);
-
     function handleChange(e) {
         setNewOrganisation({
             ...newOrganisation,
