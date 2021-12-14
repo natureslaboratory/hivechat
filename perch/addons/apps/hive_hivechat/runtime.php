@@ -1430,6 +1430,46 @@ function get_invite($inviteID)
   echo $html;
 }
 
+function create_invite($data) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $orgs = new Hivechat_Organisations($API);
+  $invites = new Hivechat_Invites($API);
+  $email = new PerchEmail("hivechat/signup.html");
+
+  $member = $orgs->get_member_by_email($data["memberEmail"]);
+  if ($member && $orgs->is_organisation_member($member["memberID"], $data["organisationID"])) {
+    return "is member already";
+  }
+
+  return $invites->create_invite($data["memberEmail"], $data["senderID"], $data["organisationID"]);
+  $sender = HiveApi::flatten($orgs->get_member($data["senderID"]), ["mappings" => ["first_name" => "first_name", "last_name" => "last_name"]]);
+  $organisation = $orgs->get_organisation($data["organisationID"]);
+  $message = "$sender[first_name] $sender[last_name] has invited you to join $organisation[organisationName] on Hivechat.";
+  $link = "/admin/invites";
+
+  if ($member) {
+    $link = "/admin/invites";
+    create_notification($member["memberID"], $data["senderID"], $message, $link);
+  }
+
+  if (!$data["send_email"]) {
+    return "not sending email"; 
+  }
+
+  $email->set_bulk([
+    "email_message" => $message,
+    "email_subject" => $message,
+    "isMember" => $member ? true : false,
+    "protocol" => $_SERVER["HTTPS"] ? "https://" : "http://",
+    "email_link" => $link
+  ]);
+
+  $email->senderName("Hivechat");
+  $email->senderEmail("caleb@natureslaboratory.co.uk");
+  $email->recipientEmail($data["memberEmail"]);
+  $email->send();
+}
+
 function update_organisation_member_details($organisationID)
 {
   $API  = new PerchAPI(1.0, 'hivechat');
@@ -1461,10 +1501,15 @@ function get_organisation_invites($organisationID, $opts = [])
   $API  = new PerchAPI(1.0, 'hivechat');
   $Invites = new Hivechat_Invites($API);
   $Organisations = new Hivechat_Organisations($API);
-  $organisationInvites = $Invites->get_organisation_invites($organisationID);
+
+  $page = $opts["page"] ?: 1;
+  $perPage = $opts["perPage"] ?: 20;
+  $searchTerm = $opts["searchTerm"] ?: "";
+
+  $organisationInvites = $Invites->get_organisation_invites($organisationID, $page, $perPage, $searchTerm);
 
   $list = [];
-  foreach ($organisationInvites as $invite) {
+  foreach ($organisationInvites["result"] as $invite) {
     $sender = HiveApi::flatten($Organisations->get_member($invite["senderID"]), [
       "mappings" => [
         "first_name" => "first_name",
@@ -1478,15 +1523,18 @@ function get_organisation_invites($organisationID, $opts = [])
   }
 
   if ($opts["skip-template"]) {
-    return $list;
+    return [
+      "result" => $list,
+      "pages" => $organisationInvites["pages"]
+    ];
   }
 
 
   $Template = $API->get('Template');
   $Template->set('hivechat/organisation_invites.html', 'hc');
 
-  $html = $Template->render_group($list, true);
-  $html = $Template->apply_runtime_post_processing($html, $list);
+  $html = $Template->render_group($list["result"], true);
+  $html = $Template->apply_runtime_post_processing($html, $list["result"]);
 
   echo $html;
 }
@@ -1577,6 +1625,15 @@ function save_social($data)
   } else {
     return ["success" => false, "error" => "Database Error", "sql" => $result, "data" => $data];
   }
+}
+
+function update_social($data) {
+  $API  = new PerchAPI(1.0, 'hivechat');
+  $orgs = new Hivechat_Organisations($API);
+  $orgsocials = new Hivechat_OrgSocials($API);
+  $organisation = $orgs->get_organisation_by_slug($data["organisationSlug"]);
+
+  return $orgsocials->update_org_social($data);
 }
 
 function delete_social($socialID)

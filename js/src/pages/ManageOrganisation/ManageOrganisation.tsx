@@ -5,7 +5,7 @@ import ButtonLink, { ButtonPageNavContainer } from '../../components/ButtonLink'
 import Card, { CardBody, CardHeader } from '../../components/shared/Card/Card';
 import { Col, Row } from '../../components/Layout';
 import PageTitle from '../../components/shared/PageTitle/PageTitle';
-import { useGetOrganisationQuery } from '../../services/newApi';
+import { useGetOrganisationQuery, useGetOrganisationSocialsQuery } from '../../services/newApi';
 import { ManageOrganisationParams } from '../../services/types';
 import ManageMembers from './ManageMembers';
 import ManageDetails from './ManageDetails';
@@ -47,7 +47,7 @@ const ManageOrganisation: React.FC = (props) => {
 
     return (
         <>
-            <PageTitle title={`Manage ${organisation.organisationName}`} />
+            <PageTitle title={`Manage ${organisation.organisationName}`} logoURL={organisation.organisationLogo} />
             <ButtonPageNavContainer>
                 <ButtonLink to=".." label={`Back to ${organisation.organisationName}`} type="primary" outline />
             </ButtonPageNavContainer>

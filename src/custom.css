@@ -245,6 +245,11 @@ p:last-child {
     0.6rem;
     flex-direction: row-reverse;
     justify-content: flex-end;
+    align-items: center;
+}
+
+.c-form-check__label {
+    margin: 0;
 }
 
 

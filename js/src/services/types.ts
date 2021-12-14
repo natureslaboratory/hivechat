@@ -122,3 +122,27 @@ export interface ITableControls {
     executeSearch: () => void;
 }
 
+export type SocialType = {
+    socialLink: string
+    socialType: "Facebook" | "Twitter" | "LinkedIn"
+    organisationID: number
+    socialID: number
+    dateCreated: string
+}
+
+export type NewSocialType = Pick<SocialType, "socialLink" | "socialType" | "organisationID">
+
+export type DataChild = {
+    isParentFetching?: boolean,
+    redirect: string
+}
+
+export type OrganisationInviteType = {
+    inviteID: number
+    memberEmail: string
+    senderID: number
+    organisationID: number
+    dateCreated: string
+    sender_first_name: string
+    sender_last_name: string
+}

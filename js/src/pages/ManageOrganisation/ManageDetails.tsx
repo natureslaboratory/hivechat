@@ -3,11 +3,13 @@ import { Route, Switch, useParams, useRouteMatch } from 'react-router';
 import { Link } from 'react-router-dom';
 import ButtonLink, { ButtonPageNavContainer } from '../../components/ButtonLink';
 import { Col, Row } from '../../components/Layout';
+import ManageSocials from '../../components/ManageSocials/ManageSocials';
 import Button from '../../components/shared/Button';
 import Card, { CardBody, CardHeader } from '../../components/shared/Card';
 import { FormGroup, FormTextInput, FormSelect } from '../../components/shared/Form';
 import FormTextEditor from '../../components/shared/Form/FormTextEditor';
 import PageTitle from '../../components/shared/PageTitle';
+import Socials from '../../components/Socials';
 import useMessage from '../../hooks/useMessage';
 import { useGetOrganisationQuery, useUpdateOrganisationMutation } from '../../services/newApi';
 import { ManageOrganisationParams, OrganisationType } from '../../services/types';
@@ -30,15 +32,18 @@ const ManageDetails: React.FC = (props) => {
                 <Col columns={6}>
                     <UpdateOrganisationDetails {...organisation} />
                 </Col>
+                <Col columns={6}>
+                    <ManageSocials />
+                </Col>
             </Row>
         </>
     )
 }
 
 const UpdateOrganisationDetails: React.FC<OrganisationType> = (props) => {
-    const [ newOrganisation, setNewOrganisation ] = useState({...props});
+    const [newOrganisation, setNewOrganisation] = useState({ ...props });
     const { message, updateMessage, resetMessage } = useMessage();
-    const [ updateOrg, { isLoading, data, isSuccess }] = useUpdateOrganisationMutation();
+    const [updateOrg, { isLoading, data, isSuccess }] = useUpdateOrganisationMutation();
 
     function handleChange(e) {
         setNewOrganisation({
@@ -85,7 +90,7 @@ const UpdateOrganisationDetails: React.FC<OrganisationType> = (props) => {
                 </FormGroup>
                 <FormGroup>
                     {/* <FormTextInput label="Description" type="textarea" value={newOrganisation.organisationDesc || ""} onChange={handleChange} id="organisationDesc" /> */}
-                    <FormTextEditor label="Description" id="organistionDesc" value={newOrganisation.organisationDesc || ""} updateValue={(value: string) => { setNewOrganisation({...newOrganisation, organisationDesc: value})}} />
+                    <FormTextEditor label="Description" id="organistionDesc" value={newOrganisation.organisationDesc || ""} updateValue={(value: string) => { setNewOrganisation({ ...newOrganisation, organisationDesc: value }) }} />
                 </FormGroup>
                 <FormGroup>
                     <FormTextInput label="Logo URL" type="text" value={newOrganisation.organisationLogo || ""} onChange={handleChange} id="organisationLogo" />
@@ -93,7 +98,7 @@ const UpdateOrganisationDetails: React.FC<OrganisationType> = (props) => {
                 <FormGroup>
                     <FormSelect label="Scope" value={newOrganisation.organisationScope || "Private"} onChange={handleChange} id="organisationScope" options={[{ label: "Private", id: "Private" }, { label: "Public", id: "Public" }]} />
                 </FormGroup>
-                <div style={{display: "flex", gap: "1rem", alignItems: "center"}}>
+                <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
                     <Button type="secondary" label="Update" onClick={handleSubmit} disabled={isLoading} />
                     <p style={message.style}>{message.text}</p>
                 </div>

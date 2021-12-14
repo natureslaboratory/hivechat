@@ -42,7 +42,7 @@ class Hivechat_Invites extends PerchAPI_Factory
 
     function create_invite($memberEmail, $senderID, $organisationID) {
         if ($this->has_organisation_invite($memberEmail, $organisationID)) {
-            return;
+            return "has invite already";
         }
 
         $sql = "INSERT INTO perch3_invites
@@ -138,9 +138,21 @@ class Hivechat_Invites extends PerchAPI_Factory
         return $this->db->get_rows($sql);
     }
 
-    function get_organisation_invites($organisationID) {
-        $sql = "SELECT * FROM perch3_invites WHERE organisationID='$organisationID' ORDER BY dateCreated DESC";
-        return $this->db->get_rows($sql);
+    function get_organisation_invites($organisationID, $page = 1, $perPage = 20, $searchTerm = "") {
+        
+        $offsetAmount = ($page - 1) * $perPage;
+        $limit = " LIMIT $offsetAmount, $perPage";
+
+        $rows = "SELECT * FROM perch3_invites WHERE organisationID='$organisationID' AND memberEmail LIKE '%$searchTerm%' ORDER BY dateCreated DESC LIMIT $offsetAmount, $perPage";
+        $count = "SELECT COUNT(memberEmail) AS inviteCount FROM perch3_invites WHERE organisationID='$organisationID' AND memberEmail LIKE '%$searchTerm%'";
+        // $sqlFile = fopen("sqlFile.txt", "w");
+        // fwrite($sqlFile, $sql . "\n");
+        // fclose($sqlFile);
+
+        return [
+            "result" => $this->db->get_rows($rows),
+            "pages" => ceil($this->db->get_row($count)["inviteCount"] / $perPage)
+        ];
     }
 
     function delete_invite($inviteID) {

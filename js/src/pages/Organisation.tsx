@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, RouteComponentProps, Switch, useRouteMatch } from 'react-router-dom';
-import { useGetOrganisationQuery } from '../services/newApi';
+import { useGetOrganisationQuery, useGetOrganisationSocialsQuery } from '../services/newApi';
 import ButtonLink, { ButtonPageNavContainer } from '../components/ButtonLink';
 import Card, { CardBody, CardHeader } from '../components/shared/Card/Card';
 import { Row, Col } from '../components/Layout';
@@ -11,6 +11,7 @@ type OrganisationProps = RouteComponentProps<{ slug: string }>
 
 const Organisation: React.FC<OrganisationProps> = (props) => {
     const { data: organisation, isLoading } = useGetOrganisationQuery(props.match.params.slug);
+    const { data: socials } = useGetOrganisationSocialsQuery(organisation && organisation.organisationID);
 
     if (isLoading) {
         return <p>Fetching organisation...</p>
@@ -18,7 +19,7 @@ const Organisation: React.FC<OrganisationProps> = (props) => {
 
     return (
         <>
-            <PageTitle title={organisation.organisationName} />
+            <PageTitle title={organisation.organisationName} socials={socials} logoURL={organisation.organisationLogo} />
             <ButtonPageNavContainer>
                 <ButtonLink to="/organisations" label="Back To Organisations" type="primary" outline />
                 {organisation.isAdmin && <ButtonLink to={`${props.match.url}manage`} label="Manage" type="primary" />}

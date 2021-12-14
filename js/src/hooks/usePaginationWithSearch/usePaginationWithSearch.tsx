@@ -17,7 +17,9 @@ function usePaginationWithSearch() {
     }
 
     function incrementPage() {
+        console.log("increment!");
         if (skip) {
+            console.log("skip was true!!");
             setSearch("");
         }
         setSkip(false);

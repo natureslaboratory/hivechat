@@ -8,7 +8,7 @@ import PageTitle from '../../components/shared/PageTitle';
 import Table, { TableBody, TableCell, TableHead, TableRow, TableWidget } from '../../components/Table';
 import TableControls from '../../components/shared/TableControls/TableControls';
 import usePagination, { ITableControls } from '../../hooks/usePaginationDeprecated/usePaginationWithSearch';
-import { useGetOrganisationMembersQuery } from '../../services/newApi';
+import { useGetOrganisationMembersQuery, useGetOrganisationQuery } from '../../services/newApi';
 import { ManageOrganisationParams, OrganisationMemberType } from '../../services/types';
 import AddMember from './AddMember';
 import usePaginationWithSearch from '../../hooks/usePaginationWithSearch/usePaginationWithSearch';
@@ -70,8 +70,6 @@ const MemberList: React.FC<{ slug: string }> = (props) => {
         isLoading,
         data
     } = handles;
-
-    console.log(data);
 
     const members = data?.result || [];
 
@@ -135,13 +133,21 @@ const MemberRow: React.FC<OrganisationMemberType> = (props) => {
     )
 }
 
+function useGetOrganisationID() {
+    const { slug } = useParams<ManageOrganisationParams>()
+    const { data: org } = useGetOrganisationQuery(slug);
+    return org && org.organisationID;
+}
+
 const ManageMembersRoutes: React.FC = (props) => {
     const { path } = useRouteMatch();
+    const orgID = useGetOrganisationID();
+
 
     return (
         <Switch>
             <Route path={`${path}/add`}>
-                <AddMember />
+                <AddMember orgID={orgID} />
             </Route>
             <Route path={path}>
                 <ManageMembers />

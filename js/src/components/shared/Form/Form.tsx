@@ -5,14 +5,14 @@ const Form: React.FC = ({ children }) => <form>{children}</form>
 
 export default Form;
 
-export const FormGroup: React.FC = ({ children }) => <div className="form-group">{children}</div>
+export const FormGroup: React.FC<{ className?: string }> = ({ children, className }) => <div className={`form-group ${className}`}>{children}</div>
 
 export type FormInputProps = {
     type: "text" | "textarea",
     placeholder?: string,
     value: string,
     id: string,
-    onChange: {(e: React.ChangeEvent)},
+    onChange: {(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>)},
     label: string,
     readOnly?: boolean
 }
@@ -36,10 +36,16 @@ export const FormTextInput: React.FC<FormInputProps> = ({ type, placeholder, val
     }
 }
 
-type SelectOption = {
+export type SelectOption = {
     label: string
     id: string
 }
+
+export const FormButtonsWrapper: React.FC = ({ children }) => (
+    <div style={{display: "flex", gap: "0.5rem", justifyContent: "flex-end", alignItems: "center"}}>
+        {children}
+    </div>
+)
 
 type FormSelectProps = Pick<FormInputProps, "value" |"id" | "label" | "onChange"> & {
     options: SelectOption[]

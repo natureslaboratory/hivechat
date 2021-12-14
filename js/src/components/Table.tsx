@@ -51,3 +51,11 @@ export const TableWidget: React.FC<TableWidgetProps> = (props) => {
         </div>
     )
 }
+
+export const TablePlaceholder: React.FC<{ message: string, colSpan: number }> = (props) => (
+    <TableRow>
+        <TableCell colSpan={props.colSpan}>
+            {props.message}
+        </TableCell>
+    </TableRow>
+)
